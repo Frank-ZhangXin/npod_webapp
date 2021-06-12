@@ -1,0 +1,7 @@
+{
+  "httpMethod": "GET",
+  "body": "{\"name\": \"Amplify\"}",
+  "path": "/db",
+  "resource": "/{proxy+}",
+  "queryStringParameters": {}
+}
