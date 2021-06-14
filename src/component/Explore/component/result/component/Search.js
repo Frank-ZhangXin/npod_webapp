@@ -130,7 +130,7 @@ function Search(props) {
             ((props.ia2aP === true && donor.IA_2A_Result === "Positive") ||
               props.ia2aP === false) &&
             ((props.miaaP === true && donor.mIAA_Result === "Positive") ||
-              props.ia2aP === false) &&
+              props.miaaP === false) &&
             ((props.znt8aP === true && donor.ZnT8A_Result === "Positive") ||
               props.znt8aP === false)) ||
           props.aaEnable === false
