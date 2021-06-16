@@ -35,6 +35,7 @@ function FilterCPeptide(props) {
             onChange={(e) => props.setCPeptideEnable(e.target.checked)}
             name="CPeptideEnableSwitch"
             className={classes.title}
+            color="primary"
           />
         </Box>
       </Box>

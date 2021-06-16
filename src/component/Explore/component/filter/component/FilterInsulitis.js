@@ -35,6 +35,7 @@ function FilterInsulitis(props) {
             onChange={(e) => props.setInsulitisEnable(e.target.checked)}
             name="insulitisEnableSwitch"
             className={classes.title}
+            color="primary"
           />
         </Box>
       </Box>

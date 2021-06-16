@@ -39,7 +39,8 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
   tabPanel: {
-    height: "67vh",
+    maxHeight: "85vh",
+    overflow: "auto",
   },
 }));
 
@@ -71,7 +72,7 @@ export default function TabView() {
           className={classes.tabs}
         >
           <Tab label="DONOR SUMMARY" {...a11yProps(0)} />
-          <Tab label="CLINIC HISTORY" {...a11yProps(1)} />
+          <Tab label="CLINICAL HISTORY" {...a11yProps(1)} />
           <Tab label="Case Processing &amp; Tissue Quality" {...a11yProps(2)} />
           <Tab label="FUNCTIONAL ASSAY" {...a11yProps(3)} />
           <Tab label="HISTOPATHOLOGY" {...a11yProps(4)} />

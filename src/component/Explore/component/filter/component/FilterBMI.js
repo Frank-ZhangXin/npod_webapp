@@ -54,7 +54,7 @@ function FilterBMI(props) {
       <Box display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h6" className={classes.title}>
-            <Box fontWeight="fontWeightBold">BMI Range</Box>
+            <Box fontWeight="fontWeightBold">BMI</Box>
           </Typography>
         </Box>
         <Box>
@@ -63,6 +63,7 @@ function FilterBMI(props) {
             onChange={(e) => props.setBmiEnable(e.target.checked)}
             name="bmiEnableSwitch"
             className={classes.title}
+            color="primary"
           />
         </Box>
       </Box>

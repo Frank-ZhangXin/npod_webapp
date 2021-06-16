@@ -9,13 +9,18 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
   title: {
     paddingBottom: theme.spacing(2),
   },
+  title2: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+  },
   container: {
-    maxHeight: "56vh",
+    maxHeight: "55vh",
   },
   table: {
     paddingBottom: theme.spacing(2),
@@ -23,63 +28,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DonorInformation2(props) {
+function TransplantHLA(props) {
   const classes = useStyles();
-  const donorType = props.donorTypesMap[props.currentCase.donor_type_id];
+
+  const data = props.hlaMap[props.currentCase.case_id];
 
   function createData(name, value) {
     return { name, value };
   }
 
   const rows = [
-    createData("Donor Type", donorType === null ? "Unavailable" : donorType),
+    createData("A1", (data && data["T_A_1"]) || "Unavailable"),
+    createData("A2", (data && data["T_A_2"]) || "Unavailable"),
+    createData("B1", (data && data["T_B_1"]) || "Unavailable"),
+    createData("B2", (data && data["T_B_2"]) || "Unavailable"),
+    createData("DR1", (data && data["T_DR_1"]) || "Unavailable"),
+    createData("DR2", (data && data["T_DR_2"]) || "Unavailable"),
+    createData("DQB1", (data && data["T_DQB_1"]) || "Unavailable"),
+    createData("DQB2", (data && data["T_DQB_2"]) || "Unavailable"),
+  ];
+
+  const dtComent = props.currentCase["donor_type_comments"];
+  const pwComent = props.currentCase["pancreas_weight_comments"];
+  const rows2 = [
     createData(
-      "Diabetes Duration (years)",
-      props.currentCase.diabetes_hx_years === null
-        ? "Unavailable"
-        : props.currentCase.diabetes_hx_years
+      "Donor Type",
+      dtComent !== null && dtComent !== "0" ? dtComent : "Unavailable"
     ),
     createData(
-      "Age",
-      props.currentCase.age_years === null
-        ? "Unavailable"
-        : props.currentCase.age_years
-    ),
-    createData(
-      "Gestational Age (weeks)",
-      props.currentCase.gestational_age_weeks === null
-        ? "Unavailable"
-        : props.currentCase.gestational_age_weeks
-    ),
-    createData("Sex", props.currentCase.sex),
-    createData("Race/Ethnicity", props.currentCase.race_ethnicity),
-    createData(
-      "Height (cm)",
-      props.currentCase.height_cm === null
-        ? "Unavailable"
-        : props.currentCase.height_cm
-    ),
-    createData(
-      "Weight (kg)",
-      props.currentCase.weight_kg === null
-        ? "Unavailable"
-        : props.currentCase.weight_kg
-    ),
-    createData(
-      "BMI",
-      props.currentCase.BMI === null ? "Unavailable" : props.currentCase.BMI
-    ),
-    createData(
-      "Cause of Death",
-      props.currentCase.cause_of_death_id === null
-        ? "Unavailable"
-        : props.causeOfDeathMap[props.currentCase.cause_of_death_id]
-    ),
-    createData(
-      "ABO Group",
-      props.currentCase.ABO_blood_type === null
-        ? "Unavailable"
-        : props.currentCase.ABO_blood_type
+      "Pancreas Weight",
+      pwComent !== null && pwComent !== "0" ? pwComent : "Unavailable"
     ),
   ];
 
@@ -87,7 +65,7 @@ function DonorInformation2(props) {
     <div>
       <div>
         <Typography variant="h5" className={classes.title}>
-          DONOR INFORMATION
+          Transplant HLA
         </Typography>
       </div>
       <div>
@@ -121,13 +99,8 @@ const mapStateToProps = (state) => {
   return {
     // Filtered Data
     currentCase: state.explore.currentCase,
-
-    // Donor Types (map)
-    donorTypesMap: state.explore.donorTypesMap,
-
-    // Cause of Deaht map
-    causeOfDeathMap: state.explore.causeOfDeathMap,
+    hlaMap: state.explore.hlaMap,
   };
 };
 
-export default connect(mapStateToProps, null)(DonorInformation2);
+export default connect(mapStateToProps, null)(TransplantHLA);

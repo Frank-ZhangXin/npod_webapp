@@ -6,10 +6,10 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
-import DonorInformation2 from "./component/DonorInformation2";
-import LabTestResults2 from "./component/LabTestResults2";
-import HLAInformation2 from "./component/HLAInformation2";
-import Comment from "./component/Comment";
+import DonorInformation from "./component/DonorInformation";
+import LabTestResults from "./component/LabTestResults";
+import HighResolutionHLA from "./component/HighResolutionHLA";
+import TransplantHLA from "./component/TransplantHLA";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -21,7 +21,9 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     padding: theme.spacing(2),
     color: theme.palette.text.primary,
-    height: "60vh",
+    height: "70vh",
+    maxHeight: "75vh",
+    overflow: "auto",
   },
 }));
 
@@ -33,22 +35,22 @@ function DonorSummary(props) {
       <Grid container spacing={2} justify={"center"} alignItems={"stretch"}>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            <DonorInformation2 />
+            <DonorInformation />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            <LabTestResults2 />
+            <LabTestResults />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            <HLAInformation2 />
+            <HighResolutionHLA />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            <Comment />
+            <TransplantHLA />
           </Paper>
         </Grid>
       </Grid>

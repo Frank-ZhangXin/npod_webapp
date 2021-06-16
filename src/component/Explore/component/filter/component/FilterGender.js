@@ -34,6 +34,7 @@ function FilterGender(props) {
             onChange={(e) => props.setGenderEnable(e.target.checked)}
             name="genderEnableSwitch"
             className={classes.title}
+            color="primary"
           />
         </Box>
       </Box>

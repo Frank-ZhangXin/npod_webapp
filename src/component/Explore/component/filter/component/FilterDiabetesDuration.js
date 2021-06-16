@@ -59,6 +59,7 @@ function FilterDiabetesDuration(props) {
             onChange={(e) => props.setDDEnable(e.target.checked)}
             name="DDEnableSwitch"
             className={classes.title}
+            color="primary"
           />
         </Box>
       </Box>

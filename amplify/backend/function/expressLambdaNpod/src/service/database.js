@@ -49,7 +49,7 @@ async function pooledConnection(asyncAction) {
 // get all cases
 async function get_cases() {
   const sql =
-    "SELECT cases.*, AAB.GADA, AAB.IA_2A, AAB.mIAA, AAB.ZnT8A FROM `cases` LEFT JOIN `AAB` ON cases.case_id = AAB.case_id";
+    "SELECT c.*, a.GADA, a.IA_2A, a.mIAA, a.ZnT8A FROM cases AS c LEFT JOIN AAB AS a ON c.case_id = a.case_id AND a.is_public = 1 WHERE c.is_public = 1";
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {

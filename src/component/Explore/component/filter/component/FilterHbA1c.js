@@ -52,7 +52,7 @@ function FilterHbA1c(props) {
       <Box display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h6" className={classes.title}>
-            <Box fontWeight="fontWeightBold">Hb1A1c % Range</Box>
+            <Box fontWeight="fontWeightBold">HbA1c</Box>
           </Typography>
         </Box>
         <Box>
@@ -61,6 +61,7 @@ function FilterHbA1c(props) {
             onChange={(e) => props.setHEnable(e.target.checked)}
             name="bmiEnableSwitch"
             className={classes.title}
+            color="primary"
           />
         </Box>
       </Box>

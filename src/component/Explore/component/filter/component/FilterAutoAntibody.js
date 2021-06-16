@@ -36,6 +36,7 @@ function FilterAutoAntiboy(props) {
             onChange={(e) => props.setAAEnable(e.target.checked)}
             name="autoAntibodyEnableSwitch"
             className={classes.title}
+            color="primary"
           />
         </Box>
       </Box>
