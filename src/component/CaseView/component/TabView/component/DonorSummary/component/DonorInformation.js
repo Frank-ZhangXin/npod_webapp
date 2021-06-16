@@ -1,18 +1,29 @@
-import * as React from "react";
-import { DataGrid } from "@material-ui/data-grid";
-import Typography from "@material-ui/core/Typography";
+import React from "react";
 import { connect } from "react-redux";
-import donor_types from "../../../../../../../data/donor_types.json";
 import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   title: {
     paddingBottom: theme.spacing(2),
   },
-  grid: {
+  title2: {
     paddingTop: theme.spacing(2),
-    //height: "100%",
-    //width: "100%",
+    paddingBottom: theme.spacing(2),
+  },
+  container: {
+    maxHeight: "56vh",
+  },
+  table: {
+    paddingBottom: theme.spacing(2),
+    //minWidth: 650,
   },
 }));
 
@@ -20,100 +31,148 @@ function DonorInformation(props) {
   const classes = useStyles();
   const donorType = props.donorTypesMap[props.currentCase.donor_type_id];
 
-  const columns = [
-    { field: "name", headerName: "Name", width: 200 },
-    { field: "value", headerName: "Value", width: 150 },
-  ];
+  function createData(name, value) {
+    return { name, value };
+  }
 
   const rows = [
-    {
-      id: 1,
-      name: "Donor Type",
-      value: donorType === null ? "Unavailable" : donorType,
-    },
-    {
-      id: 2,
-      name: "Diabetes Duration (years)",
-      value:
-        props.currentCase.diabetes_hx_years === null
-          ? "Unavailable"
-          : props.currentCase.diabetes_hx_years,
-    },
-    {
-      id: 3,
-      name: "Age",
-      value:
-        props.currentCase.age_years === null
-          ? "Unavailable"
-          : props.currentCase.age_years,
-    },
-    {
-      id: 4,
-      name: "Gestational Age (weeks)",
-      value:
-        props.currentCase.gestational_age_weeks === null
-          ? "Unavailable"
-          : props.currentCase.gestational_age_weeks,
-    }, // need mockup
-    { id: 5, name: "Sex", value: props.currentCase.sex },
-    { id: 6, name: "Race/Ethnicity", value: props.currentCase.race_ethnicity },
-    {
-      id: 7,
-      name: "Height (cm)",
-      value:
-        props.currentCase.height_cm === null
-          ? "Unavailable"
-          : props.currentCase.height_cm,
-    }, // need mockup
-    {
-      id: 8,
-      name: "Weight (kg)",
-      value:
-        props.currentCase.weight_kg === null
-          ? "Unavailable"
-          : props.currentCase.weight_kg,
-    }, // need mockup
-    {
-      id: 9,
-      name: "BMI",
-      value:
-        props.currentCase.BMI === null ? "Unavailable" : props.currentCase.BMI,
-    },
-    {
-      id: 10,
-      name: "Cause of Death",
-      value:
-        props.currentCase.cause_of_death_id === null
-          ? "Unavailable"
-          : props.causeOfDeathMap[props.currentCase.cause_of_death_id],
-    }, // need mockup
-    {
-      id: 11,
-      name: "ABO Group",
-      value:
-        props.currentCase.ABO_blood_type === null
-          ? "Unavailable"
-          : props.currentCase.ABO_blood_type,
-    }, // need mockup
+    createData("Donor Type", donorType === null ? "Unavailable" : donorType),
+    createData(
+      "Diabetes Duration (years)",
+      props.currentCase.diabetes_hx_years === null
+        ? "Unavailable"
+        : props.currentCase.diabetes_hx_years
+    ),
+    createData(
+      "Age",
+      props.currentCase.age_years === null
+        ? "Unavailable"
+        : props.currentCase.age_years
+    ),
+    // only display Gastational data when it's available
+    props.currentCase.gestational_age_weeks !== null
+      ? createData(
+          "Gestational Age (weeks)",
+          props.currentCase.gestational_age_weeks === null
+            ? "Unavailable"
+            : props.currentCase.gestational_age_weeks
+        )
+      : "",
+    createData("Sex", props.currentCase.sex),
+    createData("Race/Ethnicity", props.currentCase.race_ethnicity),
+    createData(
+      "Height (cm)",
+      props.currentCase.height_cm === null
+        ? "Unavailable"
+        : props.currentCase.height_cm
+    ),
+    createData(
+      "Weight (kg)",
+      props.currentCase.weight_kg === null
+        ? "Unavailable"
+        : props.currentCase.weight_kg
+    ),
+    createData(
+      "BMI",
+      props.currentCase.BMI === null ? "Unavailable" : props.currentCase.BMI
+    ),
+    createData(
+      "Cause of Death",
+      props.currentCase.cause_of_death_id === null
+        ? "Unavailable"
+        : props.causeOfDeathMap[props.currentCase.cause_of_death_id]
+    ),
+    createData(
+      "ABO Group",
+      props.currentCase.ABO_blood_type === null
+        ? "Unavailable"
+        : props.currentCase.ABO_blood_type
+    ),
+  ];
+
+  const dtComent = props.currentCase["donor_type_comments"];
+  const pwComent = props.currentCase["pancreas_weight_comments"];
+  const showDtComment = dtComent !== null && dtComent !== "0" ? true : false;
+  const showPwComment = pwComent !== null && pwComent !== "0" ? true : false;
+  const rows2 = [
+    showDtComment
+      ? createData(
+          "Donor Type",
+          dtComent !== null && dtComent !== "0" ? dtComent : "Unavailable"
+        )
+      : "",
+    showPwComment
+      ? createData(
+          "Pancreas Weight",
+          pwComent !== null && pwComent !== "0" ? pwComent : "Unavailable"
+        )
+      : "",
   ];
 
   return (
     <div>
       <div>
         <Typography variant="h5" className={classes.title}>
-          DONOR INFORMATION
+          Donor Information
         </Typography>
       </div>
       <div>
-        <DataGrid
-          className={classes.grid}
-          rows={rows}
-          columns={columns}
-          autoHeight={true}
-          rowHeight="45"
-          hideFooterPagination="true"
-        />
+        <TableContainer component={Paper} className={classes.container}>
+          <Table className={classes.table} size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Value</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map(
+                (row) =>
+                  // only display Gastational data when it's available
+                  row && (
+                    <TableRow key={row.name}>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell align="right">{row.value}</TableCell>
+                    </TableRow>
+                  )
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
+      {showDtComment || showPwComment ? (
+        <div>
+          <div>
+            <Typography variant="h5" className={classes.title2}>
+              Comment
+            </Typography>
+          </div>
+          <div>
+            <TableContainer component={Paper} className={classes.container}>
+              <Table className={classes.table} size="small" stickyHeader>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Name</TableCell>
+                    <TableCell>Value</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows2.map((row) => (
+                    <TableRow key={row.name}>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell align="Left">{row.value}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 const initialState = {
   // Age
-  ageEnable: true,
+  ageEnable: false,
   ageRange: [0, 95],
   ageMin: 0,
   ageMax: 95,
@@ -25,13 +25,13 @@ const initialState = {
   fourChecked: true,
 
   // BMI
-  bmiEnable: true,
+  bmiEnable: false,
   bmiRange: [5.0, 60.0],
   bmiMin: 5.0,
   bmiMax: 60.0,
 
   // Diabetes Duration (DD)
-  DDEnable: true,
+  DDEnable: false,
   DDRange: [0, 85],
   DDMin: 0,
   DDMax: 85,
@@ -40,18 +40,18 @@ const initialState = {
   selectedDonorType: [],
 
   // Gender
-  genderEnable: true,
+  genderEnable: false,
   maleChecked: true,
   femaleChecked: true,
 
   // HbA1c
-  hEnable: true,
+  hEnable: false,
   hRange: [2.0, 20.0],
   hMin: 2.0,
   hMax: 20.0,
 
   // Insulitis
-  insulitisEnable: true,
+  insulitisEnable: false,
   insulitisPositiveChecked: true,
   insulitisNegativeChecked: true,
 
@@ -59,7 +59,7 @@ const initialState = {
   selectedRace: [],
 
   // C-Peptide
-  cPeptideEnable: true,
+  cPeptideEnable: false,
   cPeptidePositive: true,
   cPeptideNegative: true,
 

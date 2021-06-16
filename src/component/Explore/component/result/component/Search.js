@@ -75,13 +75,17 @@ function Search(props) {
       )
       // Race
       .filter((donor) => {
-        if (donor.race_ethnicity !== null && props.selectedRace.length > 0) {
-          if (
-            props.selectedRace
-              .map((obj) => obj.value)
-              .indexOf(donor.race_ethnicity) > -1
-          ) {
-            return true;
+        if (props.selectedRace.length > 0) {
+          if (donor.race_ethnicity !== null) {
+            if (
+              props.selectedRace
+                .map((obj) => obj.value)
+                .indexOf(donor.race_ethnicity) > -1
+            ) {
+              return true;
+            } else {
+              return false;
+            }
           } else {
             return false;
           }
@@ -100,9 +104,9 @@ function Search(props) {
       .filter(
         (donor) =>
           (donor.C_peptide_ng_mL !== null &&
-            ((donor.C_peptide_ng_mL === "<0.05" &&
+            ((donor.C_peptide_ng_mL.includes("<") &&
               props.cPeptideNegative === true) ||
-              (donor.C_peptide_ng_mL !== "<0.05" &&
+              (donor.C_peptide_ng_mL.includes("<") &&
                 props.cPeptidePositive === true))) ||
           props.cPeptideEnable === false
       )
@@ -167,7 +171,7 @@ function Search(props) {
           <Box>
             <ExportSpreadsheet
               csvData={filteredData}
-              fileName={"nPOD_downloaed_spreadsheet_" + Date().toLocaleString()}
+              fileName={"nPOD_download_spreadsheet_" + Date().toLocaleString()}
             />
           </Box>
         </Box>

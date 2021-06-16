@@ -25,10 +25,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   dialogBackground: {
-    height: "85vh",
+    height: "90vh",
+    maxHeight: "95vh",
   },
   dialogContent: {
     height: "50vh",
+    maxHeight: "60vh",
   },
 }));
 

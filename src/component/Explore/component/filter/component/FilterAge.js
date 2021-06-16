@@ -50,7 +50,7 @@ function FilterAge(props) {
       <Box display="flex" justifyContent="space-between">
         <Box>
           <Typography variant="h6" className={classes.title}>
-            <Box fontWeight="fontWeightBold">Age Range</Box>
+            <Box fontWeight="fontWeightBold">Age</Box>
           </Typography>
         </Box>
         <Box>
@@ -59,6 +59,7 @@ function FilterAge(props) {
             onChange={(e) => props.setAgeEnable(e.target.checked)}
             name="ageEnableSwitch"
             className={classes.title}
+            color="primary"
           />
         </Box>
       </Box>

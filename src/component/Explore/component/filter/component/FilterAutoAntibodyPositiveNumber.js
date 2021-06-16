@@ -36,6 +36,7 @@ function FilterAutoAntibodyPositiveNumber(props) {
             onChange={(e) => props.setAAPositiveEnable(e.target.checked)}
             name="aaPositiveEnableSwitch"
             className={classes.title}
+            color="primary"
           />
         </Box>
       </Box>
