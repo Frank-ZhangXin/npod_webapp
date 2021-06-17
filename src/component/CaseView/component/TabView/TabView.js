@@ -6,6 +6,9 @@ import PropTypes from "prop-types";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 import DonorSummary from "./component/DonorSummary/DonorSummary";
+import ClinicalHistory from "./component/ClinicalHistory/ClinicalHistory";
+import CaseProcessingAndTissueQuality from "./component/CaseProcessingAndTissueQuality/CaseProcessingAndTissueQuality";
+import Histopathology from "./component/Histopathology/Histopathology";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -83,16 +86,16 @@ export default function TabView() {
             <DonorSummary />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            placeholder
+            <ClinicalHistory />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            placeholder
+            <CaseProcessingAndTissueQuality />
           </TabPanel>
           <TabPanel value={value} index={3}>
             placeholder
           </TabPanel>
           <TabPanel value={value} index={4}>
-            placeholder
+            <Histopathology />
           </TabPanel>
           <TabPanel value={value} index={5}>
             placeholder
