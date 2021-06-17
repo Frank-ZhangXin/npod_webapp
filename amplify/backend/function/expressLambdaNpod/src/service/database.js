@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const dotenv = require("dotenv").config();
-const { translateAABresult } = require("./translateAABresult");
+const { dataPreProcess } = require("./dataPreProcess");
 
 var pool = mysql.createPool({
   connectLimit: 10,
@@ -49,14 +49,14 @@ async function pooledConnection(asyncAction) {
 // get all cases
 async function get_cases() {
   const sql =
-    "SELECT c.*, a.GADA, a.IA_2A, a.mIAA, a.ZnT8A FROM cases AS c LEFT JOIN AAB AS a ON c.case_id = a.case_id AND a.is_public = 1 WHERE c.is_public = 1";
+    "SELECT c.*, a.GADA, a.IA_2A, a.mIAA, a.ZnT8A, r.RIN FROM cases AS c LEFT JOIN AAB AS a ON c.case_id = a.case_id AND a.is_public = 1 LEFT JOIN RNA as r ON c.case_id = r.case_id WHERE c.is_public = 1 GROUP BY c.case_id";
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
         if (error) {
           reject(error);
         } else {
-          translateAABresult(result);
+          dataPreProcess(result);
           console.log(
             `[Fetch cases] Totally ${result.length} cases were fetched.`
           );
