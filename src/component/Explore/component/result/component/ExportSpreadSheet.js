@@ -18,7 +18,12 @@ function ExportSpreadsheet(props) {
     const allowedColumns = [
       "case_id",
       "RR_id",
+      "donor_type_id",
       "donor_type_comments",
+      "GADA_Result",
+      "IA_2A_Result",
+      "mIAA_Result",
+      "ZnT8A_Result",
       "slices_shipping_status",
       "islet_isolation_status",
       "pancreas_weight_grams",
@@ -44,82 +49,77 @@ function ExportSpreadsheet(props) {
       "meds_hospital",
       "infections",
       "allergies",
+      "HLA_transplant",
       "serologies",
       "SARS_COV_2_results",
       "hemodiluted_status",
       "ABO_blood_type",
-      "case_recovery_type",
-      "histopathology",
-      "RIN_value",
-      "donor_type_id",
       "cause_of_death_id",
-      "GADA_Result",
-      "IA_2A_Result",
-      "mIAA_Result",
-      "ZnT8A_Result",
+      "ICU_time_days",
+      "transit_time_minutes",
+      "case_recovery_type",
+      "HLA_high_resolution",
+      "histopathology",
+      "RIN",
     ];
     const extraColumns = ["donor_type_id", "cause_of_death_id"];
-    const extraColumns2 = [
-      "HLA_transplant",
-      "ICU_time_days",
-      "Transit_time_minutes",
-      "HLA_high_resolution",
-    ];
+    const extraColumns2 = ["ICU_time_days", "Transit_time_minutes"];
     var newData = [];
     console.log(donorTypesMap);
     raw.forEach((donor) => {
       const filtered = Object.keys(donor)
         .filter((key) => allowedColumns.includes(key))
         .reduce((obj, key) => {
-          obj[key] = donor[key];
           if (key === "donor_type_id") {
             obj["donor_type"] = donorTypesMap[donor[key]];
-          }
-          if (key === "cause_of_death_id") {
+          } else if (key === "cause_of_death_id") {
             obj["cause_of_death"] = causeOfDeathMap[donor[key]];
+          } else {
+            obj[key] = donor[key];
           }
           // AutoAntibody Results
-          var aabRes = "";
-          if ("autoantibody_results" in obj) {
-            aabRes = obj["autoantibody_results"];
-          }
-          if (key === "GADA_Result") {
-            if (donor[key] === "Positive") {
-              aabRes = aabRes + " " + "GADA: Positive;";
-            } else if (donor[key] === "Negative") {
-              aabRes = aabRes + " " + "GADA: Negative;";
-            } else {
-              aabRes = aabRes + " " + "GADA: Not tested;";
-            }
-          }
-          if (key === "IA_2A_Result") {
-            if (donor[key] === "Positive") {
-              aabRes = aabRes + " " + "IA_2A: Positive;";
-            } else if (donor[key] === "Negative") {
-              aabRes = aabRes + " " + "IA_2A: Negative;";
-            } else {
-              aabRes = aabRes + " " + "IA_2A: Not tested;";
-            }
-          }
-          if (key === "mIAA_Result") {
-            if (donor[key] === "Positive") {
-              aabRes = aabRes + " " + "mIAA: Positive;";
-            } else if (donor[key] === "Negative") {
-              aabRes = aabRes + " " + "mIAA: Negative;";
-            } else {
-              aabRes = aabRes + " " + "mIAA: Not tested;";
-            }
-          }
-          if (key === "ZnT8A_Result") {
-            if (donor[key] === "Positive") {
-              aabRes = aabRes + " " + "ZnT8A: Positive;";
-            } else if (donor[key] === "Negative") {
-              aabRes = aabRes + " " + "ZnT8A: Negative;";
-            } else {
-              aabRes = aabRes + " " + "ZnT8A: Not tested;";
-            }
-          }
-          obj["autoantibody_results"] = aabRes;
+
+          // var aabRes = "";
+          // if ("autoantibody_results" in obj) {
+          //   aabRes = obj["autoantibody_results"];
+          // }
+          // if (key === "GADA_Result") {
+          //   if (donor[key] === "Positive") {
+          //     aabRes = aabRes + " " + "GADA: Positive;";
+          //   } else if (donor[key] === "Negative") {
+          //     aabRes = aabRes + " " + "GADA: Negative;";
+          //   } else {
+          //     aabRes = aabRes + " " + "GADA: Not tested;";
+          //   }
+          // }
+          // if (key === "IA_2A_Result") {
+          //   if (donor[key] === "Positive") {
+          //     aabRes = aabRes + " " + "IA_2A: Positive;";
+          //   } else if (donor[key] === "Negative") {
+          //     aabRes = aabRes + " " + "IA_2A: Negative;";
+          //   } else {
+          //     aabRes = aabRes + " " + "IA_2A: Not tested;";
+          //   }
+          // }
+          // if (key === "mIAA_Result") {
+          //   if (donor[key] === "Positive") {
+          //     aabRes = aabRes + " " + "mIAA: Positive;";
+          //   } else if (donor[key] === "Negative") {
+          //     aabRes = aabRes + " " + "mIAA: Negative;";
+          //   } else {
+          //     aabRes = aabRes + " " + "mIAA: Not tested;";
+          //   }
+          // }
+          // if (key === "ZnT8A_Result") {
+          //   if (donor[key] === "Positive") {
+          //     aabRes = aabRes + " " + "ZnT8A: Positive;";
+          //   } else if (donor[key] === "Negative") {
+          //     aabRes = aabRes + " " + "ZnT8A: Negative;";
+          //   } else {
+          //     aabRes = aabRes + " " + "ZnT8A: Not tested;";
+          //   }
+          // }
+          // obj["autoantibody_results"] = aabRes;
           return obj;
         }, {});
       newData.push(filtered);
@@ -161,6 +161,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     donorTypesMap: state.explore.donorTypesMap,
     causeOfDeathMap: state.explore.causeOfDeathMap,
+    hlaMap: state.explore.hlaMap,
   };
 };
 

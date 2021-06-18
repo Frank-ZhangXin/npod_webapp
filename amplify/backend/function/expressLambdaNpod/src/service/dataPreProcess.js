@@ -1,5 +1,6 @@
 function dataPreProcess(data) {
   console.log("Data pre processing starts...");
+
   for (key in data) {
     var thisCase = data[key];
     aabGenerator(thisCase);
@@ -104,7 +105,7 @@ function aabGenerator(thisCase) {
     thisCase.ZnT8Atally;
 }
 
-function timeDurationGenerator(thisCase) {
+function timeDurationGenerator(thisCase, HLAMap) {
   var terminal_hospital_duration = null;
   var ICU_time_days = null;
   var transit_time_minutes = null;

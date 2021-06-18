@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import Search from "./component/Search";
 import FetchRawData from "./component/FetchRawData";
 import CaseView from "../../../CaseView/CaseView";
+import DataPreProcess from "./component/DataPreProcess";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +41,7 @@ function Result(props) {
     <div>
       {/* Fetch raw data */}
       <FetchRawData />
+      <DataPreProcess />
       {/* Show search result */}
       <Search setDialogue={handleSetDialogue} />
       <CaseView open={open} setDialogue={handleSetDialogue} />

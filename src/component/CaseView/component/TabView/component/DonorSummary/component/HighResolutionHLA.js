@@ -33,22 +33,14 @@ function HighResolutionHLA(props) {
   }
 
   const rows = [
-    createData("A1", (data && data["A_1"]) || "Unavailable"),
-    createData("A2", (data && data["A_2"]) || "Unavailable"),
-    createData("B1", (data && data["B_1"]) || "Unavailable"),
-    createData("B2", (data && data["B_2"]) || "Unavailable"),
-    createData("C1", (data && data["C_1"]) || "Unavailable"),
-    createData("C2", (data && data["C_2"]) || "Unavailable"), //
-    createData("DRB1_1", (data && data["DRB1_1"]) || "Unavailable"),
-    createData("DRB1_2", (data && data["DRB1_2"]) || "Unavailable"),
-    createData("DQA1_1", (data && data["DQA1_1"]) || "Unavailable"),
-    createData("DQA1_2", (data && data["DQA1_2"]) || "Unavailable"),
-    createData("DQB1_1", (data && data["DQB1_1"]) || "Unavailable"),
-    createData("DQB1_2", (data && data["DQB1_2"]) || "Unavailable"),
-    createData("DPA1_1", (data && data["DPA1_1"]) || "Unavailable"),
-    createData("DPA1_2", (data && data["DPA1_2"]) || "Unavailable"),
-    createData("DPB1_1", (data && data["DPB1_1"]) || "Unavailable"),
-    createData("DPB1_2", (data && data["DPB1_2"]) || "Unavailable"),
+    createData("A", props.currentCase["HLA_A"] || "Unavailable"),
+    createData("B", props.currentCase["HLA_B"] || "Unavailable"),
+    createData("C", props.currentCase["HLA_C"] || "Unavailable"),
+    createData("DRB1", props.currentCase["HLA_DRB1"] || "Unavailable"),
+    createData("DQA1", props.currentCase["HLA_DQA1"] || "Unavailable"),
+    createData("DQB1", props.currentCase["HLA_DQB1"] || "Unavailable"),
+    createData("DPA1", props.currentCase["HLA_DPA1"] || "Unavailable"),
+    createData("DPB1", props.currentCase["HLA_DPB1"] || "Unavailable"),
   ];
 
   return (

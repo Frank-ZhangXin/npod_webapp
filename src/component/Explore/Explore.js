@@ -3,9 +3,9 @@ import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Filter from "./component/filter/Filter";
-import Result from "./component/result/Result";
-import FetchRawData from "./component/result/component/FetchRawData";
+import Filter from "./component/Filter/Filter";
+import Result from "./component/Result/Result";
+import FetchRawData from "./component/Result/component/FetchRawData";
 import "../../App.css";
 
 const useStyles = makeStyles((theme) => ({

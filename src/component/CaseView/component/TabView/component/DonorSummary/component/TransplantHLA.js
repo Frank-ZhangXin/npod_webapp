@@ -38,14 +38,10 @@ function TransplantHLA(props) {
   }
 
   const rows = [
-    createData("A1", (data && data["T_A_1"]) || "Unavailable"),
-    createData("A2", (data && data["T_A_2"]) || "Unavailable"),
-    createData("B1", (data && data["T_B_1"]) || "Unavailable"),
-    createData("B2", (data && data["T_B_2"]) || "Unavailable"),
-    createData("DR1", (data && data["T_DR_1"]) || "Unavailable"),
-    createData("DR2", (data && data["T_DR_2"]) || "Unavailable"),
-    createData("DQB1", (data && data["T_DQB_1"]) || "Unavailable"),
-    createData("DQB2", (data && data["T_DQB_2"]) || "Unavailable"),
+    createData("A", props.currentCase["HLA_T_A"] || "Unavailable"),
+    createData("B", props.currentCase["HLA_T_B"] || "Unavailable"),
+    createData("DR", props.currentCase["HLA_T_DR"] || "Unavailable"),
+    createData("DQB", props.currentCase["HLA_T_DQB"] || "Unavailable"),
   ];
 
   const dtComent = props.currentCase["donor_type_comments"];
