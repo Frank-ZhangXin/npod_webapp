@@ -4,7 +4,7 @@ import { API, Auth } from "aws-amplify";
 
 function FetchRawData(props) {
   useEffect(() => {
-    checkAuth();
+    //checkAuth();
     fetchCase();
     fetchDonorType();
     fetchCauseOfDeath();
@@ -93,6 +93,7 @@ const mapStateToProps = (state) => {
   return {
     signedIn: state.auth.signedIn,
     rawData: state.explore.rawData,
+    hlaMap: state.explore.hlaMap,
   };
 };
 

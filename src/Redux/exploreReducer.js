@@ -93,6 +93,9 @@ const exploreReducer = (state = initialState, action) => {
       return {
         ...initialState,
         rawData: state.rawData,
+        donorTypesMap: state.donorTypesMap,
+        causeOfDeathMap: state.causeOfDeathMap,
+        hlaMap: state.hlaMap,
       };
 
     // Age
