@@ -29,14 +29,12 @@ const useStyles = makeStyles((theme) => ({
   result: {
     paddingLeft: "4px",
     paddingRight: "4px",
-    minHeight: "40vh",
   },
   progress: {
-    position: "fixed",
     display: "flex",
     justifyContent: "center",
     height: "30vh",
-    width: "100vh",
+    width: "100%",
     alignItems: "center",
   },
 }));
@@ -211,11 +209,7 @@ function Search(props) {
           </Box>
         </div>
       </div>
-      <div className={classes.progress}>
-        {+(promiseInProgress === true) ? (
-          <HashLoader color="#4fc3f7" size={100} />
-        ) : null}
-      </div>
+
       <div className={classes.result}>
         <Grid container spacing={2}>
           {filteredData.map((donorCase, index) => (
@@ -230,6 +224,13 @@ function Search(props) {
             </Grid>
           ))}
         </Grid>
+      </div>
+      <div className={classes.progress}>
+        <Box minHeight="10vh" bgcolor="#ffffff">
+          {+(promiseInProgress === true) ? (
+            <HashLoader color="#4fc3f7" size={100} />
+          ) : null}
+        </Box>
       </div>
     </div>
   );

@@ -16,10 +16,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    //flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden",
+    minHeight: "30vh",
   },
   button: {
     marginBottom: theme.spacing(2),
@@ -46,7 +43,7 @@ function Result(props) {
   };
 
   return (
-    <div>
+    <div className={classes.root}>
       {/* Fetch raw data */}
       <FetchRawData />
       <DataPreProcess />
