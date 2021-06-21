@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   title: {
-    margin: theme.spacing(3),
+    margin: theme.spacing(),
   },
 }));
 

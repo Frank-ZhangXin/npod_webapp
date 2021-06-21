@@ -9,6 +9,11 @@ import FetchRawData from "./component/FetchRawData";
 import CaseView from "../../../CaseView/CaseView";
 import DataPreProcess from "./component/DataPreProcess";
 
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -27,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
       cursor: "pointer",
     },
   },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
 }));
 
 function Result(props) {
@@ -43,6 +51,7 @@ function Result(props) {
       <FetchRawData />
       <DataPreProcess />
       {/* Show search result */}
+
       <Search setDialogue={handleSetDialogue} />
       <CaseView open={open} setDialogue={handleSetDialogue} />
     </div>

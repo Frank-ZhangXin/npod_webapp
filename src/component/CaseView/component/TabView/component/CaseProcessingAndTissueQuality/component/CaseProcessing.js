@@ -71,7 +71,7 @@ function CaseProcessing(props) {
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell>Value</TableCell>
+                <TableCell align="right">Value</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
