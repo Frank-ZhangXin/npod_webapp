@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { API, Auth } from "aws-amplify";
+import { trackPromise } from "react-promise-tracker";
 
 function FetchRawData(props) {
   useEffect(() => {
     //checkAuth();
-    fetchCase();
+    trackPromise(fetchCase());
+
     fetchDonorType();
     fetchCauseOfDeath();
     fetchHLA();
+
     //console.log("fetch data was called.");
   }, []);
 

@@ -6,6 +6,8 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import ExportSpreadsheet from "./ExportSpreadSheet";
+import { usePromiseTracker } from "react-promise-tracker";
+import { HashLoader } from "react-spinners";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -18,10 +20,30 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(2),
     },
   },
+  result_title: {
+    position: "sticky",
+    top: 0,
+    paddingTop: "5px",
+    backgroundColor: "#ffffff",
+  },
+  result: {
+    paddingLeft: "4px",
+    paddingRight: "4px",
+    minHeight: "40vh",
+  },
+  progress: {
+    position: "fixed",
+    display: "flex",
+    justifyContent: "center",
+    height: "30vh",
+    width: "100vh",
+    alignItems: "center",
+  },
 }));
 
 function Search(props) {
   const classes = useStyles();
+  const { promiseInProgress } = usePromiseTracker();
   const [filteredData, setFilteredData] = useState([]);
 
   const handleOpen = (e, donorCase) => {
@@ -163,41 +185,52 @@ function Search(props) {
   console.log(filteredData);
   return (
     <div>
-      <div style={{ width: "100%" }}>
-        <Box display="flex" justifyContent="space-between">
-          <Box>
-            <Typography variant="h4">SEARCH RESULT</Typography>
+      <div className={classes.result_title}>
+        <div style={{ width: "100%" }}>
+          <Box display="flex" justifyContent="space-between">
+            <Box>
+              <Typography variant="h4">SEARCH RESULT</Typography>
+            </Box>
+            <Box>
+              <ExportSpreadsheet
+                csvData={filteredData}
+                fileName={
+                  "nPOD_download_spreadsheet_" + Date().toLocaleString()
+                }
+              />
+            </Box>
           </Box>
-          <Box>
-            <ExportSpreadsheet
-              csvData={filteredData}
-              fileName={"nPOD_download_spreadsheet_" + Date().toLocaleString()}
-            />
+        </div>
+        <div style={{ width: "100%" }}>
+          <Box display="flex" justifyContent="flex-start">
+            <Box mb={2}>
+              <Typography variant="h6" color="secondary">
+                Totally {filteredData.length} cases are showing
+              </Typography>
+            </Box>
           </Box>
-        </Box>
+        </div>
       </div>
-      <div style={{ width: "100%" }}>
-        <Box display="flex" justifyContent="flex-start">
-          <Box mb={2}>
-            <Typography variant="h6" color="secondary">
-              Totally {filteredData.length} cases are showing
-            </Typography>
-          </Box>
-        </Box>
+      <div className={classes.progress}>
+        {+(promiseInProgress === true) ? (
+          <HashLoader color="#4fc3f7" size={100} />
+        ) : null}
       </div>
-      <Grid container spacing={2}>
-        {filteredData.map((donorCase, index) => (
-          <Grid item xs={12} sm={4} md={3} lg={2} key={index}>
-            <Paper
-              elevation={3}
-              onClick={(e) => handleOpen(e, donorCase)}
-              className={classes.paper}
-            >
-              <Typography variant="h5">{donorCase.case_id}</Typography>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
+      <div className={classes.result}>
+        <Grid container spacing={2}>
+          {filteredData.map((donorCase, index) => (
+            <Grid item xs={12} sm={4} md={3} lg={2} key={index}>
+              <Paper
+                elevation={3}
+                onClick={(e) => handleOpen(e, donorCase)}
+                className={classes.paper}
+              >
+                <Typography variant="h5">{donorCase.case_id}</Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
     </div>
   );
 }
