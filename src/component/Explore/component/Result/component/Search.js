@@ -202,9 +202,15 @@ function Search(props) {
         <div style={{ width: "100%" }}>
           <Box display="flex" justifyContent="flex-start">
             <Box mb={2}>
-              <Typography variant="h6" color="secondary">
-                Totally {filteredData.length} cases are showing
-              </Typography>
+              {+(promiseInProgress === true) ? (
+                <Typography variant="h6" color="secondary">
+                  Loading data...
+                </Typography>
+              ) : (
+                <Typography variant="h6" color="secondary">
+                  Totally {filteredData.length} cases are showing
+                </Typography>
+              )}
             </Box>
           </Box>
         </div>
