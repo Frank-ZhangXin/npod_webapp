@@ -137,15 +137,18 @@ function timeDurationGenerator(thisCase, HLAMap) {
     var dur = end - start; // millisec
     ICU_time_days =
       ((dur * 1.0) / 1000 / 86400).toFixed(2).toString() + " days";
-    terminal_hospital_duration =
-      Math.floor((dur * 1.0) / 1000 / 86400).toString() +
-      " days " +
-      new Date((dur * 1.0) % (1000 * 86400)).toISOString().substr(11, 5);
+    var dayStr = Math.floor((dur * 1.0 / 1000) / 86400).toString();
+    var hr = Math.floor((dur * 1.0 / 1000) % 86400 / 3600);
+    var hrStr = hr === 0 ? "00" : hr.toString();
+    var min = Math.floor(((dur * 1.0 / 1000) % 86400 % 3600 / 60));
+    var minStr = min === 0 ? "00" : min.toString();
+    terminal_hospital_duration = dayStr + " days " + hrStr + " hours " +  minStr + " minutes";
   }
   if (processDayTime && crossClampDayTime) {
     var start = new Date(crossClampDayTime);
     var end = new Date(processDayTime);
     var dur = end - start; // millisec
+    
     transit_time_minutes =
       ((dur * 1.0) / 1000 / 60).toFixed(2).toString() + " minutes";
     if (thisCase.case_id === "6005") {
@@ -155,7 +158,7 @@ function timeDurationGenerator(thisCase, HLAMap) {
     var hrStr = hr === 0 ? "00" : hr.toString();
     var min = Math.floor(((dur * 1.0) % (1000 * 3600)) / 1000 / 60);
     var minStr = min === 0 ? "00" : min.toString();
-    organ_transport_time = hrStr + ":" + minStr;
+    organ_transport_time = hrStr + " hours " + minStr + " minutes";
   }
   thisCase["terminal_hospital_duration"] = terminal_hospital_duration;
   thisCase["ICU_time_days"] = ICU_time_days;

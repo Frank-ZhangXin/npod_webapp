@@ -40,6 +40,10 @@ function RNAquality(props) {
       "RIN",
       props.currentCase.RIN === null ? "Unavailable" : props.currentCase.RIN
     ),
+        createData(
+      "260/280",
+      props.currentCase.ratio === null ? "Unavailable" : props.currentCase.ratio
+    ),
   ];
 
   return (

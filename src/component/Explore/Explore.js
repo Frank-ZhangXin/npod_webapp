@@ -24,8 +24,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     color: "white",
   },
-  paper: {
+  result_paper: {
     padding: theme.spacing(2),
+    position: "sticky",
+    top: 0,
   },
   banner: {
     minHeight: "15vh",
@@ -59,7 +61,7 @@ export default function Explore() {
               style={{
                 width: "100%",
               }}
-              className={classes.paper}
+              className={classes.result_paper}
             >
               <Result />
             </Paper>

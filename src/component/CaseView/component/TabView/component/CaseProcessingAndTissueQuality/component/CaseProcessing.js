@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
   },
   table: {
     paddingBottom: theme.spacing(2),
-    //minWidth: 650,
   },
   note: {
     maxHeight: "25vh",
