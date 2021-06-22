@@ -12,6 +12,7 @@ import { HashLoader } from "react-spinners";
 const useStyles = makeStyles((theme) => ({
   paper: {
     textAlign: "center",
+    minWidth: "100px",
     "&:hover": {
       backgroundColor: theme.palette.primary.light,
       cursor: "pointer",
@@ -20,20 +21,28 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(2),
     },
   },
+  result_container: {
+    position: "relative",
+  },
   result_title: {
-    position: "sticky",
-    top: 0,
-    paddingTop: "5px",
-    backgroundColor: "#ffffff",
+    // position: "fixed",
+    // paddingTop: "5px",
+    // backgroundColor: "#ffffff",
   },
   result: {
-    paddingLeft: "4px",
-    paddingRight: "4px",
+    // position: "fixed",
+    // top: 0,
+    paddingTop: "5px",
+    paddingLeft: "3px",
+    paddingRight: "5px",
+    paddingBottom: "3px",
+    maxHeight: "85vh",
+    overflow: "auto",
+    overflowX: "hidden",
   },
   progress: {
     display: "flex",
     justifyContent: "center",
-    height: "30vh",
     width: "100%",
     alignItems: "center",
   },
@@ -182,7 +191,7 @@ function Search(props) {
       );
   console.log(filteredData);
   return (
-    <div>
+    <div className={classes.result_container}>
       <div className={classes.result_title}>
         <div style={{ width: "100%" }}>
           <Box display="flex" justifyContent="space-between">
@@ -215,7 +224,6 @@ function Search(props) {
           </Box>
         </div>
       </div>
-
       <div className={classes.result}>
         <Grid container spacing={2}>
           {filteredData.map((donorCase, index) => (
@@ -232,11 +240,11 @@ function Search(props) {
         </Grid>
       </div>
       <div className={classes.progress}>
-        <Box minHeight="10vh" bgcolor="#ffffff">
+
           {+(promiseInProgress === true) ? (
-            <HashLoader color="#4fc3f7" size={100} />
+            <HashLoader color="#4fc3f7" size={50} />
           ) : null}
-        </Box>
+
       </div>
     </div>
   );

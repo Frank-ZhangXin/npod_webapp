@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
 import ClinicalInformation from "./component/ClinicalInformation";
-import FamilyHistory from "./component/FamilyHistory";
+import History from "./component/History";
 import Medication from "./component/Medication";
 import Comment from "./component/Comment";
 
@@ -40,7 +40,7 @@ function ClinicalHistory(props) {
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            <FamilyHistory />
+            <History />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={3}>
@@ -50,7 +50,7 @@ function ClinicalHistory(props) {
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            <Comment />
+            Placeholder
           </Paper>
         </Grid>
       </Grid>

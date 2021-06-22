@@ -45,12 +45,12 @@ function DonorSummary(props) {
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            <HighResolutionHLA />
+            <TransplantHLA />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            <TransplantHLA />
+            <HighResolutionHLA />
           </Paper>
         </Grid>
       </Grid>
