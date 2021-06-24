@@ -1,5 +1,6 @@
 const initialState = {
   signedIn: false,
+  userName: "",
 };
 
 const authReducer = (state = initialState, action) => {
@@ -8,6 +9,11 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state,
         signedIn: action.value,
+      };
+    case "SET_USERNAME":
+      return {
+        ...state,
+        userName: action.value,
       };
     default:
       return state;

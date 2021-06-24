@@ -14,6 +14,9 @@ import Container from "@material-ui/core/Container";
 import Auth from "@aws-amplify/auth";
 import Link from "@material-ui/core/Link";
 import { useParams, useHistory } from "react-router-dom";
+import AuthHeader from "../component/AuthHeader";
+import Alert from "@material-ui/lab/Alert";
+import Fade from "@material-ui/core/Fade";
 
 function Copyright() {
   return (
@@ -46,18 +49,29 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  alert: {
+    position: "fixed",
+    bottom: 0,
+    width: "100%",
+  },
 }));
 
-export default function SignUpConfirm() {
+export default function SignUpConfirm(props) {
   const classes = useStyles();
-  const { user } = useParams();
+  const user = (props.location.state && props.location.state.user) || "";
   const [username, setUsername] = useState("");
   const [code, setCode] = useState("");
+  const [showFail, setShowFail] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(null);
   const history = useHistory();
 
   useEffect(() => {
     setUsername(user);
     console.log("passed in user is ", user);
+    setSuccessMsg("Confirmation code is sent! Please check your email");
+    showAlertHandler("success");
   }, []);
 
   const handleSumbit = async function (event) {
@@ -65,11 +79,11 @@ export default function SignUpConfirm() {
     try {
       const response = await Auth.confirmSignUp(username, code);
       console.log("Signup Confirm response: ", response);
-      alert("Sign up successfully, please sign in.");
-      history.push("/signin");
+      history.push("/signin", { from: "signupconfirm" });
     } catch (error) {
       console.log("Signup Confirm error: ", error);
-      alert(error.message);
+      setErrorMsg(error.message);
+      showAlertHandler("fail");
     }
   };
 
@@ -78,71 +92,102 @@ export default function SignUpConfirm() {
     try {
       const response = await Auth.resendSignUp(username);
       console.log("Code resend response: ", response);
+      setSuccessMsg("The confirmation code is sent! Please check your email.");
+      showAlertHandler("success");
     } catch (error) {
       console.log("Code resend error: ", error);
-      alert(error.message);
+      setErrorMsg(error.message);
+      showAlertHandler("fail");
+    }
+  };
+
+  const showAlertHandler = (type) => {
+    if (type === "fail") {
+      setShowFail(true);
+      const timer = setTimeout(() => {
+        setShowFail(false);
+      }, 2000);
+    } else if (type == "success") {
+      setShowSuccess(true);
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+      }, 2000);
     }
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up confirm
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSumbit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                defaultValue={user}
-                onChange={(event) => setUsername(event.target.value)}
-              />
+    <div>
+      <AuthHeader location="Sign Up Confirm" />
+
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up confirm
+          </Typography>
+          <form className={classes.form} noValidate onSubmit={handleSumbit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  defaultValue={user}
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="code"
+                  label="Confirmation Code"
+                  name="code"
+                  autoFocus
+                  onChange={(event) => setCode(event.target.value)}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="code"
-                label="Confirmation Code"
-                name="code"
-                autoFocus
-                onChange={(event) => setCode(event.target.value)}
-              />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Confirm
+            </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="#" variant="body2" onClick={handleResend}>
+                  Didn't get the code? Resend
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Confirm
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="#" variant="body2" onClick={handleResend}>
-                Didn't get the code? Resend
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
+          </form>
+        </div>
+        <Box mt={5}>
+          <Copyright />
+        </Box>
+      </Container>
+      <Fade in={showFail}>
+        <Alert variant="filled" severity="error" className={classes.alert}>
+          {errorMsg || "Unknown sign up Error."}
+        </Alert>
+      </Fade>
+      <Fade in={showSuccess}>
+        <Alert variant="filled" severity="success" className={classes.alert}>
+          {successMsg || "Success."}
+        </Alert>
+      </Fade>
+    </div>
   );
 }

@@ -7,6 +7,7 @@ import Filter from "./component/Filter/Filter";
 import Result from "./component/Result/Result";
 import FetchRawData from "./component/Result/component/FetchRawData";
 import "../../App.css";
+import { CssBaseline } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,12 +18,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
     textAlign: "center",
-    minHeight: "100vh",
     backgroundColor: "#282c34",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     color: "white",
+    paddingTop: "11vh",
   },
   result_paper: {
     padding: theme.spacing(2),
@@ -41,9 +42,9 @@ export default function Explore() {
     <div className={classes.root}>
       <div>
         {/* <FetchRawData /> */}
-        <div className={classes.banner}>
+        {/* <div className={classes.banner}>
           <Typography variant="h1">CASE EXPLORE</Typography>
-        </div>
+        </div> */}
         <Grid container spacing={2} justify={"center"} alignItems={"stretch"}>
           <Grid item xs={12} md={4} lg={3} xl={2}>
             <Paper

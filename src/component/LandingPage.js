@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Body(props) {
+function LandingPage(props) {
   const classes = useStyles();
   const [caseDataNum, setCaseDataNum] = useState(0);
   const [authed, setAuthed] = useState(false);
@@ -100,4 +100,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Body);
+export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

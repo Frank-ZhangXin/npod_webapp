@@ -217,7 +217,7 @@ function Search(props) {
                 </Typography>
               ) : (
                 <Typography variant="h6" color="secondary">
-                  Totally {filteredData.length} cases are showing
+                  {filteredData.length} cases are displayed
                 </Typography>
               )}
             </Box>
@@ -240,11 +240,9 @@ function Search(props) {
         </Grid>
       </div>
       <div className={classes.progress}>
-
-          {+(promiseInProgress === true) ? (
-            <HashLoader color="#4fc3f7" size={50} />
-          ) : null}
-
+        {+(promiseInProgress === true) ? (
+          <HashLoader color="#4fc3f7" size={50} />
+        ) : null}
       </div>
     </div>
   );

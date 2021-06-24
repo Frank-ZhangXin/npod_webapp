@@ -14,17 +14,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Auth from "@aws-amplify/auth";
 import { useHistory } from "react-router-dom";
-import { connect } from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
-import AuthHeader from "../component/AuthHeader";
-
-// TODO: Remember me function need further implementation.
-// For now, Cognito will let user opt in remembering device.
 
 function Copyright() {
   return (
@@ -52,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -64,24 +59,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignIn(props) {
+export default function ChangePassword() {
   useEffect(() => {
-    const signInType =
-      (props.location.state && props.location.state.from) || "";
-    if (signInType === "forgotpassword") {
-      setSuccessMsg("Password reset is successful! Please sign in");
-      showAlertHandler("success");
-    } else if (signInType === "signupconfirm") {
-      setSuccessMsg("Sign up is successful! Please sign in");
-      showAlertHandler("success");
-    }
+    checkAuth();
   }, []);
 
+  async function checkAuth() {
+    try {
+      const authRes = await Auth.currentAuthenticatedUser();
+      console.log("Check auth response ", authRes);
+    } catch (error) {
+      console.log("Check Auth error ", error);
+    }
+  }
+
   const classes = useStyles();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [remember, setRemember] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [oldPassword, setOldPassword] = useState("");
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMsg, setSuccessMsg] = useState(null);
   const [showFail, setShowFail] = useState(false);
@@ -89,24 +85,26 @@ function SignIn(props) {
 
   const history = useHistory();
 
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
+  const handleClickShowOldPassword = () => {
+    setShowOldPassword(!showOldPassword);
   };
 
-  const handleRememberMe = () => {
-    setRemember(!remember);
+  const handleClickShowNewPassword = () => {
+    setShowNewPassword(!showNewPassword);
   };
 
   const handleSumbit = async function (event) {
     event.preventDefault();
+
     try {
-      const response = await Auth.signIn(username, password);
-      console.log("Sign in response ", response);
-      props.setSignedIn(true);
-      props.setUserName(username);
-      history.push("/");
+      const response = await Auth.currentAuthenticatedUser().then((user) => {
+        return Auth.changePassword(user, oldPassword, newPassword);
+      });
+      console.log("Change password response: ", response);
+      setSuccessMsg("Password change is successful!");
+      showAlertHandler("sucess");
     } catch (error) {
-      console.log("signin error: ", error);
+      console.log("Change password response: ", error);
       setErrorMsg(error.message);
       showAlertHandler("fail");
     }
@@ -128,7 +126,6 @@ function SignIn(props) {
 
   return (
     <div>
-      <AuthHeader location="Sign In" />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -136,57 +133,61 @@ function SignIn(props) {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Change Password
           </Typography>
           <form className={classes.form} noValidate onSubmit={handleSumbit}>
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
-              name="username"
-              autoComplete="username"
-              autoFocus
-              onChange={(event) => setUsername(event.target.value)}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              id="password"
-              autoComplete="current-password"
-              onChange={(event) => setPassword(event.target.value)}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  value="remember"
-                  color="primary"
-                  onChange={handleRememberMe}
-                  defaultValue={remember}
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="oldPassword"
+                  label="Old Password"
+                  type={showOldPassword ? "text" : "password"}
+                  id="oldPassword"
+                  onChange={(event) => setOldPassword(event.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowOldPassword}
+                          edge="end"
+                        >
+                          {showOldPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
-              }
-              label="Remember me"
-            />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="newPassword"
+                  label="New Password"
+                  type={showNewPassword ? "text" : "password"}
+                  id="newPassword"
+                  onChange={(event) => setNewPassword(event.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle repassword visibility"
+                          onClick={handleClickShowNewPassword}
+                          edge="end"
+                        >
+                          {showNewPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+            </Grid>
             <Button
               type="submit"
               fullWidth
@@ -194,23 +195,18 @@ function SignIn(props) {
               color="primary"
               className={classes.submit}
             >
-              Sign In
+              CHANGE PASSWORD
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="/forgotpassword" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+            <Grid container justify="flex-end">
               <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="forgotpassword" variant="body2">
+                  Forgot password? Find back
                 </Link>
               </Grid>
             </Grid>
           </form>
         </div>
-        <Box mt={8}>
+        <Box mt={5}>
           <Copyright />
         </Box>
       </Container>
@@ -227,22 +223,3 @@ function SignIn(props) {
     </div>
   );
 }
-
-// Subscribe
-const mapStateToProps = (state, ownProps) => {
-  return {
-    signedIn: state.auth.signedIn,
-  };
-};
-
-// Update
-const mapDispatchToProps = (dispatch) => {
-  return {
-    setSignedIn: (newSignedIn) =>
-      dispatch({ type: "SET_SIGNEDIN", value: newSignedIn }),
-    setUserName: (newUserName) =>
-      dispatch({ type: "SET_USERNAME", value: newUserName }),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignIn);
