@@ -74,6 +74,9 @@ function SignIn(props) {
     } else if (signInType === "signupconfirm") {
       setSuccessMsg("Sign up is successful! Please sign in");
       showAlertHandler("success");
+    } else if (signInType === "changepassword") {
+      setErrorMsg("Please sign in first to change password.");
+      showAlertHandler("fail");
     }
   }, []);
 
