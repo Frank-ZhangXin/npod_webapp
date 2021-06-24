@@ -74,11 +74,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Header(props) {
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  async function checkAuth() {
+    try {
+      const authRes = await Auth.currentAuthenticatedUser();
+      console.log("Check auth response ", authRes);
+      props.setUserName(authRes.username);
+    } catch (error) {
+      console.log("Check Auth error ", error);
+    }
+  }
+
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  console.log("signed in state: ", props.signedIn);
   const signOutHandler = async () => {
     try {
       props.setSignedIn(false);
@@ -234,6 +247,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     setSignedIn: (newSignedIn) =>
       dispatch({ type: "SET_SIGNEDIN", value: newSignedIn }),
+    setUserName: (newUserName) =>
+      dispatch({ type: "SET_USERNAME", value: newUserName }),
   };
 };
 

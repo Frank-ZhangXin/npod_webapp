@@ -70,6 +70,7 @@ export default function ChangePassword() {
       console.log("Check auth response ", authRes);
     } catch (error) {
       console.log("Check Auth error ", error);
+      history.push("/signin", { from: "changepassword" });
     }
   }
 
