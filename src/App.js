@@ -6,13 +6,14 @@ import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Header from "./component/Header";
-import Body from "./component/Body";
+import LandingPage from "./component/LandingPage";
 import AuthHeader from "./component/AuthHeader";
 import SignIn from "./route/SignIn";
 import SignUp from "./route/SignUp";
 import SignUpConfirm from "./route/SignUpConfirm";
 import { connect } from "react-redux";
 import ForgotPassword from "./route/ForgotPassword";
+import ChangePassword from "./route/ChangePassword";
 import ExplorePage from "./route/ExplorePage";
 
 Amplify.configure({
@@ -58,24 +59,19 @@ function App(props) {
       <div>
         <Route exact path="/">
           <Header location="Home" />
-          <Body />
+          <LandingPage />
         </Route>
       </div>
-      <Route path="/signin">
-        <AuthHeader location="Sign In" />
-        <SignIn />
-      </Route>
-      <Route path="/signup">
-        <AuthHeader location="Sign Up" />
-        <SignUp />
-      </Route>
-      <Route path="/signupconfirm/:user">
-        <AuthHeader location="Sign Up Confirm" />
-        <SignUpConfirm />
-      </Route>
+      <Route path="/signin" component={SignIn} />
+      <Route path="/signup" component={SignUp} />
+      <Route path="/signupconfirm" component={SignUpConfirm} />
       <Route path="/forgotpassword">
         <AuthHeader location="Forgot Password" />
         <ForgotPassword />
+      </Route>
+      <Route path="/changepassword">
+        <AuthHeader location="Change Password" />
+        <ChangePassword />
       </Route>
       <Route path="/explore">
         <Header location="Case Explore" />

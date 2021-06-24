@@ -18,6 +18,9 @@ import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import AuthHeader from "../component/AuthHeader";
+import Alert from "@material-ui/lab/Alert";
+import Fade from "@material-ui/core/Fade";
 
 function Copyright() {
   return (
@@ -50,17 +53,24 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  alert: {
+    position: "fixed",
+    bottom: 0,
+    width: "100%",
+  },
 }));
 
 export default function SignUp() {
   const classes = useStyles();
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-  const [rePassword, setRePassword] = useState("");
+  const [rePassword, setRePassword] = useState(null);
+  const [invitation, setInvitation] = useState(null);
   const [showRePassword, setShowRePassword] = useState(false);
-
+  const [showFail, setShowFail] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
   const history = useHistory();
 
   const handleClickShowPassword = () => {
@@ -74,10 +84,66 @@ export default function SignUp() {
   const handleSumbit = async function (event) {
     event.preventDefault();
     try {
-      if (password !== rePassword) throw "Two passwords are not match.";
+      if (
+        username === null ||
+        username.length < 1 ||
+        email === null ||
+        email.length < 1 ||
+        password === null ||
+        password.length < 1 ||
+        rePassword === null ||
+        rePassword.length < 1 ||
+        invitation === null ||
+        invitation.length < 1
+      ) {
+        throw "Error: All fields are required to fill!";
+      }
     } catch (error) {
-      console.log("Two passwords are not match.");
-      alert(error);
+      console.log(error);
+      setErrorMsg(error);
+      showAlertHandler("fail");
+      return;
+    }
+
+    try {
+      if (invitation !== "npodbetauser2021") {
+        throw "Error: Invitation code is invalid! Please contact admin for sign up";
+      }
+    } catch (error) {
+      console.log("Invitation Error: ", error);
+      setErrorMsg(error);
+      showAlertHandler("fail");
+      return;
+    }
+
+    try {
+      if (!emailValidation(email)) {
+        throw "Error: Email format is not valid.";
+      }
+    } catch (error) {
+      console.log(error);
+      setErrorMsg(error);
+      showAlertHandler("fail");
+      return;
+    }
+
+    console.log("password validation: ", passwordValidation(password));
+    try {
+      if (!passwordValidation(password))
+        throw "Error: Password is not qualifed! Please choose another one";
+    } catch (error) {
+      console.log(error);
+      setErrorMsg(error);
+      showAlertHandler("fail");
+      return;
+    }
+
+    try {
+      if (password !== rePassword) throw "Error: Two passwords don't match.";
+    } catch (error) {
+      console.log(error);
+      setErrorMsg(error);
+      showAlertHandler("fail");
       return;
     }
 
@@ -90,123 +156,174 @@ export default function SignUp() {
         },
       });
       console.log("Signup response: ", response);
-      history.push(`/signupconfirm/${username}`);
+      history.push("/signupconfirm", { user: username });
     } catch (error) {
       console.log("Signup error: ", error);
-      alert(error.message);
+      setErrorMsg(error.message);
+      showAlertHandler("fail");
+      return;
     }
   };
 
+  const showAlertHandler = (type) => {
+    if (type === "fail") {
+      setShowFail(true);
+      const timer = setTimeout(() => {
+        setShowFail(false);
+      }, 2000);
+    }
+  };
+
+  const emailValidation = (theEmail) => {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const passwordValidation = (thePassword) => {
+    // const re = {
+    //   capital: /[A-Z]/,
+    //   digit: /[0-9]/,
+    //   //except: /[aeiou]/,
+    //   full: /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?][A-Za-z0-9]{7,}$/,
+    // };
+    const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,}$/;
+
+    return re.test(thePassword);
+  };
+
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign up
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={handleSumbit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                margin="normal"
-                required
-                fullWidth
-                id="username"
-                label="Username"
-                name="username"
-                autoComplete="username"
-                autoFocus
-                onChange={(event) => setUsername(event.target.value)}
-              />
+    <div>
+      <AuthHeader location="Sign Up" />
+
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <form className={classes.form} noValidate onSubmit={handleSumbit}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                  onChange={(event) => setUsername(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  onChange={(event) => setPassword(event.target.value)}
+                  helperText="Password must have minimum 7 characters and contain at least 1 UPPERCASE, 1 lower case, 1 number, 1 special character."
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="rePassword"
+                  label="Re-input Password"
+                  type={showRePassword ? "text" : "password"}
+                  id="rePassword"
+                  onChange={(event) => setRePassword(event.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle repassword visibility"
+                          onClick={handleClickShowRePassword}
+                          edge="end"
+                        >
+                          {showRePassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  name="invitation"
+                  label="Invitation Code"
+                  type="text"
+                  id="invitation"
+                  onChange={(event) => setInvitation(event.target.value)}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                onChange={(event) => setEmail(event.target.value)}
-              />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign Up
+            </Button>
+            <Grid container justify="flex-end">
+              <Grid item>
+                <Link href="signin" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                id="password"
-                onChange={(event) => setPassword(event.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        edge="end"
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="rePassword"
-                label="Re-input Password"
-                type={showRePassword ? "text" : "password"}
-                id="rePassword"
-                onChange={(event) => setRePassword(event.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle repassword visibility"
-                        onClick={handleClickShowRePassword}
-                        edge="end"
-                      >
-                        {showRePassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-          </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Sign Up
-          </Button>
-          <Grid container justify="flex-end">
-            <Grid item>
-              <Link href="signin" variant="body2">
-                Already have an account? Sign in
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={5}>
-        <Copyright />
-      </Box>
-    </Container>
+          </form>
+        </div>
+        <Box mt={5}>
+          <Copyright />
+        </Box>
+      </Container>
+      <Fade in={showFail}>
+        <Alert variant="filled" severity="error" className={classes.alert}>
+          {errorMsg || "Unknown sign up Error."}
+        </Alert>
+      </Fade>
+    </div>
   );
 }

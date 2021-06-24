@@ -12,6 +12,29 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import useScrollTrigger from "@material-ui/core/useScrollTrigger";
+import Slide from "@material-ui/core/Slide";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
+import LockIcon from "@material-ui/icons/Lock";
+
+const HideOnScroll = (props) => {
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: props.threshold,
+    target: props.window ? window() : undefined,
+  });
+
+  return (
+    <Slide appear={true} direction="down" in={!trigger}>
+      {props.children}
+    </Slide>
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,14 +43,24 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   title: {
+    //flexGrow: 1,
+    fontWeight: 600,
+    color: "#FFF",
+    marginRight: "1px",
+  },
+  title2: {
     flexGrow: 1,
     fontWeight: 600,
     color: "#FFF",
+    marginRight: "1px",
+  },
+  icon: {
+    marginRight: "3px",
   },
   appbarWrapper: {
     width: "80%",
     margin: "auto",
-    paddingTop: "30px",
+    marginTop: "30px",
     textShadow: "0 0 20px black",
   },
   authButton: {
@@ -43,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
 function Header(props) {
   const classes = useStyles();
   const history = useHistory();
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   console.log("signed in state: ", props.signedIn);
   const signOutHandler = async () => {
@@ -63,57 +97,126 @@ function Header(props) {
     history.push("/");
   };
 
+  const goCaseExploreHandler = () => {
+    history.push("/explore");
+  };
+
+  const goChangePasswordHandler = () => {
+    history.push("/changepassword");
+  };
+
+  const accountOpenHandler = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const accountCloseHandler = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <div>
       <Helmet>
         <title>nPOD {props.location}</title>
       </Helmet>
-      <div className={classes.root}>
-        <AppBar color="transparent" elevation={0} position="absolute">
-          <Toolbar className={classes.appbarWrapper}>
-            <div className={classes.title}>
-              <IconButton
-                edge="end"
-                className={classes.authButton}
-                aria-label="home"
-                onClick={goHomeHandler}
-              >
-                <Typography className={classes.title} variant="h3">
-                  nPOD
-                </Typography>
-              </IconButton>
-            </div>
-            {props.signedIn ? (
-              <IconButton
-                edge="end"
-                className={classes.authButton}
-                aria-label="signOut"
-                onClick={signOutHandler}
-              >
-                <div>
-                  <Typography className={classes.title} variant="h5">
-                    SIGN OUT
+      <div className={classes.roots}>
+        <HideOnScroll threshold={0}>
+          <AppBar color="transparent" elevation={0} position="fixed">
+            <Toolbar className={classes.appbarWrapper}>
+              <div className={classes.title}>
+                <IconButton
+                  edge="end"
+                  className={classes.authButton}
+                  aria-label="home"
+                  onClick={goHomeHandler}
+                >
+                  <Typography className={classes.title} variant="h3">
+                    nPOD
                   </Typography>
+                </IconButton>
+              </div>
+              {props.location === "Case Explore" ? (
+                <div className={classes.title2}>
+                  <IconButton
+                    className={classes.authButton}
+                    aria-label="caseExplore"
+                    onClick={goCaseExploreHandler}
+                  >
+                    <ArrowForwardIosIcon />
+                    <div>
+                      <Typography variant="h4" className={classes.title2}>
+                        CASE EXPLORE
+                      </Typography>
+                    </div>
+                  </IconButton>
                 </div>
-                <ArrowForwardIosIcon />
-              </IconButton>
-            ) : (
-              <IconButton
-                edge="end"
-                className={classes.authButton}
-                aria-label="signIn"
-                onClick={signInHandler}
-              >
-                <ArrowForwardIosIcon />
-                <div>
-                  <Typography className={classes.title} variant="h5">
-                    SIGN IN
-                  </Typography>
+              ) : (
+                <div className={classes.title2}></div>
+              )}
+              {props.signedIn ? (
+                // After sign in
+                <div className={classes.title}>
+                  <IconButton
+                    edge="end"
+                    className={classes.authButton}
+                    aria-label="avatar"
+                    onClick={accountOpenHandler}
+                  >
+                    <AccountBoxIcon className={classes.icon} fontSize="large" />
+                    <div>
+                      <Typography className={classes.title} variant="h4">
+                        {props.userName}
+                      </Typography>
+                    </div>
+                  </IconButton>
+                  <Menu
+                    id="avatar-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    getContentAnchorEl={null}
+                    onClose={accountCloseHandler}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "center",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "center",
+                    }}
+                  >
+                    <MenuItem onClick={goChangePasswordHandler}>
+                      <ListItemIcon>
+                        <LockIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText primary="CHANGE PASSWORD" />
+                    </MenuItem>
+                    <MenuItem onClick={signOutHandler}>
+                      <ListItemIcon>
+                        <DirectionsRunIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText primary="SIGN OUT" />
+                    </MenuItem>
+                  </Menu>
                 </div>
-              </IconButton>
-            )}
-          </Toolbar>
-        </AppBar>
+              ) : (
+                // Before sign in
+                <IconButton
+                  edge="end"
+                  className={classes.authButton}
+                  aria-label="signIn"
+                  onClick={signInHandler}
+                >
+                  <ArrowForwardIosIcon fontSize="large" />
+                  <div>
+                    <Typography className={classes.title} variant="h4">
+                      SIGN IN
+                    </Typography>
+                  </div>
+                </IconButton>
+              )}
+            </Toolbar>
+          </AppBar>
+        </HideOnScroll>
       </div>
     </div>
   );
@@ -123,6 +226,7 @@ function Header(props) {
 const mapStateToProps = (state, ownProps) => {
   return {
     signedIn: state.auth.signedIn,
+    userName: state.auth.userName,
   };
 };
 

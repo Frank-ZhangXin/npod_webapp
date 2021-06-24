@@ -18,6 +18,8 @@ import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Alert from "@material-ui/lab/Alert";
+import Fade from "@material-ui/core/Fade";
 
 function Copyright() {
   return (
@@ -50,6 +52,11 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  alert: {
+    position: "fixed",
+    bottom: 0,
+    width: "100%",
+  },
 }));
 
 const initialFormState = {
@@ -64,6 +71,11 @@ export default function ForgotPassword() {
   const history = useHistory();
   const [formState, updateFormState] = useState(initialFormState);
   const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [successMsg, setSuccessMsg] = useState(null);
+  const [showFail, setShowFail] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(null);
+
   const handleChange = (event) => {
     event.persist();
     updateFormState(() => ({
@@ -83,10 +95,13 @@ export default function ForgotPassword() {
     try {
       const response = await Auth.forgotPassword(username);
       console.log("SendCode response: ", response);
+      setSuccessMsg("Confirmation code was sent! Please check your email");
+      showAlertHandler("success");
       updateFormState(() => ({ ...formState, formType: "setNewPassword" }));
     } catch (error) {
       console.log("SendCode error: ", error);
-      alert(error.message);
+      setErrorMsg(error.message);
+      showAlertHandler("fail");
     }
   };
 
@@ -100,11 +115,27 @@ export default function ForgotPassword() {
         new_password
       );
       console.log("Set New Password response: ", response);
-      alert("Password was reset successfully, please sign in.");
-      history.push("/signin");
+      setSuccessMsg("New password reset is successful! Please sign in");
+      showAlertHandler("success");
+      history.push("/signin", { from: "forgotpassword" });
     } catch (error) {
       console.log("Set New Password error: ", error);
-      alert(error.message);
+      setErrorMsg(error.message);
+      showAlertHandler("fail");
+    }
+  };
+
+  const showAlertHandler = (type) => {
+    if (type === "success") {
+      setShowSuccess(true);
+      const timer = setTimeout(() => {
+        setShowSuccess(false);
+      }, 2000);
+    } else if (type === "fail") {
+      setShowFail(true);
+      const timer = setTimeout(() => {
+        setShowFail(false);
+      }, 2000);
     }
   };
 
@@ -265,6 +296,16 @@ export default function ForgotPassword() {
           </Container>
         </div>
       )}
+      <Fade in={showSuccess}>
+        <Alert variant="filled" severity="success" className={classes.alert}>
+          {successMsg || "Success"}
+        </Alert>
+      </Fade>
+      <Fade in={showFail}>
+        <Alert variant="filled" severity="error" className={classes.alert}>
+          {errorMsg || "Unknown error"}
+        </Alert>
+      </Fade>
     </div>
   );
 }
