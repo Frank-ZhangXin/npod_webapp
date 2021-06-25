@@ -138,12 +138,12 @@ function Search(props) {
           if (cPeptide.slice(0, 1) === "<" && props.cPeptideNegative === true) {
             return true;
           } else if (
-            Number(cPeptide) <= 0.02 &&
+            Number(cPeptide) < 0.02 &&
             props.cPeptideNegative === true
           ) {
             return true;
           } else if (
-            Number(cPeptide) > 0.02 &&
+            Number(cPeptide) >= 0.02 &&
             props.cPeptidePositive === true
           ) {
             return true;
