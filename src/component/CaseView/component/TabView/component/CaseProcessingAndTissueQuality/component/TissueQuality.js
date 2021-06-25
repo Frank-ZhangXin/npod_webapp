@@ -37,11 +37,14 @@ function TissueQuality(props) {
 
   const rows = [
     createData(
-      "Tissue Recovery Type",
-      props.currentCase.case_recovery_type === null
-        ? "Unavailable"
-        : props.currentCase.case_recovery_type
+      "RIN",
+      props.currentCase.RIN === null ? "Unavailable" : props.currentCase.RIN
     ),
+    createData(
+      "260/280",
+      props.currentCase.ratio === null ? "Unavailable" : props.currentCase.ratio
+    ),
+    createData("Cell Viability", "Unavailable"),
   ];
 
   return (

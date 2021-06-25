@@ -55,6 +55,36 @@ function CaseProcessing(props) {
         ? "Unavailable"
         : props.currentCase.organ_transport_time
     ),
+    createData(
+      "Tissue Recovery Type",
+      props.currentCase.case_recovery_type === null
+        ? "Unavailable"
+        : props.currentCase.case_recovery_type
+    ),
+    createData(
+      "Total Pancreas Weight (g)",
+      props.currentCase.pancreas_weight_grams === null
+        ? "Unavailable"
+        : props.currentCase.pancreas_weight_grams
+    ),
+    createData(
+      "Pancreas Head (g)",
+      props.currentCase.pancreas_head_grams === null
+        ? "Unavailable"
+        : props.currentCase.pancreas_head_grams
+    ),
+    createData(
+      "Pancreas Body (g)",
+      props.currentCase.pancreas_body_grams === null
+        ? "Unavailable"
+        : props.currentCase.pancreas_body_grams
+    ),
+    createData(
+      "Pancreas Tail (g)",
+      props.currentCase.pancreas_tail_grams === null
+        ? "Unavailable"
+        : props.currentCase.pancreas_tail_grams
+    ),
   ];
 
   return (
@@ -86,24 +116,29 @@ function CaseProcessing(props) {
           </Table>
         </TableContainer>
       </div>
-      <div>
-        <Typography variant="h5" className={classes.title2}>
-          Comment
-        </Typography>
-      </div>
-      <div>
-        <Card variant="outlined" className={classes.note}>
-          <Typography
-            variant="body2"
-            component="p"
-            className={classes.noteText}
-          >
-            {props.currentCase.case_processing_info
-              ? props.currentCase.case_processing_info
-              : "Unavailable"}
-          </Typography>
-        </Card>
-      </div>
+      {typeof props.currentCase.pancreas_weight_comments === "string" &&
+      props.currentCase.pancreas_weight_comments.length > 1 ? (
+        <div>
+          <div>
+            <Typography variant="h5" className={classes.title2}>
+              Pancreas Weight Comment
+            </Typography>
+          </div>
+          <div>
+            <Card variant="outlined" className={classes.note}>
+              <Typography
+                variant="body2"
+                component="p"
+                className={classes.noteText}
+              >
+                {props.currentCase.pancreas_weight_comments
+                  ? props.currentCase.pancreas_weight_comments
+                  : "Unavailable"}
+              </Typography>
+            </Card>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

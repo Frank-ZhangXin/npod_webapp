@@ -36,11 +36,26 @@ function DataPreProcess(props) {
           const thisA = highResHLAGenerator(thisHLA["A_1"], thisHLA["A_2"]);
           const thisB = highResHLAGenerator(thisHLA["B_1"], thisHLA["B_2"]);
           const thisC = highResHLAGenerator(thisHLA["C_1"], thisHLA["C_2"]);
-          const thisDRB1 = highResHLAGenerator(thisHLA["DRB1_1"], thisHLA["DRB1_2"]);
-          const thisDQA1 = highResHLAGenerator(thisHLA["DQA1_1"], thisHLA["DQA1_2"]);
-          const thisDQB1 = highResHLAGenerator(thisHLA["DQB1_1"], thisHLA["DQB1_2"]);
-          const thisDPA1 = highResHLAGenerator(thisHLA["DPA1_1"], thisHLA["DPA1_2"]);
-          const thisDPB1 = highResHLAGenerator(thisHLA["DPB1_1"], thisHLA["DPB1_2"]);
+          const thisDRB1 = highResHLAGenerator(
+            thisHLA["DRB1_1"],
+            thisHLA["DRB1_2"]
+          );
+          const thisDQA1 = highResHLAGenerator(
+            thisHLA["DQA1_1"],
+            thisHLA["DQA1_2"]
+          );
+          const thisDQB1 = highResHLAGenerator(
+            thisHLA["DQB1_1"],
+            thisHLA["DQB1_2"]
+          );
+          const thisDPA1 = highResHLAGenerator(
+            thisHLA["DPA1_1"],
+            thisHLA["DPA1_2"]
+          );
+          const thisDPB1 = highResHLAGenerator(
+            thisHLA["DPB1_1"],
+            thisHLA["DPB1_2"]
+          );
           thisCase["HLA_high_resolution"] =
             "A*" +
             thisA +
@@ -106,12 +121,12 @@ function DataPreProcess(props) {
 
 function highResHLAGenerator(lowVal, highVal) {
   if (lowVal && !lowVal.includes(":") && lowVal.length === 4) {
-    lowVal = lowVal.substring(0,2) + ":" + lowVal.substring(2,4);
+    lowVal = lowVal.substring(0, 2) + ":" + lowVal.substring(2, 4);
   }
   if (highVal && !highVal.includes(":") && highVal.length === 4) {
-    highVal = highVal.substring(0,2) + ":" + highVal.substring(2,4);
+    highVal = highVal.substring(0, 2) + ":" + highVal.substring(2, 4);
   }
-  return lowVal + "/" + highVal;
+  return lowVal + ", " + highVal;
 }
 
 // Subscribe

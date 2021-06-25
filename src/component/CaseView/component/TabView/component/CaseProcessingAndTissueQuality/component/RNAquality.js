@@ -35,20 +35,12 @@ function RNAquality(props) {
     return { name, value };
   }
 
-  const rows = [
-    createData(
-      "RIN",
-      props.currentCase.RIN === null ? "Unavailable" : props.currentCase.RIN
-    ),
-        createData(
-      "260/280",
-      props.currentCase.ratio === null ? "Unavailable" : props.currentCase.ratio
-    ),
-  ];
+  const rows = [];
 
   return (
     <div>
-      <div>
+      placeholder for images
+      {/* <div>
         <Typography variant="h5" className={classes.title}>
           RNA Quality
         </Typography>
@@ -74,7 +66,7 @@ function RNAquality(props) {
             </TableBody>
           </Table>
         </TableContainer>
-      </div>
+      </div> */}
     </div>
   );
 }

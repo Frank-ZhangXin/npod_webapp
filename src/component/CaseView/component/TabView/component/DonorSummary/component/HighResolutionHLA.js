@@ -56,7 +56,7 @@ function HighResolutionHLA(props) {
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
-                <TableCell align="right">Value</TableCell>
+                <TableCell align="right">Allele 1, Allele 2</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

@@ -11,6 +11,9 @@ import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
+  title: {
+    fontWeight: "900",
+  },
   form: {
     display: "flex",
     flexDirection: "column",
@@ -55,7 +58,8 @@ function CaseView(props) {
         classes={{ paper: classes.dialogBackground }}
       >
         <CaseViewTitle onClose={handleClose}>
-          NPOD CASE ID: {props.currentCase.case_id}
+          nPOD CASE ID: {props.currentCase.case_id} &nbsp; &nbsp; RRID:
+          {props.currentCase.RR_id}
         </CaseViewTitle>
 
         <DialogContent dividers>

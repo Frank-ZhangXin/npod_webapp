@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Comment(props) {
+function HospitalLaboratoryPanel(props) {
   const classes = useStyles();
   const donorType = props.donorTypesMap[props.currentCase.donor_type_id];
 
@@ -43,27 +43,56 @@ function Comment(props) {
     return { name, value };
   }
 
-  const rows = [];
+  const rows = [
+    createData(
+      "Hemodiluted",
+      props.currentCase.hemodiluted_status === null
+        ? "Unavailable"
+        : props.currentCase.hemodiluted_status
+    ),
+    createData("Peak Glucose (mg/dL)", "Unavailable"),
+    createData(
+      "Infections",
+      props.currentCase.infections === null
+        ? "Unavailable"
+        : props.currentCase.infections
+    ),
+    createData(
+      "SARS-CoV-2",
+      props.currentCase.SARS_COV_2_results === null
+        ? "Unavailable"
+        : props.currentCase.SARS_COV_2_results
+    ),
+  ];
 
   return (
     <div>
       <div>
         <Typography variant="h5" className={classes.title}>
-          Comment
+          Hospital Laboratory Panel
         </Typography>
       </div>
       <div>
-        <Card variant="outlined" className={classes.note}>
-          <Typography
-            variant="body2"
-            component="p"
-            className={classes.noteText}
-          >
-            {props.currentCase.clinical_history
-              ? props.currentCase.clinical_history
-              : "Unavailable"}
-          </Typography>
-        </Card>
+        <TableContainer component={Paper} className={classes.container}>
+          <Table className={classes.table} size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell align="right">Value</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right">{row.value}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
     </div>
   );
@@ -83,4 +112,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Comment);
+export default connect(mapStateToProps, null)(HospitalLaboratoryPanel);

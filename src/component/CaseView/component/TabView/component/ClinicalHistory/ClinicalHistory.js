@@ -6,10 +6,10 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
-import ClinicalInformation from "./component/ClinicalInformation";
-import History from "./component/History";
+import HospitalAdmission from "./component/HospitalAdmission";
+import ClinicalHistory2 from "./component/ClinicalHistory2";
 import Medication from "./component/Medication";
-import Comment from "./component/Comment";
+import HospitalLaboratoryPanel from "./component/HospitalLaboratoryPanel";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -35,12 +35,12 @@ function ClinicalHistory(props) {
       <Grid container spacing={2} justify={"center"} alignItems={"stretch"}>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            <ClinicalInformation />
+            <HospitalAdmission />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            <History />
+            <ClinicalHistory2 />
           </Paper>
         </Grid>
         <Grid item xs={12} sm={3}>
@@ -50,7 +50,7 @@ function ClinicalHistory(props) {
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            Placeholder
+            <HospitalLaboratoryPanel />
           </Paper>
         </Grid>
       </Grid>

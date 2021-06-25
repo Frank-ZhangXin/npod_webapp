@@ -9,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -21,13 +22,24 @@ const useStyles = makeStyles((theme) => ({
   container: {
     maxHeight: "56vh",
   },
+  container2: {
+    maxHeight: "56vh",
+    marginTop: "10px",
+  },
   table: {
     paddingBottom: theme.spacing(2),
     //minWidth: 650,
   },
+  note: {
+    maxHeight: "25vh",
+    overflow: "auto",
+  },
+  noteText: {
+    padding: "10px",
+  },
 }));
 
-function ClinicalInformation(props) {
+function ClinicalHistory2(props) {
   const classes = useStyles();
   const donorType = props.donorTypesMap[props.currentCase.donor_type_id];
 
@@ -37,22 +49,7 @@ function ClinicalInformation(props) {
 
   const rows = [
     createData(
-      "Cause of Death",
-      props.currentCase.cause_of_death_id === null
-        ? "Unavailable"
-        : props.causeOfDeathMap[props.currentCase.cause_of_death_id]
-    ),
-    createData(
-      "Down Time",
-      props.currentCase.downtime_minutes === null
-        ? "Unavailable"
-        : props.currentCase.downtime_minutes
-    ),
-    createData("Diabetes Type", donorType === null ? "Unavailable" : donorType),
-    createData("Autoimmune Disease", "Unavailable"),
-    createData("Hypertension", "Unavailable"),
-    createData(
-      "Heavy Alcohol Use",
+      "Alcohol Use",
       props.currentCase.alcohol_use === null
         ? "Unavailable"
         : props.currentCase.alcohol_use
@@ -75,11 +72,26 @@ function ClinicalInformation(props) {
     <div>
       <div>
         <Typography variant="h5" className={classes.title}>
-          Clinical Information
+          Clinical History
         </Typography>
       </div>
+
       <div>
-        <TableContainer component={Paper} className={classes.container}>
+        <Card variant="outlined" className={classes.note}>
+          <Typography
+            variant="body2"
+            component="p"
+            className={classes.noteText}
+          >
+            {props.currentCase.clinical_history
+              ? props.currentCase.clinical_history
+              : "Unavailable"}
+          </Typography>
+        </Card>
+      </div>
+
+      <div>
+        <TableContainer component={Paper} className={classes.container2}>
           <Table className={classes.table} size="small" stickyHeader>
             <TableHead>
               <TableRow>
@@ -118,4 +130,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(ClinicalInformation);
+export default connect(mapStateToProps, null)(ClinicalHistory2);
