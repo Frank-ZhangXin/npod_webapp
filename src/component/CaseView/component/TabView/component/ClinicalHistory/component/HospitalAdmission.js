@@ -11,7 +11,6 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 
-
 const useStyles = makeStyles((theme) => ({
   title: {
     paddingBottom: theme.spacing(2),
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function History(props) {
+function HospitalAdmission(props) {
   const classes = useStyles();
   const donorType = props.donorTypesMap[props.currentCase.donor_type_id];
 
@@ -44,16 +43,56 @@ function History(props) {
     return { name, value };
   }
 
-  const rows = [];
+  const rows = [
+    createData(
+      "Cause of Death",
+      props.currentCase.cause_of_death_id === null
+        ? "Unavailable"
+        : props.causeOfDeathMap[props.currentCase.cause_of_death_id]
+    ),
+    createData(
+      "Est Downtime (minutes)",
+      props.currentCase.downtime_minutes === null
+        ? "Unavailable"
+        : props.currentCase.downtime_minutes
+    ),
+    createData("Diabetes Type", donorType === null ? "Unavailable" : donorType),
+  ];
 
   return (
     <div>
       <div>
         <Typography variant="h5" className={classes.title}>
-          History
+          Hospital Admission
         </Typography>
       </div>
-
+      <div>
+        <TableContainer component={Paper} className={classes.container}>
+          <Table className={classes.table} size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell align="right">Value</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right">{row.value}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+      <div>
+        <Typography variant="h5" className={classes.title2}>
+          Admission Course
+        </Typography>
+      </div>
       <div>
         <Card variant="outlined" className={classes.note}>
           <Typography
@@ -61,8 +100,8 @@ function History(props) {
             component="p"
             className={classes.noteText}
           >
-            {props.currentCase.clinical_history
-              ? props.currentCase.clinical_history
+            {props.currentCase.admission_course
+              ? props.currentCase.admission_course
               : "Unavailable"}
           </Typography>
         </Card>
@@ -85,4 +124,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(History);
+export default connect(mapStateToProps, null)(HospitalAdmission);

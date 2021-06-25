@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
   container: {
     maxHeight: "60vh",
   },
+  container2: {
+    maxHeight: "60vh",
+    marginTop: "4px",
+  },
   table: {
     paddingBottom: theme.spacing(2),
     //minWidth: 650,
@@ -79,8 +83,11 @@ function LabTestResults(props) {
         ? "Unavailable"
         : props.currentCase.ZnT8A_Result
     ),
+  ];
+
+  const rows2 = [
     createData(
-      "C-PEPTIDE (ng/mL)",
+      "C-peptide (ng/mL)",
       props.currentCase.C_peptide_ng_mL === null
         ? "Unavailable"
         : props.currentCase.C_peptide_ng_mL
@@ -96,30 +103,6 @@ function LabTestResults(props) {
       props.currentCase.serologies === null
         ? "Unavailable"
         : props.currentCase.serologies
-    ),
-    createData(
-      "Total Pancreas Weight (g)",
-      props.currentCase.pancreas_weight_grams === null
-        ? "Unavailable"
-        : props.currentCase.pancreas_weight_grams
-    ),
-    createData(
-      "Pancreas Head (g)",
-      props.currentCase.pancreas_head_grams === null
-        ? "Unavailable"
-        : props.currentCase.pancreas_head_grams
-    ),
-    createData(
-      "Pancreas Body (g)",
-      props.currentCase.pancreas_body_grams === null
-        ? "Unavailable"
-        : props.currentCase.pancreas_body_grams
-    ),
-    createData(
-      "Pancreas Tail (g)",
-      props.currentCase.pancreas_tail_grams === null
-        ? "Unavailable"
-        : props.currentCase.pancreas_tail_grams
     ),
   ];
 
@@ -151,11 +134,32 @@ function LabTestResults(props) {
             </TableBody>
           </Table>
         </TableContainer>
+
+        <TableContainer component={Paper} className={classes.container2}>
+          <Table className={classes.table} size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell align="right">Value</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows2.map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right">{row.value}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </div>
       {showNote ? (
         <div>
           <Typography variant="h5" className={classes.title2}>
-            Note
+            Insulin Autoantibody Note
           </Typography>
           <Card variant="outlined" className={classes.note}>
             <Typography

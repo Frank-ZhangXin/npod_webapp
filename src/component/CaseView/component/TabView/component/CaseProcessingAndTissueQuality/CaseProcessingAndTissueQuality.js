@@ -42,14 +42,9 @@ function ClinicalHistory(props) {
             <TissueQuality />
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={6}>
           <Paper elevation={3} className={classes.paper}>
             <RNAquality />
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Paper elevation={3} className={classes.paper}>
-            placeholder
           </Paper>
         </Grid>
       </Grid>

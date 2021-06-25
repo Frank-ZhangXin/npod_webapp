@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     top: theme.spacing(1),
     color: theme.palette.grey[500],
   },
+  title: {
+    fontWeight: "900",
+  },
 }));
 
 export default function CaseViewTitle(props) {
@@ -25,7 +28,9 @@ export default function CaseViewTitle(props) {
     <div>
       <MuiDialogTitle>
         <div>
-          <Typography variant="h4">{children}</Typography>
+          <Typography variant="h4" className={classes.title}>
+            {children}
+          </Typography>
         </div>
         <IconButton
           aria-label="close"

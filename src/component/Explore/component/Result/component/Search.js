@@ -130,15 +130,26 @@ function Search(props) {
           props.bmiEnable === false
       )
       // C-Peptide
-      .filter(
-        (donor) =>
-          (donor.C_peptide_ng_mL !== null &&
-            ((donor.C_peptide_ng_mL.includes("<") &&
-              props.cPeptideNegative === true) ||
-              (donor.C_peptide_ng_mL.includes("<") &&
-                props.cPeptidePositive === true))) ||
-          props.cPeptideEnable === false
-      )
+      .filter((donor) => {
+        if (props.cPeptideEnable === false) {
+          return true;
+        } else if (donor.C_peptide_ng_mL !== null) {
+          const C_peptide_ng_mL = Number(donor.C_peptide_ng_mL)
+            ? Number(donor.C_peptide_ng_mL)
+            : Number(donor.C_peptide_ng_mL.slice(1));
+          if (C_peptide_ng_mL !== null) {
+            if (C_peptide_ng_mL > 0.02 && props.cPeptidePositive === true) {
+              return true;
+            } else if (
+              C_peptide_ng_mL <= 0.02 &&
+              props.cPeptideNegative === true
+            ) {
+              return true;
+            }
+          }
+        }
+        return false;
+      })
       // Duration of Diabetes
       .filter(
         (donor) =>
