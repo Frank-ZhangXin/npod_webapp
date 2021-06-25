@@ -131,21 +131,22 @@ function Search(props) {
       )
       // C-Peptide
       .filter((donor) => {
+        const cPeptide = donor.C_peptide_ng_mL;
         if (props.cPeptideEnable === false) {
           return true;
-        } else if (donor.C_peptide_ng_mL !== null) {
-          const C_peptide_ng_mL = Number(donor.C_peptide_ng_mL)
-            ? Number(donor.C_peptide_ng_mL)
-            : Number(donor.C_peptide_ng_mL.slice(1));
-          if (C_peptide_ng_mL !== null) {
-            if (C_peptide_ng_mL > 0.02 && props.cPeptidePositive === true) {
-              return true;
-            } else if (
-              C_peptide_ng_mL <= 0.02 &&
-              props.cPeptideNegative === true
-            ) {
-              return true;
-            }
+        } else if (cPeptide !== null) {
+          if (cPeptide.slice(0, 1) === "<" && props.cPeptideNegative === true) {
+            return true;
+          } else if (
+            Number(cPeptide) <= 0.02 &&
+            props.cPeptideNegative === true
+          ) {
+            return true;
+          } else if (
+            Number(cPeptide) > 0.02 &&
+            props.cPeptidePositive === true
+          ) {
+            return true;
           }
         }
         return false;
