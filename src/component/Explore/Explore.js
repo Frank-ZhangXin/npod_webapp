@@ -8,6 +8,8 @@ import Result from "./component/Result/Result";
 import FetchRawData from "./component/Result/component/FetchRawData";
 import "../../App.css";
 import { CssBaseline } from "@material-ui/core";
+import Header from "../Header";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
     })`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
-    textAlign: "center",
-    backgroundColor: "#282c34",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    color: "white",
+    //textAlign: "center",
+    //backgroundColor: "#282c34",
+    //flexDirection: "column",
+    //alignItems: "center",
+    //justifyContent: "center",
+    //color: "white",
     paddingTop: "11vh",
   },
   result_paper: {
@@ -30,22 +32,32 @@ const useStyles = makeStyles((theme) => ({
     position: "sticky",
     top: 0,
   },
-  banner: {
-    minHeight: "15vh",
-    paddingTop: "15px",
+  grid: {
+    width: "100%",
+    justifyContent: "center",
+  },
+  box: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  box2: {
+    height: "20vh",
+    width: "20vh",
+    backgroundColor: "#000000",
   },
 }));
 
 export default function Explore() {
   const classes = useStyles();
   return (
-    <div className={classes.root}>
-      <div>
-        {/* <FetchRawData /> */}
-        {/* <div className={classes.banner}>
-          <Typography variant="h1">CASE EXPLORE</Typography>
-        </div> */}
-        <Grid container spacing={2} justify={"center"} alignItems={"stretch"}>
+    <div>
+      <Header location="Case Explore" />
+
+      <div className={classes.root}>
+        <Grid container spacing={2} justify={"center"} className={classes.grid}>
           <Grid item xs={12} md={4} lg={3} xl={2}>
             <Paper
               elevation={3}

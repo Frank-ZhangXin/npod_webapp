@@ -50,7 +50,12 @@ function HospitalLaboratoryPanel(props) {
         ? "Unavailable"
         : props.currentCase.hemodiluted_status
     ),
-    createData("Peak Glucose (mg/dL)", "Unavailable"),
+    createData(
+      "Peak Glucose (mg/dL)",
+      props.currentCase.peak_glucose_mg_dL === null
+        ? "Unavailable"
+        : props.currentCase.peak_glucose_mg_dL
+    ),
     createData(
       "Infections",
       props.currentCase.infections === null

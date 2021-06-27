@@ -4,18 +4,19 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
+import Grid from "@material-ui/core/Grid";
 
 const useStyles = makeStyles((theme) => ({
   multiSelect: {
+    width: "100%",
+  },
+  gridItem: {
     width: "75%",
   },
-  box: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   title: {
-    margin: theme.spacing(3),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
+    fontWeight: "900",
   },
 }));
 
@@ -41,23 +42,29 @@ function FilterRace(props) {
 
   return (
     <div>
-      <Box display="flex" justifyContent="flex-start">
-        <Box>
-          <Typography variant="h6" className={classes.title}>
-            <Box fontWeight="fontWeightBold">Race/Ethnicity</Box>
+      <Grid
+        container
+        direction="column"
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Grid item xs={12} className={classes.gridItem}>
+          <Typography variant="subtitle1" className={classes.title}>
+            Race/Ethnicity
           </Typography>
-        </Box>
-      </Box>
-      <Box className={classes.box}>
-        <Select
-          className={classes.multiSelect}
-          value={props.selectedRace}
-          onChange={(value) => props.setSelectedRace(value)}
-          options={options}
-          isMulti
-          closeMenuOnSelect={false}
-        />
-      </Box>
+        </Grid>
+        <Grid item xs={12} className={classes.gridItem}>
+          <Select
+            className={classes.multiSelect}
+            value={props.selectedRace}
+            onChange={(value) => props.setSelectedRace(value)}
+            options={options}
+            isMulti
+            closeMenuOnSelect={false}
+          />
+        </Grid>
+      </Grid>
     </div>
   );
 }

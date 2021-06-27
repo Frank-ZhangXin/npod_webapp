@@ -6,6 +6,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Switch from "@material-ui/core/Switch";
+import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,8 +14,23 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  gridContainer: {
+    width: "125%",
+  },
+  gridItem: {
+    width: "75%",
+  },
   title: {
-    margin: theme.spacing(3),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
+    fontWeight: "900",
+  },
+  switch: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
+  },
+  boxContainer: {
+    width: "100%",
   },
 }));
 
@@ -23,57 +39,74 @@ function FilterCPeptide(props) {
 
   return (
     <div>
-      <Box display="flex" justifyContent="space-between">
-        <Box>
-          <Typography variant="h6" className={classes.title}>
-            <Box fontWeight="fontWeightBold">C-Peptide Detectable</Box>
-          </Typography>
-        </Box>
-        <Box>
-          <Switch
-            checked={props.cPeptideEnable}
-            onChange={(e) => props.setCPeptideEnable(e.target.checked)}
-            name="CPeptideEnableSwitch"
-            className={classes.title}
-            color="primary"
-          />
-        </Box>
-      </Box>
-
-      <FormGroup row className={classes.formGroup}>
-        <Box mx={2}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={props.cPeptidePositive}
-                onChange={(event) =>
-                  props.setCPeptidePositiveChecked(event.target.checked)
-                }
-                name="cPeptidePositive"
+      <Grid
+        container
+        direction="column"
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Grid item xs={12} className={classes.gridItem}>
+          <Box display="flex">
+            <Box flexGrow={1}>
+              <Typography variant="subtitle1" className={classes.title}>
+                C-Peptide
+              </Typography>
+            </Box>
+            <Box>
+              <Switch
+                checked={props.cPeptideEnable}
+                onChange={(e) => props.setCPeptideEnable(e.target.checked)}
+                name="CPeptideEnableSwitch"
+                className={classes.switch}
                 color="primary"
-                disabled={!props.cPeptideEnable}
               />
-            }
-            label="+"
-          />
-        </Box>
-        <Box mx={2}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={props.cPeptideNegative}
-                onChange={(event) =>
-                  props.setCPeptideNegativeChecked(event.target.checked)
-                }
-                name="cPeptideNegative"
-                color="secondary"
-                disabled={!props.cPeptideEnable}
-              />
-            }
-            label="-"
-          />
-        </Box>
-      </FormGroup>
+            </Box>
+          </Box>
+        </Grid>
+        <Grid item xs={12} className={classes.gridItem}>
+          <FormGroup row className={classes.formGroup}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              className={classes.boxContainer}
+            >
+              <Box>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={props.cPeptidePositive}
+                      onChange={(event) =>
+                        props.setCPeptidePositiveChecked(event.target.checked)
+                      }
+                      name="cPeptidePositive"
+                      color="primary"
+                      disabled={!props.cPeptideEnable}
+                    />
+                  }
+                  label="+ Detectable"
+                />
+              </Box>
+              <Box>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={props.cPeptideNegative}
+                      onChange={(event) =>
+                        props.setCPeptideNegativeChecked(event.target.checked)
+                      }
+                      name="cPeptideNegative"
+                      color="secondary"
+                      disabled={!props.cPeptideEnable}
+                    />
+                  }
+                  label="- Undetectable"
+                />
+              </Box>
+            </Box>
+          </FormGroup>
+        </Grid>
+      </Grid>
     </div>
   );
 }

@@ -56,27 +56,13 @@ function App(props) {
 
   return (
     <Router>
-      <div>
-        <Route exact path="/">
-          <Header location="Home" />
-          <LandingPage />
-        </Route>
-      </div>
+      <Route exact path="/" component={LandingPage} />
       <Route path="/signin" component={SignIn} />
       <Route path="/signup" component={SignUp} />
       <Route path="/signupconfirm" component={SignUpConfirm} />
-      <Route path="/forgotpassword">
-        <AuthHeader location="Forgot Password" />
-        <ForgotPassword />
-      </Route>
-      <Route path="/changepassword">
-        <AuthHeader location="Change Password" />
-        <ChangePassword />
-      </Route>
-      <Route path="/explore">
-        <Header location="Case Explore" />
-        <ExplorePage />
-      </Route>
+      <Route path="/forgotpassword" component={ForgotPassword} />
+      <Route path="/changepassword" component={ChangePassword} />
+      <Route path="/explore" component={ExplorePage} />
     </Router>
   );
 }

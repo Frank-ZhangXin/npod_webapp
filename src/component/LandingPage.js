@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
+import Header from "./Header";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -56,31 +57,34 @@ function LandingPage(props) {
   };
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <Grid
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-        className={classes.centerBox}
-      >
-        <Grid item>
-          <h1 className={classes.centerTitle}>WELCOME TO NPOD!</h1>
+    <div>
+      <Header location="Home" />
+      <div className={classes.root}>
+        <CssBaseline />
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+          className={classes.centerBox}
+        >
+          <Grid item>
+            <h1 className={classes.centerTitle}>WELCOME TO NPOD!</h1>
+          </Grid>
+          <Grid item>
+            {props.signedIn ? (
+              <Button
+                variant="outlined"
+                size="large"
+                className={classes.centerButton}
+                onClick={handleExploreCase}
+              >
+                EXPLORE CASES
+              </Button>
+            ) : null}
+          </Grid>
         </Grid>
-        <Grid item>
-          {props.signedIn ? (
-            <Button
-              variant="outlined"
-              size="large"
-              className={classes.centerButton}
-              onClick={handleExploreCase}
-            >
-              EXPLORE CASES
-            </Button>
-          ) : null}
-        </Grid>
-      </Grid>
+      </div>
     </div>
   );
 }

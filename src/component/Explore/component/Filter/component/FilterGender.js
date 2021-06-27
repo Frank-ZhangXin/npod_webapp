@@ -6,6 +6,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import Switch from "@material-ui/core/Switch";
+import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -13,8 +14,23 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  gridContainer: {
+    width: "125%",
+  },
+  gridItem: {
+    width: "75%",
+  },
   title: {
-    margin: theme.spacing(3),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(1),
+    fontWeight: "900",
+  },
+  switch: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
+  },
+  boxContainer: {
+    width: "100%",
   },
 }));
 
@@ -22,55 +38,74 @@ function FilterGender(props) {
   const classes = useStyles();
   return (
     <div>
-      <Box display="flex" justifyContent="space-between">
-        <Box>
-          <Typography variant="h6" className={classes.title}>
-            <Box fontWeight="fontWeightBold">Sex</Box>
-          </Typography>
-        </Box>
-        <Box>
-          <Switch
-            checked={props.genderEnable}
-            onChange={(e) => props.setGenderEnable(e.target.checked)}
-            name="genderEnableSwitch"
-            className={classes.title}
-            color="primary"
-          />
-        </Box>
-      </Box>
-
-      <FormGroup row className={classes.formGroup}>
-        <Box mx={2}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={props.maleChecked}
-                onChange={(event) => props.setMaleChecked(event.target.checked)}
-                name="maleChecked"
+      <Grid
+        container
+        direction="column"
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Grid item xs={12} className={classes.gridItem}>
+          <Box display="flex">
+            <Box flexGrow={1}>
+              <Typography variant="subtitle1" className={classes.title}>
+                Sex
+              </Typography>
+            </Box>
+            <Box>
+              <Switch
+                checked={props.genderEnable}
+                onChange={(e) => props.setGenderEnable(e.target.checked)}
+                name="genderEnableSwitch"
+                className={classes.switch}
                 color="primary"
-                disabled={!props.genderEnable}
               />
-            }
-            label="Male"
-          />
-        </Box>
-        <Box mx={2}>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={props.femaleChecked}
-                onChange={(event) =>
-                  props.setFemaleChecked(event.target.checked)
-                }
-                name="femaleChecked"
-                color="secondary"
-                disabled={!props.genderEnable}
-              />
-            }
-            label="Female"
-          />
-        </Box>
-      </FormGroup>
+            </Box>
+          </Box>
+        </Grid>
+        <Grid item xs={12} className={classes.gridItem}>
+          <FormGroup row className={classes.formGroup}>
+            <Box
+              display="flex"
+              flexDirection="column"
+              className={classes.boxContainer}
+            >
+              <Box>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={props.maleChecked}
+                      onChange={(event) =>
+                        props.setMaleChecked(event.target.checked)
+                      }
+                      name="maleChecked"
+                      color="primary"
+                      disabled={!props.genderEnable}
+                    />
+                  }
+                  label="Male"
+                />
+              </Box>
+              <Box>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={props.femaleChecked}
+                      onChange={(event) =>
+                        props.setFemaleChecked(event.target.checked)
+                      }
+                      name="femaleChecked"
+                      color="secondary"
+                      disabled={!props.genderEnable}
+                    />
+                  }
+                  label="Female"
+                />
+              </Box>
+            </Box>
+          </FormGroup>
+        </Grid>
+      </Grid>
     </div>
   );
 }

@@ -20,6 +20,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
+import AuthHeader from "../component/AuthHeader";
 
 function Copyright() {
   return (
@@ -127,6 +128,7 @@ export default function ChangePassword() {
 
   return (
     <div>
+      <AuthHeader location="Change Password" />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
