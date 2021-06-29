@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     //alignItems: "center",
     //justifyContent: "center",
     //color: "white",
-    paddingTop: "11vh",
+    paddingTop: "130px",
   },
   result_paper: {
     padding: theme.spacing(2),

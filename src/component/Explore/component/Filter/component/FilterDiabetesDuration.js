@@ -1,4 +1,4 @@
-import React, { setState } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -6,18 +6,22 @@ import Slider from "@material-ui/core/Slider";
 import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import Switch from "@material-ui/core/Switch";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import clsx from "clsx";
+import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   slider: {
     width: "97%",
     marginLeft: "5px",
-  },
-  textfield: {
-    width: 45,
+    marginTop: "15px",
+    marginBottom: "5px",
   },
   gridContainer: {
-    width: "125%",
+    width: "100%",
   },
   gridItem: {
     width: "75%",
@@ -31,31 +35,75 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1),
   },
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: "rotate(180deg)",
+  },
+  expandBox: {
+    marginTop: "7px",
+  },
+  expendedTextfield: {
+    width: "80px",
+  },
+  expandedButton: {
+    height: "39px",
+    width: "65px",
+  },
 }));
 
 function FilterDiabetesDuration(props) {
   const classes = useStyles();
+  const [expanded, setExpanded] = useState(false);
+  const [newMin, setNewMin] = useState(props.DDMin);
+  const [newMax, setNewMax] = useState(props.DDMax);
+  const [showError, setShowError] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
   const handleDDRangeSliderChange = (event, newDDRange) => {
     props.setDDRange(newDDRange);
   };
 
   const handleMinDDInputChange = (event) => {
-    let newMinDD =
-      typeof Number(event.target.value) === "number"
-        ? Number(event.target.value)
-        : 0;
-    newMinDD = newMinDD >= props.DDMax ? props.DDMax : newMinDD;
-    props.setDDMin(newMinDD);
+    setNewMin(event.target.value);
   };
 
   const handleMaxDDInputChange = (event) => {
-    let newMaxDD =
-      typeof Number(event.target.value) === "number"
-        ? Number(event.target.value)
-        : 100;
-    newMaxDD = newMaxDD <= props.DDMin ? props.DDMin : newMaxDD;
-    props.setDDMax(newMaxDD);
+    setNewMax(event.target.value);
+  };
+
+  const handleSet = () => {
+    const numMin = Number(newMin);
+    const numMax = Number(newMax);
+    if (
+      numMin != null &&
+      numMax != null &&
+      numMin <= numMax &&
+      numMin >= 0 &&
+      numMax <= 85
+    ) {
+      props.setDDMin(numMin);
+      props.setDDMax(numMax);
+      setShowError(false);
+    } else {
+      console.log("Invalid input!");
+      setShowError(true);
+    }
+  };
+
+  const handleSwitch = (event) => {
+    props.setDDEnable(event.target.checked);
+    if (!event.target.checked) {
+      setExpanded(event.target.checked);
+    }
   };
 
   return (
@@ -77,7 +125,7 @@ function FilterDiabetesDuration(props) {
             <Box>
               <Switch
                 checked={props.DDEnable}
-                onChange={(e) => props.setDDEnable(e.target.checked)}
+                onChange={handleSwitch}
                 name="DDEnableSwitch"
                 className={classes.switch}
                 color="primary"
@@ -100,48 +148,68 @@ function FilterDiabetesDuration(props) {
         <Grid item xs={12} className={classes.gridItem}>
           <Grid
             container
-            spacing={10}
             alignItems="center"
             justify="space-between"
             className={classes.gridContainer}
           >
-            <Grid item xs={4}>
-              <TextField
-                className={classes.textfield}
-                id="min-dd-input"
-                //label="Start"
-                disabled={!props.DDEnable}
-                value={props.DDMin}
-                margin="dense"
-                onChange={handleMinDDInputChange}
-                //helperText="Years"
-                inputProps={{
-                  step: 1,
-                  min: 0,
-                  max: 85,
-                  type: "number",
-                }}
-              />
+            <Grid item>
+              <Typography variant="body1" color="textPrimary">
+                {props.DDMin}
+              </Typography>
             </Grid>
-            <Grid item xs={4}>
-              <TextField
-                className={classes.textfield}
-                id="min-dd-input"
-                //label="To"
+            <Grid item>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded,
+                })}
+                onClick={handleExpandClick}
                 disabled={!props.DDEnable}
-                value={props.DDMax}
-                margin="dense"
-                onChange={handleMaxDDInputChange}
-                //helperText="Years"
-                inputProps={{
-                  step: 1,
-                  min: 0,
-                  max: 85,
-                  type: "number",
-                }}
-              />
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </Grid>
+            <Grid item>
+              <Typography variant="body1" color="textPrimary">
+                {props.DDMax}
+              </Typography>
             </Grid>
           </Grid>
+        </Grid>
+        <Grid item xs={12} className={classes.gridItem}>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              className={classes.expandBox}
+            >
+              <TextField
+                label="From"
+                variant="outlined"
+                className={classes.expendedTextfield}
+                defaultValue={props.DDMin}
+                size="small"
+                onChange={handleMinDDInputChange}
+                error={showError}
+              />
+              <TextField
+                label="To"
+                variant="outlined"
+                className={classes.expendedTextfield}
+                defaultValue={props.DDMax}
+                size="small"
+                onChange={handleMaxDDInputChange}
+                error={showError}
+              />
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.expandedButton}
+                onClick={handleSet}
+              >
+                SET
+              </Button>
+            </Box>
+          </Collapse>
         </Grid>
       </Grid>
     </div>
