@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -64,6 +64,12 @@ function FilterHbA1c(props) {
   const [newMin, setNewMin] = useState(props.hMin);
   const [newMax, setNewMax] = useState(props.hMax);
   const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    if (!props.hEnable) {
+      setExpanded(false);
+    }
+  });
 
   const handleExpandClick = () => {
     setExpanded(!expanded);

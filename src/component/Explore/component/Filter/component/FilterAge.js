@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -63,6 +63,12 @@ function FilterAge(props) {
   const [newMin, setNewMin] = useState(props.ageMin);
   const [newMax, setNewMax] = useState(props.ageMax);
   const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    if (!props.ageEnable) {
+      setExpanded(false);
+    }
+  });
 
   const handleExpandClick = () => {
     setExpanded(!expanded);

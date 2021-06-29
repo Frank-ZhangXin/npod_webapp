@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -63,6 +63,12 @@ function FilterDiabetesDuration(props) {
   const [newMin, setNewMin] = useState(props.DDMin);
   const [newMax, setNewMax] = useState(props.DDMax);
   const [showError, setShowError] = useState(false);
+
+  useEffect(() => {
+    if (!props.DDEnable) {
+      setExpanded(false);
+    }
+  });
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
