@@ -49,7 +49,7 @@ async function pooledConnection(asyncAction) {
 // get all cases
 async function get_cases() {
   const sql =
-    "SELECT c.*, a.GADA, a.IA_2A, a.mIAA, a.ZnT8A, r.RIN, r.ratio FROM cases AS c LEFT JOIN AAB AS a ON c.case_id = a.case_id AND a.is_public = 1 LEFT JOIN RNA AS r ON c.case_id = r.case_id AND r.is_public = 1 WHERE c.is_public = 1";
+    "SELECT c.*, a.GADA, a.IA_2A, a.mIAA, a.ZnT8A, r.RIN, r.ratio, r.sample_id FROM cases AS c LEFT JOIN AAB AS a ON c.case_id = a.case_id AND a.is_public = 1 LEFT JOIN RNA AS r ON c.case_id = r.case_id AND r.is_public = 1 WHERE c.is_public = 1";
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {

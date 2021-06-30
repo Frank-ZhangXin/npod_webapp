@@ -63,15 +63,6 @@ function DonorInformation(props) {
         ? "Unavailable"
         : props.currentCase.age_years
     ),
-    // only display Gastational data when it's available
-    props.currentCase.gestational_age_weeks !== null
-      ? createData(
-          "Gestational Age (weeks)",
-          props.currentCase.gestational_age_weeks === null
-            ? "Unavailable"
-            : props.currentCase.gestational_age_weeks
-        )
-      : "",
     createData("Sex", props.currentCase.sex),
     createData("Race/Ethnicity", props.currentCase.race_ethnicity),
     createData(
@@ -110,6 +101,19 @@ function DonorInformation(props) {
     ),
   ];
 
+  if (props.currentCase.gestational_age_weeks != null) {
+    rows.splice(
+      3,
+      0,
+      createData(
+        "Gestational Age (weeks)",
+        props.currentCase.gestational_age_weeks === null
+          ? "Unavailable"
+          : props.currentCase.gestational_age_weeks
+      )
+    );
+  }
+
   const dtComent = props.currentCase["donor_type_comments"];
   const showDtComment = dtComent !== null && dtComent !== "0" ? true : false;
 
@@ -130,24 +134,20 @@ function DonorInformation(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map(
-                (row) =>
-                  // only display Gastational data when it's available
-                  row && (
-                    <TableRow key={row.name}>
-                      <TableCell component="th" scope="row">
-                        {row.name === "BMI" ? (
-                          <div>
-                            BMI (kg/m<sup>2</sup>)
-                          </div>
-                        ) : (
-                          row.name
-                        )}
-                      </TableCell>
-                      <TableCell align="right">{row.value}</TableCell>
-                    </TableRow>
-                  )
-              )}
+              {rows.map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell component="th" scope="row">
+                    {row.name === "BMI" ? (
+                      <div>
+                        BMI (kg/m<sup>2</sup>)
+                      </div>
+                    ) : (
+                      row.name
+                    )}
+                  </TableCell>
+                  <TableCell align="right">{row.value}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>

@@ -62,13 +62,18 @@ function HospitalLaboratoryPanel(props) {
         ? "Unavailable"
         : props.currentCase.infections
     ),
-    createData(
-      "SARS-CoV-2",
-      props.currentCase.SARS_COV_2_results === null
-        ? "Unavailable"
-        : props.currentCase.SARS_COV_2_results
-    ),
   ];
+
+  if (props.currentCase.SARS_COV_2_results != null) {
+    rows.push(
+      createData(
+        "SARS-CoV-2",
+        props.currentCase.SARS_COV_2_results === null
+          ? "Unavailable"
+          : props.currentCase.SARS_COV_2_results
+      )
+    );
+  }
 
   return (
     <div>

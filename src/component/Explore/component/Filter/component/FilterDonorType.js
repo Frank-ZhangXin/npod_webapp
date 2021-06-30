@@ -1,10 +1,12 @@
 import React, { setState } from "react";
 import Select from "react-select";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
+import Tooltip from "@material-ui/core/Tooltip";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 
 const useStyles = makeStyles((theme) => ({
   multiSelect: {
@@ -17,8 +19,30 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(1),
     fontWeight: "900",
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
+  helpIcon: {
+    fontSize: 18,
+    marginLeft: "3px",
+    color: "#0292FF",
+  },
+  helpText: {
+    padding: "10px",
+    textShadow: "0 0 20px white",
   },
 }));
+
+const FilterTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    color: "#000000",
+    border: "1px solid #dadde9",
+    maxWidth: "300px",
+    fontSize: 15,
+  },
+}))(Tooltip);
 
 const options = [
   { value: "No Diabetes", label: "No Diabetes" },
@@ -59,6 +83,20 @@ const options = [
 function FilterDonorType(props) {
   const classes = useStyles();
 
+  const helpText = (
+    <React.Fragment>
+      <div className={classes.helpText}>
+        Hint:
+        <br />
+        Click drop down menu to select one or more donor types of the cases.
+        <br />
+        The searching will find cases matching the selected donor types.
+        <br />
+        Leave it as default, the searching will ignore donor type.
+      </div>
+    </React.Fragment>
+  );
+
   return (
     <div>
       <Grid
@@ -70,7 +108,10 @@ function FilterDonorType(props) {
       >
         <Grid item xs={12} className={classes.gridItem}>
           <Typography variant="subtitle1" className={classes.title}>
-            Donor Type
+            Donor Type{"  "}
+            <FilterTooltip title={helpText} placement="right-start">
+              <HelpOutlineIcon className={classes.helpIcon} />
+            </FilterTooltip>
           </Typography>
         </Grid>
         <Grid item xs={12} className={classes.gridItem}>

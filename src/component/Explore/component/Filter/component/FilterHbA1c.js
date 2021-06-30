@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
@@ -12,6 +12,8 @@ import IconButton from "@material-ui/core/IconButton";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import clsx from "clsx";
 import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 
 const useStyles = makeStyles((theme) => ({
   slider: {
@@ -30,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(1),
     fontWeight: "900",
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
   },
   switch: {
     marginTop: theme.spacing(2),
@@ -55,7 +60,30 @@ const useStyles = makeStyles((theme) => ({
     height: "39px",
     width: "65px",
   },
+  helpIcon: {
+    fontSize: 18,
+    marginLeft: "3px",
+    color: "#0292FF",
+  },
+  helpIcon2: {
+    marginTop: "-10px",
+    marginBottom: "-10px",
+  },
+  helpText: {
+    padding: "10px",
+    textShadow: "0 0 20px white",
+  },
 }));
+
+const FilterTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    color: "#000000",
+    border: "1px solid #dadde9",
+    maxWidth: "420px",
+    fontSize: 15,
+  },
+}))(Tooltip);
 
 function FilterHbA1c(props) {
   const classes = useStyles();
@@ -64,6 +92,34 @@ function FilterHbA1c(props) {
   const [newMin, setNewMin] = useState(props.hMin);
   const [newMax, setNewMax] = useState(props.hMax);
   const [showError, setShowError] = useState(false);
+
+  const helpText = (
+    <React.Fragment>
+      <div className={classes.helpText}>
+        Hint:
+        <br />
+        When the switch is off (
+        <Switch color="primary" className={classes.helpIcon2} />) , the
+        searching will ignore "HbA1c".
+        <br />
+        When the switch is on (
+        <Switch checked="true" color="primary" className={classes.helpIcon2} />)
+        , the searching will find cases matching the given "HbA1c" range.
+        <br />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          <span>The expand button (</span> <ExpandMoreIcon />
+          <span>) is availble when the switch is on,</span> click it to input
+          specific number.
+        </div>
+      </div>
+    </React.Fragment>
+  );
 
   useEffect(() => {
     if (!props.hEnable) {
@@ -126,7 +182,10 @@ function FilterHbA1c(props) {
           <Box display="flex">
             <Box flexGrow={1}>
               <Typography variant="subtitle1" className={classes.title}>
-                HbA1c
+                HbA1c{"  "}
+                <FilterTooltip title={helpText} placement="right-start">
+                  <HelpOutlineIcon className={classes.helpIcon} />
+                </FilterTooltip>
               </Typography>
             </Box>
             <Box>

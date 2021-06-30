@@ -1,4 +1,5 @@
 import React, { setState } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import FilterAge from "./component/FilterAge";
 import FilterGender from "./component/FilterGender";
@@ -13,9 +14,16 @@ import FilterInsulitis from "./component/FilterInsulitis";
 import FilterCPeptide from "./component/FilterCPeptide";
 import FilterTitle from "./component/FilterTitle";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    paddingBottom: theme.spacing(2),
+  },
+}));
+
 export default function Filter() {
+  const classes = useStyles();
   return (
-    <div>
+    <div className={classes.root}>
       <FilterTitle />
       <FilterDonorType />
       <FilterDiabetesDuration />

@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     //color: "white",
     paddingTop: "130px",
   },
+  filter_paper: {
+    marginBottom: "30px",
+  },
   result_paper: {
     padding: theme.spacing(2),
     position: "sticky",
@@ -64,6 +67,7 @@ export default function Explore() {
               style={{
                 width: "100%",
               }}
+              className={classes.filter_paper}
             >
               <Filter />
             </Paper>

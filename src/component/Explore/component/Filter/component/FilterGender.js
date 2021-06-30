@@ -1,5 +1,5 @@
 import React, { setState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -8,6 +8,8 @@ import Box from "@material-ui/core/Box";
 import Switch from "@material-ui/core/Switch";
 import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
+import Tooltip from "@material-ui/core/Tooltip";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 
 const useStyles = makeStyles((theme) => ({
   formGroup: {
@@ -24,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(1),
     fontWeight: "900",
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
   },
   switch: {
     marginTop: theme.spacing(2),
@@ -32,10 +37,51 @@ const useStyles = makeStyles((theme) => ({
   boxContainer: {
     width: "100%",
   },
+  helpIcon: {
+    fontSize: 18,
+    marginLeft: "3px",
+    color: "#0292FF",
+  },
+  helpIcon2: {
+    marginTop: "-10px",
+    marginBottom: "-10px",
+  },
+  helpText: {
+    padding: "10px",
+    textShadow: "0 0 20px white",
+  },
 }));
+
+const FilterTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    color: "#000000",
+    border: "1px solid #dadde9",
+    maxWidth: "420px",
+    fontSize: 15,
+  },
+}))(Tooltip);
 
 function FilterGender(props) {
   const classes = useStyles();
+
+  const helpText = (
+    <React.Fragment>
+      <div className={classes.helpText}>
+        Hint:
+        <br />
+        When the switch is off (
+        <Switch color="primary" className={classes.helpIcon2} />) , the
+        searching will ignore "Sex".
+        <br />
+        When the switch is on (
+        <Switch checked="true" color="primary" className={classes.helpIcon2} />)
+        , the searching will find cases matching the given "sex".
+        <br />
+      </div>
+    </React.Fragment>
+  );
+
   return (
     <div>
       <Grid
@@ -49,7 +95,10 @@ function FilterGender(props) {
           <Box display="flex">
             <Box flexGrow={1}>
               <Typography variant="subtitle1" className={classes.title}>
-                Sex
+                Sex{"  "}
+                <FilterTooltip title={helpText} placement="right-start">
+                  <HelpOutlineIcon className={classes.helpIcon} />
+                </FilterTooltip>
               </Typography>
             </Box>
             <Box>
