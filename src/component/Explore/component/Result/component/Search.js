@@ -152,13 +152,37 @@ function Search(props) {
         return false;
       })
       // Duration of Diabetes
-      .filter(
-        (donor) =>
-          (donor.diabetes_hx_years !== null &&
+      .filter((donor) => {
+        if (props.DDEnable === false) {
+          return true;
+          // Donor type specified
+        } else if (
+          donor.donor_type_id !== null &&
+          props.selectedDonorType.length > 0
+        ) {
+          const typeName = props.donorTypesMap[donor.donor_type_id];
+          // Diabetes cases
+          if (
+            typeName.includes("Diabetes") &&
+            !typeName.includes("No Diabetes")
+          ) {
+            return (
+              donor.diabetes_hx_years !== null &&
+              donor.diabetes_hx_years >= props.DDMin &&
+              donor.diabetes_hx_years <= props.DDMax
+            );
+          } else {
+            return true;
+          }
+          // Donor type not specified
+        } else {
+          return (
+            donor.diabetes_hx_years !== null &&
             donor.diabetes_hx_years >= props.DDMin &&
-            donor.diabetes_hx_years <= props.DDMax) ||
-          props.DDEnable === false
-      )
+            donor.diabetes_hx_years <= props.DDMax
+          );
+        }
+      })
       // Hb1A1c
       .filter(
         (donor) =>
