@@ -6,9 +6,7 @@ import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
-import CaseProcessing from "./component/CaseProcessing";
-import TissueQuality from "./component/TissueQuality";
-import TissueQualityImageViewer from "./component/TissueQualityImageViewer";
+import FunctionalAssayImageViewer from "./component/FunctionalAssayImageViewer";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -26,25 +24,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ClinicalHistory(props) {
+function FunctionalAssay(props) {
   const classes = useStyles();
 
   return (
     <div>
       <Grid container spacing={2} justify={"center"} alignItems={"stretch"}>
-        <Grid item xs={12} sm={3}>
-          <Paper elevation={3} className={classes.paper}>
-            <CaseProcessing />
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Paper elevation={3} className={classes.paper}>
-            <TissueQuality />
-          </Paper>
-        </Grid>
         <Grid item xs={12} sm={6}>
           <Paper elevation={3} className={classes.paper}>
-            <TissueQualityImageViewer />
+            <FunctionalAssayImageViewer />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Paper elevation={3} className={classes.paper}>
+            placeholder
+          </Paper>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Paper elevation={3} className={classes.paper}>
+            placeholder
           </Paper>
         </Grid>
       </Grid>
@@ -60,4 +58,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(ClinicalHistory);
+export default connect(mapStateToProps, null)(FunctionalAssay);

@@ -131,12 +131,12 @@ export default function ForgotPassword() {
       setShowSuccess(true);
       const timer = setTimeout(() => {
         setShowSuccess(false);
-      }, 2000);
+      }, 5000);
     } else if (type === "fail") {
       setShowFail(true);
       const timer = setTimeout(() => {
         setShowFail(false);
-      }, 2000);
+      }, 5000);
     }
   };
 

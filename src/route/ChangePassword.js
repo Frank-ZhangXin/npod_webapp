@@ -104,7 +104,7 @@ export default function ChangePassword() {
       });
       console.log("Change password response: ", response);
       setSuccessMsg("Password change is successful!");
-      showAlertHandler("sucess");
+      showAlertHandler("success");
     } catch (error) {
       console.log("Change password response: ", error);
       setErrorMsg(error.message);
@@ -117,12 +117,12 @@ export default function ChangePassword() {
       setShowSuccess(true);
       const timer = setTimeout(() => {
         setShowSuccess(false);
-      }, 2000);
+      }, 5000);
     } else if (type === "fail") {
       setShowFail(true);
       const timer = setTimeout(() => {
         setShowFail(false);
-      }, 2000);
+      }, 5000);
     }
   };
 
