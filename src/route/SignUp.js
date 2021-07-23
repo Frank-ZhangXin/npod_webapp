@@ -170,7 +170,7 @@ export default function SignUp() {
       setShowFail(true);
       const timer = setTimeout(() => {
         setShowFail(false);
-      }, 2000);
+      }, 5000);
     }
   };
 

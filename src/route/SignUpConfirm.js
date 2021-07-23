@@ -106,12 +106,12 @@ export default function SignUpConfirm(props) {
       setShowFail(true);
       const timer = setTimeout(() => {
         setShowFail(false);
-      }, 2000);
+      }, 5000);
     } else if (type == "success") {
       setShowSuccess(true);
       const timer = setTimeout(() => {
         setShowSuccess(false);
-      }, 2000);
+      }, 5000);
     }
   };
 

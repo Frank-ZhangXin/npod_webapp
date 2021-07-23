@@ -8,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import DonorSummary from "./component/DonorSummary/DonorSummary";
 import ClinicalHistory from "./component/ClinicalHistory/ClinicalHistory";
 import CaseProcessingAndTissueQuality from "./component/CaseProcessingAndTissueQuality/CaseProcessingAndTissueQuality";
+import FunctionalAssay from "./component/FunctionalAssay/FunctionalAssay";
 import Histopathology from "./component/Histopathology/Histopathology";
 
 function TabPanel(props) {
@@ -92,7 +93,7 @@ export default function TabView() {
             <CaseProcessingAndTissueQuality />
           </TabPanel>
           <TabPanel value={value} index={3}>
-            placeholder
+            <FunctionalAssay />
           </TabPanel>
           <TabPanel value={value} index={4}>
             <Histopathology />
