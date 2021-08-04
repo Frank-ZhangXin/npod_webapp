@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const handleSumbit = async function (event) {};
 
-export default function CreateForm1() {
+export default function HLA_step7() {
   const classes = useStyles();
 
   return (

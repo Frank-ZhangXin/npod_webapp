@@ -42,9 +42,9 @@ function TissueQuality(props) {
     ),
     createData(
       "Sample ID",
-      props.currentCase.sample_id === null
+      props.currentCase.sample_type_id === null
         ? "Unavailable"
-        : props.currentCase.sample_id
+        : props.currentCase.sample_type_id
     ),
     createData(
       "260/280",

@@ -16,7 +16,6 @@ import ForgotPassword from "./route/ForgotPassword";
 import ChangePassword from "./route/ChangePassword";
 import ExplorePage from "./route/ExplorePage";
 import AdminPage from "./route/AdminPage";
-import Admin from "./component/Admin";
 
 Amplify.configure({
   ...config,
