@@ -3,8 +3,6 @@ import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Viewer from "react-viewer";
-import ReactDOM from "react-dom";
-import image2 from "../../../../../assets/tempCaseImage/6430/Tissue Quality/6430 live slice 488-live 568-dead 647-reflection.lif_Series003Snapshot all6_DP.jpg";
 
 const useStyles = makeStyles((theme) => ({
   imageList: {
@@ -37,7 +35,7 @@ function TissueQualityImageViewer(props) {
     setImages(
       importAll(
         require.context(
-          "../../../../../assets/tempCaseImage/6430/Tissue Quality/",
+          "../../../../../assets/tempCaseImage/6546/Tissue Quality/",
           false,
           /\.(png|jpe?g|svg)$/
         )
@@ -47,7 +45,7 @@ function TissueQualityImageViewer(props) {
     function importAll(r) {
       return r.keys().map((r) => {
         const image =
-          require("../../../../../assets/tempCaseImage/6430/Tissue Quality/" +
+          require("../../../../../assets/tempCaseImage/6546/Tissue Quality/" +
             r.slice(2)).default;
         return { src: image };
       });
