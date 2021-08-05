@@ -8,6 +8,8 @@ const useStyles = makeStyles((theme) => ({
   imageList: {
     display: "flex",
     justifyContent: "flex-start",
+    flexWrap: "wrap",
+    padding: "4px",
   },
   imageItem: {
     height: "150px",
