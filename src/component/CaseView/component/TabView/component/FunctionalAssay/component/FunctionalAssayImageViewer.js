@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "flex-start",
     flexWrap: "wrap",
-    padding: "2px",
+    padding: "4px",
   },
   imageItem: {
     height: "150px",
@@ -24,10 +24,10 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   viewer: {
-    height: "50vh",
+    height: "55vh",
   },
   viewerContainer: {
-    height: "50vh",
+    height: "55vh",
     padding: "2px",
   },
 }));
