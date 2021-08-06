@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   viewer: {
-    height: "50vh",
+    height: "55vh",
   },
   viewerContainer: {
-    height: "50vh",
+    height: "55vh",
     padding: "2px",
   },
 }));
