@@ -1,16 +1,16 @@
 const mysql = require("mysql");
 const dotenv = require("dotenv").config();
-const { dataPreProcess } = require("./dataPreProcess");
+const writeColumnMap = require("./updateColumnMap");
 
 var pool = mysql.createPool({
   connectLimit: 10,
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  host: process.env.WRITE_DB_HOST,
+  user: process.env.WRITE_DB_USER,
+  password: process.env.WRITE_DB_PASS,
+  database: process.env.WRITE_DB_NAME,
 });
 
-async function testPool() {
+async function testPoolForCreate() {
   const newConnection = await new Promise((resolve, reject) => {
     pool.getConnection((error, connection) => {
       if (error) {
@@ -24,7 +24,7 @@ async function testPool() {
     return newConnection;
   } finally {
     newConnection.release();
-    console.log("DB connection was released.");
+    console.log("Write DB connection was released.");
   }
 }
 
@@ -42,23 +42,21 @@ async function pooledConnection(asyncAction) {
     return await asyncAction(newConnection);
   } finally {
     newConnection.release();
-    console.log("DB connection was released.");
+    console.log("Write DB connection was released.");
   }
 }
 
-// get all cases
-async function get_cases() {
-  const sql =
-    "SELECT c.*, a.GADA, a.IA_2A, a.mIAA, a.ZnT8A, r.RIN, r.ratio, r.sample_type_id FROM cases AS c LEFT JOIN AAB AS a ON c.case_id = a.case_id AND a.is_public = 1 LEFT JOIN RNA AS r ON c.case_id = r.case_id AND r.is_public = 1 WHERE c.is_public = 1";
+// create a new case
+async function create_case() {
+  const sql = "INSERT INTO `cases`(case_id) VALUES('9999')";
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
         if (error) {
           reject(error);
         } else {
-          dataPreProcess(result);
           console.log(
-            `[Fetch cases] Totally ${result.length} cases were fetched.`
+            `[Write Database][Insert the case] The case 9999 was inserted.`
           );
           resolve(result);
         }
@@ -68,9 +66,9 @@ async function get_cases() {
   return await pooledConnection(asyncAction);
 }
 
-// get donor_types
-async function get_donor_types() {
-  const sql = "SELECT * FROM `donor_types`";
+// get test case
+async function get_test_case() {
+  const sql = "SELECT * FROM `cases` WHERE `case_id`=9999";
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
@@ -78,7 +76,7 @@ async function get_donor_types() {
           reject(error);
         } else {
           console.log(
-            `[Fetch donortypes] Totally ${result.length} donor type records were fetched.`
+            `[Write Database][Insert the case] The case 9999 was inserted.`
           );
           resolve(result);
         }
@@ -88,38 +86,17 @@ async function get_donor_types() {
   return await pooledConnection(asyncAction);
 }
 
-// get cause_of_death
-async function get_cause_of_death() {
-  const sql = "SELECT * FROM `cause_of_death`";
+// get the object case
+async function get_object_case(case_id) {
+  console.log("case id is " + case_id);
+  const sql = `SELECT COUNT(1) FROM cases WHERE case_id=${case_id}`;
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
         if (error) {
           reject(error);
         } else {
-          console.log(
-            `[Fetch causeofdeath] Totally ${result.length} cause of death records were fetched.`
-          );
-          resolve(result);
-        }
-      });
-    });
-  };
-  return await pooledConnection(asyncAction);
-}
-
-// get HLA
-async function get_HLA() {
-  const sql = "SELECT * FROM `HLA`";
-  const asyncAction = async (newConnection) => {
-    return await new Promise((resolve, reject) => {
-      newConnection.query(sql, (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          console.log(
-            `[Fetch HLA] Totally ${result.length} HLA records were fetched.`
-          );
+          console.log(`[Fetch cases] Test case was fetched.`);
           resolve(result);
         }
       });
@@ -129,9 +106,8 @@ async function get_HLA() {
 }
 
 module.exports = {
-  testPool: testPool,
-  get_cases: get_cases,
-  get_donor_types: get_donor_types,
-  get_cause_of_death: get_cause_of_death,
-  get_HLA: get_HLA,
+  testPoolForCreate: testPoolForCreate,
+  create_case: create_case,
+  get_test_case: get_test_case,
+  get_object_case: get_object_case,
 };

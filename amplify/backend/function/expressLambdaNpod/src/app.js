@@ -10,16 +10,27 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var awsServerlessExpressMiddleware = require("aws-serverless-express/middleware");
 var {
-  testPool,
+  testPoolForRead,
   get_cases,
   get_donor_types,
   get_cause_of_death,
   get_HLA,
-} = require("./service/database");
+} = require("./service/readDatabase");
+
+var {
+  testPoolForCreate,
+  create_case,
+  get_test_case,
+  get_object_case,
+} = require("./service/createDatabase");
+
+var { testPoolForUpdate, update_case } = require("./service/updateDatabase");
+
+var { testPoolForDelete, delete_case } = require("./service/deleteDatabase");
 
 // declare a new express app
 var app = express();
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(awsServerlessExpressMiddleware.eventContext());
 
 // Enable CORS for all methods
@@ -49,7 +60,7 @@ app.get("/db/debug_db", function (req, res) {
 // test SQL pool connection
 app.get("/db/test_db", function (req, res) {
   console.log("Testing database connection...");
-  testPool()
+  testPoolForRead()
     .then(() => {
       console.log("Database connection is successful!");
       res.status(200).json({ Database_connection: true });
@@ -88,43 +99,96 @@ app.get("/db/HLA", function (req, res) {
  * Example post method *
  ****************************/
 
-app.post("/item", function (req, res) {
+app.post("/db/test_db", function (req, res) {
   // Add your code here
-  res.json({ success: "post call succeed!", url: req.url, body: req.body });
+  console.log("Testing database connection...");
+  testPoolForCreate()
+    .then(() => {
+      console.log("Database connection is successful!");
+      res.status(200).json({ Database_connection: true });
+    })
+    .catch(() => {
+      console.log("Error: Database connection is failed!");
+      res.status(500).json({ Database_connection: false });
+    });
 });
 
-app.post("/item/*", function (req, res) {
+app.post("/db/create_case", function (req, res) {
   // Add your code here
-  res.json({ success: "post call succeed!", url: req.url, body: req.body });
+  console.log("inserting cases.");
+  create_case().then((promisedRes) => res.send(promisedRes));
+});
+
+// get test case
+app.post("/db/get_test_case", function (req, res) {
+  console.log("fetching cases.");
+  get_test_case().then((promisedRes) => res.send(promisedRes));
+});
+
+// get object case
+app.post("/db/get_object_case", function (req, res) {
+  console.log("Getting object case.");
+  console.log(req.body);
+  get_object_case(req.body["case_id"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
 });
 
 /****************************
  * Example put method *
  ****************************/
 
-app.put("/item", function (req, res) {
+app.put("/db/update_case", function (req, res) {
   // Add your code here
-  res.json({ success: "put call succeed!", url: req.url, body: req.body });
+  console.log("Updating case.");
+  console.log(req.body);
+  update_case(
+    req.body["case_id"],
+    req.body["update_column"],
+    req.body["update_value"]
+  ).then((promisedRes) => res.send(promisedRes));
 });
 
-app.put("/item/*", function (req, res) {
+app.put("/db/test_db", function (req, res) {
   // Add your code here
-  res.json({ success: "put call succeed!", url: req.url, body: req.body });
+  console.log("Testing database connection...");
+  testPoolForUpdate()
+    .then(() => {
+      console.log("Database connection is successful!");
+      res.status(200).json({ Database_connection: true });
+    })
+    .catch(() => {
+      console.log("Error: Database connection is failed!");
+      res.status(500).json({ Database_connection: false });
+    });
 });
 
 /****************************
  * Example delete method *
  ****************************/
 
-app.delete("/item", function (req, res) {
-  // Add your code here
-  res.json({ success: "delete call succeed!", url: req.url });
+app.delete("/db/delete_case", function (req, res) {
+  console.log("deleting cases.");
+  delete_case().then((promisedRes) => res.send(promisedRes));
 });
 
-app.delete("/item/*", function (req, res) {
+app.delete("/db/test_db", function (req, res) {
   // Add your code here
-  res.json({ success: "delete call succeed!", url: req.url });
+  console.log("Testing database connection...");
+  testPoolForDelete()
+    .then(() => {
+      console.log("Database connection is successful!");
+      res.status(200).json({ Database_connection: true });
+    })
+    .catch(() => {
+      console.log("Error: Database connection is failed!");
+      res.status(500).json({ Database_connection: false });
+    });
 });
+
+/****************************
+ * Start the app *
+ ****************************/
 
 app.listen(3000, function () {
   console.log("App started");
