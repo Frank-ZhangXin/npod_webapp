@@ -98,6 +98,13 @@ app.get("/db/HLA", function (req, res) {
 /****************************
  * Example post method *
  ****************************/
+// test db credential
+app.post("/db/debug_db", function (req, res) {
+  res.json({
+    success: `write_db_host: ${process.env.WRITE_DB_HOST}, write_db_user: ${process.env.WRITE_DB_USER}, write_db_password: ${process.env.WRITE_DB_PASS}, write_db_name: ${process.env.WRITE_DB_NAME}`,
+    url: req.url,
+  });
+});
 
 app.post("/db/test_db", function (req, res) {
   // Add your code here
