@@ -1,38 +1,43 @@
 {
-  "paths": [
-    {
-      "name": "/db",
-      "lambdaFunction": "expressLambdaNpod",
-      "privacy": {
-        "private": true,
-        "auth": [
-          "/GET"
-        ]
-      },
-      "policyResourceName": "/db"
-    }
-  ],
-  "resourceName": "dbapi",
-  "apiName": "dbapi",
-  "functionArns": [
-    {
-      "lambdaFunction": "expressLambdaNpod"
-    }
-  ],
-  "privacy": {
-    "auth": 1,
-    "unauth": 0,
-    "authRoleName": "amplify-amplifynpod-dev-163022-authRole",
-    "unAuthRoleName": "amplify-amplifynpod-dev-163022-unauthRole"
-  },
-  "dependsOn": [
-    {
-      "category": "function",
-      "resourceName": "expressLambdaNpod",
-      "attributes": [
-        "Name",
-        "Arn"
-      ]
-    }
-  ]
+    "paths": [
+        {
+            "name": "/db",
+            "lambdaFunction": "expressLambdaNpod",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/db"
+        }
+    ],
+    "resourceName": "dbapi",
+    "apiName": "dbapi",
+    "functionArns": [
+        {
+            "lambdaFunction": "expressLambdaNpod"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "amplify-amplifynpod-dev-163022-authRole",
+        "unAuthRoleName": "amplify-amplifynpod-dev-163022-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "expressLambdaNpod",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ],
+    "uuid": "b74b01ec"
 }

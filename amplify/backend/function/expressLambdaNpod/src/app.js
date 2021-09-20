@@ -22,6 +22,8 @@ var {
   create_case,
   get_test_case,
   get_object_case,
+  get_case_column,
+  check_foreign_key,
 } = require("./service/createDatabase");
 
 var { testPoolForUpdate, update_case } = require("./service/updateDatabase");
@@ -123,7 +125,7 @@ app.post("/db/test_db", function (req, res) {
 app.post("/db/create_case", function (req, res) {
   // Add your code here
   console.log("inserting cases.");
-  create_case().then((promisedRes) => res.send(promisedRes));
+  create_case(req.body["case_id"]).then((promisedRes) => res.send(promisedRes));
 });
 
 // get test case
@@ -141,6 +143,26 @@ app.post("/db/get_object_case", function (req, res) {
   );
 });
 
+// get object case column
+app.post("/db/get_object_case_column", function (req, res) {
+  console.log("Getting object case.");
+  console.log(req.body);
+  get_case_column(req.body["case_id"], req.body["columns"]).then(
+    (promisedRes) => res.send(promisedRes)
+  );
+});
+
+// check foreigh key
+app.post("/db/check_foreign_key", function (req, res) {
+  console.log("Checking foreign key...");
+  console.log(req.body);
+  check_foreign_key(
+    req.body["table_name"],
+    req.body["foreign_key"],
+    req.body["foreign_key_value"]
+  ).then((promisedRes) => res.send(promisedRes));
+});
+
 /****************************
  * Example put method *
  ****************************/
@@ -151,8 +173,8 @@ app.put("/db/update_case", function (req, res) {
   console.log(req.body);
   update_case(
     req.body["case_id"],
-    req.body["update_column"],
-    req.body["update_value"]
+    req.body["update_columns"],
+    req.body["update_values"]
   ).then((promisedRes) => res.send(promisedRes));
 });
 
@@ -176,7 +198,7 @@ app.put("/db/test_db", function (req, res) {
 
 app.delete("/db/delete_case", function (req, res) {
   console.log("deleting cases.");
-  delete_case().then((promisedRes) => res.send(promisedRes));
+  delete_case(req.body["case_id"]).then((promisedRes) => res.send(promisedRes));
 });
 
 app.delete("/db/test_db", function (req, res) {

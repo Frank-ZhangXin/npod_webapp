@@ -7,11 +7,25 @@ import { Provider } from "react-redux";
 import { store, persistedStore } from "./Redux/store";
 import { PersistGate } from "redux-persist/integration/react";
 
+// Material UI workaround, this will be patched when MUI 5.0 release.
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { unstable_createMuiStrictModeTheme } from "@material-ui/core";
+// ...
+const createTheme =
+  process.env.NODE_ENV === "production"
+    ? createMuiTheme
+    : unstable_createMuiStrictModeTheme;
+const theme = createTheme({
+  // ...
+});
+
 ReactDOM.render(
   <Provider store={store}>
     <React.StrictMode>
       {/* <PersistGate persistor={persistedStore}> */}
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
       {/* </PersistGate> */}
     </React.StrictMode>
   </Provider>,

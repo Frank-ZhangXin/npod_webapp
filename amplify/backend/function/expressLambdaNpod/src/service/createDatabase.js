@@ -47,8 +47,8 @@ async function pooledConnection(asyncAction) {
 }
 
 // create a new case
-async function create_case() {
-  const sql = "INSERT INTO `cases`(case_id) VALUES('9999')";
+async function create_case(case_id) {
+  const sql = `INSERT INTO cases(case_id) VALUES('${case_id}')`;
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
@@ -56,7 +56,7 @@ async function create_case() {
           reject(error);
         } else {
           console.log(
-            `[Write Database][Insert the case] The case 9999 was inserted.`
+            `[Write Database][Insert the case] The case ${case_id} was inserted.`
           );
           resolve(result);
         }
@@ -89,7 +89,7 @@ async function get_test_case() {
 // get the object case
 async function get_object_case(case_id) {
   console.log("case id is " + case_id);
-  const sql = `SELECT COUNT(1) FROM cases WHERE case_id=${case_id}`;
+  const sql = `SELECT COUNT(1) FROM cases WHERE case_id='${case_id}'`;
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
@@ -105,9 +105,60 @@ async function get_object_case(case_id) {
   return await pooledConnection(asyncAction);
 }
 
+async function get_case_column(case_id, columns) {
+  let columnStr = "";
+  for (let i = 0; i < columns.length; i++) {
+    if (i === 0) {
+      columnStr = columns[i];
+    } else {
+      columnStr = columnStr + "," + columns[i];
+    }
+  }
+  //console.log(columnStr);
+  const sql = `SELECT ${columnStr} FROM cases WHERE case_id='${case_id}'`;
+  console.log("sql: " + sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch case column] Case ${case_id} column ${columnStr} was fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+async function check_foreign_key(table_name, foreign_key, foreign_key_value) {
+  const sql = `SELECT * FROM ${table_name} WHERE ${foreign_key}='${foreign_key_value}'`;
+  console.log("sql: " + sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Check Foreign Key] Table ${table_name} column ${foreign_key} was fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForCreate: testPoolForCreate,
   create_case: create_case,
   get_test_case: get_test_case,
   get_object_case: get_object_case,
+  get_case_column: get_case_column,
+  check_foreign_key: check_foreign_key,
 };

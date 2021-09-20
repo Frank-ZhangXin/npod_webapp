@@ -1,4 +1,4 @@
-import React, { setState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Header from "../Header";
 import Container from "@material-ui/core/Container";
@@ -10,6 +10,7 @@ import StepContent from "@material-ui/core/StepContent";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import CreateCase_step0 from "./component/CreateCase_step0";
 import CaseIdentificationAndQC_step1 from "./component/CaseIdentificationAndQC_step1";
 import CaseProcessing_step2 from "./component/CaseProcessing_step2";
 import DemographicsAndTimeline_step3 from "./component/DemographicsAndTimeline_step3";
@@ -40,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 
 function getSteps() {
   return [
+    "Create a new case / Update an existing case",
     "Case Identification and QC",
     "Case Processing",
     "Demographics and Timeline",
@@ -51,32 +53,84 @@ function getSteps() {
   ];
 }
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <CaseIdentificationAndQC_step1 />;
-    case 1:
-      return <CaseProcessing_step2 />;
-    case 2:
-      return <DemographicsAndTimeline_step3 />;
-    case 3:
-      return <ClinicalHistoryAndMedSoc_step4 />;
-    case 4:
-      return <HospitalLabs_step5 />;
-    case 5:
-      return <AABCpeptideHistopathology_step6 />;
-    case 6:
-      return <HLA_step7 />;
-    default:
-      return "Unknown step";
-  }
-}
-
 export default function Admin() {
   const classes = useStyles();
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState({});
+  const [activeStep, setActiveStep] = useState(0);
+  const [completed, setCompleted] = useState({});
   const steps = getSteps();
+
+  const [caseId, setCaseId] = useState(null);
+  const [exist, setExist] = useState(false);
+  const [create, setCreate] = useState(false);
+  const [update, setUpdate] = useState(false);
+  const [changed, setChanged] = useState(false);
+  const [accept, setAccept] = useState(false);
+  const [update1, setUpdate1] = useState(false);
+  const [accept1, setAccept1] = useState(false);
+  const [update2, setUpdate2] = useState(false);
+  const [accept2, setAccept2] = useState(false);
+
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return (
+          <div>
+            <CreateCase_step0
+              setCaseId={setCaseId}
+              exist
+              setExist={setExist}
+              create={create}
+              update={update}
+              changed={changed}
+              setChanged={setChanged}
+              setAccept={setAccept}
+            />
+          </div>
+        );
+      case 1:
+        return (
+          <CaseIdentificationAndQC_step1
+            caseId={caseId}
+            update={update1}
+            changed={changed}
+            setAccept={setAccept1}
+            setChanged={setChanged}
+          />
+        );
+      case 2:
+        return (
+          <CaseProcessing_step2
+            caseId={caseId}
+            update={update2}
+            accept={accept2}
+            setChanged={setChanged}
+          />
+        );
+      case 3:
+        return <DemographicsAndTimeline_step3 />;
+      case 4:
+        return <ClinicalHistoryAndMedSoc_step4 />;
+      case 5:
+        return <HospitalLabs_step5 />;
+      case 6:
+        return <AABCpeptideHistopathology_step6 />;
+      case 7:
+        return <HLA_step7 />;
+      default:
+        return "Unknown step";
+    }
+  }
+
+  const resetStepState = () => {
+    setAccept(false);
+    setAccept1(false);
+    setAccept2(false);
+    setCreate(false);
+    setChanged(false);
+    setUpdate(false);
+    setUpdate1(false);
+    setUpdate2(false);
+  };
 
   const totalSteps = () => {
     return steps.length;
@@ -94,26 +148,92 @@ export default function Admin() {
     return completedSteps() === totalSteps();
   };
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  const handleSumbit = (step) => {
+    switch (step) {
+      case 0:
+        return;
+      default:
+        return false;
+    }
   };
 
-  const handleNext1 = () => {
-    const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-          // find the first step that has been completed
-          steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
-    setActiveStep(newActiveStep);
+  const handleNext = () => {
+    if (activeStep === 0) {
+      if (accept) {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setCreate(false);
+        //setUpdate(false);
+        setUpdate1(false);
+        setAccept(false);
+        setAccept1(false);
+        setChanged(false);
+      }
+    } else {
+      console.log("case 1 next was clicked.");
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setUpdate1(false);
+      setAccept1(false);
+      setChanged(false);
+    }
+
+    // switch (activeStep) {
+    //   case 0:
+    //     if (accept) {
+    //       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    //       setCreate(false);
+    //       //setUpdate(false);
+    //       setUpdate1(false);
+    //       setAccept(false);
+    //       setAccept1(false);
+    //       setChanged(false);
+    //     }
+    //   case 1:
+    //     console.log("case 1 next was clicked.");
+    //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    //     setUpdate1(false);
+    //     setAccept1(false);
+    //     setChanged(false);
+    //   default:
+    //     return;
+    // }
+  };
+
+  const handleCreate = () => {
+    setCreate(true);
+    setChanged(false);
+  };
+
+  const handleUpdate = () => {
+    switch (activeStep) {
+      case 0:
+        setUpdate(true);
+      case 1:
+        setUpdate1(true);
+    }
+
+    setChanged(false);
   };
 
   const handleBack = () => {
+    setCreate(false);
+    setUpdate1(false);
+    setAccept(false);
+    if (activeStep - 1 === 0) {
+      setUpdate(false);
+    }
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
   const handleStep = (step) => () => {
-    setActiveStep(step);
+    if (activeStep !== 0) {
+      setCreate(false);
+      setUpdate1(false);
+      setAccept(false);
+      setActiveStep(step);
+    }
+    if (step === 0) {
+      setUpdate(false);
+    }
   };
 
   const handleComplete = () => {
@@ -148,23 +268,44 @@ export default function Admin() {
                   {label}
                 </StepButton>
                 <StepContent>
-                  <Typography>{getStepContent(index)}</Typography>
+                  {getStepContent(index)}
                   <div className={classes.actionsContainer}>
                     <div>
+                      {activeStep !== 0 ? (
+                        <Button
+                          disabled={activeStep === 0}
+                          onClick={handleBack}
+                          className={classes.button}
+                        >
+                          Back
+                        </Button>
+                      ) : null}
+
                       <Button
-                        disabled={activeStep === 0}
-                        onClick={handleBack}
-                        className={classes.button}
-                      >
-                        Back
-                      </Button>
-                      <Button
+                        disabled={update === false}
                         variant="contained"
                         color="primary"
                         onClick={handleNext}
                         className={classes.button}
                       >
                         {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                      </Button>
+                      {activeStep === 0 ? (
+                        <Button
+                          disabled={exist === true}
+                          onClick={handleCreate}
+                          className={classes.button}
+                        >
+                          Create
+                        </Button>
+                      ) : null}
+
+                      <Button
+                        disabled={exist === false}
+                        onClick={handleUpdate}
+                        className={classes.button}
+                      >
+                        Update
                       </Button>
                     </div>
                   </div>
@@ -182,58 +323,6 @@ export default function Admin() {
               </Button>
             </Paper>
           )}
-          {/* <div>
-            {allStepsCompleted() ? (
-              <div>
-                <Typography className={classes.instructions}>
-                  All steps completed - you&apos;re finished
-                </Typography>
-                <Button onClick={handleReset}>Reset</Button>
-              </div>
-            ) : (
-              <div>
-                <Typography className={classes.instructions}>
-                  {getStepContent(activeStep)}
-                </Typography>
-                <div>
-                  <Button
-                    disabled={activeStep === 0}
-                    onClick={handleBack}
-                    className={classes.button}
-                  >
-                    Back
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleNext}
-                    className={classes.button}
-                  >
-                    Next
-                  </Button>
-                  {activeStep !== steps.length &&
-                    (completed[activeStep] ? (
-                      <Typography
-                        variant="caption"
-                        className={classes.completed}
-                      >
-                        Step {activeStep + 1} already completed
-                      </Typography>
-                    ) : (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleComplete}
-                      >
-                        {completedSteps() === totalSteps() - 1
-                          ? "Finish"
-                          : "Complete Step"}
-                      </Button>
-                    ))}
-                </div>
-              </div>
-            )}
-          </div> */}
         </Container>
       </div>
     </div>
