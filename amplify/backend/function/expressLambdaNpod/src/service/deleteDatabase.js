@@ -47,8 +47,9 @@ async function pooledConnection(asyncAction) {
 }
 
 // delete id:9999 case
-async function delete_case() {
-  const sql = "DELETE FROM `cases` WHERE `case_id`='9999'";
+async function delete_case(case_id) {
+  const sql = `DELETE FROM cases WHERE case_id=${case_id}`;
+  console.log("sql is", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
@@ -56,7 +57,7 @@ async function delete_case() {
           reject(error);
         } else {
           console.log(
-            `[Write Database][Delete the case] The case 9999 was fetched.`
+            `[Write Database][Delete the case] The case ${case_id} was deleted.`
           );
           resolve(result);
         }

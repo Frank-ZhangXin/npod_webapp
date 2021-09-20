@@ -130,7 +130,7 @@ async function get_HLA() {
 
 // get the object case
 async function get_object_case(case_id) {
-  const sql = `SELECT * FROM cases WHERE case_id=${case_id}`;
+  const sql = `SELECT * FROM cases WHERE case_id='${case_id}'`;
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {

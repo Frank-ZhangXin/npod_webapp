@@ -47,8 +47,26 @@ async function pooledConnection(asyncAction) {
 }
 
 // update a case
-async function update_case(case_id, update_column, update_value) {
-  const sql = `UPDATE cases SET ${update_column}=${update_value} WHERE case_id=${case_id}`;
+async function update_case(case_id, update_columns, update_values) {
+  let updateStr = "";
+  for (let i = 0; i < update_columns.length; i++) {
+    let updateValue = update_values[i];
+    if (update_values[i] === "") {
+      updateValue = "''";
+    }
+    if (update_values[i] === "NULL" || update_values[i] === null) {
+      updateValue = "NULL";
+    } else {
+      updateValue = "'" + update_values[i] + "'";
+    }
+    if (i === 0) {
+      updateStr = update_columns[i] + "=" + updateValue;
+    } else {
+      updateStr = updateStr + ", " + update_columns[i] + "=" + updateValue;
+    }
+  }
+  const sql = `UPDATE cases SET ${updateStr} WHERE case_id='${case_id}'`;
+  console.log("sql: ", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
