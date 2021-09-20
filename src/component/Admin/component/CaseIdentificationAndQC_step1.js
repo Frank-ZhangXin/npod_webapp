@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridBox from "./component/GridBox";
 import useDebounced from "./component/useDebounced";
-import useRetrieve from "./component/useRetrieve";
+import useRetrieveCaseColumns from "./component/useRetrieveCaseColumns";
+import useRetrieveTableColumn from "./component/useRetrieveTableColumn";
 import useUpdate from "./component/useUpdate";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
@@ -29,6 +30,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const handleSumbit = async function (event) {};
+
+function opsGenerator(idArr, nameArr) {
+  const ops = [];
+  for (let i = 0; i < idArr.length; i++) {
+    ops.push({ value: idArr[i], label: nameArr[i] });
+  }
+  ops.push({ value: null, label: "NULL" });
+  return ops;
+}
 
 export default function CaseIdentificationAndQC_step1({
   caseId,
@@ -62,6 +72,22 @@ export default function CaseIdentificationAndQC_step1({
     "case_QC_status",
     "QC_initials_and_date",
   ];
+
+  const donorTypes = useRetrieveTableColumn(
+    "donor_types",
+    "name",
+    "donor_type_id"
+  );
+  const donorTypes_id = useRetrieveTableColumn(
+    "donor_types",
+    "donor_type_id",
+    "donor_type_id"
+  );
+  const donorTypesOps = opsGenerator(donorTypes_id, donorTypes);
+  const OPO_name = useRetrieveTableColumn("OPO", "OPO_name", "OPO_id");
+  const OPO_id = useRetrieveTableColumn("OPO", "OPO_id", "OPO_id");
+  const OPOOps = opsGenerator(OPO_id, OPO_name);
+
   const columnPropsList = [
     {
       column: "is_public",
@@ -81,29 +107,7 @@ export default function CaseIdentificationAndQC_step1({
       column: "donor_type_id",
       input: "dropDown",
       type: "int",
-      ops: [
-        { value: 1, label: "1. Autoantibody Positive" },
-        { value: 2, label: "2. Type 1 Diabetes" },
-        { value: 3, label: "3. Type 1 Diabetes Joslin Medalist" },
-        { value: 4, label: "4. Type 2 Diabetes" },
-        { value: 5, label: "5. No Diabetes" },
-        { value: 6, label: "6. No Diabetes" },
-        { value: 7, label: "7. Pregnancy" },
-        { value: 8, label: "8. Other" },
-        { value: 9, label: "9. Pending" },
-        { value: 10, label: "10. Autoab Pos by screening" },
-        { value: 11, label: "11. Preclinical T2D" },
-        { value: 12, label: "12. Cystic Fibrosis" },
-        { value: 13, label: "13. Fulminant Type 1 Diabetes" },
-        { value: 14, label: "14. Transplant" },
-        { value: 16, label: "16. Monogenic Diabetes" },
-        { value: 18, label: "18. T2D+Incretin" },
-        { value: 20, label: "20. Gastric Bypass" },
-        { value: 21, label: "21. Ketosis-Prone Diabetes" },
-        { value: 23, label: "23. Other - Diabetes" },
-        { value: 24, label: "24. Other - No Diabetes" },
-        { value: null, label: "NULL" },
-      ],
+      ops: donorTypesOps,
     },
     {
       column: "donor_type_comments",
@@ -116,7 +120,6 @@ export default function CaseIdentificationAndQC_step1({
       column: "retire_status",
       input: "dropDown",
       type: "string",
-      //ops: ["Retired", "No Pancreas", "Disposed", "NULL"],
       ops: [
         { value: "Retired", label: "Retired" },
         { value: "No Pancreas", label: "No Pancreas" },
@@ -128,29 +131,7 @@ export default function CaseIdentificationAndQC_step1({
       column: "accepted_as_donor_type_id",
       input: "dropDown",
       type: "int",
-      ops: [
-        { value: 1, label: "1. Autoantibody Positive" },
-        { value: 2, label: "2. Type 1 Diabetes" },
-        { value: 3, label: "3. Type 1 Diabetes Joslin Medalist" },
-        { value: 4, label: "4. Type 2 Diabetes" },
-        { value: 5, label: "5. No Diabetes" },
-        { value: 6, label: "6. No Diabetes" },
-        { value: 7, label: "7. Pregnancy" },
-        { value: 8, label: "8. Other" },
-        { value: 9, label: "9. Pending" },
-        { value: 10, label: "10. Autoab Pos by screening" },
-        { value: 11, label: "11. Preclinical T2D" },
-        { value: 12, label: "12. Cystic Fibrosis" },
-        { value: 13, label: "13. Fulminant Type 1 Diabetes" },
-        { value: 14, label: "14. Transplant" },
-        { value: 16, label: "16. Monogenic Diabetes" },
-        { value: 18, label: "18. T2D+Incretin" },
-        { value: 20, label: "20. Gastric Bypass" },
-        { value: 21, label: "21. Ketosis-Prone Diabetes" },
-        { value: 23, label: "23. Other - Diabetes" },
-        { value: 24, label: "24. Other - No Diabetes" },
-        { value: null, label: "NULL" },
-      ],
+      ops: donorTypesOps,
     },
     {
       column: "chart_received",
@@ -191,101 +172,7 @@ export default function CaseIdentificationAndQC_step1({
       column: "OPO_id",
       input: "dropDown",
       type: "string",
-      ops: [
-        { value: 1, label: "1. Donor Alliance, Inc" },
-        { value: 2, label: "2. Gift of Life Donor Program" },
-        { value: 3, label: "3. Sierra Donor Services" },
-        { value: 4, label: "4. Intermountain Donor Services" },
-        { value: 5, label: "5. Life Alliance Organ Recovery Agency" },
-        { value: 6, label: "6. Lifesharing" },
-        { value: 7, label: "7. OneLegacy" },
-        { value: 8, label: "8. New York Organ Donor Network" },
-        { value: 9, label: "9. California Transplant Donor Network" },
-        { value: 10, label: "10. Gift of Hope Organ & Tissue Donor Network" },
-        { value: 11, label: "11. Gift of Life Michigan" },
-        { value: 12, label: "12. LifeCenter Northwest Donor Network" },
-        { value: 13, label: "13. Life Choice Donor Services" },
-        { value: 14, label: "14. Life Source, Upper Midwest OPO, Inc." },
-        { value: 15, label: "15. Nevada Donor Network, Inc." },
-        { value: 16, label: "16. New England Donor Services" },
-        {
-          value: 17,
-          label: "17. New Jersey Organ and Tissue Sharing Network (NJTO)",
-        },
-        { value: 18, label: "18. Pacific Northwest Transplant Bank" },
-        { value: 19, label: "19. Legacy of Hope" },
-        { value: 20, label: "20. Arkansas Regional Organ Recovery Agency" },
-        { value: 21, label: "21. Carolina Donor Services" },
-        { value: 22, label: "22. Center for Donation & Transplant" },
-        {
-          value: 23,
-          label: "23. Center for Organ Recovery and Education (CORE)",
-        },
-        { value: 24, label: "24. Donor Network of Arizona" },
-        { value: 25, label: "25. Finger Lakes Donor Recovery Network" },
-        { value: 26, label: "26. Indiana Donor Network" },
-        { value: 27, label: "27. Iowa Donor Network" },
-        { value: 28, label: "28. Kentucky Organ Donor Affiliates" },
-        { value: 29, label: "29. Lifeshare of the Carolinas" },
-        { value: 30, label: "30. Life Quest Organ Recovery Agency" },
-        { value: 31, label: "31. LifeBanc" },
-        { value: 32, label: "32. LifeCenter Organ Donor Network" },
-        { value: 33, label: "33. Life Connection of Ohio" },
-        { value: 34, label: "34. LifeGift Organ Donor Donation Center" },
-        {
-          value: 35,
-          label: "35. Life Line of Ohio Organ Procurement Agency",
-        },
-        { value: 36, label: "36. Life Link of Florida" },
-        { value: 37, label: "37. LifeLink of Georgia" },
-        { value: 38, label: "38. Life Net Health" },
-        { value: 39, label: "39. We Are Sharing Hope SC" },
-        {
-          value: 40,
-          label: "40. Lifeshare Transplant Donor Services of Oklahoma",
-        },
-        { value: 41, label: "41. Louisana Organ Procurement Organization" },
-        { value: 42, label: "42. Mid America Transplant Services" },
-        { value: 43, label: "43. Mid-South Transplant Foundation Inc." },
-        { value: 44, label: "44. Midwest Transplant Network" },
-        { value: 45, label: "45. Mississippi Organ Recovery Agency" },
-        { value: 46, label: "46. Nebraska Organ Retrieval System" },
-        { value: 47, label: "47. Southwest Transplant Alliance" },
-        { value: 48, label: "48. Tennessee Donor Services" },
-        { value: 49, label: "49. Texas Organ Sharing Alliance" },
-        { value: 50, label: "50. Living Legacy Foundation of Maryland" },
-        { value: 51, label: "51. OurLegacy" },
-        {
-          value: 52,
-          label: "52. University of Wisconsin Hospital and Clinic",
-        },
-        { value: 53, label: "53. Upstate New York Transplant Services	" },
-        { value: 54, label: "54. Washington Regional Transplant Community" },
-        { value: 55, label: "55. Versiti Wisconsin, Inc." },
-        { value: 56, label: "56. New Mexico Donor Services" },
-        { value: 57, label: "57. Legacy of Life Hawaii" },
-        { value: 59, label: "59. University of Uppsala" },
-        { value: 60, label: "60. Hospital Referral" },
-        { value: 61, label: "61. UT Health Science Center" },
-        { value: 62, label: "62. Spain- nPOD-E" },
-        { value: 63, label: "63. RTI Donor Services (SETA)" },
-        { value: 64, label: "64. University of Yamanashi" },
-        { value: 65, label: "65. University of Miami (nPOD-T)" },
-        { value: 66, label: "66. Baylor College of Medicine" },
-        { value: 67, label: "67. University of Pittsburgh" },
-        { value: 68, label: "68. University of Maryland (nPOD-T)" },
-        { value: 69, label: "69. Life Link Puerto Rico" },
-        {
-          value: 70,
-          label: "70. University of Massachusetts Memorial Hospital",
-        },
-        { value: 71, label: "71. UW Organ and Tissue Donation" },
-        { value: 72, label: "72. Donor Network West" },
-        { value: 73, label: "73. DonorConnect" },
-        { value: 74, label: "74. Johns Hopkins Hospital" },
-        { value: 75, label: "75. Live On Nebraska" },
-        { value: null, label: "NULL" },
-      ],
+      ops: OPOOps,
     },
     {
       column: "case_recovery_type",
@@ -345,7 +232,7 @@ export default function CaseIdentificationAndQC_step1({
     },
   ];
 
-  const defaultValue = useRetrieve(caseId, columnList);
+  const defaultValue = useRetrieveCaseColumns(caseId, columnList);
 
   useEffect(() => {
     for (let i = 0; i < setValueList.length; i++) {
@@ -381,7 +268,7 @@ export default function CaseIdentificationAndQC_step1({
     "UNOS ID",
     "RR ID",
     "Aperio ID",
-    "Donor Type ID",
+    "Donor Type",
     "Donor Type Comment",
     "Case Flag",
     "Retire Status",
@@ -389,7 +276,7 @@ export default function CaseIdentificationAndQC_step1({
     "Chart Received",
     "Consent Restriction Status",
     "Source",
-    "OPO ID",
+    "OPO",
     "Case Recovery Type",
     "Chart Reviewed Date",
     "Chart Review Notes",

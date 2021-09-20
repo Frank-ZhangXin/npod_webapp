@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { API, Auth } from "aws-amplify";
 
-export default function useRetrieve(caseId, columnList) {
+export default function useRetrieveCaseColumns(caseId, columnList) {
   const [result, setResult] = useState([]);
   useEffect(() => {
     if (caseId !== "") {

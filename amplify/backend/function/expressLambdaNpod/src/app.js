@@ -23,6 +23,7 @@ var {
   get_test_case,
   get_object_case,
   get_case_column,
+  get_table_column,
   check_foreign_key,
 } = require("./service/createDatabase");
 
@@ -150,6 +151,17 @@ app.post("/db/get_object_case_column", function (req, res) {
   get_case_column(req.body["case_id"], req.body["columns"]).then(
     (promisedRes) => res.send(promisedRes)
   );
+});
+
+// get table column
+app.post("/db/get_table_column", function (req, res) {
+  console.log("Getting table column.");
+  console.log(req.body);
+  get_table_column(
+    req.body["table_name"],
+    req.body["column_name"],
+    req.body["sort_by"]
+  ).then((promisedRes) => res.send(promisedRes));
 });
 
 // check foreigh key

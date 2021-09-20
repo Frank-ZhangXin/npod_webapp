@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridBox from "./component/GridBox";
 import useDebounced from "./component/useDebounced";
-import useRetrieve from "./component/useRetrieve";
+import useRetrieveCaseColumns from "./component/useRetrieveCaseColumns";
 
 const useStyles = makeStyles((theme) => ({
   root: {
