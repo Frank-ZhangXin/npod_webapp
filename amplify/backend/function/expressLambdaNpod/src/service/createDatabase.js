@@ -134,6 +134,30 @@ async function get_case_column(case_id, columns) {
   return await pooledConnection(asyncAction);
 }
 
+async function get_table_column(table_name, column_name, sort_by) {
+  const sql = `SELECT ${column_name}, ${sort_by} FROM ${table_name}`;
+  console.log("sql: " + sql);
+  function compare(a, b) {
+    return a[sort_by] - b[sort_by];
+  }
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch table column] Table ${table_name} column ${column_name} was fetched.`
+          );
+          const sorted_res = result.sort(compare);
+          resolve(sorted_res.map((res) => res[column_name]));
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 async function check_foreign_key(table_name, foreign_key, foreign_key_value) {
   const sql = `SELECT * FROM ${table_name} WHERE ${foreign_key}='${foreign_key_value}'`;
   console.log("sql: " + sql);
@@ -160,5 +184,6 @@ module.exports = {
   get_test_case: get_test_case,
   get_object_case: get_object_case,
   get_case_column: get_case_column,
+  get_table_column: get_table_column,
   check_foreign_key: check_foreign_key,
 };
