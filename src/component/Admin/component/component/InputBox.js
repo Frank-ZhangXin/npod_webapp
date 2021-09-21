@@ -10,6 +10,7 @@ import TextBox from "./TextBox";
 import TextBoxLarge from "./TextBoxLarge";
 import DateBox from "./DateBox";
 import DropBox from "./DropBox";
+import TimeBox from "./TimeBox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,6 +59,10 @@ export default function InputBox({
       case "datePicker":
         return (
           <DateBox value={value} setValue={setValue} setChanged={setChanged} />
+        );
+      case "timePicker":
+        return (
+          <TimeBox value={value} setValue={setValue} setChanged={setChanged} />
         );
       default:
         break;
