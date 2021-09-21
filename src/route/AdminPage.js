@@ -14,7 +14,14 @@ export default function AdminPage() {
     try {
       const authRes = await Auth.currentAuthenticatedUser();
       console.log("Check auth response ", authRes);
-      if (authRes["username"] === "testuser") {
+      console.log(
+        "user group",
+        authRes.signInUserSession.accessToken.payload["cognito:groups"][0]
+      );
+      if (
+        authRes.signInUserSession.accessToken.payload["cognito:groups"][0] ===
+        "admin"
+      ) {
         setAdminAccess(true);
         console.log("Welcome to admin page!");
       } else {

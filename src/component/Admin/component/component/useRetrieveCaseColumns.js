@@ -24,6 +24,9 @@ export default function useRetrieveCaseColumns(caseId, columnList) {
         setResult(valueArray);
       })
       .catch((error) => {
+        console.log("Retrieve case columns failed.");
+        console.log("Failed case id", id);
+        console.log("Failed columnList", columns);
         console.log("Amplify API call error", error);
       });
   }
