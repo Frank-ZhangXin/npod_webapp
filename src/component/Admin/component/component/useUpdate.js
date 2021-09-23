@@ -29,6 +29,9 @@ export default function useUpdate(
     })
       .then((res) => {
         if (res["affectedRows"] ?? false) {
+          console.log("Update success id", id);
+          console.log("Update success columns", columns);
+          console.log("Update success values", values);
           setResult(true);
           setShowError(false);
           setShowSuccess(true);
@@ -42,8 +45,9 @@ export default function useUpdate(
         setShowSuccess(false);
         setMsg("Update is failed");
         console.log("Amplify API call error", error);
-        console.log("failed columns", columns);
-        console.log("failed values", values);
+        console.log("Update fail id", id);
+        console.log("Update fail columns", columns);
+        console.log("Update fail values", values);
       });
   }
 

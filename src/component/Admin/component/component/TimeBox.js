@@ -1,42 +1,69 @@
 import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
-import Box from "@material-ui/core/Box";
+import "rc-time-picker/assets/index.css";
+import moment from "moment";
+import TimePicker from "rc-time-picker";
+import styled from "styled-components";
 
 import { makeStyles } from "@material-ui/core/styles";
 
+const StyledTimePicker = styled(TimePicker)`
+  & .rc-time-picker-clear {
+    position: absolute;
+    right: -30px;
+  }
+
+  & .rc-time-picker-clear-icon:after {
+    font-size: 15px;
+  }
+  & .rc-time-picker-input {
+    width: 140px;
+    font-size: 16px;
+  }
+`;
+
 const useStyles = makeStyles((theme) => ({
-  timePicker: {
-    width: "30px",
-    height: "25px",
-    marginLeft: "4px",
-    marginBottom: "5px",
+  container: {
+    display: "flex",
+    flexWrap: "wrap",
+    width: 200,
   },
   textField: {
-    width: 80,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
 }));
 
 export default function TimeBox({ value, setValue, setChanged }) {
   const classes = useStyles();
-  const [newTime, setNewTime] = useState(null);
-  const handleDateChange = (t) => {
-    setNewTime(t);
+  const [defaultTime, setDefaultTime] = useState(null);
+  const [defaultValue, setDefaultValue] = useState(null);
+  useEffect(() => {
+    setDefaultTime(value);
+    setDefaultValue(moment("2021-09-22 " + value, "YYYY-MM-DD hh:mm:ss"));
+  }, [value]);
+
+  const handleTimeChange = (event) => {
+    setValue(event.target.value);
     setChanged(true);
+    setDefaultTime(event.target.value);
   };
+
+  const onChange = (newValue) => {
+    console.log(newValue && newValue.format("HH:mm"));
+    setValue(newValue.format("HH:mm"));
+    setDefaultValue(newValue);
+  };
+
   return (
     <div>
-      <Box className={classes.textField}>
-        <TextField
-          type="time"
-          defaultValue={value}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            step: 300, // 5 min
-          }}
-        />
-      </Box>
+      <StyledTimePicker
+        style={{ width: 100 }}
+        showSecond={false}
+        value={defaultValue}
+        className="xxx"
+        onChange={onChange}
+      />
     </div>
   );
 }

@@ -11,6 +11,8 @@ import TextBoxLarge from "./TextBoxLarge";
 import DateBox from "./DateBox";
 import DropBox from "./DropBox";
 import TimeBox from "./TimeBox";
+import IntegerNumberBox from "./IntegerNumberBox";
+import FloatNumberBox from "./FloatNumberBox";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +42,24 @@ export default function InputBox({
       case "inputBoxLarge":
         return (
           <TextBoxLarge
+            value={value}
+            setValue={setValue}
+            setChanged={setChanged}
+          />
+        );
+        break;
+      case "integerBox":
+        return (
+          <IntegerNumberBox
+            value={value}
+            setValue={setValue}
+            setChanged={setChanged}
+          />
+        );
+        break;
+      case "floatBox":
+        return (
+          <FloatNumberBox
             value={value}
             setValue={setValue}
             setChanged={setChanged}
@@ -79,34 +99,6 @@ export default function InputBox({
         <Box>
           <label>{name}:</label>
         </Box>
-        {/* <Box>
-          {name.slice(-4).toLowerCase() === "date" ? (
-            <DateBox
-              value={value}
-              setValue={setValue}
-              setChanged={setChanged}
-            />
-          ) : name.slice(-7).toLowerCase() === "comment" ? (
-            <TextBoxLarge
-              value={value}
-              setValue={setValue}
-              setChanged={setChanged}
-            />
-          ) : name === "Donor Type ID" ? (
-            <DropBox
-              value={value}
-              setValue={setValue}
-              setChanged={setChanged}
-              ops={columnProps.ops}
-            />
-          ) : (
-            <TextBox
-              value={value}
-              setValue={setValue}
-              setChanged={setChanged}
-            />
-          )}
-        </Box> */}
         <Box>{getInputContent(columnProps.input)}</Box>
       </Box>
     </div>

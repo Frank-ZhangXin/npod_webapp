@@ -102,7 +102,8 @@ export default function Admin() {
           <CaseProcessing_step2
             caseId={caseId}
             update={update2}
-            accept={accept2}
+            changed={changed}
+            setAccept={setAccept2}
             setChanged={setChanged}
           />
         );
@@ -162,17 +163,19 @@ export default function Admin() {
       if (accept) {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         setCreate(false);
-        //setUpdate(false);
-        setUpdate1(false);
         setAccept(false);
+        setUpdate1(false);
         setAccept1(false);
+        setUpdate2(false);
+        setAccept2(false);
         setChanged(false);
       }
     } else {
-      console.log("case 1 next was clicked.");
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setUpdate1(false);
       setAccept1(false);
+      setUpdate2(false);
+      setAccept2(false);
       setChanged(false);
     }
 
@@ -204,11 +207,22 @@ export default function Admin() {
   };
 
   const handleUpdate = () => {
-    switch (activeStep) {
-      case 0:
-        setUpdate(true);
-      case 1:
-        setUpdate1(true);
+    if (activeStep === 0) {
+      setUpdate(true);
+      if (exist) {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setCreate(false);
+        setAccept(false);
+        setUpdate1(false);
+        setAccept1(false);
+        setUpdate2(false);
+        setAccept2(false);
+        setChanged(false);
+      }
+    } else if (activeStep === 1) {
+      setUpdate1(true);
+    } else if (activeStep === 2) {
+      setUpdate2(true);
     }
 
     setChanged(false);
@@ -216,8 +230,11 @@ export default function Admin() {
 
   const handleBack = () => {
     setCreate(false);
-    setUpdate1(false);
     setAccept(false);
+    setUpdate1(false);
+    setAccept1(false);
+    setUpdate2(false);
+    setAccept2(false);
     if (activeStep - 1 === 0) {
       setUpdate(false);
     }
@@ -227,8 +244,12 @@ export default function Admin() {
   const handleStep = (step) => () => {
     if (activeStep !== 0) {
       setCreate(false);
-      setUpdate1(false);
+
       setAccept(false);
+      setUpdate1(false);
+      setAccept1(false);
+      setUpdate2(false);
+      setAccept2(false);
       setActiveStep(step);
     }
     if (step === 0) {
@@ -276,34 +297,42 @@ export default function Admin() {
                           disabled={activeStep === 0}
                           onClick={handleBack}
                           className={classes.button}
+                          variant="contained"
+                          color="primary"
                         >
                           Back
                         </Button>
                       ) : null}
+                      {activeStep !== 0 ? (
+                        <Button
+                          disabled={update === false}
+                          variant="contained"
+                          color="primary"
+                          onClick={handleNext}
+                          className={classes.button}
+                        >
+                          {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                        </Button>
+                      ) : null}
 
-                      <Button
-                        disabled={update === false}
-                        variant="contained"
-                        color="primary"
-                        onClick={handleNext}
-                        className={classes.button}
-                      >
-                        {activeStep === steps.length - 1 ? "Finish" : "Next"}
-                      </Button>
                       {activeStep === 0 ? (
                         <Button
-                          disabled={exist === true}
+                          disabled={exist === true || caseId === ""}
                           onClick={handleCreate}
                           className={classes.button}
+                          variant="contained"
+                          color="secondary"
                         >
                           Create
                         </Button>
                       ) : null}
 
                       <Button
-                        disabled={exist === false}
+                        disabled={exist === false || caseId === ""}
                         onClick={handleUpdate}
                         className={classes.button}
+                        variant="contained"
+                        color="secondary"
                       >
                         Update
                       </Button>
