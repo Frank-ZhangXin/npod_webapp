@@ -6,9 +6,10 @@ export default function useCreate(
   isExist,
   create,
   changed,
-  setCreateFail,
   setAccept,
-  setExist
+  setExist,
+  setCreateMsg,
+  setCreateSuccess
 ) {
   const [result, setResult] = useState(false);
   useEffect(() => {
@@ -29,14 +30,15 @@ export default function useCreate(
     })
       .then((res) => {
         console.log(res);
-        setCreateFail(false);
         setResult(true);
         setExist(true);
+        setCreateSuccess(true);
+        setCreateMsg(`case ${id} was created successfully.`);
         console.log(`case ${id} was created successfully.`);
       })
       .catch((error) => {
         console.log("Amplify API call error", error);
-        setCreateFail(true);
+        setCreateSuccess(false);
         setResult(false);
         setAccept(false);
       });

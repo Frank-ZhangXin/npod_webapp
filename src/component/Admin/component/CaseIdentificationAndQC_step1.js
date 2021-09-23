@@ -332,10 +332,10 @@ export default function CaseIdentificationAndQC_step1({
     setValue20,
   ];
 
-  const [updateFail, setUpdateFail] = useState(false);
+  //const [updateFail, setUpdateFail] = useState(false);
 
   useEffect(() => {
-    if (update && !updateFail) {
+    if (update && !showError && showSuccess) {
       setAccept(true);
     } else {
       setAccept(false);

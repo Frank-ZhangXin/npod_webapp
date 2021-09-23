@@ -4,6 +4,8 @@ import GridBox from "./component/GridBox";
 import useDebounced from "./component/useDebounced";
 import useCreate from "./component/useCreate";
 import useCheckExist from "./component/useCheckExist";
+import Alert from "@material-ui/lab/Alert";
+import Fade from "@material-ui/core/Fade";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,6 +13,11 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: "25ch",
     },
+  },
+  alert: {
+    marginTop: "5px",
+    marginBottom: "5px",
+    width: "90%",
   },
 }));
 
@@ -29,7 +36,7 @@ export default function CreateCase_step0({
   const classes = useStyles();
 
   useEffect(() => {
-    if (update && !checkFail) {
+    if (update && caseExist) {
       setAccept(true);
     } else {
       setAccept(false);
@@ -46,24 +53,67 @@ export default function CreateCase_step0({
   const valueList = [value0];
   const setValueList = [setValue0];
   const [checkFail, setCheckFail] = useState(true);
-  const [createFail, setCreateFail] = useState(true);
-  const isExist = useCheckExist(value0, setCheckFail, setExist);
-  useEffect(() => {
-    setCaseId(value0);
-  }, [value0]);
+  const [caseExist, setCaseExist] = useState(false);
+  const [showExistMsg, setShowExistMsg] = useState(false);
+  const [existMsg, setExistMsg] = useState("Please input case number and wait");
+  const [showCreateMsg, setShowCreateMsg] = useState(false);
+  const [createMsg, setCreateMsg] = useState("");
+  const [createSuccess, setCreateSuccess] = useState(false);
+
+  const isExist = useCheckExist(
+    value0,
+    setCheckFail,
+    setExist,
+    setExistMsg,
+    setCaseExist,
+    createSuccess
+  );
+
   const createResult = useCreate(
     value0,
     isExist,
     create,
     changed,
-    setCreateFail,
     setAccept,
-    setExist
+    setExist,
+    setCreateMsg,
+    setCreateSuccess
   );
+
+  useEffect(() => {
+    setCaseId(value0);
+
+    if (createSuccess) {
+      setShowCreateMsg(true);
+      const timer3 = setTimeout(() => {
+        setShowCreateMsg(false);
+        setCreateSuccess(false);
+      }, 3000);
+    }
+  }, [createSuccess, value0]);
+
+  useEffect(() => {
+    if (value0 !== "") {
+      if (caseExist) {
+        setExistMsg("Case exists, click 'Update' to proceed updating.");
+      } else {
+        setExistMsg(
+          "Case DOES NOT exist, click 'Create' then 'Next' to proceed creating."
+        );
+      }
+    }
+
+    const timer1 = setTimeout(() => {
+      setShowExistMsg(true);
+    }, 300);
+    const timer2 = setTimeout(() => {
+      setShowExistMsg(false);
+    }, 3000);
+  }, [caseExist, createSuccess, value0]);
 
   return (
     <div className={classes.root}>
-      <div>[Debug] check exist result is {isExist.toString()}</div>
+      {/* <div>[Debug] check exist result is {isExist.toString()}</div> */}
       <form noValidate onSubmit={handleSumbit}>
         <div>
           <GridBox
@@ -74,9 +124,19 @@ export default function CreateCase_step0({
             setChanged={setChanged}
           />
         </div>
-        <div>[Debug] input case number is {valueList[0]}</div>
-        {createResult ? <div>The case was created successfully!</div> : null}
+        {/* <div>[Debug] input case number is {valueList[0]}</div>
+        {createResult ? <div>The case was created successfully!</div> : null} */}
       </form>
+      <Fade in={showExistMsg}>
+        <Alert variant="filled" severity="info" className={classes.alert}>
+          {existMsg}
+        </Alert>
+      </Fade>
+      <Fade in={showCreateMsg}>
+        <Alert variant="filled" severity="success" className={classes.alert}>
+          {createMsg}
+        </Alert>
+      </Fade>
     </div>
   );
 }
