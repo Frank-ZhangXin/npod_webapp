@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   select: {
     width: "220px",
-    height: "25px",
+    //height: "25px",
     marginLeft: "4px",
     marginBottom: "5px",
   },
