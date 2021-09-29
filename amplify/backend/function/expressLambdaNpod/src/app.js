@@ -24,6 +24,7 @@ var {
   get_object_case,
   get_case_column,
   get_table_column,
+  get_table_column_possible_value,
   check_foreign_key,
 } = require("./service/createDatabase");
 
@@ -161,6 +162,16 @@ app.post("/db/get_table_column", function (req, res) {
     req.body["table_name"],
     req.body["column_name"],
     req.body["sort_by"]
+  ).then((promisedRes) => res.send(promisedRes));
+});
+
+// get table column possible value
+app.post("/db/get_table_column_possible_value", function (req, res) {
+  console.log("Getting table column possible value");
+  console.log(req.body);
+  get_table_column_possible_value(
+    req.body["table_name"],
+    req.body["column_name"]
   ).then((promisedRes) => res.send(promisedRes));
 });
 

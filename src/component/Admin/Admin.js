@@ -69,6 +69,8 @@ export default function Admin() {
   const [accept1, setAccept1] = useState(false);
   const [update2, setUpdate2] = useState(false);
   const [accept2, setAccept2] = useState(false);
+  const [update3, setUpdate3] = useState(false);
+  const [accept3, setAccept3] = useState(false);
 
   function getStepContent(step) {
     switch (step) {
@@ -108,7 +110,15 @@ export default function Admin() {
           />
         );
       case 3:
-        return <DemographicsAndTimeline_step3 />;
+        return (
+          <DemographicsAndTimeline_step3
+            caseId={caseId}
+            update={update3}
+            changed={changed}
+            setAccept={setAccept3}
+            setChanged={setChanged}
+          />
+        );
       case 4:
         return <ClinicalHistoryAndMedSoc_step4 />;
       case 5:
@@ -126,11 +136,13 @@ export default function Admin() {
     setAccept(false);
     setAccept1(false);
     setAccept2(false);
+    setAccept3(false);
     setCreate(false);
     setChanged(false);
     setUpdate(false);
     setUpdate1(false);
     setUpdate2(false);
+    setUpdate3(false);
   };
 
   const totalSteps = () => {
@@ -168,6 +180,8 @@ export default function Admin() {
         setAccept1(false);
         setUpdate2(false);
         setAccept2(false);
+        setUpdate3(false);
+        setAccept3(false);
         setChanged(false);
       }
     } else {
@@ -176,6 +190,8 @@ export default function Admin() {
       setAccept1(false);
       setUpdate2(false);
       setAccept2(false);
+      setUpdate3(false);
+      setAccept3(false);
       setChanged(false);
     }
 
@@ -217,12 +233,16 @@ export default function Admin() {
         setAccept1(false);
         setUpdate2(false);
         setAccept2(false);
+        setUpdate3(false);
+        setAccept3(false);
         setChanged(false);
       }
     } else if (activeStep === 1) {
       setUpdate1(true);
     } else if (activeStep === 2) {
       setUpdate2(true);
+    } else if (activeStep === 3) {
+      setUpdate3(true);
     }
 
     setChanged(false);
@@ -235,6 +255,8 @@ export default function Admin() {
     setAccept1(false);
     setUpdate2(false);
     setAccept2(false);
+    setUpdate3(false);
+    setAccept3(false);
     if (activeStep - 1 === 0) {
       setUpdate(false);
     }
@@ -250,6 +272,8 @@ export default function Admin() {
       setAccept1(false);
       setUpdate2(false);
       setAccept2(false);
+      setUpdate3(false);
+      setAccept3(false);
       setActiveStep(step);
     }
     if (step === 0) {

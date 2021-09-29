@@ -158,6 +158,40 @@ async function get_table_column(table_name, column_name, sort_by) {
   return await pooledConnection(asyncAction);
 }
 
+async function get_table_column_possible_value(table_name, column_name) {
+  const sql = `SELECT COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_NAME="${table_name}" AND COLUMN_NAME="${column_name}"`;
+  console.log("sql: " + sql);
+  function str_to_arr(values) {
+    let newValues = [];
+    // remove "enum" suffix
+    let temp = values.slice(5, -1).split(",");
+    // remove single quote around each value
+    for (let i = 0; i < temp.length; i++) {
+      newValues.push(temp[i].slice(1, -1));
+    }
+    return newValues;
+  }
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch table column] Table ${table_name} column ${column_name} was fetched.`
+          );
+          resolve(str_to_arr(result[0]["COLUMN_TYPE"]));
+          console.log(
+            "Returned possible column value",
+            str_to_arr(result[0]["COLUMN_TYPE"])
+          );
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 async function check_foreign_key(table_name, foreign_key, foreign_key_value) {
   const sql = `SELECT * FROM ${table_name} WHERE ${foreign_key}='${foreign_key_value}'`;
   console.log("sql: " + sql);
@@ -185,5 +219,6 @@ module.exports = {
   get_object_case: get_object_case,
   get_case_column: get_case_column,
   get_table_column: get_table_column,
+  get_table_column_possible_value: get_table_column_possible_value,
   check_foreign_key: check_foreign_key,
 };
