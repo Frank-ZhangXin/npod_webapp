@@ -20,8 +20,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const handleSumbit = async function (event) {};
-
 export default function CaseProcessing_step2({
   caseId,
   update,
@@ -324,7 +322,7 @@ export default function CaseProcessing_step2({
 
   return (
     <div className={classes.root}>
-      <form noValidate onSubmit={handleSumbit}>
+      <form noValidate>
         <div>
           <div>
             <GridBox

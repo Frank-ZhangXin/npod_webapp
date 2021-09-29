@@ -29,8 +29,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const handleSumbit = async function (event) {};
-
 function opsGenerator(idArr, nameArr) {
   const ops = [];
   for (let i = 0; i < idArr.length; i++) {
@@ -374,7 +372,7 @@ export default function CaseIdentificationAndQC_step1({
 
   return (
     <div className={classes.root}>
-      <form noValidate onSubmit={handleSumbit}>
+      <form noValidate>
         <div>
           <div>
             <GridBox
