@@ -5,7 +5,7 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 const useStyles = makeStyles((theme) => ({
   inputLarge: {
     maxWidth: "140px",
-    minHeight: "25px",
+    minHeight: "30px",
     marginLeft: "4px",
     marginBottom: "5px",
   },

@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   input: {
     maxWidth: "140px",
-    height: "25px",
+    height: "30px",
     marginLeft: "4px",
     marginBottom: "5px",
   },

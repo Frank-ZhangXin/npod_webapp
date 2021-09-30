@@ -71,6 +71,8 @@ export default function Admin() {
   const [accept2, setAccept2] = useState(false);
   const [update3, setUpdate3] = useState(false);
   const [accept3, setAccept3] = useState(false);
+  const [update4, setUpdate4] = useState(false);
+  const [accept4, setAccept4] = useState(false);
 
   function getStepContent(step) {
     switch (step) {
@@ -120,7 +122,15 @@ export default function Admin() {
           />
         );
       case 4:
-        return <ClinicalHistoryAndMedSoc_step4 />;
+        return (
+          <ClinicalHistoryAndMedSoc_step4
+            caseId={caseId}
+            update={update4}
+            changed={changed}
+            setAccept={setAccept4}
+            setChanged={setChanged}
+          />
+        );
       case 5:
         return <HospitalLabs_step5 />;
       case 6:
@@ -143,6 +153,8 @@ export default function Admin() {
     setUpdate1(false);
     setUpdate2(false);
     setUpdate3(false);
+    setUpdate4(false);
+    setAccept4(false);
   };
 
   const totalSteps = () => {
@@ -182,6 +194,8 @@ export default function Admin() {
         setAccept2(false);
         setUpdate3(false);
         setAccept3(false);
+        setUpdate4(false);
+        setAccept4(false);
         setChanged(false);
       }
     } else {
@@ -192,6 +206,8 @@ export default function Admin() {
       setAccept2(false);
       setUpdate3(false);
       setAccept3(false);
+      setUpdate4(false);
+      setAccept4(false);
       setChanged(false);
     }
 
@@ -243,6 +259,8 @@ export default function Admin() {
       setUpdate2(true);
     } else if (activeStep === 3) {
       setUpdate3(true);
+    } else if (activeStep === 4) {
+      setUpdate4(true);
     }
 
     setChanged(false);
@@ -257,6 +275,8 @@ export default function Admin() {
     setAccept2(false);
     setUpdate3(false);
     setAccept3(false);
+    setUpdate4(false);
+    setAccept4(false);
     if (activeStep - 1 === 0) {
       setUpdate(false);
     }
@@ -274,6 +294,8 @@ export default function Admin() {
       setAccept2(false);
       setUpdate3(false);
       setAccept3(false);
+      setUpdate4(false);
+      setAccept4(false);
       setActiveStep(step);
     }
     if (step === 0) {
