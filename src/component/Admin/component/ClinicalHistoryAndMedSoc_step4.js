@@ -171,7 +171,7 @@ export default function CaseProcessing_step2({
     "Admission Course",
     "Clinical History",
     "Stage Kidney Disease",
-    "Cause of Death ID",
+    "Cause of Death",
     "Death Mechanism",
     "Death Circumstance",
     "Meds Diabetes",
