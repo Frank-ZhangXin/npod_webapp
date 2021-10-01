@@ -59,6 +59,8 @@ export default function CaseProcessing_step2({
     "stage_kidney_disease"
   );
 
+  const stageOps = opsGenerator(tempOps, tempOps);
+
   const cod_id = useRetrieveTableColumn(
     "cause_of_death",
     "cause_of_death_id",
@@ -71,79 +73,89 @@ export default function CaseProcessing_step2({
   );
   const codOps = opsGenerator(cod_id, cod_name);
 
-  const stageOps = opsGenerator(tempOps, tempOps);
-
   const columnPropsList = [
     {
       column: "admission_course",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       column: "clinical_history",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       column: "stage_kidney_disease",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: stageOps,
     },
     {
       colum: "cause_of_death_id",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: codOps,
     },
     {
       colum: "death_mechanism",
       input: "inputBox",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "death_circumstance",
       input: "inputBox",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "meds_diabetes",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "meds_home",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "meds_hospital",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "allergies",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "alcohol_use",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "drug_use",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
   ];

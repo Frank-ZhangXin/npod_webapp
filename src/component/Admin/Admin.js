@@ -27,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     paddingTop: "130px",
   },
+  stepLabel: {
+    "&:hover": {
+      //backgroundColor: theme.palette.primary.light,
+      cursor: "pointer",
+    },
+  },
   button: {
     marginTop: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -73,6 +79,8 @@ export default function Admin() {
   const [accept3, setAccept3] = useState(false);
   const [update4, setUpdate4] = useState(false);
   const [accept4, setAccept4] = useState(false);
+  const [update5, setUpdate5] = useState(false);
+  const [accept5, setAccept5] = useState(false);
 
   function getStepContent(step) {
     switch (step) {
@@ -132,7 +140,15 @@ export default function Admin() {
           />
         );
       case 5:
-        return <HospitalLabs_step5 />;
+        return (
+          <HospitalLabs_step5
+            caseId={caseId}
+            update={update5}
+            changed={changed}
+            setAccept={setAccept5}
+            setChanged={setChanged}
+          />
+        );
       case 6:
         return <AABCpeptideHistopathology_step6 />;
       case 7:
@@ -155,6 +171,8 @@ export default function Admin() {
     setUpdate3(false);
     setUpdate4(false);
     setAccept4(false);
+    setUpdate5(false);
+    setAccept5(false);
   };
 
   const totalSteps = () => {
@@ -196,6 +214,8 @@ export default function Admin() {
         setAccept3(false);
         setUpdate4(false);
         setAccept4(false);
+        setUpdate5(false);
+        setAccept5(false);
         setChanged(false);
       }
     } else {
@@ -208,6 +228,8 @@ export default function Admin() {
       setAccept3(false);
       setUpdate4(false);
       setAccept4(false);
+      setUpdate5(false);
+      setAccept5(false);
       setChanged(false);
     }
 
@@ -251,6 +273,10 @@ export default function Admin() {
         setAccept2(false);
         setUpdate3(false);
         setAccept3(false);
+        setUpdate4(false);
+        setAccept4(false);
+        setUpdate5(false);
+        setAccept5(false);
         setChanged(false);
       }
     } else if (activeStep === 1) {
@@ -261,6 +287,8 @@ export default function Admin() {
       setUpdate3(true);
     } else if (activeStep === 4) {
       setUpdate4(true);
+    } else if (activeStep === 5) {
+      setUpdate5(true);
     }
 
     setChanged(false);
@@ -277,6 +305,8 @@ export default function Admin() {
     setAccept3(false);
     setUpdate4(false);
     setAccept4(false);
+    setUpdate5(false);
+    setAccept5(false);
     if (activeStep - 1 === 0) {
       setUpdate(false);
     }
@@ -296,6 +326,8 @@ export default function Admin() {
       setAccept3(false);
       setUpdate4(false);
       setAccept4(false);
+      setUpdate5(false);
+      setAccept5(false);
       setActiveStep(step);
     }
     if (step === 0) {
@@ -327,13 +359,25 @@ export default function Admin() {
           <Stepper nonLinear activeStep={activeStep} orientation="vertical">
             {steps.map((label, index) => (
               <Step key={label}>
-                {/* <StepLabel>{label}</StepLabel> */}
-                <StepButton
+                <StepLabel
+                  icon={index == 0 ? "0" : index}
+                  onClick={handleStep(index)}
+                  completed={completed[index]}
+                  className={classes.stepLabel}
+                >
+                  {/* <StepButton
+                    onClick={handleStep(index)}
+                    completed={completed[index]}
+                  > */}
+                  {label}
+                  {/* </StepButton> */}
+                </StepLabel>
+                {/* <StepButton
                   onClick={handleStep(index)}
                   completed={completed[index]}
                 >
-                  {label}
-                </StepButton>
+                  <StepLabel icon={9}>{label}</StepLabel>
+                </StepButton> */}
                 <StepContent>
                   {getStepContent(index)}
                   <div className={classes.actionsContainer}>
