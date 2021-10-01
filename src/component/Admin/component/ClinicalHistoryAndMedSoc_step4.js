@@ -64,12 +64,12 @@ export default function CaseProcessing_step2({
   const cod_id = useRetrieveTableColumn(
     "cause_of_death",
     "cause_of_death_id",
-    "cause_of_death_id"
+    "description"
   );
   const cod_name = useRetrieveTableColumn(
     "cause_of_death",
     "description",
-    "cause_of_death_id"
+    "description"
   );
   const codOps = opsGenerator(cod_id, cod_name);
 
