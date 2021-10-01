@@ -71,19 +71,15 @@ export default function CaseIdentificationAndQC_step1({
     "QC_initials_and_date",
   ];
 
-  const donorTypes = useRetrieveTableColumn(
-    "donor_types",
-    "name",
-    "donor_type_id"
-  );
+  const donorTypes = useRetrieveTableColumn("donor_types", "name", "name");
   const donorTypes_id = useRetrieveTableColumn(
     "donor_types",
     "donor_type_id",
-    "donor_type_id"
+    "name"
   );
   const donorTypesOps = opsGenerator(donorTypes_id, donorTypes);
-  const OPO_name = useRetrieveTableColumn("OPO", "OPO_name", "OPO_id");
-  const OPO_id = useRetrieveTableColumn("OPO", "OPO_id", "OPO_id");
+  const OPO_name = useRetrieveTableColumn("OPO", "OPO_name", "OPO_name");
+  const OPO_id = useRetrieveTableColumn("OPO", "OPO_id", "OPO_name");
   const OPOOps = opsGenerator(OPO_id, OPO_name);
 
   const columnPropsList = [
