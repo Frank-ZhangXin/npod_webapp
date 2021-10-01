@@ -90,34 +90,68 @@ export default function CaseIdentificationAndQC_step1({
     {
       column: "is_public",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: 1, label: "Yes" },
         { value: 0, label: "No" },
         { value: null, label: "NULL" },
       ],
     },
-    { column: "alt_case_id", input: "inputBox", type: "string", ops: [] },
-    { column: "UNOS_id", input: "inputBox", type: "string", ops: [] },
-    { column: "RR_id", input: "inputBox", type: "string", ops: [] },
-    { column: "Aperio_id", input: "inputBox", type: "string", ops: [] },
+    {
+      column: "alt_case_id",
+      input: "inputBox",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
+      ops: [],
+    },
+    {
+      column: "UNOS_id",
+      input: "inputBox",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
+      ops: [],
+    },
+    {
+      column: "RR_id",
+      input: "inputBox",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
+      ops: [],
+    },
+    {
+      column: "Aperio_id",
+      input: "inputBox",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
+      ops: [],
+    },
     {
       column: "donor_type_id",
       input: "dropDown",
-      type: "int",
+      restrict: { type: "int", range: [] },
+      checkRes: true,
       ops: donorTypesOps,
     },
     {
       column: "donor_type_comments",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
-    { column: "case_flag", input: "inputBox", type: "string", ops: [] },
+    {
+      column: "case_flag",
+      input: "inputBox",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
+      ops: [],
+    },
     {
       column: "retire_status",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "Retired", label: "Retired" },
         { value: "No Pancreas", label: "No Pancreas" },
@@ -128,13 +162,15 @@ export default function CaseIdentificationAndQC_step1({
     {
       column: "accepted_as_donor_type_id",
       input: "dropDown",
-      type: "int",
+      restrict: { type: "int", range: [] },
+      checkRes: true,
       ops: donorTypesOps,
     },
     {
       column: "chart_received",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "Yes", label: "Yes" },
         { value: "No", label: "No" },
@@ -145,7 +181,8 @@ export default function CaseIdentificationAndQC_step1({
     {
       column: "consent_restriction_status",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "Yes", label: "Yes" },
         { value: "No", label: "No" },
@@ -155,7 +192,8 @@ export default function CaseIdentificationAndQC_step1({
     {
       column: "source",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "Autopsy", label: "Autopsy" },
         { value: "IIAM", label: "IIAM" },
@@ -169,13 +207,15 @@ export default function CaseIdentificationAndQC_step1({
     {
       column: "OPO_id",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: OPOOps,
     },
     {
       column: "case_recovery_type",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "Organ Donor", label: "Organ Donor" },
         { value: "DCD Organ Donor", label: "DCD Organ Donor" },
@@ -187,19 +227,22 @@ export default function CaseIdentificationAndQC_step1({
     {
       column: "chart_reviewed_date",
       input: "datePicker",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       column: "chart_review_notes",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       column: "case_entry_status",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: 1, label: "Entered" },
         { value: 0, label: "Not Entered" },
@@ -209,13 +252,15 @@ export default function CaseIdentificationAndQC_step1({
     {
       column: "entry_initials_and_date",
       input: "inputBox",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       column: "case_QC_status",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: 1, label: "QC'd" },
         { value: 0, label: "Not QC'd" },
@@ -225,7 +270,8 @@ export default function CaseIdentificationAndQC_step1({
     {
       column: "QC_initials_and_date",
       input: "inputBox",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
   ];
@@ -270,7 +316,7 @@ export default function CaseIdentificationAndQC_step1({
     "Donor Type Comment",
     "Case Flag",
     "Retire Status",
-    "Accepted As Donor Type ID",
+    "Accepted As Donor Type",
     "Chart Received",
     "Consent Restriction Status",
     "Source",

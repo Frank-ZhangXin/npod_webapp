@@ -54,7 +54,8 @@ export default function CaseProcessing_step2({
     {
       column: "slices_shipping_status",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "Yes", label: "Yes" },
         { value: "No", label: "No" },
@@ -64,7 +65,8 @@ export default function CaseProcessing_step2({
     {
       column: "islet_isolation_status",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "Yes", label: "Yes" },
         { value: "No", label: "No" },
@@ -74,7 +76,8 @@ export default function CaseProcessing_step2({
     {
       column: "HANDEL_status",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "HANDEL-P", label: "HANDEL-P" },
         { value: "HANDEL-P/I", label: "HANDEL-P/I" },
@@ -86,31 +89,36 @@ export default function CaseProcessing_step2({
     {
       colum: "processing_start_date",
       input: "datePicker",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "processing_start_time",
       input: "timePicker",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "processing_end_date",
       input: "datePicker",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "processing_end_time",
       input: "timePicker",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "pancreas_intact_status",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "Yes", label: "Yes" },
         { value: "No", label: "No" },
@@ -120,37 +128,47 @@ export default function CaseProcessing_step2({
     {
       colum: "pancreas_weight_grams",
       input: "floatBox",
-      type: "float",
+      restrict: { type: "float", range: [] },
+
+      checkRes: true,
       ops: [],
     },
     {
       colum: "pancreas_head_grams",
       input: "floatBox",
-      type: "float",
+      restrict: { type: "float", range: [] },
+
+      checkRes: true,
       ops: [],
     },
     {
       colum: "pancreas_body_grams",
       input: "floatBox",
-      type: "float",
+      restrict: { type: "float", range: [] },
+
+      checkRes: true,
       ops: [],
     },
     {
       colum: "pancreas_tail_grams",
       input: "floatBox",
-      type: "float",
+      restrict: { type: "float", range: [] },
+
+      checkRes: true,
       ops: [],
     },
     {
       colum: "pancreas_weight_comments",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "kidney_intact_status",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "true", label: "true" },
         { value: "false", label: "false" },
@@ -160,7 +178,8 @@ export default function CaseProcessing_step2({
     {
       colum: "kidney_left_or_right",
       input: "dropDown",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [
         { value: "left", label: "left" },
         { value: "right", label: "right" },
@@ -170,25 +189,30 @@ export default function CaseProcessing_step2({
     {
       colum: "kidney_weight_grams",
       input: "floatBox",
-      type: "float",
+      restrict: { type: "float", range: [] },
+
+      checkRes: true,
       ops: [],
     },
     {
       colum: "kidney_grossing_comments",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "case_processing_info",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
     {
       colum: "slices_processing_notes",
       input: "inputBoxLarge",
-      type: "string",
+      restrict: { type: "string", range: [] },
+      checkRes: true,
       ops: [],
     },
   ];
