@@ -9,13 +9,17 @@ export default function useRetrieveTableColumn(tableName, columnName, sortBy) {
     }
   }, [tableName]);
   async function retrieve(table, column, sortby) {
-    return await API.post("dbapi", "/db/get_table_column", {
-      body: {
-        table_name: table,
-        column_name: column,
-        sort_by: sortby,
-      },
-    })
+    return await API.post(
+      "dbapi",
+      "/db/get_one_table_one_column_all_existing_values",
+      {
+        body: {
+          table_name: table,
+          column_name: column,
+          sort_by: sortby,
+        },
+      }
+    )
       .then((res) => {
         console.log("Table column was retrieved successfully.");
         setResult(res);

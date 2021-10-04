@@ -128,29 +128,10 @@ async function get_HLA() {
   return await pooledConnection(asyncAction);
 }
 
-// get the object case
-async function get_object_case(case_id) {
-  const sql = `SELECT * FROM cases WHERE case_id='${case_id}'`;
-  const asyncAction = async (newConnection) => {
-    return await new Promise((resolve, reject) => {
-      newConnection.query(sql, (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          console.log(`[Fetch cases] Test case was fetched.`);
-          resolve(result);
-        }
-      });
-    });
-  };
-  return await pooledConnection(asyncAction);
-}
-
 module.exports = {
   testPoolForRead: testPoolForRead,
   get_cases: get_cases,
   get_donor_types: get_donor_types,
   get_cause_of_death: get_cause_of_death,
   get_HLA: get_HLA,
-  get_object_case: get_object_case,
 };

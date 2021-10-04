@@ -21,10 +21,10 @@ var {
   testPoolForCreate,
   create_case,
   get_test_case,
-  get_object_case,
-  get_case_column,
-  get_table_column,
-  get_table_column_possible_value,
+  check_case_exist,
+  get_one_case_all_column_values,
+  get_one_table_one_column_all_existing_values,
+  get_one_table_one_column_all_possible_values,
   check_foreign_key,
 } = require("./service/createDatabase");
 
@@ -136,44 +136,50 @@ app.post("/db/get_test_case", function (req, res) {
   get_test_case().then((promisedRes) => res.send(promisedRes));
 });
 
-// get object case
-app.post("/db/get_object_case", function (req, res) {
+// check case exist
+app.post("/db/check_case_exist", function (req, res) {
   console.log("Getting object case.");
   console.log(req.body);
-  get_object_case(req.body["case_id"]).then((promisedRes) =>
+  check_case_exist(req.body["case_id"]).then((promisedRes) =>
     res.send(promisedRes)
   );
 });
 
 // get object case column
-app.post("/db/get_object_case_column", function (req, res) {
+app.post("/db/get_one_case_all_column_values", function (req, res) {
   console.log("Getting object case.");
   console.log(req.body);
-  get_case_column(req.body["case_id"], req.body["columns"]).then(
+  get_one_case_all_column_values(req.body["case_id"], req.body["columns"]).then(
     (promisedRes) => res.send(promisedRes)
   );
 });
 
-// get table column
-app.post("/db/get_table_column", function (req, res) {
-  console.log("Getting table column.");
-  console.log(req.body);
-  get_table_column(
-    req.body["table_name"],
-    req.body["column_name"],
-    req.body["sort_by"]
-  ).then((promisedRes) => res.send(promisedRes));
-});
+// get some table some column all existing values (OPO table and donor_types table)
+app.post(
+  "/db/get_one_table_one_column_all_existing_values",
+  function (req, res) {
+    console.log("Getting table column.");
+    console.log(req.body);
+    get_one_table_one_column_all_existing_values(
+      req.body["table_name"],
+      req.body["column_name"],
+      req.body["sort_by"]
+    ).then((promisedRes) => res.send(promisedRes));
+  }
+);
 
-// get table column possible value
-app.post("/db/get_table_column_possible_value", function (req, res) {
-  console.log("Getting table column possible value");
-  console.log(req.body);
-  get_table_column_possible_value(
-    req.body["table_name"],
-    req.body["column_name"]
-  ).then((promisedRes) => res.send(promisedRes));
-});
+// get some table some column all possible values (enum type)
+app.post(
+  "/db/get_one_table_one_column_all_possible_values",
+  function (req, res) {
+    console.log("Getting table column possible value");
+    console.log(req.body);
+    get_one_table_one_column_all_possible_values(
+      req.body["table_name"],
+      req.body["column_name"]
+    ).then((promisedRes) => res.send(promisedRes));
+  }
+);
 
 // check foreigh key
 app.post("/db/check_foreign_key", function (req, res) {

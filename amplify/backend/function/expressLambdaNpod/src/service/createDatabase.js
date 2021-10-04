@@ -87,8 +87,8 @@ async function get_test_case() {
 }
 
 // get the object case
-async function get_object_case(case_id) {
-  console.log("case id is " + case_id);
+async function check_case_exist(case_id) {
+  console.log("Checking case " + case_id + " exist");
   const sql = `SELECT COUNT(1) FROM cases WHERE case_id='${case_id}'`;
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -96,7 +96,7 @@ async function get_object_case(case_id) {
         if (error) {
           reject(error);
         } else {
-          console.log(`[Fetch cases] Test case was fetched.`);
+          console.log(`[Fetch cases] case ${case_id} was fetched.`);
           resolve(result);
         }
       });
@@ -105,7 +105,7 @@ async function get_object_case(case_id) {
   return await pooledConnection(asyncAction);
 }
 
-async function get_case_column(case_id, columns) {
+async function get_one_case_all_column_values(case_id, columns) {
   let columnStr = "";
   for (let i = 0; i < columns.length; i++) {
     if (i === 0) {
@@ -134,7 +134,11 @@ async function get_case_column(case_id, columns) {
   return await pooledConnection(asyncAction);
 }
 
-async function get_table_column(table_name, column_name, sort_by) {
+async function get_one_table_one_column_all_existing_values(
+  table_name,
+  column_name,
+  sort_by
+) {
   const sql = `SELECT ${column_name}, ${sort_by} FROM ${table_name}`;
   console.log("sql: " + sql);
   function compare(a, b) {
@@ -158,7 +162,10 @@ async function get_table_column(table_name, column_name, sort_by) {
   return await pooledConnection(asyncAction);
 }
 
-async function get_table_column_possible_value(table_name, column_name) {
+async function get_one_table_one_column_all_possible_values(
+  table_name,
+  column_name
+) {
   const sql = `SELECT COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_NAME="${table_name}" AND COLUMN_NAME="${column_name}"`;
   console.log("sql: " + sql);
   function str_to_arr(values) {
@@ -216,9 +223,11 @@ module.exports = {
   testPoolForCreate: testPoolForCreate,
   create_case: create_case,
   get_test_case: get_test_case,
-  get_object_case: get_object_case,
-  get_case_column: get_case_column,
-  get_table_column: get_table_column,
-  get_table_column_possible_value: get_table_column_possible_value,
+  check_case_exist: check_case_exist,
+  get_one_case_all_column_values: get_one_case_all_column_values,
+  get_one_table_one_column_all_existing_values:
+    get_one_table_one_column_all_existing_values,
+  get_one_table_one_column_all_possible_values:
+    get_one_table_one_column_all_possible_values,
   check_foreign_key: check_foreign_key,
 };

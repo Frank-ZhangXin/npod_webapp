@@ -9,7 +9,7 @@ export default function useRetrieveCaseColumns(caseId, columnList) {
     }
   }, [caseId]);
   async function retrieve(id, columns) {
-    return await API.post("dbapi", "/db/get_object_case_column", {
+    return await API.post("dbapi", "/db/get_one_case_all_column_values", {
       body: {
         case_id: id,
         columns: columns,
