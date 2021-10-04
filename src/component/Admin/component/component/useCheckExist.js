@@ -18,7 +18,7 @@ export default function useCheckExist(
   }, [caseId, createSuccess]);
 
   async function checkExist(id) {
-    return await API.post("dbapi", "/db/get_object_case", {
+    return await API.post("dbapi", "/db/check_case_exist", {
       body: {
         case_id: id,
       },

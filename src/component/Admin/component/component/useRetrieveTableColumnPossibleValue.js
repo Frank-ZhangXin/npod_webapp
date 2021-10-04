@@ -12,12 +12,16 @@ export default function useRetrieveTableColumnPossibleValue(
     }
   }, [tableName]);
   async function retrieve(table, column) {
-    return await API.post("dbapi", "/db/get_table_column_possible_value", {
-      body: {
-        table_name: table,
-        column_name: column,
-      },
-    })
+    return await API.post(
+      "dbapi",
+      "/db/get_one_table_one_column_all_possible_values",
+      {
+        body: {
+          table_name: table,
+          column_name: column,
+        },
+      }
+    )
       .then((res) => {
         console.log("Table column possible value was retrieved successfully.");
         setResult(res);
