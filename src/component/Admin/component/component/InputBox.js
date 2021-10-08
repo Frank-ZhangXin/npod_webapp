@@ -36,39 +36,56 @@ export default function InputBox({
     switch (input) {
       case "inputBox":
         return (
-          <TextBox value={value} setValue={setValue} setChanged={setChanged} />
+          <TextBox
+            name={name}
+            value={value}
+            setValue={setValue}
+            setChanged={setChanged}
+            restrict={columnProps.restrict}
+            valid={columnProps.valid}
+          />
         );
         break;
       case "inputBoxLarge":
         return (
           <TextBoxLarge
+            name={name}
             value={value}
             setValue={setValue}
             setChanged={setChanged}
+            restrict={columnProps.restrict}
+            valid={columnProps.valid}
           />
         );
         break;
       case "integerBox":
         return (
           <IntegerNumberBox
+            name={name}
             value={value}
             setValue={setValue}
             setChanged={setChanged}
+            restrict={columnProps.restrict}
+            valid={columnProps.valid}
           />
         );
         break;
       case "floatBox":
         return (
           <FloatNumberBox
+            name={name}
             value={value}
             setValue={setValue}
             setChanged={setChanged}
+            restrict={columnProps.restrict}
+            valid={columnProps.valid}
           />
         );
         break;
       case "dropDown":
         return (
           <DropBox
+            name={name}
             value={value}
             setValue={setValue}
             setChanged={setChanged}
@@ -78,29 +95,28 @@ export default function InputBox({
         break;
       case "datePicker":
         return (
-          <DateBox value={value} setValue={setValue} setChanged={setChanged} />
+          <DateBox
+            name={name}
+            value={value}
+            setValue={setValue}
+            setChanged={setChanged}
+          />
         );
       case "timePicker":
         return (
-          <TimeBox value={value} setValue={setValue} setChanged={setChanged} />
+          <TimeBox
+            name={name}
+            value={value}
+            setValue={setValue}
+            setChanged={setChanged}
+          />
         );
       default:
         break;
     }
   };
 
-  // if (name === "OPO ID") {
-  //   console.log("OPO ID is", value);
-  // }
-
   return (
-    <div className={classes.root}>
-      <Box display="flex" alignItems="center">
-        <Box>
-          <label>{name}:</label>
-        </Box>
-        <Box>{getInputContent(columnProps.input)}</Box>
-      </Box>
-    </div>
+    <div className={classes.root}>{getInputContent(columnProps.input)}</div>
   );
 }

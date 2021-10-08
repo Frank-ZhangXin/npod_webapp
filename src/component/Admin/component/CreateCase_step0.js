@@ -47,7 +47,13 @@ export default function CreateCase_step0({
 
   const columnList = ["case_id"];
   const columnPropsList = [
-    { column: "case_id", input: "inputBox", type: "string", ops: [] },
+    {
+      column: "case_id",
+      input: "inputBox",
+      restrict: { type: "string", range: [1, 10] },
+      valid: useState(true),
+      ops: [],
+    },
   ];
   const nameList = ["Case ID"];
   const valueList = [value0];
@@ -113,7 +119,6 @@ export default function CreateCase_step0({
 
   return (
     <div className={classes.root}>
-      {/* <div>[Debug] check exist result is {isExist.toString()}</div> */}
       <form noValidate onSubmit={handleSumbit}>
         <div>
           <GridBox
