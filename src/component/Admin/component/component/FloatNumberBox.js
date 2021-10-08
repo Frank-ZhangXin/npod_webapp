@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -16,33 +17,73 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     border: "1px solid red",
   },
+  hint_invalid: {
+    marginTop: "-5px",
+    color: "red",
+    fontSize: 12,
+  },
 }));
 
-export default function FloatNumberBox({ value, setValue, setChanged }) {
+function isValid(value, restrict) {
+  if (restrict.range === [] || value === "") {
+    return true;
+  }
+  // int or float
+  if (
+    restrict.type === "float" &&
+    restrict.range[0] <= value &&
+    value <= restrict.range[1] &&
+    !/[a-zA-Z]/.test(value) &&
+    parseFloat(value) == value
+  ) {
+    return true;
+  }
+  return false;
+}
+
+export default function FloatNumberBox({
+  name,
+  value,
+  setValue,
+  setChanged,
+  restrict,
+  valid,
+}) {
   const classes = useStyles();
-  const [isFloat, setIsFloat] = useState(true);
+  const [invalid, setInvalid] = useState(false);
   const handleChange = (event) => {
-    const newValue = event.target.value;
-    if (!/[a-zA-Z]/.test(newValue) && parseFloat(newValue) == newValue) {
-      setValue(newValue);
-      setIsFloat(true);
+    if (isValid(event.target.value, restrict)) {
+      if (event.target.value === "") {
+        setValue(null);
+      } else {
+        setValue(event.target.value);
+      }
       setChanged(true);
-    } else if (newValue === "") {
-      setValue(null);
-      setIsFloat(true);
-      setChanged(true);
+      valid[1](true);
+      setInvalid(false);
     } else {
-      setIsFloat(false);
+      valid[1](false);
+      setInvalid(true);
     }
   };
   return (
     <div>
-      <input
-        type="text"
-        defaultValue={value}
-        onChange={handleChange}
-        className={isFloat ? classes.input : classes.errInput}
-      />
+      <Box display="flex" alignItems="center">
+        <Box>
+          <label>{name}:</label>
+        </Box>
+        <Box>
+          <input
+            type="text"
+            defaultValue={value}
+            onChange={handleChange}
+            className={invalid ? classes.errInput : classes.input}
+          />
+        </Box>
+      </Box>
+      {invalid ? (
+        <p className={classes.hint_invalid}>Input is invalid</p>
+      ) : null}
     </div>
   );
 }

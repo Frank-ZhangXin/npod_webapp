@@ -4,8 +4,8 @@ import "rc-time-picker/assets/index.css";
 import moment from "moment";
 import TimePicker from "rc-time-picker";
 import styled from "styled-components";
-
 import { makeStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
 
 const StyledTimePicker = styled(TimePicker)`
   & .rc-time-picker-clear {
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function TimeBox({ value, setValue, setChanged }) {
+export default function TimeBox({ name, value, setValue, setChanged }) {
   const classes = useStyles();
   const [defaultTime, setDefaultTime] = useState(null);
   const [defaultValue, setDefaultValue] = useState(null);
@@ -57,13 +57,20 @@ export default function TimeBox({ value, setValue, setChanged }) {
 
   return (
     <div>
-      <StyledTimePicker
-        style={{ width: 100 }}
-        showSecond={false}
-        value={defaultValue}
-        className="xxx"
-        onChange={onChange}
-      />
+      <Box display="flex" alignItems="center">
+        <Box>
+          <label>{name}:</label>
+        </Box>
+        <Box>
+          <StyledTimePicker
+            style={{ width: 100 }}
+            showSecond={false}
+            value={defaultValue}
+            className="xxx"
+            onChange={onChange}
+          />
+        </Box>
+      </Box>
     </div>
   );
 }

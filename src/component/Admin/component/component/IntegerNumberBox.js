@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -16,29 +17,74 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     border: "1px solid red",
   },
+  hint_invalid: {
+    marginTop: "-5px",
+    color: "red",
+    fontSize: 12,
+  },
 }));
 
-export default function IntegerNumberBox({ value, setValue, setChanged }) {
+function isValid(value, restrict) {
+  if (restrict.range === [] || value === "") {
+    return true;
+  }
+  // int or float
+  if (
+    restrict.type === "int" &&
+    restrict.range[0] <= value &&
+    value <= restrict.range[1] &&
+    !/[a-zA-Z]/.test(value) &&
+    parseInt(value) == value
+  ) {
+    return true;
+  }
+  return false;
+}
+
+export default function IntegerNumberBox({
+  name,
+  value,
+  setValue,
+  setChanged,
+  restrict,
+  valid,
+}) {
   const classes = useStyles();
   const [isInt, setIsInt] = useState(true);
+  const [invalid, setInvalid] = useState(false);
   const handleChange = (event) => {
-    const newValue = event.target.value;
-    if (!/[a-zA-Z]/.test(newValue) && parseInt(newValue) == newValue) {
-      setValue(newValue);
-      setIsInt(true);
+    if (isValid(event.target.value, restrict)) {
+      if (event.target.value === "") {
+        setValue(null);
+      } else {
+        setValue(event.target.value);
+      }
       setChanged(true);
+      valid[1](true);
+      setInvalid(false);
     } else {
-      setIsInt(false);
+      valid[1](false);
+      setInvalid(true);
     }
   };
   return (
     <div>
-      <input
-        type="text"
-        defaultValue={value}
-        onChange={handleChange}
-        className={isInt ? classes.input : classes.errInput}
-      />
+      <Box display="flex" alignItems="center">
+        <Box>
+          <label>{name}:</label>
+        </Box>
+        <Box>
+          <input
+            type="text"
+            defaultValue={value}
+            onChange={handleChange}
+            className={invalid ? classes.errInput : classes.input}
+          />
+        </Box>
+      </Box>
+      {invalid ? (
+        <p className={classes.hint_invalid}>Input is invalid</p>
+      ) : null}
     </div>
   );
 }
