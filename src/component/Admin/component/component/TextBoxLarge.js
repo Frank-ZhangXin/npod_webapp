@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function isValid(value, restrict) {
-  if (restrict.range === []) {
+  if (restrict.range.length === 0) {
     return true;
   }
   // string type
