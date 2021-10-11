@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function isValid(value, restrict) {
-  if (restrict.range === [] || value === "") {
+  if (restrict.range.length === 0 || value === "") {
     return true;
   }
   // int or float
