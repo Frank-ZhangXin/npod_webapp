@@ -82,7 +82,10 @@ export default function FloatNumberBox({
         </Box>
       </Box>
       {invalid ? (
-        <p className={classes.hint_invalid}>Input is invalid</p>
+        <p className={classes.hint_invalid}>
+          Input is invalid, constrain: {restrict.range[0]} &lt; input &lt;{" "}
+          {restrict.range[1]}
+        </p>
       ) : null}
     </div>
   );
