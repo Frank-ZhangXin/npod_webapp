@@ -111,14 +111,14 @@ export default function CaseIdentificationAndQC_step1({
     {
       column: "RR_id",
       input: "inputBox",
-      restrict: { type: "string", range: [12, 15] },
+      restrict: { type: "string", range: [0, 15] },
       valid: useState(true),
       ops: [],
     },
     {
       column: "Aperio_id",
       input: "inputBox",
-      restrict: { type: "int", range: [5, 5] },
+      restrict: { type: "string", range: [0, 5] },
       valid: useState(true),
       ops: [],
     },
@@ -158,7 +158,7 @@ export default function CaseIdentificationAndQC_step1({
     {
       column: "accepted_as_donor_type_id",
       input: "dropDown",
-      restrict: { type: "int", range: [] },
+      restrict: { type: "string", range: [] },
       valid: useState(true),
       ops: donorTypesOps,
     },
