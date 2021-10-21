@@ -73,8 +73,54 @@ async function update_case(case_id, update_columns, update_values) {
         if (error) {
           reject(error);
         } else {
+          console.log(`[Update the case] The case ${case_id} was updated.`);
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// update AAB
+async function update_AAB(columns) {
+  let updateStr = "";
+  // for (let i = 0; i < update_columns.length; i++) {
+  //   let updateValue = update_values[i];
+  //   if (update_values[i] === "") {
+  //     updateValue = "''";
+  //   }
+  //   if (update_values[i] === "NULL" || update_values[i] === null) {
+  //     updateValue = "NULL";
+  //   } else {
+  //     updateValue = "'" + update_values[i] + "'";
+  //   }
+  //   if (i === 0) {
+  //     updateStr = update_columns[i] + "=" + updateValue;
+  //   } else {
+  //     updateStr = updateStr + ", " + update_columns[i] + "=" + updateValue;
+  //   }
+  // }
+  for (let [key, value] of Object.entries(columns)) {
+    if (value !== null) {
+      columns[key] = "'" + value + "'";
+    }
+    if (updateStr === "") {
+      updateStr = key + "=" + columns[key];
+    } else {
+      updateStr += "," + key + "=" + columns[key];
+    }
+  }
+  const sql = `UPDATE AAB SET ${updateStr} WHERE case_id=${columns.case_id}`;
+  console.log("sql: ", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
           console.log(
-            `[Update the case] The case 9999 donor_type_id was updated.`
+            `[Update the AAB] The case ${columns.case_id} was updated.`
           );
           resolve(result);
         }
@@ -87,4 +133,5 @@ async function update_case(case_id, update_columns, update_values) {
 module.exports = {
   testPoolForUpdate: testPoolForUpdate,
   update_case: update_case,
+  update_AAB: update_AAB,
 };

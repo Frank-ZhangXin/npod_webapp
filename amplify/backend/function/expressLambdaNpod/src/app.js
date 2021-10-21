@@ -26,9 +26,15 @@ var {
   get_one_table_one_column_all_existing_values,
   get_one_table_one_column_all_possible_values,
   check_foreign_key,
+  check_AAB_exist,
+  create_AAB,
 } = require("./service/createDatabase");
 
-var { testPoolForUpdate, update_case } = require("./service/updateDatabase");
+var {
+  testPoolForUpdate,
+  update_case,
+  update_AAB,
+} = require("./service/updateDatabase");
 
 var { testPoolForDelete, delete_case } = require("./service/deleteDatabase");
 
@@ -192,6 +198,22 @@ app.post("/db/check_foreign_key", function (req, res) {
   ).then((promisedRes) => res.send(promisedRes));
 });
 
+// check AAB exist
+app.post("/db/check_AAB_exist", function (req, res) {
+  console.log("Checking AAB exist...");
+  console.log(req.body);
+  check_AAB_exist(req.body["case_id"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
+// create a new AAB
+app.post("/db/create_AAB", function (req, res) {
+  console.log("Creating new AAB...");
+  console.log(req.body);
+  create_AAB(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
+});
+
 /****************************
  * Example put method *
  ****************************/
@@ -205,6 +227,13 @@ app.put("/db/update_case", function (req, res) {
     req.body["update_columns"],
     req.body["update_values"]
   ).then((promisedRes) => res.send(promisedRes));
+});
+
+app.put("/db/update_AAB", function (req, res) {
+  // Add your code here
+  console.log("Updating AAB.");
+  console.log(req.body);
+  update_AAB(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
 });
 
 app.put("/db/test_db", function (req, res) {
