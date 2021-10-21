@@ -86,7 +86,7 @@ async function get_test_case() {
   return await pooledConnection(asyncAction);
 }
 
-// get the object case
+// check case if exist
 async function check_case_exist(case_id) {
   console.log("Checking case " + case_id + " exist");
   const sql = `SELECT COUNT(1) FROM cases WHERE case_id='${case_id}'`;
@@ -219,6 +219,64 @@ async function check_foreign_key(table_name, foreign_key, foreign_key_value) {
   return await pooledConnection(asyncAction);
 }
 
+// check AAB if exist
+async function check_AAB_exist(case_id) {
+  console.log("Checking AAB table case " + case_id + " exist");
+  const sql = `SELECT COUNT(1) FROM AAB WHERE case_id='${case_id}'`;
+  console.log("sql", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(`[Fetch AAB] case ${case_id} was fetched.`);
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// create a new AAB row
+async function create_AAB(columns) {
+  let keys = "";
+  let values = "";
+  for (let [key, value] of Object.entries(columns)) {
+    if (value !== null) {
+      columns[key] = "'" + value + "'";
+    }
+    if (keys === "") {
+      keys = key;
+    } else {
+      keys += "," + key;
+    }
+    if (values === "") {
+      values = columns[key];
+    } else {
+      values += "," + columns[key];
+    }
+  }
+  const sql = `INSERT INTO AAB(${keys}) VALUES(${values})`;
+  console.log("sql:", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Write Database][Insert new AAB] The case ${columns.case_id} was inserted.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForCreate: testPoolForCreate,
   create_case: create_case,
@@ -230,4 +288,6 @@ module.exports = {
   get_one_table_one_column_all_possible_values:
     get_one_table_one_column_all_possible_values,
   check_foreign_key: check_foreign_key,
+  check_AAB_exist: check_AAB_exist,
+  create_AAB: create_AAB,
 };
