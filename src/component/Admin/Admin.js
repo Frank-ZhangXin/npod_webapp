@@ -16,7 +16,7 @@ import CaseProcessing_step2 from "./component/CaseProcessing_step2";
 import DemographicsAndTimeline_step3 from "./component/DemographicsAndTimeline_step3";
 import ClinicalHistoryAndMedSoc_step4 from "./component/ClinicalHistoryAndMedSoc_step4";
 import HospitalLabs_step5 from "./component/HospitalLabs_step5";
-import AABCpeptideHistopathology_step6 from "./component/AABCpeptideHistopathology_step6";
+import AAB_step6 from "./component/AAB_step6";
 import HLA_step7 from "./component/HLA_step7";
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +53,7 @@ function getSteps() {
     "Demographics and Timeline",
     "Clinical History and Med/Soc",
     "Hospital Labs",
-    "AAB, C-peptide, Histopathology",
+    "AAB",
     "HLA",
     "RNA",
   ];
@@ -66,8 +66,10 @@ export default function Admin() {
   const steps = getSteps();
 
   const [caseId, setCaseId] = useState(null);
-  const [exist, setExist] = useState(false);
-  const [create, setCreate] = useState(false);
+  const [caseExist, setCaseExist] = useState(false);
+  const [AABExist, setAABExist] = useState(false);
+  const [createCase, setCreateCase] = useState(false);
+  const [createAAB, setCreateAAB] = useState(false);
   const [update, setUpdate] = useState(false);
   const [changed, setChanged] = useState(false);
   const [accept, setAccept] = useState(false);
@@ -81,6 +83,8 @@ export default function Admin() {
   const [accept4, setAccept4] = useState(false);
   const [update5, setUpdate5] = useState(false);
   const [accept5, setAccept5] = useState(false);
+  const [update6, setUpdate6] = useState(false);
+  const [accept6, setAccept6] = useState(false);
 
   function getStepContent(step) {
     switch (step) {
@@ -89,9 +93,9 @@ export default function Admin() {
           <div>
             <CreateCase_step0
               setCaseId={setCaseId}
-              exist
-              setExist={setExist}
-              create={create}
+              caseExist
+              setExist={setCaseExist}
+              create={createCase}
               update={update}
               changed={changed}
               setChanged={setChanged}
@@ -150,7 +154,18 @@ export default function Admin() {
           />
         );
       case 6:
-        return <AABCpeptideHistopathology_step6 />;
+        return (
+          <AAB_step6
+            caseId={caseId}
+            exist={AABExist}
+            setExist={setAABExist}
+            create={createAAB}
+            update={update6}
+            changed={changed}
+            setAccept={setAccept6}
+            setChanged={setChanged}
+          />
+        );
       case 7:
         return <HLA_step7 />;
       default:
@@ -163,7 +178,7 @@ export default function Admin() {
     setAccept1(false);
     setAccept2(false);
     setAccept3(false);
-    setCreate(false);
+    setCreateCase(false);
     setChanged(false);
     setUpdate(false);
     setUpdate1(false);
@@ -173,6 +188,9 @@ export default function Admin() {
     setAccept4(false);
     setUpdate5(false);
     setAccept5(false);
+    setUpdate6(false);
+    setAccept6(false);
+    setCreateAAB(false);
   };
 
   const totalSteps = () => {
@@ -204,7 +222,7 @@ export default function Admin() {
     if (activeStep === 0) {
       if (accept) {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setCreate(false);
+        setCreateCase(false);
         setAccept(false);
         setUpdate1(false);
         setAccept1(false);
@@ -216,6 +234,9 @@ export default function Admin() {
         setAccept4(false);
         setUpdate5(false);
         setAccept5(false);
+        setUpdate6(false);
+        setAccept6(false);
+        setCreateAAB(false);
         setChanged(false);
       }
     } else {
@@ -230,42 +251,29 @@ export default function Admin() {
       setAccept4(false);
       setUpdate5(false);
       setAccept5(false);
+      setUpdate6(false);
+      setAccept6(false);
+      setCreateAAB(false);
       setChanged(false);
     }
-
-    // switch (activeStep) {
-    //   case 0:
-    //     if (accept) {
-    //       setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    //       setCreate(false);
-    //       //setUpdate(false);
-    //       setUpdate1(false);
-    //       setAccept(false);
-    //       setAccept1(false);
-    //       setChanged(false);
-    //     }
-    //   case 1:
-    //     console.log("case 1 next was clicked.");
-    //     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    //     setUpdate1(false);
-    //     setAccept1(false);
-    //     setChanged(false);
-    //   default:
-    //     return;
-    // }
   };
 
-  const handleCreate = () => {
-    setCreate(true);
+  const handleCreateCase = () => {
+    setCreateCase(true);
+    setChanged(false);
+  };
+
+  const handleCreateAAB = () => {
+    setCreateAAB(true);
     setChanged(false);
   };
 
   const handleUpdate = () => {
     if (activeStep === 0) {
       setUpdate(true);
-      if (exist) {
+      if (caseExist) {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setCreate(false);
+        setCreateCase(false);
         setAccept(false);
         setUpdate1(false);
         setAccept1(false);
@@ -277,6 +285,9 @@ export default function Admin() {
         setAccept4(false);
         setUpdate5(false);
         setAccept5(false);
+        setUpdate6(false);
+        setAccept6(false);
+        setCreateAAB(false);
         setChanged(false);
       }
     } else if (activeStep === 1) {
@@ -289,13 +300,15 @@ export default function Admin() {
       setUpdate4(true);
     } else if (activeStep === 5) {
       setUpdate5(true);
+    } else if (activeStep === 6) {
+      setUpdate6(true);
     }
 
     setChanged(false);
   };
 
   const handleBack = () => {
-    setCreate(false);
+    setCreateCase(false);
     setAccept(false);
     setUpdate1(false);
     setAccept1(false);
@@ -307,6 +320,9 @@ export default function Admin() {
     setAccept4(false);
     setUpdate5(false);
     setAccept5(false);
+    setUpdate6(false);
+    setAccept6(false);
+    setCreateAAB(false);
     if (activeStep - 1 === 0) {
       setUpdate(false);
     }
@@ -315,7 +331,7 @@ export default function Admin() {
 
   const handleStep = (step) => () => {
     if (activeStep !== 0) {
-      setCreate(false);
+      setCreateCase(false);
 
       setAccept(false);
       setUpdate1(false);
@@ -328,6 +344,8 @@ export default function Admin() {
       setAccept4(false);
       setUpdate5(false);
       setAccept5(false);
+      setAccept6(false);
+      setCreateAAB(false);
       setActiveStep(step);
     }
     if (step === 0) {
@@ -365,19 +383,8 @@ export default function Admin() {
                   completed={completed[index]}
                   className={classes.stepLabel}
                 >
-                  {/* <StepButton
-                    onClick={handleStep(index)}
-                    completed={completed[index]}
-                  > */}
                   {label}
-                  {/* </StepButton> */}
                 </StepLabel>
-                {/* <StepButton
-                  onClick={handleStep(index)}
-                  completed={completed[index]}
-                >
-                  <StepLabel icon={9}>{label}</StepLabel>
-                </StepButton> */}
                 <StepContent>
                   {getStepContent(index)}
                   <div className={classes.actionsContainer}>
@@ -404,11 +411,23 @@ export default function Admin() {
                           {activeStep === steps.length - 1 ? "Finish" : "Next"}
                         </Button>
                       ) : null}
-
+                      {/* Case Create */}
                       {activeStep === 0 ? (
                         <Button
-                          disabled={exist === true || caseId === ""}
-                          onClick={handleCreate}
+                          disabled={caseExist === true || caseId === ""}
+                          onClick={handleCreateCase}
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                        >
+                          Create
+                        </Button>
+                      ) : null}
+                      {/* AAB Create */}
+                      {activeStep === 6 ? (
+                        <Button
+                          disabled={AABExist === true || caseId === ""}
+                          onClick={handleCreateAAB}
                           className={classes.button}
                           variant="contained"
                           color="secondary"
@@ -418,7 +437,11 @@ export default function Admin() {
                       ) : null}
 
                       <Button
-                        disabled={exist === false || caseId === ""}
+                        disabled={
+                          (caseExist === false && activeStep === 0) ||
+                          (AABExist === false && activeStep === 6) ||
+                          caseId === ""
+                        }
                         onClick={handleUpdate}
                         className={classes.button}
                         variant="contained"

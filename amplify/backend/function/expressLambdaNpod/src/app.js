@@ -27,6 +27,7 @@ var {
   get_one_table_one_column_all_possible_values,
   check_foreign_key,
   check_AAB_exist,
+  get_one_AAB_all_column_values,
   create_AAB,
 } = require("./service/createDatabase");
 
@@ -151,7 +152,7 @@ app.post("/db/check_case_exist", function (req, res) {
   );
 });
 
-// get object case column
+// get one case all column values
 app.post("/db/get_one_case_all_column_values", function (req, res) {
   console.log("Getting object case.");
   console.log(req.body);
@@ -204,6 +205,15 @@ app.post("/db/check_AAB_exist", function (req, res) {
   console.log(req.body);
   check_AAB_exist(req.body["case_id"]).then((promisedRes) =>
     res.send(promisedRes)
+  );
+});
+
+// get one AAB all column values
+app.post("/db/get_one_AAB_all_column_values", function (req, res) {
+  console.log("Getting object case.");
+  console.log(req.body);
+  get_one_AAB_all_column_values(req.body["case_id"], req.body["columns"]).then(
+    (promisedRes) => res.send(promisedRes)
   );
 });
 

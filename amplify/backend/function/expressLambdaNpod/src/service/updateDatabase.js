@@ -85,22 +85,6 @@ async function update_case(case_id, update_columns, update_values) {
 // update AAB
 async function update_AAB(columns) {
   let updateStr = "";
-  // for (let i = 0; i < update_columns.length; i++) {
-  //   let updateValue = update_values[i];
-  //   if (update_values[i] === "") {
-  //     updateValue = "''";
-  //   }
-  //   if (update_values[i] === "NULL" || update_values[i] === null) {
-  //     updateValue = "NULL";
-  //   } else {
-  //     updateValue = "'" + update_values[i] + "'";
-  //   }
-  //   if (i === 0) {
-  //     updateStr = update_columns[i] + "=" + updateValue;
-  //   } else {
-  //     updateStr = updateStr + ", " + update_columns[i] + "=" + updateValue;
-  //   }
-  // }
   for (let [key, value] of Object.entries(columns)) {
     if (value !== null) {
       columns[key] = "'" + value + "'";

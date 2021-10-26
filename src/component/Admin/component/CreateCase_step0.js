@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridBox from "./component/GridBox";
 import useDebounced from "./component/useDebounced";
-import useCreate from "./component/useCreate";
-import useCheckExist from "./component/useCheckExist";
+import useCreateCase from "./component/useCreateCase";
+import useCheckCaseExist from "./component/useCheckCaseExist";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
 
@@ -66,7 +66,7 @@ export default function CreateCase_step0({
   const [createMsg, setCreateMsg] = useState("");
   const [createSuccess, setCreateSuccess] = useState(false);
 
-  const isExist = useCheckExist(
+  const isExist = useCheckCaseExist(
     value0,
     setCheckFail,
     setExist,
@@ -75,7 +75,7 @@ export default function CreateCase_step0({
     createSuccess
   );
 
-  const createResult = useCreate(
+  const isCreate = useCreateCase(
     value0,
     isExist,
     create,

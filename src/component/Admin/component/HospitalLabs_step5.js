@@ -5,7 +5,7 @@ import useDebounced from "./component/useDebounced";
 import useRetrieveTableColumn from "./component/useRetrieveTableColumn";
 import useRetrieveCaseColumns from "./component/useRetrieveCaseColumns";
 import useRetrieveTableColumnPossibleValue from "./component/useRetrieveTableColumnPossibleValue";
-import useUpdate from "./component/useUpdate";
+import useUpdateCase from "./component/useUpdateCase";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
 
@@ -31,7 +31,7 @@ function opsGenerator(idArr, nameArr) {
   return ops;
 }
 
-export default function CaseProcessing_step2({
+export default function HospitalLabs_step5({
   caseId,
   update,
   changed,
@@ -68,6 +68,8 @@ export default function CaseProcessing_step2({
     "serologies",
     "SARS_COV_2_results",
     "case_notes",
+    "C_peptide_ng_mL",
+    "histopathology",
   ];
   const tempOps = useRetrieveTableColumnPossibleValue(
     "cases",
@@ -282,6 +284,20 @@ export default function CaseProcessing_step2({
       valid: useState(true),
       ops: [],
     },
+    {
+      colum: "C_peptide_ng_mL",
+      input: "inputBox",
+      restrict: { type: "string", range: [] },
+      valid: useState(true),
+      ops: [],
+    },
+    {
+      colum: "histopathology",
+      input: "inputBoxLarge",
+      restrict: { type: "string", range: [] },
+      valid: useState(true),
+      ops: [],
+    },
   ];
   const defaultValue = useRetrieveCaseColumns(caseId, columnList);
   useEffect(() => {
@@ -291,8 +307,8 @@ export default function CaseProcessing_step2({
   }, [defaultValue]);
 
   const [value0, setValue0] = useDebounced(defaultValue[0], 800);
-  const [value1, setValue1] = useDebounced(defaultValue[0], 800);
-  const [value2, setValue2] = useDebounced(defaultValue[0], 800);
+  const [value1, setValue1] = useDebounced(defaultValue[1], 800);
+  const [value2, setValue2] = useDebounced(defaultValue[2], 800);
   const [value3, setValue3] = useDebounced(defaultValue[3], 800);
   const [value4, setValue4] = useDebounced(defaultValue[4], 800);
   const [value5, setValue5] = useDebounced(defaultValue[5], 800);
@@ -317,6 +333,8 @@ export default function CaseProcessing_step2({
   const [value24, setValue24] = useDebounced(defaultValue[24], 800);
   const [value25, setValue25] = useDebounced(defaultValue[25], 800);
   const [value26, setValue26] = useDebounced(defaultValue[26], 800);
+  const [value27, setValue27] = useDebounced(defaultValue[27], 800);
+  const [value28, setValue28] = useDebounced(defaultValue[28], 800);
 
   const nameList = [
     "ABO Blood Type",
@@ -346,6 +364,8 @@ export default function CaseProcessing_step2({
     "Serologies",
     "SARS COV 2 Results",
     "Case Notes",
+    "C peptide ng/mL",
+    "Histopathology",
   ];
   const valueList = [
     value0,
@@ -375,6 +395,8 @@ export default function CaseProcessing_step2({
     value24,
     value25,
     value26,
+    value27,
+    value28,
   ];
   const setValueList = [
     setValue0,
@@ -404,6 +426,8 @@ export default function CaseProcessing_step2({
     setValue24,
     setValue25,
     setValue26,
+    setValue27,
+    setValue28,
   ];
 
   useEffect(() => {
@@ -418,7 +442,7 @@ export default function CaseProcessing_step2({
   const [showSuccess, setShowSuccess] = useState(false);
   const [msg, setMsg] = useState("Default message.");
 
-  const updateResult = useUpdate(
+  const updateResult = useUpdateCase(
     caseId,
     update,
     changed,
@@ -526,6 +550,15 @@ export default function CaseProcessing_step2({
               nameList={nameList.slice(24, 27)}
               valueList={defaultValue.slice(24, 27)}
               setValueList={setValueList.slice(24, 27)}
+              setChanged={setChanged}
+            />
+          </div>
+          <div>
+            <GridBox
+              columnPropsList={columnPropsList.slice(27, 30)}
+              nameList={nameList.slice(27, 30)}
+              valueList={defaultValue.slice(27, 30)}
+              setValueList={setValueList.slice(27, 30)}
               setChanged={setChanged}
             />
           </div>
