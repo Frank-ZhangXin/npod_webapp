@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { API, Auth } from "aws-amplify";
 
-export default function useCreate(
+export default function useCreateCase(
   caseId,
   isExist,
   create,

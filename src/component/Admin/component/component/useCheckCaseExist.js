@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { API, Auth } from "aws-amplify";
 import { TrendingUp } from "@material-ui/icons";
 
-export default function useCheckExist(
+export default function useCheckCaseExist(
   caseId,
   setCheckFail,
   setExist,

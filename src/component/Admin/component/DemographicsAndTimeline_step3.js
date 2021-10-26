@@ -4,7 +4,7 @@ import GridBox from "./component/GridBox";
 import useDebounced from "./component/useDebounced";
 import useRetrieveCaseColumns from "./component/useRetrieveCaseColumns";
 import useRetrieveTableColumnPossibleValue from "./component/useRetrieveTableColumnPossibleValue";
-import useUpdate from "./component/useUpdate";
+import useUpdateCase from "./component/useUpdateCase";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
 
@@ -272,7 +272,7 @@ export default function CaseProcessing_step2({
   const [showSuccess, setShowSuccess] = useState(false);
   const [msg, setMsg] = useState("Default message.");
 
-  const updateResult = useUpdate(
+  const updateResult = useUpdateCase(
     caseId,
     update,
     changed,

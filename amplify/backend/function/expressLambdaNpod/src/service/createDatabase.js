@@ -239,6 +239,36 @@ async function check_AAB_exist(case_id) {
   return await pooledConnection(asyncAction);
 }
 
+// get one AAB row all column values
+async function get_one_AAB_all_column_values(case_id, columns) {
+  let columnStr = "";
+  for (let i = 0; i < columns.length; i++) {
+    if (i === 0) {
+      columnStr = columns[i];
+    } else {
+      columnStr = columnStr + "," + columns[i];
+    }
+  }
+  //console.log(columnStr);
+  const sql = `SELECT ${columnStr} FROM AAB WHERE case_id='${case_id}'`;
+  console.log("sql: " + sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch AAB columns] Case ${case_id} column ${columnStr} was fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 // create a new AAB row
 async function create_AAB(columns) {
   let keys = "";
@@ -289,5 +319,6 @@ module.exports = {
     get_one_table_one_column_all_possible_values,
   check_foreign_key: check_foreign_key,
   check_AAB_exist: check_AAB_exist,
+  get_one_AAB_all_column_values: get_one_AAB_all_column_values,
   create_AAB: create_AAB,
 };
