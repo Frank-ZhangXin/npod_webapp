@@ -101,7 +101,7 @@ export default function HospitalLabs_step5({
     {
       column: "admission_glucose_mg_dL",
       input: "integerBox",
-      restrict: { type: "string", range: [0, 1800] },
+      restrict: { type: "int", range: [0, 1800] },
       valid: useState(true),
       ops: [],
     },
@@ -122,14 +122,14 @@ export default function HospitalLabs_step5({
     {
       colum: "peak_glucose_mg_dL",
       input: "integerBox",
-      restrict: { type: "string", range: [0, 1800] },
+      restrict: { type: "int", range: [0, 1800] },
       valid: useState(true),
       ops: [],
     },
     {
       colum: "admission_amylase",
       input: "integerBox",
-      restrict: { type: "string", range: [0, 2500] },
+      restrict: { type: "int", range: [0, 2500] },
       valid: useState(true),
       ops: [],
     },
@@ -150,14 +150,14 @@ export default function HospitalLabs_step5({
     {
       colum: "peak_amylase",
       input: "integerBox",
-      restrict: { type: "string", range: [0, 2500] },
+      restrict: { type: "int", range: [0, 2500] },
       valid: useState(true),
       ops: [],
     },
     {
       colum: "admission_lipase",
       input: "integerBox",
-      restrict: { type: "string", range: [0, 2500] },
+      restrict: { type: "int", range: [0, 2500] },
       valid: useState(true),
       ops: [],
     },
@@ -178,7 +178,7 @@ export default function HospitalLabs_step5({
     {
       colum: "peak_lipase",
       input: "integerBox",
-      restrict: { type: "string", range: [0, 2500] },
+      restrict: { type: "int", range: [0, 2500] },
       valid: useState(true),
       ops: [],
     },
