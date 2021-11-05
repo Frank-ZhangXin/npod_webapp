@@ -29,12 +29,20 @@ var {
   check_AAB_exist,
   get_one_AAB_all_column_values,
   create_AAB,
+  check_HLA_exist,
+  get_one_HLA_all_column_values,
+  create_HLA,
+  check_RNA_exist,
+  get_one_RNA_all_column_values,
+  create_RNA,
 } = require("./service/createDatabase");
 
 var {
   testPoolForUpdate,
   update_case,
   update_AAB,
+  update_HLA,
+  update_RNA,
 } = require("./service/updateDatabase");
 
 var { testPoolForDelete, delete_case } = require("./service/deleteDatabase");
@@ -210,7 +218,7 @@ app.post("/db/check_AAB_exist", function (req, res) {
 
 // get one AAB all column values
 app.post("/db/get_one_AAB_all_column_values", function (req, res) {
-  console.log("Getting object case.");
+  console.log("Getting AAB object case.");
   console.log(req.body);
   get_one_AAB_all_column_values(req.body["case_id"], req.body["columns"]).then(
     (promisedRes) => res.send(promisedRes)
@@ -224,10 +232,61 @@ app.post("/db/create_AAB", function (req, res) {
   create_AAB(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
 });
 
+// check HLA exist
+app.post("/db/check_HLA_exist", function (req, res) {
+  console.log("Checking HLA exist...");
+  console.log(req.body);
+  check_HLA_exist(req.body["case_id"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
+// get one HLA all column values
+app.post("/db/get_one_HLA_all_column_values", function (req, res) {
+  console.log("Getting HLA object case.");
+  console.log(req.body);
+  get_one_HLA_all_column_values(req.body["case_id"], req.body["columns"]).then(
+    (promisedRes) => res.send(promisedRes)
+  );
+});
+
+// create a new HLA
+app.post("/db/create_HLA", function (req, res) {
+  console.log("Creating new HLA...");
+  console.log(req.body);
+  create_HLA(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
+});
+
+// check RNA exist
+app.post("/db/check_RNA_exist", function (req, res) {
+  console.log("Checking RNA exist...");
+  console.log(req.body);
+  check_RNA_exist(req.body["case_id"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
+// get one RNA all column values
+app.post("/db/get_one_RNA_all_column_values", function (req, res) {
+  console.log("Getting RNA object case.");
+  console.log(req.body);
+  get_one_RNA_all_column_values(req.body["case_id"], req.body["columns"]).then(
+    (promisedRes) => res.send(promisedRes)
+  );
+});
+
+// create a new RNA
+app.post("/db/create_RNA", function (req, res) {
+  console.log("Creating new RNA...");
+  console.log(req.body);
+  create_RNA(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
+});
+
 /****************************
  * Example put method *
  ****************************/
 
+// Update cases
 app.put("/db/update_case", function (req, res) {
   // Add your code here
   console.log("Updating case.");
@@ -239,11 +298,28 @@ app.put("/db/update_case", function (req, res) {
   ).then((promisedRes) => res.send(promisedRes));
 });
 
+// Update AAB
 app.put("/db/update_AAB", function (req, res) {
   // Add your code here
   console.log("Updating AAB.");
   console.log(req.body);
   update_AAB(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
+});
+
+// Update HLA
+app.put("/db/update_HLA", function (req, res) {
+  // Add your code here
+  console.log("Updating HLA.");
+  console.log(req.body);
+  update_HLA(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
+});
+
+// Update RNA
+app.put("/db/update_RNA", function (req, res) {
+  // Add your code here
+  console.log("Updating RNA.");
+  console.log(req.body);
+  update_RNA(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
 });
 
 app.put("/db/test_db", function (req, res) {

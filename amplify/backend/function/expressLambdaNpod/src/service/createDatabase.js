@@ -307,6 +307,182 @@ async function create_AAB(columns) {
   return await pooledConnection(asyncAction);
 }
 
+// Check if HLA exists
+async function check_HLA_exist(case_id) {
+  console.log("Checking HLA table case " + case_id + " exist");
+  const sql = `SELECT COUNT(1) FROM HLA WHERE case_id='${case_id}'`;
+  console.log("sql", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(`[Fetch HLA] case ${case_id} was fetched.`);
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// Get one HLA row all columns values
+async function get_one_HLA_all_column_values(case_id, columns) {
+  let columnStr = "";
+  for (let i = 0; i < columns.length; i++) {
+    if (i === 0) {
+      columnStr = columns[i];
+    } else {
+      columnStr = columnStr + "," + columns[i];
+    }
+  }
+  //console.log(columnStr);
+  const sql = `SELECT ${columnStr} FROM HLA WHERE case_id='${case_id}'`;
+  console.log("sql: " + sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch AAB columns] Case ${case_id} column ${columnStr} was fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// Create new HLA
+async function create_HLA(columns) {
+  let keys = "";
+  let values = "";
+  for (let [key, value] of Object.entries(columns)) {
+    if (value !== null) {
+      columns[key] = "'" + value + "'";
+    }
+    if (keys === "") {
+      keys = key;
+    } else {
+      keys += "," + key;
+    }
+    if (values === "") {
+      values = columns[key];
+    } else {
+      values += "," + columns[key];
+    }
+  }
+  const sql = `INSERT INTO HLA(${keys}) VALUES(${values})`;
+  console.log("sql:", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Write Database][Insert new HLA] The case ${columns.case_id} was inserted.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// Check if RNA exists
+async function check_RNA_exist(case_id) {
+  console.log("Checking RNA table case " + case_id + " exist");
+  const sql = `SELECT COUNT(1) FROM RNA WHERE case_id='${case_id}'`;
+  console.log("sql", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(`[Fetch RNA] case ${case_id} was fetched.`);
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// Get one RNA row all columns values
+async function get_one_RNA_all_column_values(case_id, columns) {
+  let columnStr = "";
+  for (let i = 0; i < columns.length; i++) {
+    if (i === 0) {
+      columnStr = columns[i];
+    } else {
+      columnStr = columnStr + "," + columns[i];
+    }
+  }
+  //console.log(columnStr);
+  const sql = `SELECT ${columnStr} FROM RNA WHERE case_id='${case_id}'`;
+  console.log("sql: " + sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch AAB columns] Case ${case_id} column ${columnStr} was fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// Create new RNA
+async function create_RNA(columns) {
+  let keys = "";
+  let values = "";
+  for (let [key, value] of Object.entries(columns)) {
+    if (value !== null) {
+      columns[key] = "'" + value + "'";
+    }
+    if (keys === "") {
+      keys = key;
+    } else {
+      keys += "," + key;
+    }
+    if (values === "") {
+      values = columns[key];
+    } else {
+      values += "," + columns[key];
+    }
+  }
+  const sql = `INSERT INTO RNA(${keys}) VALUES(${values})`;
+  console.log("sql:", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Write Database][Insert new HLA] The case ${columns.case_id} was inserted.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForCreate: testPoolForCreate,
   create_case: create_case,
@@ -321,4 +497,10 @@ module.exports = {
   check_AAB_exist: check_AAB_exist,
   get_one_AAB_all_column_values: get_one_AAB_all_column_values,
   create_AAB: create_AAB,
+  check_HLA_exist: check_HLA_exist,
+  get_one_HLA_all_column_values: get_one_HLA_all_column_values,
+  create_HLA: create_HLA,
+  check_RNA_exist: check_RNA_exist,
+  get_one_RNA_all_column_values: get_one_RNA_all_column_values,
+  create_RNA: create_RNA,
 };

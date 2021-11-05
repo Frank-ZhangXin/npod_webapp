@@ -5,8 +5,8 @@ export default function useCheckAABExist(
   caseId,
   setCheckFail,
   setExist,
-  setAABExist,
-  setAABExistMsg
+  setHLAExist,
+  setHLAExistMsg
 ) {
   const [checkResult, setCheckResult] = useState(false);
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function useCheckAABExist(
   }, [caseId]);
 
   async function checkExist(id) {
-    return await API.post("dbapi", "/db/check_AAB_exist", {
+    return await API.post("dbapi", "/db/check_HLA_exist", {
       body: {
         case_id: id,
       },
@@ -25,21 +25,21 @@ export default function useCheckAABExist(
         setCheckFail(false);
         if (res[0]["COUNT(1)"] > 0) {
           setExist(true);
-          setAABExist(true);
+          setHLAExist(true);
           setCheckResult(true);
-          setAABExistMsg("AAB exists, click 'Update' to proceed updating.");
-          console.log(`Check exist. AAB case ${caseId} exists!`);
+          setHLAExistMsg("HLA exists, click 'Update' to proceed updating.");
+          console.log(`Check exist. HLA case ${caseId} exists!`);
         } else {
           setExist(false);
-          setAABExist(false);
+          setHLAExist(false);
           setCheckResult(false);
-          setAABExistMsg(
-            "AAB DOES NOT exist, click 'Create' to proceed creating."
+          setHLAExistMsg(
+            "HLA DOES NOT exist, click 'Create' to proceed creating."
           );
         }
       })
       .catch((error) => {
-        console.log("[AAB] Amplify API call error", error);
+        console.log("[HLA] Amplify API call error", error);
         setCheckFail(true);
       });
   }

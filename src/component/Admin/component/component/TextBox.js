@@ -89,8 +89,8 @@ export default function TextBox({
       </Box>
       {invalid ? (
         <p className={classes.hint_invalid}>
-          Input is invalid, constrain: {restrict.range[0]} &lt;= input length
-          &lt;= {restrict.range[1]}
+          Input is invalid, type: string, constrain: {restrict.range[0]} &lt;=
+          input length &lt;= {restrict.range[1]}
         </p>
       ) : null}
     </div>
