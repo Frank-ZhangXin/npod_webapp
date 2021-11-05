@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { API, Auth } from "aws-amplify";
 
-export default function useCreateAAB(
+export default function useCreateHLA(
   caseId,
   isExist,
   create,
@@ -16,22 +16,22 @@ export default function useCreateAAB(
   const [result, setResult] = useState(false);
   useEffect(() => {
     if (!isExist && create && !changed) {
-      createAAB(caseId, columnList, valueList);
-      console.log("New AAB has been created!");
+      createHLA(caseId, columnList, valueList);
+      console.log("New HLA has been created!");
       console.log("column list", columnList);
       console.log("value list", valueList);
     } else {
-      console.log("AAB create condition is not met.");
+      console.log("HLA create condition is not met.");
     }
   }, [caseId, isExist, create, changed]);
 
-  async function createAAB(id, columnNames, columnValues) {
-    console.log("Creating new AAB");
+  async function createHLA(id, columnNames, columnValues) {
+    console.log("Creating new HLA");
     let columns = { case_id: id };
     for (let i = 0; i < columnNames.length; i++) {
       columns[columnNames[i]] = columnValues[i];
     }
-    return await API.post("dbapi", "/db/create_AAB", {
+    return await API.post("dbapi", "/db/create_HLA", {
       body: {
         columns: columns,
       },
@@ -41,11 +41,11 @@ export default function useCreateAAB(
         setResult(true);
         setExist(true);
         setCreateSuccess(true);
-        setCreateMsg(`AAB case ${id} was created successfully.`);
-        console.log(`AAB case ${id} was created successfully.`);
+        setCreateMsg(`HLA case ${id} was created successfully.`);
+        console.log(`HLA case ${id} was created successfully.`);
       })
       .catch((error) => {
-        console.log("[AAB] Amplify API call error", error);
+        console.log("[HLA] Amplify API call error", error);
         setCreateSuccess(false);
         setResult(false);
         setAccept(false);

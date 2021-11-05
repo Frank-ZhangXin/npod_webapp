@@ -15,7 +15,7 @@ export default function useUpdateCase(
   const [result, setResult] = useState(false);
   useEffect(() => {
     if (update && !changed) {
-      console.log("Updating case columns...");
+      console.log("[Cases] Updating case columns...");
       updateCase(caseId, updateColumns, updateValues);
     }
   }, [caseId, update, changed]);
@@ -29,25 +29,25 @@ export default function useUpdateCase(
     })
       .then((res) => {
         if (res["affectedRows"] ?? false) {
-          console.log("Update success id", id);
-          console.log("Update success columns", columns);
-          console.log("Update success values", values);
+          console.log("[Cases] Update success id", id);
+          console.log("[Cases] Update success columns", columns);
+          console.log("[Cases] Update success values", values);
           setResult(true);
           setShowError(false);
           setShowSuccess(true);
-          setMsg("Update is successful!");
-          console.log("Update case columns are successful!");
+          setMsg("[Cases] Update is successful!");
+          console.log("[Cases] Update case columns are successful!");
         }
       })
       .catch((error) => {
         setAccept(false);
         setShowError(true);
         setShowSuccess(false);
-        setMsg("Update is failed");
-        console.log("Amplify API call error", error);
-        console.log("Update fail id", id);
-        console.log("Update fail columns", columns);
-        console.log("Update fail values", values);
+        setMsg("[Cases] Update is failed");
+        console.log("[Cases] Amplify API call error", error);
+        console.log("[Cases] Update fail id", id);
+        console.log("[Cases] Update fail columns", columns);
+        console.log("[Cases] Update fail values", values);
       });
   }
 

@@ -18,6 +18,7 @@ import ClinicalHistoryAndMedSoc_step4 from "./component/ClinicalHistoryAndMedSoc
 import HospitalLabs_step5 from "./component/HospitalLabs_step5";
 import AAB_step6 from "./component/AAB_step6";
 import HLA_step7 from "./component/HLA_step7";
+import RNA_step8 from "./component/RNA_step8";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,8 +69,12 @@ export default function Admin() {
   const [caseId, setCaseId] = useState(null);
   const [caseExist, setCaseExist] = useState(false);
   const [AABExist, setAABExist] = useState(false);
+  const [HLAExist, setHLAExist] = useState(false);
+  const [RNAExist, setRNAExist] = useState(false);
   const [createCase, setCreateCase] = useState(false);
   const [createAAB, setCreateAAB] = useState(false);
+  const [createHLA, setCreateHLA] = useState(false);
+  const [createRNA, setCreateRNA] = useState(false);
   const [update, setUpdate] = useState(false);
   const [changed, setChanged] = useState(false);
   const [accept, setAccept] = useState(false);
@@ -85,6 +90,10 @@ export default function Admin() {
   const [accept5, setAccept5] = useState(false);
   const [update6, setUpdate6] = useState(false);
   const [accept6, setAccept6] = useState(false);
+  const [update7, setUpdate7] = useState(false);
+  const [accept7, setAccept7] = useState(false);
+  const [update8, setUpdate8] = useState(false);
+  const [accept8, setAccept8] = useState(false);
 
   function getStepContent(step) {
     switch (step) {
@@ -167,7 +176,32 @@ export default function Admin() {
           />
         );
       case 7:
-        return <HLA_step7 />;
+        return (
+          <HLA_step7
+            caseId={caseId}
+            exist={HLAExist}
+            setExist={setHLAExist}
+            create={createHLA}
+            update={update7}
+            changed={changed}
+            setAccept={setAccept7}
+            setChanged={setChanged}
+          />
+        );
+
+      case 8:
+        return (
+          <RNA_step8
+            caseId={caseId}
+            exist={RNAExist}
+            setExist={setRNAExist}
+            create={createRNA}
+            update={update8}
+            changed={changed}
+            setAccept={setAccept8}
+            setChanged={setChanged}
+          />
+        );
       default:
         return "Unknown step";
     }
@@ -191,6 +225,8 @@ export default function Admin() {
     setUpdate6(false);
     setAccept6(false);
     setCreateAAB(false);
+    setCreateHLA(false);
+    setCreateRNA(false);
   };
 
   const totalSteps = () => {
@@ -207,15 +243,6 @@ export default function Admin() {
 
   const allStepsCompleted = () => {
     return completedSteps() === totalSteps();
-  };
-
-  const handleSumbit = (step) => {
-    switch (step) {
-      case 0:
-        return;
-      default:
-        return false;
-    }
   };
 
   const handleNext = () => {
@@ -253,7 +280,13 @@ export default function Admin() {
       setAccept5(false);
       setUpdate6(false);
       setAccept6(false);
+      setUpdate7(false);
+      setAccept7(false);
+      setUpdate8(false);
+      setAccept8(false);
       setCreateAAB(false);
+      setCreateHLA(false);
+      setCreateRNA(false);
       setChanged(false);
     }
   };
@@ -265,6 +298,16 @@ export default function Admin() {
 
   const handleCreateAAB = () => {
     setCreateAAB(true);
+    setChanged(false);
+  };
+
+  const handleCreateHLA = () => {
+    setCreateHLA(true);
+    setChanged(false);
+  };
+
+  const handleCreateRNA = () => {
+    setCreateRNA(true);
     setChanged(false);
   };
 
@@ -287,7 +330,13 @@ export default function Admin() {
         setAccept5(false);
         setUpdate6(false);
         setAccept6(false);
+        setUpdate7(false);
+        setAccept7(false);
+        setUpdate8(false);
+        setAccept8(false);
         setCreateAAB(false);
+        setCreateHLA(false);
+        setCreateRNA(false);
         setChanged(false);
       }
     } else if (activeStep === 1) {
@@ -302,6 +351,10 @@ export default function Admin() {
       setUpdate5(true);
     } else if (activeStep === 6) {
       setUpdate6(true);
+    } else if (activeStep === 7) {
+      setUpdate7(true);
+    } else if (activeStep === 8) {
+      setUpdate8(true);
     }
 
     setChanged(false);
@@ -322,7 +375,13 @@ export default function Admin() {
     setAccept5(false);
     setUpdate6(false);
     setAccept6(false);
+    setUpdate7(false);
+    setAccept7(false);
+    setUpdate8(false);
+    setAccept8(false);
     setCreateAAB(false);
+    setCreateHLA(false);
+    setCreateRNA(false);
     if (activeStep - 1 === 0) {
       setUpdate(false);
     }
@@ -344,8 +403,15 @@ export default function Admin() {
       setAccept4(false);
       setUpdate5(false);
       setAccept5(false);
+      setUpdate6(false);
       setAccept6(false);
+      setUpdate7(false);
+      setAccept7(false);
+      setUpdate8(false);
+      setAccept8(false);
       setCreateAAB(false);
+      setCreateHLA(false);
+      setCreateRNA(false);
       setActiveStep(step);
     }
     if (step === 0) {
@@ -435,11 +501,37 @@ export default function Admin() {
                           Create
                         </Button>
                       ) : null}
+                      {/* HLA Create */}
+                      {activeStep === 7 ? (
+                        <Button
+                          disabled={HLAExist === true || caseId === ""}
+                          onClick={handleCreateHLA}
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                        >
+                          Create
+                        </Button>
+                      ) : null}
+                      {/* RNA Create */}
+                      {activeStep === 8 ? (
+                        <Button
+                          disabled={RNAExist === true || caseId === ""}
+                          onClick={handleCreateRNA}
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                        >
+                          Create
+                        </Button>
+                      ) : null}
 
                       <Button
                         disabled={
                           (caseExist === false && activeStep === 0) ||
                           (AABExist === false && activeStep === 6) ||
+                          (HLAExist === false && activeStep === 7) ||
+                          (RNAExist === false && activeStep === 8) ||
                           caseId === ""
                         }
                         onClick={handleUpdate}

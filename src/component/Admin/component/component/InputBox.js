@@ -8,6 +8,7 @@ import useCheckForeignKey from "./useCheckForeignKey";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import TextBox from "./TextBox";
 import TextBoxLarge from "./TextBoxLarge";
+import TextBoxForHLA from "./TextBoxForHLA";
 import DateBox from "./DateBox";
 import DropBox from "./DropBox";
 import TimeBox from "./TimeBox";
@@ -49,6 +50,18 @@ export default function InputBox({
       case "inputBoxLarge":
         return (
           <TextBoxLarge
+            name={name}
+            value={value}
+            setValue={setValue}
+            setChanged={setChanged}
+            restrict={columnProps.restrict}
+            valid={columnProps.valid}
+          />
+        );
+        break;
+      case "inputBoxHLA":
+        return (
+          <TextBoxForHLA
             name={name}
             value={value}
             setValue={setValue}

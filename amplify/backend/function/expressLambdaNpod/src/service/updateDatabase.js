@@ -114,8 +114,74 @@ async function update_AAB(columns) {
   return await pooledConnection(asyncAction);
 }
 
+// update HLA
+async function update_HLA(columns) {
+  let updateStr = "";
+  for (let [key, value] of Object.entries(columns)) {
+    if (value !== null) {
+      columns[key] = "'" + value + "'";
+    }
+    if (updateStr === "") {
+      updateStr = key + "=" + columns[key];
+    } else {
+      updateStr += "," + key + "=" + columns[key];
+    }
+  }
+  const sql = `UPDATE HLA SET ${updateStr} WHERE case_id=${columns.case_id}`;
+  console.log("sql: ", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Update the HLA] The case ${columns.case_id} was updated.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// update RNA
+async function update_RNA(columns) {
+  let updateStr = "";
+  for (let [key, value] of Object.entries(columns)) {
+    if (value !== null) {
+      columns[key] = "'" + value + "'";
+    }
+    if (updateStr === "") {
+      updateStr = key + "=" + columns[key];
+    } else {
+      updateStr += "," + key + "=" + columns[key];
+    }
+  }
+  const sql = `UPDATE RNA SET ${updateStr} WHERE case_id=${columns.case_id}`;
+  console.log("sql: ", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Update the HLA] The case ${columns.case_id} was updated.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForUpdate: testPoolForUpdate,
   update_case: update_case,
   update_AAB: update_AAB,
+  update_HLA: update_HLA,
+  update_RNA: update_RNA,
 };
