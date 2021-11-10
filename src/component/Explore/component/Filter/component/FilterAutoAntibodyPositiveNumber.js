@@ -85,10 +85,10 @@ function FilterAutoAntibodyPositiveNumber(props) {
         <br />
         <div className={classes.helpText2}>Notice</div>
         Using "Auto Antibody Positive", each selection represents the count of
-        the total positive AABs.
+        the total positive AAbs.
         <br />
         Example, check the "2" and "3" options, all the cases in the result must
-        have either 2 or 3 positive AABs.
+        have either 2 or 3 positive AAbs.
       </div>
     </React.Fragment>
   );

@@ -219,10 +219,10 @@ async function check_foreign_key(table_name, foreign_key, foreign_key_value) {
   return await pooledConnection(asyncAction);
 }
 
-// check AAB if exist
-async function check_AAB_exist(case_id) {
-  console.log("Checking AAB table case " + case_id + " exist");
-  const sql = `SELECT COUNT(1) FROM AAB WHERE case_id='${case_id}'`;
+// check AAb if exist
+async function check_AAb_exist(case_id) {
+  console.log("Checking AAb table case " + case_id + " exist");
+  const sql = `SELECT COUNT(1) FROM AAb WHERE case_id='${case_id}'`;
   console.log("sql", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -230,7 +230,7 @@ async function check_AAB_exist(case_id) {
         if (error) {
           reject(error);
         } else {
-          console.log(`[Fetch AAB] case ${case_id} was fetched.`);
+          console.log(`[Fetch AAb] case ${case_id} was fetched.`);
           resolve(result);
         }
       });
@@ -239,8 +239,8 @@ async function check_AAB_exist(case_id) {
   return await pooledConnection(asyncAction);
 }
 
-// get one AAB row all column values
-async function get_one_AAB_all_column_values(case_id, columns) {
+// get one AAb row all column values
+async function get_one_AAb_all_column_values(case_id, columns) {
   let columnStr = "";
   for (let i = 0; i < columns.length; i++) {
     if (i === 0) {
@@ -250,7 +250,7 @@ async function get_one_AAB_all_column_values(case_id, columns) {
     }
   }
   //console.log(columnStr);
-  const sql = `SELECT ${columnStr} FROM AAB WHERE case_id='${case_id}'`;
+  const sql = `SELECT ${columnStr} FROM AAb WHERE case_id='${case_id}'`;
   console.log("sql: " + sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -259,7 +259,7 @@ async function get_one_AAB_all_column_values(case_id, columns) {
           reject(error);
         } else {
           console.log(
-            `[Fetch AAB columns] Case ${case_id} column ${columnStr} was fetched.`
+            `[Fetch AAb columns] Case ${case_id} column ${columnStr} was fetched.`
           );
           resolve(result);
         }
@@ -269,8 +269,8 @@ async function get_one_AAB_all_column_values(case_id, columns) {
   return await pooledConnection(asyncAction);
 }
 
-// create a new AAB row
-async function create_AAB(columns) {
+// create a new AAb row
+async function create_AAb(columns) {
   let keys = "";
   let values = "";
   for (let [key, value] of Object.entries(columns)) {
@@ -288,7 +288,7 @@ async function create_AAB(columns) {
       values += "," + columns[key];
     }
   }
-  const sql = `INSERT INTO AAB(${keys}) VALUES(${values})`;
+  const sql = `INSERT INTO AAb(${keys}) VALUES(${values})`;
   console.log("sql:", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -297,7 +297,7 @@ async function create_AAB(columns) {
           reject(error);
         } else {
           console.log(
-            `[Write Database][Insert new AAB] The case ${columns.case_id} was inserted.`
+            `[Write Database][Insert new AAb] The case ${columns.case_id} was inserted.`
           );
           resolve(result);
         }
@@ -347,7 +347,7 @@ async function get_one_HLA_all_column_values(case_id, columns) {
           reject(error);
         } else {
           console.log(
-            `[Fetch AAB columns] Case ${case_id} column ${columnStr} was fetched.`
+            `[Fetch AAb columns] Case ${case_id} column ${columnStr} was fetched.`
           );
           resolve(result);
         }
@@ -435,7 +435,7 @@ async function get_one_RNA_all_column_values(case_id, columns) {
           reject(error);
         } else {
           console.log(
-            `[Fetch AAB columns] Case ${case_id} column ${columnStr} was fetched.`
+            `[Fetch AAb columns] Case ${case_id} column ${columnStr} was fetched.`
           );
           resolve(result);
         }
@@ -494,9 +494,9 @@ module.exports = {
   get_one_table_one_column_all_possible_values:
     get_one_table_one_column_all_possible_values,
   check_foreign_key: check_foreign_key,
-  check_AAB_exist: check_AAB_exist,
-  get_one_AAB_all_column_values: get_one_AAB_all_column_values,
-  create_AAB: create_AAB,
+  check_AAb_exist: check_AAb_exist,
+  get_one_AAb_all_column_values: get_one_AAb_all_column_values,
+  create_AAb: create_AAb,
   check_HLA_exist: check_HLA_exist,
   get_one_HLA_all_column_values: get_one_HLA_all_column_values,
   create_HLA: create_HLA,

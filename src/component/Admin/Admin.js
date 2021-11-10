@@ -16,7 +16,7 @@ import CaseProcessing_step2 from "./component/CaseProcessing_step2";
 import DemographicsAndTimeline_step3 from "./component/DemographicsAndTimeline_step3";
 import ClinicalHistoryAndMedSoc_step4 from "./component/ClinicalHistoryAndMedSoc_step4";
 import HospitalLabs_step5 from "./component/HospitalLabs_step5";
-import AAB_step6 from "./component/AAB_step6";
+import AAb_step6 from "./component/AAb_step6";
 import HLA_step7 from "./component/HLA_step7";
 import RNA_step8 from "./component/RNA_step8";
 
@@ -54,7 +54,7 @@ function getSteps() {
     "Demographics and Timeline",
     "Clinical History and Med/Soc",
     "Hospital Labs",
-    "AAB",
+    "AAb",
     "HLA",
     "RNA",
   ];
@@ -68,11 +68,11 @@ export default function Admin() {
 
   const [caseId, setCaseId] = useState(null);
   const [caseExist, setCaseExist] = useState(false);
-  const [AABExist, setAABExist] = useState(false);
+  const [AAbExist, setAAbExist] = useState(false);
   const [HLAExist, setHLAExist] = useState(false);
   const [RNAExist, setRNAExist] = useState(false);
   const [createCase, setCreateCase] = useState(false);
-  const [createAAB, setCreateAAB] = useState(false);
+  const [createAAb, setCreateAAb] = useState(false);
   const [createHLA, setCreateHLA] = useState(false);
   const [createRNA, setCreateRNA] = useState(false);
   const [update, setUpdate] = useState(false);
@@ -164,11 +164,11 @@ export default function Admin() {
         );
       case 6:
         return (
-          <AAB_step6
+          <AAb_step6
             caseId={caseId}
-            exist={AABExist}
-            setExist={setAABExist}
-            create={createAAB}
+            exist={AAbExist}
+            setExist={setAAbExist}
+            create={createAAb}
             update={update6}
             changed={changed}
             setAccept={setAccept6}
@@ -224,7 +224,7 @@ export default function Admin() {
     setAccept5(false);
     setUpdate6(false);
     setAccept6(false);
-    setCreateAAB(false);
+    setCreateAAb(false);
     setCreateHLA(false);
     setCreateRNA(false);
   };
@@ -263,7 +263,7 @@ export default function Admin() {
         setAccept5(false);
         setUpdate6(false);
         setAccept6(false);
-        setCreateAAB(false);
+        setCreateAAb(false);
         setChanged(false);
       }
     } else {
@@ -284,7 +284,7 @@ export default function Admin() {
       setAccept7(false);
       setUpdate8(false);
       setAccept8(false);
-      setCreateAAB(false);
+      setCreateAAb(false);
       setCreateHLA(false);
       setCreateRNA(false);
       setChanged(false);
@@ -296,8 +296,8 @@ export default function Admin() {
     setChanged(false);
   };
 
-  const handleCreateAAB = () => {
-    setCreateAAB(true);
+  const handleCreateAAb = () => {
+    setCreateAAb(true);
     setChanged(false);
   };
 
@@ -334,7 +334,7 @@ export default function Admin() {
         setAccept7(false);
         setUpdate8(false);
         setAccept8(false);
-        setCreateAAB(false);
+        setCreateAAb(false);
         setCreateHLA(false);
         setCreateRNA(false);
         setChanged(false);
@@ -379,7 +379,7 @@ export default function Admin() {
     setAccept7(false);
     setUpdate8(false);
     setAccept8(false);
-    setCreateAAB(false);
+    setCreateAAb(false);
     setCreateHLA(false);
     setCreateRNA(false);
     if (activeStep - 1 === 0) {
@@ -409,7 +409,7 @@ export default function Admin() {
       setAccept7(false);
       setUpdate8(false);
       setAccept8(false);
-      setCreateAAB(false);
+      setCreateAAb(false);
       setCreateHLA(false);
       setCreateRNA(false);
       setActiveStep(step);
@@ -489,11 +489,11 @@ export default function Admin() {
                           Create
                         </Button>
                       ) : null}
-                      {/* AAB Create */}
+                      {/* AAb Create */}
                       {activeStep === 6 ? (
                         <Button
-                          disabled={AABExist === true || caseId === ""}
-                          onClick={handleCreateAAB}
+                          disabled={AAbExist === true || caseId === ""}
+                          onClick={handleCreateAAb}
                           className={classes.button}
                           variant="contained"
                           color="secondary"
@@ -529,7 +529,7 @@ export default function Admin() {
                       <Button
                         disabled={
                           (caseExist === false && activeStep === 0) ||
-                          (AABExist === false && activeStep === 6) ||
+                          (AAbExist === false && activeStep === 6) ||
                           (HLAExist === false && activeStep === 7) ||
                           (RNAExist === false && activeStep === 8) ||
                           caseId === ""

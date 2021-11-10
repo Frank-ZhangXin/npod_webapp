@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { API, Auth } from "aws-amplify";
 
-export default function useCheckAABExist(
+export default function useCheckAAbExist(
   caseId,
   setCheckFail,
   setExist,
-  setAABExist,
-  setAABExistMsg
+  setAAbExist,
+  setAAbExistMsg
 ) {
   const [checkResult, setCheckResult] = useState(false);
   useEffect(() => {
@@ -16,7 +16,7 @@ export default function useCheckAABExist(
   }, [caseId]);
 
   async function checkExist(id) {
-    return await API.post("dbapi", "/db/check_AAB_exist", {
+    return await API.post("dbapi", "/db/check_AAb_exist", {
       body: {
         case_id: id,
       },
@@ -25,21 +25,21 @@ export default function useCheckAABExist(
         setCheckFail(false);
         if (res[0]["COUNT(1)"] > 0) {
           setExist(true);
-          setAABExist(true);
+          setAAbExist(true);
           setCheckResult(true);
-          setAABExistMsg("AAB exists, click 'Update' to proceed updating.");
-          console.log(`Check exist. AAB case ${caseId} exists!`);
+          setAAbExistMsg("AAb exists, click 'Update' to proceed updating.");
+          console.log(`Check exist. AAb case ${caseId} exists!`);
         } else {
           setExist(false);
-          setAABExist(false);
+          setAAbExist(false);
           setCheckResult(false);
-          setAABExistMsg(
-            "AAB DOES NOT exist, click 'Create' to proceed creating."
+          setAAbExistMsg(
+            "AAb DOES NOT exist, click 'Create' to proceed creating."
           );
         }
       })
       .catch((error) => {
-        console.log("[AAB] Amplify API call error", error);
+        console.log("[AAb] Amplify API call error", error);
         setCheckFail(true);
       });
   }

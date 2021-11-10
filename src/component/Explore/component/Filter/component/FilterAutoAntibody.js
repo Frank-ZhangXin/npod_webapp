@@ -82,7 +82,7 @@ function FilterAutoAntiboy(props) {
         , the searching will find cases matching the given "Auto Antibody".
         <br />
         <div className={classes.helpText2}>Notice</div>
-        Using AAB filter, the searching will ignore the uncheck AAB options
+        Using AAb filter, the searching will ignore the uncheck AAb options
         rather than excluding them.
       </div>
     </React.Fragment>
