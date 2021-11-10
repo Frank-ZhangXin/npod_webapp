@@ -54,10 +54,10 @@ function LabTestResults(props) {
 
   const rows = [
     createData(
-      "AAB Positive Number",
-      props.currentCase.AABtally === null
+      "AAb Positive Number",
+      props.currentCase.AAbtally === null
         ? "Unavailable"
-        : props.currentCase.AABtally
+        : props.currentCase.AAbtally
     ),
     createData(
       "GADA",

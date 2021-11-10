@@ -82,8 +82,8 @@ async function update_case(case_id, update_columns, update_values) {
   return await pooledConnection(asyncAction);
 }
 
-// update AAB
-async function update_AAB(columns) {
+// update AAb
+async function update_AAb(columns) {
   let updateStr = "";
   for (let [key, value] of Object.entries(columns)) {
     if (value !== null) {
@@ -95,7 +95,7 @@ async function update_AAB(columns) {
       updateStr += "," + key + "=" + columns[key];
     }
   }
-  const sql = `UPDATE AAB SET ${updateStr} WHERE case_id=${columns.case_id}`;
+  const sql = `UPDATE AAb SET ${updateStr} WHERE case_id=${columns.case_id}`;
   console.log("sql: ", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -104,7 +104,7 @@ async function update_AAB(columns) {
           reject(error);
         } else {
           console.log(
-            `[Update the AAB] The case ${columns.case_id} was updated.`
+            `[Update the AAb] The case ${columns.case_id} was updated.`
           );
           resolve(result);
         }
@@ -181,7 +181,7 @@ async function update_RNA(columns) {
 module.exports = {
   testPoolForUpdate: testPoolForUpdate,
   update_case: update_case,
-  update_AAB: update_AAB,
+  update_AAb: update_AAb,
   update_HLA: update_HLA,
   update_RNA: update_RNA,
 };

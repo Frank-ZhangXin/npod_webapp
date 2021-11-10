@@ -26,9 +26,9 @@ var {
   get_one_table_one_column_all_existing_values,
   get_one_table_one_column_all_possible_values,
   check_foreign_key,
-  check_AAB_exist,
-  get_one_AAB_all_column_values,
-  create_AAB,
+  check_AAb_exist,
+  get_one_AAb_all_column_values,
+  create_AAb,
   check_HLA_exist,
   get_one_HLA_all_column_values,
   create_HLA,
@@ -40,7 +40,7 @@ var {
 var {
   testPoolForUpdate,
   update_case,
-  update_AAB,
+  update_AAb,
   update_HLA,
   update_RNA,
 } = require("./service/updateDatabase");
@@ -207,29 +207,29 @@ app.post("/db/check_foreign_key", function (req, res) {
   ).then((promisedRes) => res.send(promisedRes));
 });
 
-// check AAB exist
-app.post("/db/check_AAB_exist", function (req, res) {
-  console.log("Checking AAB exist...");
+// check AAb exist
+app.post("/db/check_AAb_exist", function (req, res) {
+  console.log("Checking AAb exist...");
   console.log(req.body);
-  check_AAB_exist(req.body["case_id"]).then((promisedRes) =>
+  check_AAb_exist(req.body["case_id"]).then((promisedRes) =>
     res.send(promisedRes)
   );
 });
 
-// get one AAB all column values
-app.post("/db/get_one_AAB_all_column_values", function (req, res) {
-  console.log("Getting AAB object case.");
+// get one AAb all column values
+app.post("/db/get_one_AAb_all_column_values", function (req, res) {
+  console.log("Getting AAb object case.");
   console.log(req.body);
-  get_one_AAB_all_column_values(req.body["case_id"], req.body["columns"]).then(
+  get_one_AAb_all_column_values(req.body["case_id"], req.body["columns"]).then(
     (promisedRes) => res.send(promisedRes)
   );
 });
 
-// create a new AAB
-app.post("/db/create_AAB", function (req, res) {
-  console.log("Creating new AAB...");
+// create a new AAb
+app.post("/db/create_AAb", function (req, res) {
+  console.log("Creating new AAb...");
   console.log(req.body);
-  create_AAB(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
+  create_AAb(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
 });
 
 // check HLA exist
@@ -298,12 +298,12 @@ app.put("/db/update_case", function (req, res) {
   ).then((promisedRes) => res.send(promisedRes));
 });
 
-// Update AAB
-app.put("/db/update_AAB", function (req, res) {
+// Update AAb
+app.put("/db/update_AAb", function (req, res) {
   // Add your code here
-  console.log("Updating AAB.");
+  console.log("Updating AAb.");
   console.log(req.body);
-  update_AAB(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
+  update_AAb(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
 });
 
 // Update HLA

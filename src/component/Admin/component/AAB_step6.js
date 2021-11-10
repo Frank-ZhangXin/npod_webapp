@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridBox from "./component/GridBox";
 import useDebounced from "./component/useDebounced";
-import useCheckAABExist from "./component/useCheckAABExist";
-import useRetrieveAABColumns from "./component/useRetrieveAABColumns";
-import useUpdateAAB from "./component/useUpdateAAB";
-import useCreateAAB from "./component/useCreateAAB";
+import useCheckAAbExist from "./component/useCheckAAbExist";
+import useRetrieveAAbColumns from "./component/useRetrieveAAbColumns";
+import useUpdateAAb from "./component/useUpdateAAb";
+import useCreateAAb from "./component/useCreateAAb";
 import useRetrieveTableColumnPossibleValue from "./component/useRetrieveTableColumnPossibleValue";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
@@ -32,7 +32,7 @@ function opsGenerator(idArr, nameArr) {
   return ops;
 }
 
-export default function AAB_step6({
+export default function AAb_step6({
   caseId,
   exist,
   setExist,
@@ -57,7 +57,7 @@ export default function AAB_step6({
   ];
 
   const sampleStatusPossibleValues = useRetrieveTableColumnPossibleValue(
-    "AAB",
+    "AAb",
     "sample_status"
   );
   const sampleStatusOps = opsGenerator(
@@ -136,22 +136,22 @@ export default function AAB_step6({
   ];
 
   const [checkFail, setCheckFail] = useState(false);
-  const [AABExist, setAABExist] = useState(false);
-  const [AABexistMsg, setAABExistMsg] = useState("Checking AAB existing...");
+  const [AAbExist, setAAbExist] = useState(false);
+  const [AAbexistMsg, setAAbExistMsg] = useState("Checking AAb existing...");
   const [showExistMsg, setShowExistMsg] = useState(false);
   const [createMsg, setCreateMsg] = useState("");
   const [createSuccess, setCreateSuccess] = useState(false);
   const [showCreateMsg, setShowCreateMsg] = useState(false);
 
-  const isExist = useCheckAABExist(
+  const isExist = useCheckAAbExist(
     caseId,
     setCheckFail,
     setExist,
-    setAABExist,
-    setAABExistMsg
+    setAAbExist,
+    setAAbExistMsg
   );
 
-  const defaultValue = useRetrieveAABColumns(caseId, columnList);
+  const defaultValue = useRetrieveAAbColumns(caseId, columnList);
   useEffect(() => {
     for (let i = 0; i < setValueList.length; i++) {
       setValueList[i](defaultValue[i]);
@@ -203,7 +203,7 @@ export default function AAB_step6({
   ];
 
   // CREATE
-  const isCreate = useCreateAAB(
+  const isCreate = useCreateAAb(
     caseId,
     isExist,
     create,
@@ -227,11 +227,11 @@ export default function AAB_step6({
   }, [createSuccess, value0]);
 
   useEffect(() => {
-    if (AABExist) {
-      setAABExistMsg("AAB case exists, click 'Update' to proceed updating.");
+    if (AAbExist) {
+      setAAbExistMsg("AAb case exists, click 'Update' to proceed updating.");
     } else {
-      setAABExistMsg(
-        "AAB case DOES NOT exist, click 'Create' to proceed creating."
+      setAAbExistMsg(
+        "AAb case DOES NOT exist, click 'Create' to proceed creating."
       );
     }
 
@@ -241,7 +241,7 @@ export default function AAB_step6({
     const timer2 = setTimeout(() => {
       setShowExistMsg(false);
     }, 3000);
-  }, [AABExist, createSuccess, value0]);
+  }, [AAbExist, createSuccess, value0]);
 
   useEffect(() => {
     if (update && !showUpdateError && showUpdateSuccess) {
@@ -256,7 +256,7 @@ export default function AAB_step6({
   const [updateMsg, setUpdateMsg] = useState("Default message.");
 
   // UPDATE
-  const updateResult = useUpdateAAB(
+  const updateResult = useUpdateAAb(
     caseId,
     update,
     changed,
@@ -317,7 +317,7 @@ export default function AAB_step6({
       </form>
       <Fade in={showExistMsg}>
         <Alert variant="filled" severity="info" className={classes.alert}>
-          {AABexistMsg}
+          {AAbexistMsg}
         </Alert>
       </Fade>
       <Fade in={showCreateMsg}>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { API, Auth } from "aws-amplify";
 
-export default function useCheckAABExist(
+export default function useCheckAAbExist(
   caseId,
   setCheckFail,
   setExist,

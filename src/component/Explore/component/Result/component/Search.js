@@ -207,11 +207,11 @@ function Search(props) {
       // AutoAntibody number
       .filter(
         (donor) =>
-          (props.zeroChecked === true && donor.AABtally === 0) ||
-          (props.oneChecked === true && donor.AABtally === 1) ||
-          (props.twoChecked === true && donor.AABtally === 2) ||
-          (props.threeChecked === true && donor.AABtally === 3) ||
-          (props.fourChecked === true && donor.AABtally === 4) ||
+          (props.zeroChecked === true && donor.AAbtally === 0) ||
+          (props.oneChecked === true && donor.AAbtally === 1) ||
+          (props.twoChecked === true && donor.AAbtally === 2) ||
+          (props.threeChecked === true && donor.AAbtally === 3) ||
+          (props.fourChecked === true && donor.AAbtally === 4) ||
           props.aaPositiveEnable === false
       )
       // Insulitis
