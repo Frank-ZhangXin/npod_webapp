@@ -3,6 +3,7 @@ import { API, Auth } from "aws-amplify";
 
 export default function useCreateAAb(
   caseId,
+  AAbIdValue,
   isExist,
   create,
   changed,
@@ -15,13 +16,17 @@ export default function useCreateAAb(
 ) {
   const [result, setResult] = useState(false);
   useEffect(() => {
-    if (!isExist && create && !changed) {
+    if (create && !changed && AAbIdValue === "New") {
       createAAb(caseId, columnList, valueList);
       console.log("New AAb has been created!");
       console.log("column list", columnList);
       console.log("value list", valueList);
     } else {
       console.log("AAb create condition is not met.");
+      if (create) {
+        setCreateSuccess(false);
+        setCreateMsg(`AAb case ${caseId} create is failed.`);
+      }
     }
   }, [caseId, isExist, create, changed]);
 

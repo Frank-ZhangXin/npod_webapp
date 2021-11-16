@@ -3,6 +3,7 @@ import { API, Auth } from "aws-amplify";
 
 export default function useUpdateAAb(
   caseId,
+  AAbIdValue,
   update,
   changed,
   setAccept,
@@ -14,13 +15,17 @@ export default function useUpdateAAb(
 ) {
   const [result, setResult] = useState(false);
   useEffect(() => {
-    if (update && !changed) {
+    if (update && !changed && AAbIdValue !== "New") {
       console.log("[AAb] Updating case columns...");
-      updateAAb(caseId, updateColumns, updateValues);
+      updateAAb(caseId, AAbIdValue, updateColumns, updateValues);
+    } else if (update) {
+      setShowUpdateError(true);
+      setShowUpdateSuccess(false);
+      setUpdateMsg("[AAb] Update is failed!");
     }
   }, [caseId, update, changed]);
-  async function updateAAb(id, columnNames, columnValues) {
-    let columns = { case_id: id };
+  async function updateAAb(the_case_id, the_AAb_id, columnNames, columnValues) {
+    let columns = { case_id: the_case_id, AAb_id: the_AAb_id };
     for (let i = 0; i < columnNames.length; i++) {
       columns[columnNames[i]] = columnValues[i];
     }
@@ -32,7 +37,8 @@ export default function useUpdateAAb(
     })
       .then((res) => {
         if (res["affectedRows"] ?? false) {
-          console.log("[AAb] Update success id", id);
+          console.log("[AAb] Update success case ID", the_case_id);
+          console.log("[AAb] Update success AAb ID", the_AAb_id);
           console.log("[AAb] Update success columns", columnNames);
           console.log("[AAb] Update success values", columnValues);
           setResult(true);
@@ -48,7 +54,8 @@ export default function useUpdateAAb(
         setShowUpdateSuccess(false);
         setUpdateMsg("[AAb] Update is failed");
         console.log("[AAb] Amplify API call error", error);
-        console.log("[AAb] Update fail id", id);
+        console.log("[AAb] Update fail case ID", the_case_id);
+        console.log("[AAb] Update fail AAb ID", the_AAb_id);
         console.log("[AAb] Update fail columns", columnNames);
         console.log("[AAb] Update fail values", columnValues);
       });

@@ -492,7 +492,7 @@ export default function Admin() {
                       {/* AAb Create */}
                       {activeStep === 6 ? (
                         <Button
-                          disabled={AAbExist === true || caseId === ""}
+                          disabled={caseId === ""}
                           onClick={handleCreateAAb}
                           className={classes.button}
                           variant="contained"
