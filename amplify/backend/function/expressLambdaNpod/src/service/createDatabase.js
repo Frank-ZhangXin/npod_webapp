@@ -239,8 +239,28 @@ async function check_AAb_exist(case_id) {
   return await pooledConnection(asyncAction);
 }
 
+// get all AAb_id by one case_id (multiple AAb records scenario)
+async function get_all_AAb_id(case_id) {
+  console.log("Getting all AAb_id of the case " + case_id);
+  const sql = `SELECT AAb_id FROM AAb WHERE case_id='${case_id}'`;
+  console.log("sql", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(`[Fetch AAb] case ${case_id} was fetched.`);
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 // get one AAb row all column values
-async function get_one_AAb_all_column_values(case_id, columns) {
+async function get_one_AAb_all_column_values(case_id, AAb_id, columns) {
   let columnStr = "";
   for (let i = 0; i < columns.length; i++) {
     if (i === 0) {
@@ -250,7 +270,7 @@ async function get_one_AAb_all_column_values(case_id, columns) {
     }
   }
   //console.log(columnStr);
-  const sql = `SELECT ${columnStr} FROM AAb WHERE case_id='${case_id}'`;
+  const sql = `SELECT ${columnStr} FROM AAb WHERE case_id='${case_id}' AND AAb_id='${AAb_id}'`;
   console.log("sql: " + sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -498,6 +518,7 @@ module.exports = {
   get_one_AAb_all_column_values: get_one_AAb_all_column_values,
   create_AAb: create_AAb,
   check_HLA_exist: check_HLA_exist,
+  get_all_AAb_id: get_all_AAb_id,
   get_one_HLA_all_column_values: get_one_HLA_all_column_values,
   create_HLA: create_HLA,
   check_RNA_exist: check_RNA_exist,

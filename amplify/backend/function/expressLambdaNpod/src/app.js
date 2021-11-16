@@ -27,6 +27,7 @@ var {
   get_one_table_one_column_all_possible_values,
   check_foreign_key,
   check_AAb_exist,
+  get_all_AAb_id,
   get_one_AAb_all_column_values,
   create_AAb,
   check_HLA_exist,
@@ -216,13 +217,24 @@ app.post("/db/check_AAb_exist", function (req, res) {
   );
 });
 
+// get all AAb_id by one case_id
+app.post("/db/get_all_AAb_id", function (req, res) {
+  console.log("Getting all AAb_id...");
+  console.log(req.body);
+  get_all_AAb_id(req.body["case_id"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
 // get one AAb all column values
 app.post("/db/get_one_AAb_all_column_values", function (req, res) {
   console.log("Getting AAb object case.");
   console.log(req.body);
-  get_one_AAb_all_column_values(req.body["case_id"], req.body["columns"]).then(
-    (promisedRes) => res.send(promisedRes)
-  );
+  get_one_AAb_all_column_values(
+    req.body["case_id"],
+    req.body["AAb_id"],
+    req.body["columns"]
+  ).then((promisedRes) => res.send(promisedRes));
 });
 
 // create a new AAb

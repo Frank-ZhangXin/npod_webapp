@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridBox from "./component/GridBox";
+import DropBox from "./component/DropBox";
 import useDebounced from "./component/useDebounced";
 import useCheckAAbExist from "./component/useCheckAAbExist";
+import useRetrieveAAbId from "./component/useRetrieveAllAAbId";
 import useRetrieveAAbColumns from "./component/useRetrieveAAbColumns";
 import useUpdateAAb from "./component/useUpdateAAb";
 import useCreateAAb from "./component/useCreateAAb";
@@ -29,6 +31,15 @@ function opsGenerator(idArr, nameArr) {
     ops.push({ value: idArr[i], label: nameArr[i] });
   }
   ops.push({ value: null, label: "NULL" });
+  return ops;
+}
+
+function AAbIdOpsGenerator(idArr, nameArr) {
+  const ops = [];
+  for (let i = 0; i < idArr.length; i++) {
+    ops.push({ value: idArr[i], label: nameArr[i] });
+  }
+  ops.push({ value: "New", label: "New" });
   return ops;
 }
 
@@ -151,11 +162,21 @@ export default function AAb_step6({
     setAAbExistMsg
   );
 
-  const defaultValue = useRetrieveAAbColumns(caseId, columnList);
+  const AAbIdList = useRetrieveAAbId(caseId);
+  const AAbIdOps = AAbIdOpsGenerator(AAbIdList, AAbIdList);
+  const AAbIdListName = "AAb ID List";
+  const [AAbIdValue, setAAbIdValue] = useState(AAbIdList[0]);
+
+  const defaultValue = useRetrieveAAbColumns(caseId, AAbIdValue, columnList);
   useEffect(() => {
-    for (let i = 0; i < setValueList.length; i++) {
-      setValueList[i](defaultValue[i]);
-    }
+    setValue0(defaultValue[0]);
+    setValue1(defaultValue[1]);
+    setValue2(defaultValue[2]);
+    setValue3(defaultValue[3]);
+    setValue4(defaultValue[4]);
+    setValue5(defaultValue[5]);
+    setValue6(defaultValue[6]);
+    setValue7(defaultValue[7]);
   }, [defaultValue]);
 
   const [value0, setValue0] = useDebounced(defaultValue[0], 800);
@@ -205,6 +226,7 @@ export default function AAb_step6({
   // CREATE
   const isCreate = useCreateAAb(
     caseId,
+    AAbIdValue,
     isExist,
     create,
     changed,
@@ -217,14 +239,14 @@ export default function AAb_step6({
   );
 
   useEffect(() => {
-    if (createSuccess) {
+    if (create) {
       setShowCreateMsg(true);
       const timer3 = setTimeout(() => {
         setShowCreateMsg(false);
         setCreateSuccess(false);
       }, 3000);
     }
-  }, [createSuccess, value0]);
+  }, [createSuccess, value0, create]);
 
   useEffect(() => {
     if (AAbExist) {
@@ -258,6 +280,7 @@ export default function AAb_step6({
   // UPDATE
   const updateResult = useUpdateAAb(
     caseId,
+    AAbIdValue,
     update,
     changed,
     setAccept,
@@ -286,6 +309,15 @@ export default function AAb_step6({
     <div className={classes.root}>
       <form noValidate>
         <div>
+          <div>
+            <DropBox
+              name={AAbIdListName}
+              value={AAbIdValue}
+              setValue={setAAbIdValue}
+              setChanged={setChanged}
+              ops={AAbIdOps}
+            />
+          </div>
           <div>
             <GridBox
               columnPropsList={columnPropsList.slice(0, 3)}
@@ -321,7 +353,11 @@ export default function AAb_step6({
         </Alert>
       </Fade>
       <Fade in={showCreateMsg}>
-        <Alert variant="filled" severity="success" className={classes.alert}>
+        <Alert
+          variant="filled"
+          severity={!createSuccess ? "error" : "success"}
+          className={classes.alert}
+        >
           {createMsg}
         </Alert>
       </Fade>

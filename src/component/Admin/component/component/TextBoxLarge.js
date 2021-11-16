@@ -41,6 +41,11 @@ function isValid(value, restrict) {
   return false;
 }
 
+const largeInputBoxStyle = {
+  resize: "both",
+  overflow: "auto",
+};
+
 export default function TextBoxLarge({
   name,
   value,
@@ -73,11 +78,23 @@ export default function TextBoxLarge({
           <label>{name}:</label>
         </Box>
         <Box>
-          <TextareaAutosize
+          {/* <TextareaAutosize
             defaultValue={value}
             onChange={handleChange}
             className={invalid ? classes.input_invalid : classes.inputLarge}
-          />
+          /> */}
+          {/* <input
+            type="text"
+            defaultValue={value}
+            onChange={handleChange}
+            className={invalid ? classes.errInput : classes.inputLarge}
+          /> */}
+          <textarea
+            type="text"
+            defaultValue={value || ""}
+            onChange={handleChange}
+            className={invalid ? classes.errInput : classes.inputLarge}
+          ></textarea>
         </Box>
       </Box>
       {invalid ? (

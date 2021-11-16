@@ -95,7 +95,7 @@ async function update_AAb(columns) {
       updateStr += "," + key + "=" + columns[key];
     }
   }
-  const sql = `UPDATE AAb SET ${updateStr} WHERE case_id=${columns.case_id}`;
+  const sql = `UPDATE AAb SET ${updateStr} WHERE case_id=${columns.case_id} AND AAb_id=${columns.AAb_id}`;
   console.log("sql: ", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
