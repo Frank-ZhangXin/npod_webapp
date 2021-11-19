@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridBox from "./component/GridBox";
+import DropBox from "./component/DropBox";
 import useDebounced from "./component/useDebounced";
 import useCheckRNAExist from "./component/useCheckRNAExist";
+import useRetrieveTableColumn from "./component/useRetrieveTableColumn";
+import useRetrieveAllRNAIds from "./component/useRetrieveAllRNAIds";
 import useRetrieveRNAColumns from "./component/useRetrieveRNAColumns";
 import useUpdateRNA from "./component/useUpdateRNA";
 import useCreateRNA from "./component/useCreateRNA";
@@ -32,6 +35,15 @@ function opsGenerator(idArr, nameArr) {
   return ops;
 }
 
+function RNAIdOpsGenerator(idArr, nameArr) {
+  const ops = [];
+  for (let i = 0; i < idArr.length; i++) {
+    ops.push({ value: idArr[i], label: nameArr[i] });
+  }
+  ops.push({ value: "New", label: "New" });
+  return ops;
+}
+
 export default function RNA_step8({
   caseId,
   exist,
@@ -48,7 +60,7 @@ export default function RNA_step8({
     "is_public",
     "RNA_aliq_id",
     "process_date",
-    "staff_id",
+    "contact_id",
     "derivative_source",
     "sample_type_id",
     "aliquot_number",
@@ -60,6 +72,20 @@ export default function RNA_step8({
     "yield",
     "comments",
   ];
+
+  const contactIds = useRetrieveTableColumn(
+    "contacts",
+    "contact_id",
+    "contact_id"
+  );
+  const contactOps = opsGenerator(contactIds, contactIds);
+
+  const sampleTypeIds = useRetrieveTableColumn(
+    "sample_types",
+    "sample_type_id",
+    "sample_type_id"
+  );
+  const sampleTypeOps = opsGenerator(sampleTypeIds, sampleTypeIds);
 
   const columnPropsList = [
     {
@@ -88,11 +114,11 @@ export default function RNA_step8({
       ops: [],
     },
     {
-      column: "staff_id",
-      input: "integerBox",
-      restrict: { type: "int", range: [] },
+      column: "contact_id",
+      input: "dropDown",
+      restrict: { type: "string", range: [] },
       valid: useState(true),
-      ops: [],
+      ops: contactOps,
     },
     {
       column: "derivative_source",
@@ -103,10 +129,10 @@ export default function RNA_step8({
     },
     {
       column: "sample_type_id",
-      input: "integerBox",
+      input: "dropDown",
       restrict: { type: "string", range: [] },
       valid: useState(true),
-      ops: [],
+      ops: sampleTypeOps,
     },
     {
       column: "aliquot_number",
@@ -187,7 +213,12 @@ export default function RNA_step8({
     setRNAExistMsg
   );
 
-  const defaultValue = useRetrieveRNAColumns(caseId, columnList);
+  const RNAIdList = useRetrieveAllRNAIds(caseId);
+  const RNAIdOps = RNAIdOpsGenerator(RNAIdList, RNAIdList);
+  const RNAIdListName = "RNA ID List";
+  const [RNAIdValue, setRNAIdValue] = useState(RNAIdList[0]);
+
+  const defaultValue = useRetrieveRNAColumns(caseId, RNAIdValue, columnList);
   useEffect(() => {
     for (let i = 0; i < setValueList.length; i++) {
       setValueList[i](defaultValue[i]);
@@ -213,7 +244,7 @@ export default function RNA_step8({
     "Public",
     "RNA Aliq ID",
     "Process Date",
-    "Staff ID",
+    "Contact ID",
     "Derivative Source",
     "Sample Type ID",
     "Aliquot Number",
@@ -261,6 +292,7 @@ export default function RNA_step8({
   // CREATE
   const isCreate = useCreateRNA(
     caseId,
+    RNAIdValue,
     isExist,
     create,
     changed,
@@ -273,14 +305,14 @@ export default function RNA_step8({
   );
 
   useEffect(() => {
-    if (createSuccess) {
+    if (create) {
       setShowCreateMsg(true);
       const timer3 = setTimeout(() => {
         setShowCreateMsg(false);
         setCreateSuccess(false);
       }, 3000);
     }
-  }, [createSuccess, value0]);
+  }, [createSuccess, value0, create]);
 
   useEffect(() => {
     if (RNAExist) {
@@ -314,6 +346,7 @@ export default function RNA_step8({
   // UPDATE
   const updateResult = useUpdateRNA(
     caseId,
+    RNAIdValue,
     update,
     changed,
     setAccept,
@@ -342,6 +375,15 @@ export default function RNA_step8({
     <div className={classes.root}>
       <form noValidate>
         <div>
+          <div>
+            <DropBox
+              name={RNAIdListName}
+              value={RNAIdValue}
+              setValue={setRNAIdValue}
+              setChanged={setChanged}
+              ops={RNAIdOps}
+            />
+          </div>
           <div>
             <GridBox
               columnPropsList={columnPropsList.slice(0, 3)}
@@ -395,7 +437,11 @@ export default function RNA_step8({
         </Alert>
       </Fade>
       <Fade in={showCreateMsg}>
-        <Alert variant="filled" severity="success" className={classes.alert}>
+        <Alert
+          variant="filled"
+          severity={!createSuccess ? "error" : "success"}
+          className={classes.alert}
+        >
           {createMsg}
         </Alert>
       </Fade>

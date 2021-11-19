@@ -4,7 +4,7 @@ import GridBox from "./component/GridBox";
 import DropBox from "./component/DropBox";
 import useDebounced from "./component/useDebounced";
 import useCheckAAbExist from "./component/useCheckAAbExist";
-import useRetrieveAAbId from "./component/useRetrieveAllAAbId";
+import useRetrieveAllAAbIds from "./component/useRetrieveAllAAbIds";
 import useRetrieveAAbColumns from "./component/useRetrieveAAbColumns";
 import useUpdateAAb from "./component/useUpdateAAb";
 import useCreateAAb from "./component/useCreateAAb";
@@ -162,21 +162,16 @@ export default function AAb_step6({
     setAAbExistMsg
   );
 
-  const AAbIdList = useRetrieveAAbId(caseId);
+  const AAbIdList = useRetrieveAllAAbIds(caseId);
   const AAbIdOps = AAbIdOpsGenerator(AAbIdList, AAbIdList);
   const AAbIdListName = "AAb ID List";
   const [AAbIdValue, setAAbIdValue] = useState(AAbIdList[0]);
 
   const defaultValue = useRetrieveAAbColumns(caseId, AAbIdValue, columnList);
   useEffect(() => {
-    setValue0(defaultValue[0]);
-    setValue1(defaultValue[1]);
-    setValue2(defaultValue[2]);
-    setValue3(defaultValue[3]);
-    setValue4(defaultValue[4]);
-    setValue5(defaultValue[5]);
-    setValue6(defaultValue[6]);
-    setValue7(defaultValue[7]);
+    for (let i = 0; i < setValueList.length; i++) {
+      setValueList[i](defaultValue[i]);
+    }
   }, [defaultValue]);
 
   const [value0, setValue0] = useDebounced(defaultValue[0], 800);

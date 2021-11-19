@@ -516,7 +516,7 @@ export default function Admin() {
                       {/* RNA Create */}
                       {activeStep === 8 ? (
                         <Button
-                          disabled={RNAExist === true || caseId === ""}
+                          disabled={caseId === ""}
                           onClick={handleCreateRNA}
                           className={classes.button}
                           variant="contained"

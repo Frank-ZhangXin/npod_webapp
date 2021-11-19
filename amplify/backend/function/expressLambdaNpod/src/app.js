@@ -34,6 +34,7 @@ var {
   get_one_HLA_all_column_values,
   create_HLA,
   check_RNA_exist,
+  get_all_RNA_id,
   get_one_RNA_all_column_values,
   create_RNA,
 } = require("./service/createDatabase");
@@ -278,13 +279,24 @@ app.post("/db/check_RNA_exist", function (req, res) {
   );
 });
 
+// get all RNA_id by one case_id
+app.post("/db/get_all_RNA_id", function (req, res) {
+  console.log("Getting all RNA_id...");
+  console.log(req.body);
+  get_all_RNA_id(req.body["case_id"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
 // get one RNA all column values
 app.post("/db/get_one_RNA_all_column_values", function (req, res) {
   console.log("Getting RNA object case.");
   console.log(req.body);
-  get_one_RNA_all_column_values(req.body["case_id"], req.body["columns"]).then(
-    (promisedRes) => res.send(promisedRes)
-  );
+  get_one_RNA_all_column_values(
+    req.body["case_id"],
+    req.body["RNA_id"],
+    req.body["columns"]
+  ).then((promisedRes) => res.send(promisedRes));
 });
 
 // create a new RNA
