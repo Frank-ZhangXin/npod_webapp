@@ -3,6 +3,7 @@ import { API, Auth } from "aws-amplify";
 
 export default function useCreateRNA(
   caseId,
+  RNAIdValue,
   isExist,
   create,
   changed,
@@ -15,13 +16,17 @@ export default function useCreateRNA(
 ) {
   const [result, setResult] = useState(false);
   useEffect(() => {
-    if (!isExist && create && !changed) {
+    if (create && !changed && RNAIdValue === "New") {
       createRNA(caseId, columnList, valueList);
       console.log("New RNA has been created!");
       console.log("column list", columnList);
       console.log("value list", valueList);
     } else {
       console.log("RNA create condition is not met.");
+      if (create) {
+        setCreateSuccess(false);
+        setCreateMsg(`RNA case ${caseId} create is failed.`);
+      }
     }
   }, [caseId, isExist, create, changed]);
 

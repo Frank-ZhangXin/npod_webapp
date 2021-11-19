@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { API, Auth } from "aws-amplify";
 
-export default function useRetrieveAllAAbId(caseId) {
+export default function useRetrieveAllAAbIds(caseId) {
   const [result, setResult] = useState([]);
   useEffect(() => {
     if (caseId !== "") {

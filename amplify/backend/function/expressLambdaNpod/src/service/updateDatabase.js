@@ -159,7 +159,7 @@ async function update_RNA(columns) {
       updateStr += "," + key + "=" + columns[key];
     }
   }
-  const sql = `UPDATE RNA SET ${updateStr} WHERE case_id=${columns.case_id}`;
+  const sql = `UPDATE RNA SET ${updateStr} WHERE case_id=${columns.case_id} AND RNA_id=${columns.RNA_id}`;
   console.log("sql: ", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {

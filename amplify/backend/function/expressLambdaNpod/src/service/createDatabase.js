@@ -250,7 +250,9 @@ async function get_all_AAb_id(case_id) {
         if (error) {
           reject(error);
         } else {
-          console.log(`[Fetch AAb] case ${case_id} was fetched.`);
+          console.log(
+            `[Fetch AAb] Fetching all AAb_id of the case ${case_id} was fetched.`
+          );
           resolve(result);
         }
       });
@@ -435,8 +437,30 @@ async function check_RNA_exist(case_id) {
   return await pooledConnection(asyncAction);
 }
 
+// get all RNA_id by one case_id (multiple RNA records scenario)
+async function get_all_RNA_id(case_id) {
+  console.log("Getting all RNA_id of the case " + case_id);
+  const sql = `SELECT RNA_id FROM RNA WHERE case_id='${case_id}'`;
+  console.log("sql", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch RNA] Fetching all RNA_id of the case ${case_id} was fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 // Get one RNA row all columns values
-async function get_one_RNA_all_column_values(case_id, columns) {
+async function get_one_RNA_all_column_values(case_id, RNA_id, columns) {
   let columnStr = "";
   for (let i = 0; i < columns.length; i++) {
     if (i === 0) {
@@ -446,7 +470,7 @@ async function get_one_RNA_all_column_values(case_id, columns) {
     }
   }
   //console.log(columnStr);
-  const sql = `SELECT ${columnStr} FROM RNA WHERE case_id='${case_id}'`;
+  const sql = `SELECT ${columnStr} FROM RNA WHERE case_id='${case_id}' AND RNA_id='${RNA_id}'`;
   console.log("sql: " + sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -455,7 +479,7 @@ async function get_one_RNA_all_column_values(case_id, columns) {
           reject(error);
         } else {
           console.log(
-            `[Fetch AAb columns] Case ${case_id} column ${columnStr} was fetched.`
+            `[Fetch RNA columns] RNA ${RNA_id} Case ${case_id} column ${columnStr} was fetched.`
           );
           resolve(result);
         }
@@ -522,6 +546,7 @@ module.exports = {
   get_one_HLA_all_column_values: get_one_HLA_all_column_values,
   create_HLA: create_HLA,
   check_RNA_exist: check_RNA_exist,
+  get_all_RNA_id: get_all_RNA_id,
   get_one_RNA_all_column_values: get_one_RNA_all_column_values,
   create_RNA: create_RNA,
 };
