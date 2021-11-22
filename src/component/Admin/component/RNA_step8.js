@@ -5,6 +5,7 @@ import DropBox from "./component/DropBox";
 import useDebounced from "./component/useDebounced";
 import useCheckRNAExist from "./component/useCheckRNAExist";
 import useRetrieveTableColumn from "./component/useRetrieveTableColumn";
+import useRetrieveTableColumnWithConditions from "./component/useRetrieveTableColumnWithConditions";
 import useRetrieveAllRNAIds from "./component/useRetrieveAllRNAIds";
 import useRetrieveRNAColumns from "./component/useRetrieveRNAColumns";
 import useUpdateRNA from "./component/useUpdateRNA";
@@ -78,14 +79,44 @@ export default function RNA_step8({
     "contact_id",
     "contact_id"
   );
-  const contactOps = opsGenerator(contactIds, contactIds);
 
-  const sampleTypeIds = useRetrieveTableColumn(
+  const contactFirstNames = useRetrieveTableColumn(
+    "contacts",
+    "first_name",
+    "contact_id"
+  );
+
+  const contactLastNames = useRetrieveTableColumn(
+    "contacts",
+    "last_name",
+    "contact_id"
+  );
+
+  const contactNames = [];
+  for (let i = 0; i < contactFirstNames.length; i++) {
+    contactNames.push(contactFirstNames[i] + " " + contactLastNames[i]);
+  }
+
+  const contactOps = opsGenerator(contactIds, contactNames);
+
+  const sampleTypesConditions = [{ column: "status", value: "Active" }];
+
+  const sampleTypeIds = useRetrieveTableColumnWithConditions(
     "sample_types",
     "sample_type_id",
-    "sample_type_id"
+    "sample_type_id",
+    sampleTypesConditions
   );
-  const sampleTypeOps = opsGenerator(sampleTypeIds, sampleTypeIds);
+
+  const sampleTypeNames = useRetrieveTableColumnWithConditions(
+    "sample_types",
+    "name",
+    "sample_type_id",
+    sampleTypesConditions
+  );
+  console.log("sample type with conditions", sampleTypeNames);
+
+  const sampleTypeOps = opsGenerator(sampleTypeIds, sampleTypeNames);
 
   const columnPropsList = [
     {
@@ -244,9 +275,9 @@ export default function RNA_step8({
     "Public",
     "RNA Aliq ID",
     "Process Date",
-    "Contact ID",
+    "Contact",
     "Derivative Source",
-    "Sample Type ID",
+    "Sample Type",
     "Aliquot Number",
     "Aliq ID",
     "Prep Elution Vol uL",

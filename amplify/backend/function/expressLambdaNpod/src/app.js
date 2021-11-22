@@ -24,6 +24,7 @@ var {
   check_case_exist,
   get_one_case_all_column_values,
   get_one_table_one_column_all_existing_values,
+  get_one_table_one_column_all_existing_values_with_conditions,
   get_one_table_one_column_all_possible_values,
   check_foreign_key,
   check_AAb_exist,
@@ -181,6 +182,21 @@ app.post(
       req.body["table_name"],
       req.body["column_name"],
       req.body["sort_by"]
+    ).then((promisedRes) => res.send(promisedRes));
+  }
+);
+
+// get some table some column all existing values (sampletypes table)
+app.post(
+  "/db/get_one_table_one_column_all_existing_values_with_conditions",
+  function (req, res) {
+    console.log("Getting table column.");
+    console.log(req.body);
+    get_one_table_one_column_all_existing_values_with_conditions(
+      req.body["table_name"],
+      req.body["column_name"],
+      req.body["sort_by"],
+      req.body["conditions"]
     ).then((promisedRes) => res.send(promisedRes));
   }
 );

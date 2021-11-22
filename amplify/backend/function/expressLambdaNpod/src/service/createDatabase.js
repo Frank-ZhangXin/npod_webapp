@@ -162,6 +162,51 @@ async function get_one_table_one_column_all_existing_values(
   return await pooledConnection(asyncAction);
 }
 
+async function get_one_table_one_column_all_existing_values_with_conditions(
+  table_name,
+  column_name,
+  sort_by,
+  conditions
+) {
+  let conditionsClause = "";
+  for (let i = 0; i < conditions.length; i++) {
+    if (i === 0) {
+      conditionsClause =
+        conditions[i].column + "=" + '"' + conditions[i].value + '"';
+    } else {
+      conditionsClause =
+        conditionsClause +
+        " AND " +
+        conditions[i].column +
+        "=" +
+        '"' +
+        conditions[i].value +
+        '"';
+    }
+  }
+  const sql = `SELECT ${column_name}, ${sort_by} FROM ${table_name} WHERE ${conditionsClause}`;
+  console.log("sql: " + sql);
+  function compare(a, b) {
+    return a[sort_by] - b[sort_by];
+  }
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch table column] Table ${table_name} column ${column_name} was fetched.`
+          );
+          const sorted_res = result.sort(compare);
+          resolve(sorted_res.map((res) => res[column_name]));
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 async function get_one_table_one_column_all_possible_values(
   table_name,
   column_name
@@ -535,6 +580,8 @@ module.exports = {
   get_one_case_all_column_values: get_one_case_all_column_values,
   get_one_table_one_column_all_existing_values:
     get_one_table_one_column_all_existing_values,
+  get_one_table_one_column_all_existing_values_with_conditions:
+    get_one_table_one_column_all_existing_values_with_conditions,
   get_one_table_one_column_all_possible_values:
     get_one_table_one_column_all_possible_values,
   check_foreign_key: check_foreign_key,
