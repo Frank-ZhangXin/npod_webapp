@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import GridBox from "./component/GridBox";
 import useDebounced from "./component/useDebounced";
 import useCheckHLAExist from "./component/useCheckHLAExist";
@@ -9,6 +9,9 @@ import useCreateHLA from "./component/useCreateHLA";
 import useRetrieveTableColumnPossibleValue from "./component/useRetrieveTableColumnPossibleValue";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
+import Tooltip from "@material-ui/core/Tooltip";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,7 +24,38 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "5px",
     width: "90%",
   },
+  title: {
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+    fontWeight: "900",
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+  },
+  helpIcon: {
+    fontSize: 18,
+    marginLeft: "3px",
+    color: "#0292FF",
+  },
+  helpIcon2: {
+    marginTop: "-10px",
+    marginBottom: "-10px",
+  },
+  helpText: {
+    padding: "10px",
+    textShadow: "0 0 20px white",
+  },
 }));
+
+const FilterTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    color: "#000000",
+    border: "1px solid #dadde9",
+    maxWidth: "420px",
+    fontSize: 15,
+  },
+}))(Tooltip);
 
 function opsGenerator(idArr, nameArr) {
   const ops = [];
@@ -43,6 +77,20 @@ export default function HLA_step7({
   setChanged,
 }) {
   const classes = useStyles();
+
+  const helpText = (
+    <React.Fragment>
+      <div className={classes.helpText}>
+        Hint:
+        <br />
+        Input format 1: 00:00
+        <br />
+        Inpurt format 2: 0:0
+        <br />
+        Input format 3: 00/00
+      </div>
+    </React.Fragment>
+  );
 
   const columnList = [
     "T_A_1",
@@ -465,6 +513,12 @@ export default function HLA_step7({
     <div className={classes.root}>
       <form noValidate>
         <div>
+          <Typography variant="body1" className={classes.title}>
+            How-to-use{"  "}
+            <FilterTooltip title={helpText} placement="right">
+              <HelpOutlineIcon className={classes.helpIcon} />
+            </FilterTooltip>
+          </Typography>
           <div>
             <GridBox
               columnPropsList={columnPropsList.slice(0, 3)}
