@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "paths": {
+    "/db": {
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      },
+      "lambdaFunction": "expressLambdaNpod"
+    }
+  }
+}

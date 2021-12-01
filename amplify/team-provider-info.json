@@ -9,13 +9,38 @@
       "UnauthRoleName": "amplify-amplifynpod-dev-163022-unauthRole",
       "StackName": "amplify-amplifynpod-dev-163022",
       "StackId": "arn:aws:cloudformation:us-east-1:762002863320:stack/amplify-amplifynpod-dev-163022/afb9f910-ca2a-11eb-8a49-0e46d57ace87",
-      "AmplifyAppId": "d21vputqov8m0s"
+      "AmplifyAppId": "d21vputqov8m0s",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-amplifynpod-dev-163022-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "function": {
         "expressLambdaNpod": {
           "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
-          "s3Key": "amplify-builds/expressLambdaNpod-4f556d674e4931674a73-build.zip"
+          "s3Key": "amplify-builds/expressLambdaNpod-75526f504e2f4f62674e-build.zip"
+        }
+      },
+      "auth": {
+        "amplifynpod3b9354c9": {}
+      }
+    }
+  },
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-amplifynpod-prod-132809-authRole",
+      "UnauthRoleArn": "arn:aws:iam::762002863320:role/amplify-amplifynpod-prod-132809-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::762002863320:role/amplify-amplifynpod-prod-132809-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-amplifynpod-prod-132809-deployment",
+      "UnauthRoleName": "amplify-amplifynpod-prod-132809-unauthRole",
+      "StackName": "amplify-amplifynpod-prod-132809",
+      "StackId": "arn:aws:cloudformation:us-east-1:762002863320:stack/amplify-amplifynpod-prod-132809/6fce05c0-52d4-11ec-b956-0e95d34f7149",
+      "AmplifyAppId": "d21vputqov8m0s"
+    },
+    "categories": {
+      "function": {
+        "expressLambdaNpod": {
+          "deploymentBucketName": "amplify-amplifynpod-prod-132809-deployment",
+          "s3Key": "amplify-builds/expressLambdaNpod-75526f504e2f4f62674e-build.zip"
         }
       },
       "auth": {
