@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FilterTooltip = withStyles((theme) => ({
+const AAbTooltip = withStyles((theme) => ({
   tooltip: {
     backgroundColor: "rgba(255, 255, 255, 0.95)",
     color: "#000000",
@@ -352,9 +352,9 @@ export default function AAb_step6({
         <div>
           <Typography variant="body1" className={classes.title}>
             How-to-use{"  "}
-            <FilterTooltip title={helpText} placement="right">
+            <AAbTooltip title={helpText} placement="right">
               <HelpOutlineIcon className={classes.helpIcon} />
-            </FilterTooltip>
+            </AAbTooltip>
           </Typography>
           <div>
             <DropBox
