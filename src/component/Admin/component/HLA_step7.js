@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FilterTooltip = withStyles((theme) => ({
+const HLATooltip = withStyles((theme) => ({
   tooltip: {
     backgroundColor: "rgba(255, 255, 255, 0.95)",
     color: "#000000",
@@ -515,9 +515,9 @@ export default function HLA_step7({
         <div>
           <Typography variant="body1" className={classes.title}>
             How-to-use{"  "}
-            <FilterTooltip title={helpText} placement="right">
+            <HLATooltip title={helpText} placement="right">
               <HelpOutlineIcon className={classes.helpIcon} />
-            </FilterTooltip>
+            </HLATooltip>
           </Typography>
           <div>
             <GridBox

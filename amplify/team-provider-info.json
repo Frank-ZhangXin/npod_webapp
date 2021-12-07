@@ -34,7 +34,8 @@
       "UnauthRoleName": "amplify-amplifynpod-prod-132809-unauthRole",
       "StackName": "amplify-amplifynpod-prod-132809",
       "StackId": "arn:aws:cloudformation:us-east-1:762002863320:stack/amplify-amplifynpod-prod-132809/6fce05c0-52d4-11ec-b956-0e95d34f7149",
-      "AmplifyAppId": "d21vputqov8m0s"
+      "AmplifyAppId": "d21vputqov8m0s",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-amplifynpod-prod-132809-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "function": {

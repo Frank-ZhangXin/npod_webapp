@@ -1,0 +1,14 @@
+{
+  "resourceName": "npodstorage",
+  "policyUUID": "9d080ee4",
+  "bucketName": "npodbucket",
+  "storageAccess": "auth",
+  "guestAccess": [],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

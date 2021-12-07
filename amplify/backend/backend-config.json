@@ -29,5 +29,12 @@
         }
       ]
     }
+  },
+  "storage": {
+    "npodstorage": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }

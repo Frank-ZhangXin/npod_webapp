@@ -51,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const FilterTooltip = withStyles((theme) => ({
+const RNATooltip = withStyles((theme) => ({
   tooltip: {
     backgroundColor: "rgba(255, 255, 255, 0.95)",
     color: "#000000",
@@ -454,9 +454,9 @@ export default function RNA_step8({
         <div>
           <Typography variant="body1" className={classes.title}>
             How-to-use{"  "}
-            <FilterTooltip title={helpText} placement="right">
+            <RNATooltip title={helpText} placement="right">
               <HelpOutlineIcon className={classes.helpIcon} />
-            </FilterTooltip>
+            </RNATooltip>
           </Typography>
           <div>
             <DropBox
