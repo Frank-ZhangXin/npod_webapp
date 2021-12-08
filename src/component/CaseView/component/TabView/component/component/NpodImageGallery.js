@@ -26,10 +26,8 @@ class NpodImageGallery extends Component {
   render() {
     const no_image_available = [
       {
-        // original: process.env.PUBLIC_URL + "/assets/image-not-found.jpeg",
-        // thumbnail: process.env.PUBLIC_URL + "/assets/image-not-found.jpeg",
-        original: "/assets/image-not-found.jpeg",
-        thumbnail: "/assets/image-not-found.jpeg",
+        original: "/assets/imageNotFound.jpeg",
+        thumbnail: "/assets/imageNotFound.jpeg",
       },
     ];
     const properties = {
