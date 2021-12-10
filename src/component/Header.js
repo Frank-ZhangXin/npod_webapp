@@ -2,7 +2,7 @@ import "../App.css";
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import { Auth } from "aws-amplify";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import Typography from "@material-ui/core/Typography";
@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "3px",
   },
   appbarWrapper: {
-    width: "80%",
+    width: "95%",
     margin: "auto",
     marginTop: "30px",
     textShadow: "0 0 20px black",
@@ -125,7 +125,7 @@ function Header(props) {
   const accountCloseHandler = () => {
     setAnchorEl(null);
   };
-
+  console.log("current location", useLocation());
   return (
     <div>
       <Helmet>
@@ -142,9 +142,13 @@ function Header(props) {
                   aria-label="home"
                   onClick={goHomeHandler}
                 >
-                  <Typography className={classes.title} variant="h3">
-                    nPOD
-                  </Typography>
+                  {useLocation().pathname === "/" ? (
+                    <img src="/assets/npodLogo.png" width="70%" />
+                  ) : (
+                    <Typography className={classes.title} variant="h3">
+                      nPOD
+                    </Typography>
+                  )}
                 </IconButton>
               </div>
               {props.location === "Case Explore" ? (

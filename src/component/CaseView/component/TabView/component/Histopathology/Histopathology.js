@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
 import HistopathologyInfo from "./component/HistopathologyInfo";
+import ImageLink from "./component/ImageLink";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -29,25 +30,31 @@ function Histopathology(props) {
 
   return (
     <div>
-      <Grid container spacing={2} justify={"center"} alignItems={"stretch"}>
+      <Grid container spacing={1} justify={"center"} alignItems={"stretch"}>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
             <HistopathologyInfo />
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={4}>
           <Paper elevation={3} className={classes.paper}>
-            placeholder
+            <ImageLink
+              type="Immunohistochemistry"
+              exist={props.currentCase.Aperio_id}
+              urlLink={
+                "https://aperioeslide.ahc.ufl.edu/eSlideTray.php?DisplayHeader=true&TableName=Case&Id=" +
+                props.currentCase.Aperio_id
+              }
+            />
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={4}>
           <Paper elevation={3} className={classes.paper}>
-            placeholder
-          </Paper>
-        </Grid>
-        <Grid item xs={12} sm={3}>
-          <Paper elevation={3} className={classes.paper}>
-            placeholder
+            <ImageLink
+              type="Electron_Microscope"
+              exist={props.currentCase.electron_microscopy_images}
+              urlLink={props.currentCase.electron_microscopy_images}
+            />
           </Paper>
         </Grid>
       </Grid>
