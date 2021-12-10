@@ -118,7 +118,9 @@ function LandingPage(props) {
                 </Link>
               </Grid>
               <Grid item>
-                <img src="/assets/landingPageImages/SampleInventory.png" />
+                <a target="_blank" href="http://npoddatashare.coh.org">
+                  <img src="/assets/landingPageImages/SampleInventory.png" />
+                </a>
               </Grid>
               <Grid item>
                 <img src="/assets/landingPageImages/ExploreDatasets.png" />
