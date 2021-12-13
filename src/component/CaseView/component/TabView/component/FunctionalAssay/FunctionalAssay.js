@@ -37,12 +37,12 @@ function FunctionalAssay(props) {
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            placeholder
+            Incoming Feature
           </Paper>
         </Grid>
         <Grid item xs={12} sm={3}>
           <Paper elevation={3} className={classes.paper}>
-            placeholder
+            Incoming Feature
           </Paper>
         </Grid>
       </Grid>
