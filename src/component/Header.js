@@ -161,7 +161,7 @@ function Header(props) {
                     <ArrowForwardIosIcon />
                     <div>
                       <Typography variant="h4" className={classes.title2}>
-                        CASE EXPLORE
+                        EXPLORE CASES
                       </Typography>
                     </div>
                   </IconButton>
