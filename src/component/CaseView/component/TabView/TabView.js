@@ -99,7 +99,7 @@ export default function TabView() {
             <Histopathology />
           </TabPanel>
           <TabPanel value={value} index={5}>
-            placeholder
+            Incoming Feature
           </TabPanel>
         </div>
       </Paper>
