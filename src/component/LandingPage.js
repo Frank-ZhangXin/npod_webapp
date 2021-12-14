@@ -63,6 +63,11 @@ const useStyles = makeStyles((theme) => ({
   colorText: {
     color: "#5AFF3D",
   },
+  linkText: {
+    textDecoration: "none",
+    padding: "2px",
+    color: "white",
+  },
 }));
 
 function LandingPage(props) {
@@ -76,6 +81,14 @@ function LandingPage(props) {
   // }, []);
   const handleExploreCase = () => {
     history.push("/explore");
+  };
+
+  const handleHelp = () => {
+    history.push("/help");
+  };
+
+  const handleContact = () => {
+    history.push("/contact");
   };
 
   return (
@@ -103,14 +116,6 @@ function LandingPage(props) {
         </Grid>
         <div>
           {props.signedIn ? (
-            // <Button
-            //   variant="outlined"
-            //   size="large"
-            //   className={classes.centerButton}
-            //   onClick={handleExploreCase}
-            // >
-            //   EXPLORE CASES
-            // </Button>
             <Grid container spacing={4} className={classes.centerButton}>
               <Grid item>
                 <Link onClick={handleExploreCase}>
@@ -123,10 +128,10 @@ function LandingPage(props) {
                 </a>
               </Grid>
               <Grid item>
-                <img src="/assets/landingPageImages/ExploreDatasets.png" />
+                <img src="/assets/landingPageImages/ExploreDatasetsNotAvailable.png" />
               </Grid>
               <Grid item>
-                <img src="/assets/landingPageImages/SubmitDatasets.png" />
+                <img src="/assets/landingPageImages/SubmitDatasetsNotAvailable.png" />
               </Grid>
             </Grid>
           ) : (
@@ -135,7 +140,13 @@ function LandingPage(props) {
         </div>
         <div>
           <Typography variant="subtitle1" className={classes.centerTitle3}>
-            HELP | CONTACT
+            <Link onClick={handleHelp} className={classes.linkText}>
+              HELP
+            </Link>{" "}
+            |{" "}
+            <Link onClick={handleContact} className={classes.linkText}>
+              CONTACT
+            </Link>
           </Typography>
         </div>
       </div>

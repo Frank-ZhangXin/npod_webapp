@@ -219,10 +219,11 @@ function Search(props) {
         (donor) =>
           (props.insulitisPositiveChecked === true &&
             donor.histopathology !== null &&
-            donor.histopathology.indexOf("Insulitis") !== -1) ||
+            donor.histopathology.toLowerCase().indexOf("insulitis") !== -1) ||
           (props.insulitisNegativeChecked === true &&
             (donor.histopathology === null ||
-              donor.histopathology.indexOf("Insulitis") === -1)) ||
+              donor.histopathology.toLowerCase().indexOf("insulitis") ===
+                -1)) ||
           props.insulitisEnable === false
       );
   console.log(filteredData);
