@@ -41,6 +41,18 @@ const useStyles = makeStyles((theme) => ({
   },
   tabs: {
     borderBottom: `1px solid ${theme.palette.divider}`,
+    //background: "linear-gradient(45deg, #6588c2, #dde4f0);",
+    backgroundColor: "#dde4f0",
+    "& .MuiTabs-indicator": {
+      //backgroundColor: "orange",
+      height: 0,
+    },
+    "& .MuiTab-root.Mui-selected": {
+      color: "black",
+      backgroundColor: "#6588c2",
+      //border: "1px solid #6588c2",
+      // borderRadius: "4px",
+    },
   },
   tabPanel: {
     maxHeight: "85vh",

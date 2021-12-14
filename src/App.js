@@ -16,6 +16,8 @@ import ForgotPassword from "./route/ForgotPassword";
 import ChangePassword from "./route/ChangePassword";
 import ExplorePage from "./route/ExplorePage";
 import AdminPage from "./route/AdminPage";
+import Help from "./route/Help";
+import Contact from "./route/Contact";
 
 Amplify.configure({
   ...config,
@@ -65,6 +67,8 @@ function App(props) {
       <Route path="/changepassword" component={ChangePassword} />
       <Route path="/explore" component={ExplorePage} />
       <Route path="/admin" component={AdminPage} />
+      <Route path="/help" component={Help} />
+      <Route path="/contact" component={Contact} />
     </Router>
   );
 }

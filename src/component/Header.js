@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 600,
     color: "#FFF",
     marginRight: "1px",
+    paddingTop: "10px",
   },
   title2: {
     flexGrow: 1,
@@ -70,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
       background: "none",
     },
     textShadow: "0 0 20px black",
+    textDecoration: "none",
   },
 }));
 
@@ -136,20 +138,33 @@ function Header(props) {
           <AppBar color="transparent" elevation={0} position="fixed">
             <Toolbar className={classes.appbarWrapper}>
               <div className={classes.title}>
-                <IconButton
+                {/* <IconButton
                   edge="end"
                   className={classes.authButton}
                   aria-label="home"
                   onClick={goHomeHandler}
                 >
                   {useLocation().pathname === "/" ? (
-                    <img src="/assets/npodLogo.png" width="70%" />
+                    <img
+                      src="/assets/npodLogoWhite.png"
+                      width="20%"
+                      style={{ marginLeft: "-800px" }}
+                    />
                   ) : (
                     <Typography className={classes.title} variant="h3">
                       nPOD
                     </Typography>
                   )}
-                </IconButton>
+                </IconButton> */}
+                <a href="/" className={classes.authButton}>
+                  {useLocation().pathname === "/" ? (
+                    <img src="/assets/npodLogoWhite.png" width="12%" />
+                  ) : (
+                    <Typography className={classes.title} variant="h3">
+                      nPOD
+                    </Typography>
+                  )}
+                </a>
               </div>
               {props.location === "Case Explore" ? (
                 <div className={classes.title2}>
