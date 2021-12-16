@@ -15,6 +15,8 @@ var {
   get_donor_types,
   get_cause_of_death,
   get_HLA,
+  get_sample_types,
+  get_max_insulin,
 } = require("./service/readDatabase");
 
 var {
@@ -115,6 +117,22 @@ app.get("/db/cause_of_death", function (req, res) {
 app.get("/db/HLA", function (req, res) {
   console.log("fetching HLA.");
   get_HLA().then((promisedRes) => res.send(promisedRes));
+});
+
+// get sample_types
+app.get("/db/sample_type", function (req, res) {
+  console.log("fetching Sample Types.");
+  get_sample_types().then((promisedRes) => res.send(promisedRes));
+});
+
+// get max insulin
+app.get("/db/max_insulin", function (req, res) {
+  console.log("fetching Max Insulin.");
+  get_max_insulin(
+    req.query.case_id,
+    req.query.high_time,
+    req.query.low_time
+  ).then((promisedRes) => res.send(promisedRes));
 });
 
 /****************************

@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ImageGallery from "react-image-gallery";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { Typography } from "@material-ui/core";
 
 class NpodImageGallery extends Component {
   constructor() {
@@ -42,7 +43,11 @@ class NpodImageGallery extends Component {
 
     return (
       <div>
-        <ImageGallery {...properties} />
+        {this.props.urlList.length === 0 ? (
+          <Typography variant="h6">Not Available For This Case.</Typography>
+        ) : (
+          <ImageGallery {...properties} />
+        )}
       </div>
     );
   }

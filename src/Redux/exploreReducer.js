@@ -83,6 +83,9 @@ const initialState = {
 
   // HLA map
   hlaMap: null,
+
+  // sample Types Map
+  sampleTypesMap: null,
 };
 
 const exploreReducer = (state = initialState, action) => {
@@ -394,6 +397,13 @@ const exploreReducer = (state = initialState, action) => {
       return {
         ...state,
         hlaMap: action.value,
+      };
+
+    // sample types map
+    case "SET_SAMPLETYPES_MAP":
+      return {
+        ...state,
+        sampleTypesMap: action.value,
       };
 
     default:
