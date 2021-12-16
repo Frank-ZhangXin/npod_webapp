@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function InsulinSecretionDuringStimulation(props) {
+function PeakInsulinSecretionDuringStimulation(props) {
   const classes = useStyles();
   const [glucoseStimulation, setGlucoseStimulation] = useState(null);
   const [highKCLStimulation, setHighKCLStimulation] = useState(null);
@@ -83,7 +83,7 @@ function InsulinSecretionDuringStimulation(props) {
     <div>
       <div>
         <Typography variant="h5" className={classes.title}>
-          Insulin Secretion During Stimulation (mU/L)
+          Peak Insulin Secretion During Stimulation (mU/L)
         </Typography>
       </div>
       <div>
@@ -129,4 +129,4 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   null
-)(InsulinSecretionDuringStimulation);
+)(PeakInsulinSecretionDuringStimulation);

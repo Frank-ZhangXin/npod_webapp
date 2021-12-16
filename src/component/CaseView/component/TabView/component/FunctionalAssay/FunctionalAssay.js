@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
 import FunctionalAssayImageViewer from "./component/FunctionalAssayImageViewer";
-import InsulinSecretionDuringStimulation from "./component/InsulinSecretionDuringStimulation";
+import PeakInsulinSecretionDuringStimulation from "./component/PeakInsulinSecretionDuringStimulation";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -38,7 +38,7 @@ function FunctionalAssay(props) {
         </Grid>
         <Grid item xs={12} sm={4}>
           <Paper elevation={3} className={classes.paper}>
-            <InsulinSecretionDuringStimulation />
+            <PeakInsulinSecretionDuringStimulation />
           </Paper>
         </Grid>
       </Grid>
