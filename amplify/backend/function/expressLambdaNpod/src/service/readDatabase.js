@@ -128,10 +128,52 @@ async function get_HLA() {
   return await pooledConnection(asyncAction);
 }
 
+// get SampleTypes
+async function get_sample_types() {
+  const sql = "SELECT * FROM `sample_types`";
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch SampleTypes] Totally ${result.length} SampleTypes records were fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// get Max Insulin
+async function get_max_insulin(caseId, highTime, lowTime) {
+  const sql = `SELECT MAX(insulin_mU_L) FROM slices_raw_data WHERE case_id="${caseId}" AND time_minutes > ${lowTime} AND time_minutes <= ${highTime}`;
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch slice_raw_data] max insulin record ${result} was fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForRead: testPoolForRead,
   get_cases: get_cases,
   get_donor_types: get_donor_types,
   get_cause_of_death: get_cause_of_death,
   get_HLA: get_HLA,
+  get_sample_types: get_sample_types,
+  get_max_insulin: get_max_insulin,
 };

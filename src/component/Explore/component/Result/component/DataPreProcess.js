@@ -88,14 +88,6 @@ function DataPreProcess(props) {
           thisCase["HLA_DQB1"] = thisDQB1;
           thisCase["HLA_DPA1"] = thisDPA1;
           thisCase["HLA_DPB1"] = thisDPB1;
-          if (thisCaseId === "6001") {
-            console.log(
-              "case 6001 [HLA transplant]: " +
-                thisCase["HLA_transplant"] +
-                "; [HLA High Resolution]: " +
-                thisCase["HLA_high_resolution"]
-            );
-          }
         } else {
           thisCase["HLA_transplant"] = null;
           thisCase["HLA_T_A"] = null;

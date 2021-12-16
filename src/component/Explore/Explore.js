@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: "100vh",
     backgroundImage: `url(${
-      process.env.PUBLIC_URL + "/assets/caseExplorePage.jpg"
+      process.env.PUBLIC_URL + "/assets/landingPage.jpg"
     })`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",

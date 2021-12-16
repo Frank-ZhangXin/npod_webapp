@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -9,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import { API } from "aws-amplify";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -27,8 +28,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TissueQuality(props) {
+function InsulinSecretionDuringStimulation(props) {
   const classes = useStyles();
+  const [glucoseStimulation, setGlucoseStimulation] = useState(null);
+  const [highKCLStimulation, setHighKCLStimulation] = useState(null);
+
+  useEffect(() => {
+    if (props.currentCase.case_id === "6430") {
+      GetMaxInsulin(props.currentCase.case_id, 95, 64, "KCL");
+    } else if (props.currentCase.case_id === "6431") {
+      GetMaxInsulin(props.currentCase.case_id, 100, 64, "KCL");
+    } else {
+      GetMaxInsulin(props.currentCase.case_id, 80, 64, "KCL");
+    }
+    GetMaxInsulin(props.currentCase.case_id, 35, 15, "glucose");
+  }, [props.currentCase.case_id]);
+
+  async function GetMaxInsulin(caseId, highTime, lowTime, stiName) {
+    return await API.get("dbapi", "/db/max_insulin", {
+      queryStringParameters: {
+        case_id: caseId,
+        high_time: highTime,
+        low_time: lowTime,
+      },
+    })
+      .then((res) => {
+        if (stiName === "glucose") {
+          setGlucoseStimulation(res[0]["MAX(insulin_mU_L)"]);
+        } else if (stiName === "KCL") {
+          setHighKCLStimulation(res[0]["MAX(insulin_mU_L)"]);
+        }
+      })
+      .catch((err) => {
+        console.error("Get Max Insulin Error", err);
+      });
+  }
 
   function createData(name, value) {
     return { name, value };
@@ -36,27 +70,20 @@ function TissueQuality(props) {
 
   const rows = [
     createData(
-      "RIN",
-      props.currentCase.RIN === null ? "Unavailable" : props.currentCase.RIN
+      "16.7mM Glucose Stimulation",
+      glucoseStimulation === null ? "Unavailable" : glucoseStimulation
     ),
     createData(
-      "Sample Type",
-      props.currentCase.sample_type_id === null
-        ? "Unavailable"
-        : props.sampleTypesMap[props.currentCase.sample_type_id]
+      "High KCl Stimulation",
+      highKCLStimulation === null ? "Unavailable" : highKCLStimulation
     ),
-    createData(
-      "260/280",
-      props.currentCase.ratio === null ? "Unavailable" : props.currentCase.ratio
-    ),
-    createData("Cell Viability", "Unavailable"),
   ];
 
   return (
     <div>
       <div>
         <Typography variant="h5" className={classes.title}>
-          Tissue Quality
+          Insulin Secretion During Stimulation (mU/L)
         </Typography>
       </div>
       <div>
@@ -99,4 +126,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(TissueQuality);
+export default connect(
+  mapStateToProps,
+  null
+)(InsulinSecretionDuringStimulation);

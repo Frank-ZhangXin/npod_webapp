@@ -50,9 +50,13 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiTab-root.Mui-selected": {
       color: "black",
       backgroundColor: "#6588c2",
+      fontWeight: "bold",
       //border: "1px solid #6588c2",
       // borderRadius: "4px",
     },
+  },
+  tab: {
+    color: "rgba(0,0,0,1)",
   },
   tabPanel: {
     maxHeight: "85vh",
@@ -87,12 +91,36 @@ export default function TabView() {
           variant="fullWidth"
           className={classes.tabs}
         >
-          <Tab label="DONOR SUMMARY" {...a11yProps(0)} />
-          <Tab label="CLINICAL HISTORY" {...a11yProps(1)} />
-          <Tab label="Case Processing &amp; Tissue Quality" {...a11yProps(2)} />
-          <Tab label="FUNCTIONAL ASSAY" {...a11yProps(3)} />
-          <Tab label="HISTOPATHOLOGY" {...a11yProps(4)} />
-          <Tab label="IMMUNOPHENOTYPING" {...a11yProps(5)} />
+          <Tab
+            label="DONOR SUMMARY"
+            {...a11yProps(0)}
+            className={classes.tab}
+          />
+          <Tab
+            label="CLINICAL HISTORY"
+            {...a11yProps(1)}
+            className={classes.tab}
+          />
+          <Tab
+            label="Case Processing &amp; Tissue Quality"
+            {...a11yProps(2)}
+            className={classes.tab}
+          />
+          <Tab
+            label="FUNCTIONAL ASSAY"
+            {...a11yProps(3)}
+            className={classes.tab}
+          />
+          <Tab
+            label="HISTOPATHOLOGY"
+            {...a11yProps(4)}
+            className={classes.tab}
+          />
+          <Tab
+            label="IMMUNOPHENOTYPING"
+            {...a11yProps(5)}
+            className={classes.tab}
+          />
         </Tabs>
         <div className={classes.tabPanel}>
           <TabPanel value={value} index={0}>

@@ -11,6 +11,7 @@ function FetchRawData(props) {
     fetchDonorType();
     fetchCauseOfDeath();
     fetchHLA();
+    fetchSampleType();
 
     //console.log("fetch data was called.");
   }, []);
@@ -88,6 +89,21 @@ function FetchRawData(props) {
       .catch((error) => console.log("Amplify API call error", error));
   }
 
+  // fetch sample types and save as map
+  async function fetchSampleType() {
+    return await API.get("dbapi", "/db/sample_type")
+      .then((res) => {
+        // sample types map
+        const stMap = {};
+        for (var i = 0, sType; i < res.length; i++) {
+          sType = res[i];
+          stMap[sType.sample_type_id] = sType.name;
+        }
+        props.setSampleTypesMap(stMap);
+      })
+      .catch((error) => console.log("Amplify API call error", error));
+  }
+
   return <div></div>;
 }
 
@@ -114,6 +130,8 @@ const mapDispatchToProps = (dispatch) => {
     setHLA: (newHLA) => dispatch({ type: "SET_HLA", value: newHLA }),
     setHLAMap: (newHLAMap) =>
       dispatch({ type: "SET_HLA_MAP", value: newHLAMap }),
+    setSampleTypesMap: (newSampleTypesMap) =>
+      dispatch({ type: "SET_SAMPLETYPES_MAP", value: newSampleTypesMap }),
   };
 };
 

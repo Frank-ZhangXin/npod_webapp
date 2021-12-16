@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { API, Auth } from "aws-amplify";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { CssBaseline, Typography } from "@material-ui/core";
 import Grid from "@material-ui/core/Grid";
@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import { useHistory } from "react-router-dom";
 import Header from "./Header";
 import { Link } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -68,17 +69,34 @@ const useStyles = makeStyles((theme) => ({
     padding: "2px",
     color: "white",
   },
+  helpText: {
+    padding: "10px",
+    textShadow: "0 0 20px white",
+  },
 }));
+
+const LandingPageTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    color: "#000000",
+    border: "1px solid #dadde9",
+    maxWidth: "420px",
+    fontSize: 15,
+  },
+}))(Tooltip);
 
 function LandingPage(props) {
   const classes = useStyles();
   const [caseDataNum, setCaseDataNum] = useState(0);
   const [authed, setAuthed] = useState(false);
   const history = useHistory();
-  // useEffect(() => {
-  //
-  //   }
-  // }, []);
+
+  const helpTextNotAvailable = (
+    <React.Fragment>
+      <div className={classes.helpText}>Coming Soon</div>
+    </React.Fragment>
+  );
+
   const handleExploreCase = () => {
     history.push("/explore");
   };
@@ -128,10 +146,20 @@ function LandingPage(props) {
                 </a>
               </Grid>
               <Grid item>
-                <img src="/assets/landingPageImages/ExploreDatasetsNotAvailable.png" />
+                <LandingPageTooltip
+                  title={helpTextNotAvailable}
+                  placement="top"
+                >
+                  <img src="/assets/landingPageImages/ExploreDatasetsNotAvailable.png" />
+                </LandingPageTooltip>
               </Grid>
               <Grid item>
-                <img src="/assets/landingPageImages/SubmitDatasetsNotAvailable.png" />
+                <LandingPageTooltip
+                  title={helpTextNotAvailable}
+                  placement="top"
+                >
+                  <img src="/assets/landingPageImages/SubmitDatasetsNotAvailable.png" />
+                </LandingPageTooltip>
               </Grid>
             </Grid>
           ) : (
