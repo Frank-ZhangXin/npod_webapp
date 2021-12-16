@@ -123,12 +123,13 @@ function LandingPage(props) {
         >
           <Grid item>
             <Typography variant="h1" className={classes.centerTitle}>
-              DATA <span style={{ fontWeight: 900 }}>PORTAL</span>
+              <span style={{ fontWeight: 300 }}>DATA</span>{" "}
+              <span style={{ fontWeight: 700 }}>PORTAL</span>
             </Typography>
           </Grid>
           <Grid item>
             <Typography variant="subtitle1" className={classes.centerTitle2}>
-              <p>Sharing for a Cure</p>
+              <p style={{ fontWeight: 400 }}>Sharing for a Cure</p>
             </Typography>
           </Grid>
         </Grid>

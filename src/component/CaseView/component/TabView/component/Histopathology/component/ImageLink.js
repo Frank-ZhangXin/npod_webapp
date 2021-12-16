@@ -24,10 +24,29 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: "center",
     backgroundSize: "cover",
   },
-  centerGrid: {
+  centerGridContainer1: {
     height: "66vh",
   },
-  centerItem: {
+  centerGridContainer2: {
+    height: "66vh",
+    justifyContent: "flex-grow",
+    alignItems: "center",
+  },
+  centerGridItem: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  centerGridItem2: {
+    backgroundColor: "rgba(255,255,255, 0.5)",
+    width: "100%",
+    color: "black",
+    marginBottom: "53%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  centerGridItem3: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -54,9 +73,9 @@ function ImageLink({ type, exist, urlLink }) {
             direction="column"
             justify="center"
             alignItems="center"
-            className={classes.centerGrid}
+            className={classes.centerGridContainer1}
           >
-            <Grid item className={classes.centerItem}>
+            <Grid item className={classes.centerGridItem}>
               <div className={classes.centerText}>
                 <Typography variant="h5">
                   Immunohistochemistry Images
@@ -70,7 +89,7 @@ function ImageLink({ type, exist, urlLink }) {
                     color="primary"
                     href={urlLink}
                   >
-                    Aperio
+                    nPOD Online Pathology
                   </Button>
                 ) : (
                   <Button variant="contained">Not Available</Button>
@@ -84,11 +103,12 @@ function ImageLink({ type, exist, urlLink }) {
           <Grid
             container
             direction="column"
-            justify="center"
-            alignItems="center"
-            className={classes.centerGrid}
+            className={classes.centerGridContainer2}
           >
-            <Grid item className={classes.centerItem}>
+            <Grid item className={classes.centerGridItem2}>
+              <p style={{ marginLeft: "35%" }}>LIMITED CASES ONLY</p>
+            </Grid>
+            <Grid item className={classes.centerGridItem3}>
               <div className={classes.centerText}>
                 <Typography variant="h5">Electron Microscopy Images</Typography>
               </div>
@@ -100,7 +120,7 @@ function ImageLink({ type, exist, urlLink }) {
                     color="primary"
                     href={urlLink}
                   >
-                    OpenMicroscopy
+                    Open Microscopy
                   </Button>
                 ) : (
                   <Button variant="contained">Not Available</Button>

@@ -21,6 +21,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import AuthHeader from "../component/AuthHeader";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
+import EmailIcon from "@material-ui/icons/Email";
 
 function Copyright() {
   return (
@@ -192,6 +193,20 @@ export default function SignUp() {
     return re.test(thePassword);
   };
 
+  const InvitationHelpText = (
+    <React.Fragment>
+      <div style={{ display: "flex", alignItems: "center", marginTop: "3px" }}>
+        <EmailIcon />
+        <div style={{ fontSize: 14, marginLeft: "3px" }}>
+          Request Invitation Code:{" "}
+          <a target="_blank" href="npod@pathology.ufl.edu">
+            npod@pathology.ufl.edu
+          </a>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+
   return (
     <div>
       <AuthHeader location="Sign Up" />
@@ -294,6 +309,7 @@ export default function SignUp() {
                   type="text"
                   id="invitation"
                   onChange={(event) => setInvitation(event.target.value)}
+                  helperText={InvitationHelpText}
                 />
               </Grid>
             </Grid>

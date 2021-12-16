@@ -44,7 +44,7 @@ class NpodImageGallery extends Component {
     return (
       <div>
         {this.props.urlList.length === 0 ? (
-          <Typography variant="h6">Not Available For This Case.</Typography>
+          <Typography variant="h6">Not Available for this Case</Typography>
         ) : (
           <ImageGallery {...properties} />
         )}
