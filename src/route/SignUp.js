@@ -199,7 +199,7 @@ export default function SignUp() {
         <EmailIcon />
         <div style={{ fontSize: 14, marginLeft: "3px" }}>
           Request Invitation Code:{" "}
-          <a target="_blank" href="npod@pathology.ufl.edu">
+          <a target="_blank" href="mailto:npod@pathology.ufl.edu">
             npod@pathology.ufl.edu
           </a>
         </div>
