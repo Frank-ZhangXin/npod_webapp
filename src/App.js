@@ -6,7 +6,7 @@ import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Header from "./component/Header";
-import LandingPage from "./component/LandingPage";
+import LandingPage from "./route/LandingPage";
 import AuthHeader from "./component/AuthHeader";
 import SignIn from "./route/SignIn";
 import SignUp from "./route/SignUp";
@@ -16,7 +16,7 @@ import ForgotPassword from "./route/ForgotPassword";
 import ChangePassword from "./route/ChangePassword";
 import ExplorePage from "./route/ExplorePage";
 import AdminPage from "./route/AdminPage";
-import Help from "./route/Help";
+import SupportPage from "./route/SupportPage";
 import Contact from "./route/Contact";
 
 Amplify.configure({
@@ -67,7 +67,7 @@ function App(props) {
       <Route path="/changepassword" component={ChangePassword} />
       <Route path="/explore" component={ExplorePage} />
       <Route path="/admin" component={AdminPage} />
-      <Route path="/help" component={Help} />
+      <Route path="/support" component={SupportPage} />
       <Route path="/contact" component={Contact} />
     </Router>
   );

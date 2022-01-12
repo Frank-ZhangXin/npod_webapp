@@ -1,28 +1,13 @@
 import React, { useEffect, useState } from "react";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import Auth from "@aws-amplify/auth";
-import { useHistory } from "react-router-dom";
-import { connect } from "react-redux";
-import IconButton from "@material-ui/core/IconButton";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Alert from "@material-ui/lab/Alert";
-import Fade from "@material-ui/core/Fade";
-import AuthHeader from "../component/AuthHeader";
+import AuthHeader from "..//AuthHeader";
 import { Paper } from "@material-ui/core";
+import Markdown from "./Markdown";
 
 // TODO: Remember me function need further implementation.
 // For now, Cognito will let user opt in remembering device.
@@ -42,14 +27,29 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    //marginTop: theme.spacing(2),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
+  markDown: {
+    paddingTop: "50px",
+    paddingBottom: "50px",
+    paddingLeft: "100px",
+    paddingRight: "100px",
+  },
+  container: {
+    display: "flex",
+    flexDirection: "column",
+  },
   title: {
-    margin: theme.spacing(3),
-    fontWeight: 300,
+    margin: theme.spacing(5),
+    fontWeight: 600,
+    alignSelf: "center",
+    color: "#01579b",
+  },
+  copyRight: {
+    marginBottom: "50px",
   },
   avatar: {
     margin: theme.spacing(1),
@@ -69,24 +69,32 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Help(props) {
+function Support(props) {
   const classes = useStyles();
+  const [post, setPost] = useState("");
+
+  useEffect(() => {
+    import(`./supportText.md`)
+      .then((res) => {
+        fetch(res.default)
+          .then((res) => res.text())
+          .then((res) => setPost(res))
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
+  });
+
   return (
     <div>
       <AuthHeader location="Sign In" />
-      <Container component="main" maxWidth="md">
-        <CssBaseline />
+      <Container Width="md" maxWidth="lg" className={classes.container}>
+        <Typography variant="h3" className={classes.title}>
+          SUPPORT
+        </Typography>
         <Paper className={classes.paper}>
-          <Typography variant="h4" className={classes.title}>
-            HOW TO USE
-          </Typography>
-          <Typography variant="body1" className={classes.title}>
-            <div>Very helpful tips</div>
-            <div>Very helpful tips</div>
-            <div>Very helpful tips</div>
-          </Typography>
+          <Markdown className={classes.markDown}>{post}</Markdown>
         </Paper>
-        <Box mt={8}>
+        <Box mt={8} className={classes.copyRight}>
           <Copyright />
         </Box>
       </Container>
@@ -94,4 +102,4 @@ function Help(props) {
   );
 }
 
-export default Help;
+export default Support;

@@ -85,7 +85,7 @@ const LandingPageTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-function LandingPage(props) {
+function Landing(props) {
   const classes = useStyles();
   const [caseDataNum, setCaseDataNum] = useState(0);
   const [authed, setAuthed] = useState(false);
@@ -101,8 +101,8 @@ function LandingPage(props) {
     history.push("/explore");
   };
 
-  const handleHelp = () => {
-    history.push("/help");
+  const handleSupport = () => {
+    history.push("/support");
   };
 
   const handleContact = () => {
@@ -169,8 +169,8 @@ function LandingPage(props) {
         </div>
         <div>
           <Typography variant="subtitle1" className={classes.centerTitle3}>
-            <Link onClick={handleHelp} className={classes.linkText}>
-              HELP
+            <Link onClick={handleSupport} className={classes.linkText}>
+              SUPPORT
             </Link>{" "}
             |{" "}
             <Link onClick={handleContact} className={classes.linkText}>
@@ -198,4 +198,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);
