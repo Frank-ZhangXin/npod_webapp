@@ -75,16 +75,18 @@ function Support(props) {
   const [post, setPost] = useState("");
 
   useEffect(() => {
-    import(`./supportText.md`)
-      .then((res) => {
-        fetch(res.default)
-          .then((res) => res.text())
-          .then((res) => setPost(res))
-          .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
-  });
+    const setTheText = async () => {
+      const fileName = "supportText";
+      const file = await import(`./${fileName}.txt`);
+      const response = await fetch(file.default);
+      const text = await response.text();
+      setPost(text);
+    };
+    setTheText();
+  }, []);
 
+  console.log("(out of useeffect)md file content", post);
+  const test_text = "# sample title";
   return (
     <div>
       <AuthHeader location="Support" />
