@@ -8,6 +8,7 @@ import Container from "@material-ui/core/Container";
 import AuthHeader from "..//AuthHeader";
 import { Paper } from "@material-ui/core";
 import Markdown from "./Markdown";
+import ReactMarkdown from "markdown-to-jsx";
 
 // TODO: Remember me function need further implementation.
 // For now, Cognito will let user opt in remembering device.
@@ -86,13 +87,13 @@ function Support(props) {
 
   return (
     <div>
-      <AuthHeader location="Sign In" />
+      <AuthHeader location="Support" />
       <Container Width="md" maxWidth="lg" className={classes.container}>
         <Typography variant="h3" className={classes.title}>
           SUPPORT
         </Typography>
         <Paper className={classes.paper}>
-          <Markdown className={classes.markDown}>{post}</Markdown>
+          <ReactMarkdown className={classes.markDown}>{post}</ReactMarkdown>
         </Paper>
         <Box mt={8} className={classes.copyRight}>
           <Copyright />

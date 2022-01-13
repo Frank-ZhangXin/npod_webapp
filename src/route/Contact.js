@@ -73,7 +73,7 @@ function Contact(props) {
   const classes = useStyles();
   return (
     <div>
-      <AuthHeader location="Sign In" />
+      <AuthHeader location="Contact" />
       <Container component="main" maxWidth="md">
         <CssBaseline />
         <Paper className={classes.paper}>
