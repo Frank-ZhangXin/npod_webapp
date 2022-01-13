@@ -8,7 +8,7 @@ import Container from "@material-ui/core/Container";
 import AuthHeader from "..//AuthHeader";
 import { Paper } from "@material-ui/core";
 import Markdown from "./Markdown";
-import ReactMarkdown from "markdown-to-jsx";
+import ReactMarkdown from "react-markdown";
 
 // TODO: Remember me function need further implementation.
 // For now, Cognito will let user opt in remembering device.
