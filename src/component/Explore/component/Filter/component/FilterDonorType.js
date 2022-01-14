@@ -88,11 +88,8 @@ function FilterDonorType(props) {
       <div className={classes.helpText}>
         Hint:
         <br />
-        Click drop down menu to select one or more donor types of the cases.
-        <br />
-        The searching will find cases matching the selected donor types.
-        <br />
-        Leave it as default, the searching will ignore donor type.
+        Select one or more donor types to display in search result. When
+        unselected, the filter will ignore donor type.
       </div>
     </React.Fragment>
   );

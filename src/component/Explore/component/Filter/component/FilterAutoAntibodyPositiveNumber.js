@@ -75,20 +75,17 @@ function FilterAutoAntibodyPositiveNumber(props) {
         Hint:
         <br />
         When the switch is off (
-        <Switch color="primary" className={classes.helpIcon2} />) , the
-        searching will ignore "Auto Antibody Positive".
+        <Switch color="primary" className={classes.helpIcon2} />) , the search
+        will ignore autoantibody positive status.
         <br />
         When the switch is on (
         <Switch checked="true" color="primary" className={classes.helpIcon2} />)
-        , the searching will find cases matching the given "Auto Antibody
-        Positive" number.
+        , the search will find cases that match the selection.
         <br />
         <div className={classes.helpText2}>Notice</div>
-        Using "Auto Antibody Positive", each selection represents the count of
-        the total positive AAbs.
-        <br />
-        Example, check the "2" and "3" options, all the cases in the result must
-        have either 2 or 3 positive AAbs.
+        Each option represents the total count of positive autoantibodies. Ex.
+        If 2 and 3 are checked, all cases in the search result will have either
+        2 or 3 positive autoantibodies.
       </div>
     </React.Fragment>
   );

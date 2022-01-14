@@ -69,11 +69,8 @@ function FilterRace(props) {
       <div className={classes.helpText}>
         Hint:
         <br />
-        Click drop down menu to select one or more race/ethnicity of the cases.
-        <br />
-        The searching will find cases matching the selected race/ethnicity.
-        <br />
-        Leave it as default, the searching will ignore race/ethnicity.
+        Select one or more race/ethnicity to display in search result. When
+        unselected, the filter will ignore race/ethnicity.
       </div>
     </React.Fragment>
   );

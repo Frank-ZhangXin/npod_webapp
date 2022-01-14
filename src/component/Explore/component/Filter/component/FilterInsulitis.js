@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
     textShadow: "0 0 20px white",
   },
+  helpText2: {
+    color: "#FF0000",
+  },
 }));
 
 const FilterTooltip = withStyles((theme) => ({
@@ -71,13 +74,21 @@ function FilterInsulitis(props) {
         Hint:
         <br />
         When the switch is off (
-        <Switch color="primary" className={classes.helpIcon2} />) , the
-        searching will ignore "Insulitis".
+        <Switch color="primary" className={classes.helpIcon2} />) , the search
+        will ignore insulitis.
         <br />
         When the switch is on (
         <Switch checked="true" color="primary" className={classes.helpIcon2} />)
-        , the searching will find cases matching the given "Insulitis".
+        , the search will find cases that match the selection.
         <br />
+        <div className={classes.helpText2}>Notice</div>
+        <span className={classes.helpText2}>+</span> symbol indicates that
+        insulitis was identified in pancreas sections during histopathological
+        review.
+        <br />
+        <span className={classes.helpText2}>-</span> symbol indicates that
+        insulitis was NOT identified in pancreas sections during
+        histopathological review.
       </div>
     </React.Fragment>
   );
@@ -96,7 +107,7 @@ function FilterInsulitis(props) {
             <Box flexGrow={1}>
               <Typography variant="subtitle1" className={classes.title}>
                 Insulitis{"  "}
-                <FilterTooltip title={helpText} placement="right-start">
+                <FilterTooltip title={helpText} placement="top">
                   <HelpOutlineIcon className={classes.helpIcon} />
                 </FilterTooltip>
               </Typography>

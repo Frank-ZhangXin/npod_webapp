@@ -101,13 +101,12 @@ function FilterDiabetesDuration(props) {
         Hint:
         <br />
         When the switch is off (
-        <Switch color="primary" className={classes.helpIcon2} />) , the
-        searching will ignore "Diabetes Duration".
+        <Switch color="primary" className={classes.helpIcon2} />) , the search
+        will ignore "Diabetes Duration".
         <br />
         When the switch is on (
         <Switch checked="true" color="primary" className={classes.helpIcon2} />)
-        , the searching will find cases matching the given diabetes duration
-        range.
+        , the search will find cases that match the given range.
         <br />
         <div
           style={{
@@ -116,18 +115,14 @@ function FilterDiabetesDuration(props) {
             flexWrap: "wrap",
           }}
         >
-          <span>The expand button (</span> <ExpandMoreIcon />
-          <span>) is availble when the switch is on,</span> click it to input
-          specific number.
+          <span>Click the expand button (</span> <ExpandMoreIcon />
+          <span>) to input a specific number. </span>
         </div>
         <div className={classes.helpText2}>Notice</div>
-        Using "Diabetes Duration" filter:
+        If the Donor Type filter IS NOT specified, all diabetes cases are shown.
         <br />
-        1. If "Donor Type" filter is not specified, the result are ALL diabetes
-        cases.
-        <br />
-        2. If "Donor Type" filter is specified, the "Diabetes Duration" ONLY
-        affects cases with selected diabetes type.
+        If the Donor Type filter IS specified, only cases with the selected
+        diabetes type are displayed. cases.
       </div>
     </React.Fragment>
   );
