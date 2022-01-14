@@ -100,11 +100,11 @@ function FilterHbA1c(props) {
         <br />
         When the switch is off (
         <Switch color="primary" className={classes.helpIcon2} />) , the
-        searching will ignore "HbA1c".
+        searching will ignore HbA1c.
         <br />
         When the switch is on (
         <Switch checked="true" color="primary" className={classes.helpIcon2} />)
-        , the searching will find cases matching the given "HbA1c" range.
+        , the search will find cases that match the given range.
         <br />
         <div
           style={{
@@ -113,9 +113,8 @@ function FilterHbA1c(props) {
             flexWrap: "wrap",
           }}
         >
-          <span>The expand button (</span> <ExpandMoreIcon />
-          <span>) is availble when the switch is on,</span> click it to input
-          specific number.
+          <span>Click the expand button (</span> <ExpandMoreIcon />
+          <span>) to input a specific number.</span>
         </div>
       </div>
     </React.Fragment>

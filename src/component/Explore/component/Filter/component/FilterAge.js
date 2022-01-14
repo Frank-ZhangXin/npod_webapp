@@ -98,12 +98,12 @@ function FilterAge(props) {
         Hint:
         <br />
         When the switch is off (
-        <Switch color="primary" className={classes.helpIcon2} />) , the
-        searching will ignore "Age".
+        <Switch color="primary" className={classes.helpIcon2} />) , the search
+        will ignore age.
         <br />
         When the switch is on (
         <Switch checked="true" color="primary" className={classes.helpIcon2} />)
-        , the searching will find cases matching the given "Age" range.
+        , the search will find cases that match the given range.
         <br />
         <div
           style={{
@@ -112,9 +112,8 @@ function FilterAge(props) {
             flexWrap: "wrap",
           }}
         >
-          <span>The expand button (</span> <ExpandMoreIcon />
-          <span>) is availble when the switch is on,</span> click it to input
-          specific number.
+          <span>Click the expand button (</span> <ExpandMoreIcon />
+          <span>) to input a specific number.</span>
         </div>
       </div>
     </React.Fragment>

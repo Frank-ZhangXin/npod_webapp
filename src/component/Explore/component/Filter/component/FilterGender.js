@@ -71,12 +71,12 @@ function FilterGender(props) {
         Hint:
         <br />
         When the switch is off (
-        <Switch color="primary" className={classes.helpIcon2} />) , the
-        searching will ignore "Sex".
+        <Switch color="primary" className={classes.helpIcon2} />) , the search
+        will ignore sex.
         <br />
         When the switch is on (
         <Switch checked="true" color="primary" className={classes.helpIcon2} />)
-        , the searching will find cases matching the given "sex".
+        , the search will find cases that match the selection.
         <br />
       </div>
     </React.Fragment>

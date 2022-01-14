@@ -50,6 +50,9 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
     textShadow: "0 0 20px white",
   },
+  helpText2: {
+    color: "#FF0000",
+  },
 }));
 
 const FilterTooltip = withStyles((theme) => ({
@@ -71,13 +74,17 @@ function FilterCPeptide(props) {
         Hint:
         <br />
         When the switch is off (
-        <Switch color="primary" className={classes.helpIcon2} />) , the
-        searching will ignore "C-peptide".
+        <Switch color="primary" className={classes.helpIcon2} />) , the search
+        will ignore c-peptide.
         <br />
         Switch on (
         <Switch checked="true" color="primary" className={classes.helpIcon2} />)
-        , the searching will find cases matching the given "C-peptide".
+        , the search will find cases that match the selection.
         <br />
+        <div className={classes.helpText2}>Notice</div>
+        Detectable indicates that a measureable amount of <br />
+        c-peptide was found in the donor’s serum. Undetectable indicates that
+        the c-peptide result was below the limit of detection for the assay.
       </div>
     </React.Fragment>
   );

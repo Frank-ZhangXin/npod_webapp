@@ -74,16 +74,15 @@ function FilterAutoAntiboy(props) {
         Hint:
         <br />
         When the switch is off (
-        <Switch color="primary" className={classes.helpIcon2} />) , the
-        searching will ignore "Auto Antibody".
+        <Switch color="primary" className={classes.helpIcon2} />) , the search
+        will ignore autoantibody status.
         <br />
         When the switch is on (
         <Switch checked="true" color="primary" className={classes.helpIcon2} />)
-        , the searching will find cases matching the given "Auto Antibody".
+        , the search will find cases that match the selection.
         <br />
         <div className={classes.helpText2}>Notice</div>
-        Using AAb filter, the searching will ignore the uncheck AAb options
-        rather than excluding them.
+        The search will IGNORE unchecked Aab options rather than excluding them.
       </div>
     </React.Fragment>
   );
