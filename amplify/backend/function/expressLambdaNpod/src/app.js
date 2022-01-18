@@ -17,6 +17,7 @@ var {
   get_HLA,
   get_sample_types,
   get_max_insulin,
+  get_percent_viability,
 } = require("./service/readDatabase");
 
 var {
@@ -133,6 +134,14 @@ app.get("/db/max_insulin", function (req, res) {
     req.query.high_time,
     req.query.low_time
   ).then((promisedRes) => res.send(promisedRes));
+});
+
+// get percent_viability from samples table
+app.get("/db/percent_viability", function (req, res) {
+  console.log("fetching Max Insulin.");
+  get_percent_viability(req.query.case_id).then((promisedRes) =>
+    res.send(promisedRes)
+  );
 });
 
 /****************************
