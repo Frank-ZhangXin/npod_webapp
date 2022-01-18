@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -9,6 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import { API } from "aws-amplify";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -29,6 +30,26 @@ const useStyles = makeStyles((theme) => ({
 
 function TissueQuality(props) {
   const classes = useStyles();
+  const [percentList, setPercentList] = useState();
+  useEffect(() => {
+    if (props.currentCase.case_id !== "") {
+      getPercentViability(props.currentCase.case_id);
+    }
+  }, [props.currentCase.case_id]);
+
+  async function getPercentViability(id) {
+    return await API.get("dbapi", "/db/percent_viability", {
+      queryStringParameters: {
+        case_id: id,
+      },
+    })
+      .then((res) => {
+        setPercentList(res);
+      })
+      .catch((error) => {
+        console.log("[Percent Viability] Amplify API call error", error);
+      });
+  }
 
   function createData(name, value) {
     return { name, value };
@@ -49,8 +70,20 @@ function TissueQuality(props) {
       "260/280",
       props.currentCase.ratio === null ? "Unavailable" : props.currentCase.ratio
     ),
-    createData("Cell Viability", "Unavailable"),
   ];
+
+  if (percentList && percentList.length != 0) {
+    for (let i = 0; i < percentList.length; i++) {
+      rows.push(
+        createData(
+          "Cell Viability set " + (i + 1),
+          percentList[i]["percent_viability"] + "%"
+        )
+      );
+    }
+  } else {
+    rows.push(createData("Cell Viability", "Not Available"));
+  }
 
   return (
     <div>

@@ -168,6 +168,26 @@ async function get_max_insulin(caseId, highTime, lowTime) {
   return await pooledConnection(asyncAction);
 }
 
+// get percent_viability from samples table
+async function get_percent_viability(caseId) {
+  const sql = `SELECT percent_viability FROM samples WHERE case_id="${caseId}" AND percent_viability IS NOT NULL GROUP BY percent_viability  ORDER BY percent_viability ASC`;
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch percet_viability] percentage of viability from samples ${result} was fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForRead: testPoolForRead,
   get_cases: get_cases,
@@ -176,4 +196,5 @@ module.exports = {
   get_HLA: get_HLA,
   get_sample_types: get_sample_types,
   get_max_insulin: get_max_insulin,
+  get_percent_viability: get_percent_viability,
 };
