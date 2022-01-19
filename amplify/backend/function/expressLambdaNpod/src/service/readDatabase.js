@@ -170,7 +170,7 @@ async function get_max_insulin(caseId, highTime, lowTime) {
 
 // get percent_viability from samples table
 async function get_percent_viability(caseId) {
-  const sql = `SELECT percent_viability FROM samples WHERE case_id="${caseId}" AND percent_viability IS NOT NULL GROUP BY percent_viability  ORDER BY percent_viability ASC`;
+  const sql = `SELECT sample_type_id, percent_viability FROM samples WHERE case_id="${caseId}" AND percent_viability IS NOT NULL GROUP BY percent_viability ORDER BY sample_type_id ASC, percent_viability ASC`;
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
