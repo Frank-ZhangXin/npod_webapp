@@ -72,24 +72,35 @@ function TissueQuality(props) {
     ),
   ];
 
+  const rows2 = [];
+
   if (percentList && percentList.length != 0) {
+    let typeName = "";
+    let typeIndex = 1;
     for (let i = 0; i < percentList.length; i++) {
-      rows.push(
+      if (props.sampleTypesMap[percentList[i]["sample_type_id"]] !== typeName) {
+        typeName = props.sampleTypesMap[percentList[i]["sample_type_id"]];
+        typeIndex = 1;
+      } else {
+        typeIndex += 1;
+      }
+
+      rows2.push(
         createData(
-          "Cell Viability set " + (i + 1),
+          typeName + " set " + typeIndex,
           percentList[i]["percent_viability"] + "%"
         )
       );
     }
   } else {
-    rows.push(createData("Cell Viability", "Not Available"));
+    rows2.push(createData("Cell Viability", "Not Available"));
   }
 
   return (
     <div>
       <div>
         <Typography variant="h5" className={classes.title}>
-          Tissue Quality
+          RNA Quality
         </Typography>
       </div>
       <div>
@@ -103,6 +114,33 @@ function TissueQuality(props) {
             </TableHead>
             <TableBody>
               {rows.map((row) => (
+                <TableRow key={row.name}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right">{row.value}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
+      <div>
+        <Typography variant="h5" className={classes.title2}>
+          Cell Viability
+        </Typography>
+      </div>
+      <div>
+        <TableContainer component={Paper} className={classes.container}>
+          <Table className={classes.table} size="small" stickyHeader>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell align="right">Value</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows2.map((row) => (
                 <TableRow key={row.name}>
                   <TableCell component="th" scope="row">
                     {row.name}
