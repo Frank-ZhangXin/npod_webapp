@@ -76,7 +76,10 @@ function aabGenerator(thisCase) {
   if (thisCase.ZnT8A !== null) {
     // numeric case id
     if (thisCase.case_id.match(allNumber)) {
-      if (thisCase.ZnT8A > 0.02 && Number(thisCase.case_id) >= 6115) {
+      if (thisCase.ZnT8A >= 0.02 && Number(thisCase.case_id) >= 6115) {
+        thisCase["ZnT8A_Result"] = "Positive";
+        thisCase["ZnT8Atally"] = 1;
+      } else if (thisCase.ZnT8A >= 0.03 && Number(thisCase.case_id) < 6115) {
         thisCase["ZnT8A_Result"] = "Positive";
         thisCase["ZnT8Atally"] = 1;
       } else {
