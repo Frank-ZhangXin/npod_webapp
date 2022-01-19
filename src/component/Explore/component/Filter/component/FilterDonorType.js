@@ -49,8 +49,8 @@ const options = [
   { value: "Type 1 Diabetes", label: "Type 1 Diabetes" },
   { value: "Autoantibody Positive", label: "Autoantibody Positive" },
   { value: "Type 2 Diabetes", label: "Type 2 Diabetes" },
-  { value: "Other – No Diabetes", label: "Other – No Diabetes" },
-  { value: "Other – Diabetes", label: "Other – Diabetes" },
+  { value: "Other - No Diabetes", label: "Other - No Diabetes" },
+  { value: "Other - Diabetes", label: "Other - Diabetes" },
   {
     value: "Type 1 Diabetes Joslin Medalist",
     label: "Type 1 Diabetes Joslin Medalist",
