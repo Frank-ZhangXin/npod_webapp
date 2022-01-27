@@ -77,7 +77,7 @@ app.get("/db", function (req, res) {
 // test db credential
 app.get("/db/debug_db", function (req, res) {
   res.json({
-    success: `db_host: ${process.env.DB_HOST}, db_user: ${process.env.DB_USER}, db_password: ${process.env.DB_PASS}, db_name: ${process.env.DB_NAME}`,
+    success: `db_host: ${process.env.DB_HOST}, db_name: ${process.env.DB_NAME}`,
     url: req.url,
   });
 });
