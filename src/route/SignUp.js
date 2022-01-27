@@ -197,12 +197,21 @@ export default function SignUp() {
     <React.Fragment>
       <div style={{ display: "flex", alignItems: "center", marginTop: "3px" }}>
         <EmailIcon />
-        <div style={{ fontSize: 14, marginLeft: "3px" }}>
+        <div style={{ fontSize: 12, marginLeft: "3px" }}>
           Request Invitation Code:{" "}
           <a target="_blank" href="mailto:npod@pathology.ufl.edu">
             npod@pathology.ufl.edu
           </a>
         </div>
+      </div>
+      <div>
+        {" "}
+        Please put{" "}
+        <a target="_blank" href="mailto:no-reply@verificationemail.com">
+          no-reply@verificationemail.com
+        </a>{" "}
+        to your email whitelist if you can't get the verification email
+        properly.
       </div>
     </React.Fragment>
   );
