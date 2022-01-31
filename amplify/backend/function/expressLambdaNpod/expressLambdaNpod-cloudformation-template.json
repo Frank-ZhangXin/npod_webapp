@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.5.5\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.9\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -35,6 +35,15 @@
         "aws:asset:property": "Code"
       },
       "Properties": {
+        "VpcConfig": {
+          "SubnetIds": [
+            "subnet-0b0cbb509b1c11e3c",
+            "subnet-062e529135e3b635f"
+          ],
+          "SecurityGroupIds": [
+            "sg-0702ae10b1e390917"
+          ]
+        },
         "Code": {
           "S3Bucket": {
             "Ref": "deploymentBucketName"
