@@ -43,12 +43,11 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
   },
-  title: {
+  title1: {
     //flexGrow: 1,
     fontWeight: 600,
     color: "#FFF",
     marginRight: "1px",
-    paddingTop: "10px",
   },
   title2: {
     flexGrow: 1,
@@ -108,6 +107,39 @@ function Header(props) {
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [logoSize, setLogoSize] = useState("");
+  const [title1Size, setTitle1Size] = useState("");
+  const [title2Size, setTitle2Size] = useState("");
+  const [avatarSize, setAvatarSize] = useState("");
+
+  const updateResponsiveWidth = () => {
+    if (window.innerWidth >= 1920) {
+      setLogoSize("200vh");
+      setTitle1Size("h3");
+      setTitle2Size("h4");
+      setAvatarSize("large");
+    } else if (window.innerWidth >= 1360 && window.innerWidth < 1920) {
+      setLogoSize("180vh");
+      setTitle1Size("h3");
+      setTitle2Size("h4");
+      setAvatarSize("large");
+    } else if (window.innerWidth >= 800 && window.innerWidth < 1360) {
+      setLogoSize("160vh");
+      setTitle1Size("h4");
+      setTitle2Size("h5");
+      setAvatarSize("medium");
+    } else {
+      setLogoSize("140vh");
+      setTitle1Size("h4");
+      setTitle2Size("h5");
+      setAvatarSize("medium");
+    }
+  };
+  useEffect(() => {
+    updateResponsiveWidth();
+    window.addEventListener("resize", updateResponsiveWidth);
+    return () => window.removeEventListener("resize", updateResponsiveWidth);
+  });
 
   const signOutHandler = async () => {
     try {
@@ -164,12 +196,12 @@ function Header(props) {
         <HideOnScroll threshold={0}>
           <AppBar color="transparent" elevation={0} position="fixed">
             <Toolbar className={classes.appbarWrapper}>
-              <div className={classes.title}>
-                <a href="/" className={classes.authButton}>
+              <div>
+                <a style={{ textDecoration: "none" }} href="/">
                   {useLocation().pathname === "/" ? (
-                    <img src="/assets/npodLogoWhite.png" width="12%" />
+                    <img src="/assets/npodLogoWhite.png" width={logoSize} />
                   ) : (
-                    <Typography className={classes.title} variant="h3">
+                    <Typography className={classes.title1} variant={title1Size}>
                       nPOD
                     </Typography>
                   )}
@@ -184,7 +216,10 @@ function Header(props) {
                   >
                     <ArrowForwardIosIcon />
                     <div>
-                      <Typography variant="h4" className={classes.title2}>
+                      <Typography
+                        variant={title2Size}
+                        style={{ fontWeight: 600 }}
+                      >
                         EXPLORE CASES
                       </Typography>
                     </div>
@@ -197,7 +232,7 @@ function Header(props) {
               {props.signedIn ? (
                 // After sign in
                 <HeaderTooltip title={helpTextAfterSignIn} placement="left">
-                  <div className={classes.title}>
+                  <div className={classes.title1}>
                     <IconButton
                       edge="end"
                       className={classes.authButton}
@@ -206,10 +241,13 @@ function Header(props) {
                     >
                       <AccountBoxIcon
                         className={classes.icon}
-                        fontSize="large"
+                        fontSize={avatarSize}
                       />
                       <div>
-                        <Typography className={classes.title} variant="h4">
+                        <Typography
+                          className={classes.title1}
+                          variant={title2Size}
+                        >
                           {props.userName}
                         </Typography>
                       </div>
@@ -254,9 +292,12 @@ function Header(props) {
                     aria-label="signIn"
                     onClick={signInHandler}
                   >
-                    <ArrowForwardIosIcon fontSize="large" />
+                    <ArrowForwardIosIcon fontSize={avatarSize} />
                     <div>
-                      <Typography className={classes.title} variant="h4">
+                      <Typography
+                        className={classes.title2}
+                        variant={title2Size}
+                      >
                         SIGN IN
                       </Typography>
                     </div>

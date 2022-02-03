@@ -13,7 +13,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: "100vh",
     backgroundImage: `url(${
       process.env.PUBLIC_URL + "/assets/landingPage.jpg"
     })`,
@@ -22,29 +21,28 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
   },
   centerBox: {
-    height: "84vh",
+    marginTop: "30vh",
+    height: "70vh",
   },
   centerTitle: {
-    color: "#fff",
-    fontSize: "6.5rem",
     textShadow: "0 0 20px black",
     color: "#a9c24a",
     fontFamily: "Open Sans",
   },
   centerTitle2: {
-    marginTop: "-70px",
+    //marginTop: "-50px",
     color: "#fff",
-    fontSize: "3rem",
     textShadow: "0 0 20px black",
     fontFamily: "Open Sans",
   },
   centerTitle3: {
+    marginTop: "8vh",
+  },
+  centerTitle4: {
     display: "flex",
-    justifyContent: "flex-end",
-    marginTop: "-20px",
-    marginRight: "50px",
+    justifyContent: "center",
+    marginTop: "8vh",
     color: "#fff",
-    fontSize: "1.5rem",
     fontWeight: "600",
     textShadow: "0 0 20px black",
     fontFamily: "Open Sans",
@@ -55,8 +53,9 @@ const useStyles = makeStyles((theme) => ({
     textShadow: "0 0 20px black",
   },
   centerButton: {
-    marginLeft: "30px",
+    //marginLeft: "30px",
     textShadow: "0 0 20px black",
+    margin: "1vh",
   },
   centerButtonEmpty: {
     margin: "50px",
@@ -89,6 +88,11 @@ function Landing(props) {
   const classes = useStyles();
   const [caseDataNum, setCaseDataNum] = useState(0);
   const [authed, setAuthed] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [imageWidth, setImageWidth] = useState("");
+  const [title1, setTitle1] = useState("h1");
+  const [title2, setTitle2] = useState("h2");
+  const [title4, setTitle4] = useState("subtitle1");
   const history = useHistory();
 
   const helpTextNotAvailable = (
@@ -109,6 +113,37 @@ function Landing(props) {
     history.push("/contact");
   };
 
+  const updateResponsiveWidth = () => {
+    if (window.innerWidth >= 1920) {
+      setImageWidth("30vh");
+      setTitle1("h1");
+      setTitle2("h3");
+      setTitle4("h5");
+    } else if (window.innerWidth >= 1360 && window.innerWidth < 1920) {
+      setImageWidth("25vh");
+      setTitle1("h1");
+      setTitle2("h3");
+      setTitle4("h5");
+    } else if (window.innerWidth >= 800 && window.innerWidth < 1360) {
+      setImageWidth("20vh");
+      setTitle1("h2");
+      setTitle2("h4");
+      setTitle4("h6");
+    } else {
+      setImageWidth("15vh");
+      setTitle1("h3");
+      setTitle2("h5");
+      setTitle4("h6");
+    }
+  };
+  useEffect(() => {
+    updateResponsiveWidth();
+    window.addEventListener("resize", updateResponsiveWidth);
+    return () => window.removeEventListener("resize", updateResponsiveWidth);
+  });
+
+  console.log("image width", imageWidth);
+
   return (
     <div>
       <Header location="Home" />
@@ -122,62 +157,78 @@ function Landing(props) {
           className={classes.centerBox}
         >
           <Grid item>
-            <Typography variant="h1" className={classes.centerTitle}>
+            <Typography variant={title1} className={classes.centerTitle}>
               <span style={{ fontWeight: 300 }}>DATA</span>{" "}
               <span style={{ fontWeight: 700 }}>PORTAL</span>
             </Typography>
           </Grid>
           <Grid item>
-            <Typography variant="subtitle1" className={classes.centerTitle2}>
+            <Typography variant={title2} className={classes.centerTitle2}>
               <p style={{ fontWeight: 400 }}>Sharing for a Cure</p>
             </Typography>
           </Grid>
+          <Grid item style={{ width: "100%" }}>
+            {props.signedIn ? (
+              <Box
+                display={"flex"}
+                justifyContent={"center"}
+                className={classes.centerTitle3}
+              >
+                <Box className={classes.centerButton}>
+                  <Link onClick={handleExploreCase}>
+                    <img
+                      style={{ width: imageWidth }}
+                      src="/assets/landingPageImages/ExploreCases.png"
+                    />
+                  </Link>
+                </Box>
+                <Box className={classes.centerButton}>
+                  <a target="_blank" href="http://npoddatashare.coh.org">
+                    <img
+                      style={{ width: imageWidth }}
+                      src="/assets/landingPageImages/SampleInventory.png"
+                    />
+                  </a>
+                </Box>
+                <Box className={classes.centerButton}>
+                  <LandingPageTooltip
+                    title={helpTextNotAvailable}
+                    placement="top"
+                  >
+                    <img
+                      style={{ width: imageWidth }}
+                      src="/assets/landingPageImages/ExploreDatasetsNotAvailable.png"
+                    />
+                  </LandingPageTooltip>
+                </Box>
+                <Box className={classes.centerButton}>
+                  <LandingPageTooltip
+                    title={helpTextNotAvailable}
+                    placement="top"
+                  >
+                    <img
+                      style={{ width: imageWidth }}
+                      src="/assets/landingPageImages/SubmitDatasetsNotAvailable.png"
+                    />
+                  </LandingPageTooltip>
+                </Box>
+              </Box>
+            ) : (
+              <div className={classes.centerButtonEmpty}>&nbsp;</div>
+            )}
+          </Grid>
+          <Grid item>
+            <Typography variant={title4} className={classes.centerTitle4}>
+              <Link onClick={handleSupport} className={classes.linkText}>
+                SUPPORT
+              </Link>{" "}
+              |{" "}
+              <Link onClick={handleContact} className={classes.linkText}>
+                CONTACT
+              </Link>
+            </Typography>
+          </Grid>
         </Grid>
-        <div>
-          {props.signedIn ? (
-            <Grid container spacing={4} className={classes.centerButton}>
-              <Grid item>
-                <Link onClick={handleExploreCase}>
-                  <img src="/assets/landingPageImages/ExploreCases.png" />
-                </Link>
-              </Grid>
-              <Grid item>
-                <a target="_blank" href="http://npoddatashare.coh.org">
-                  <img src="/assets/landingPageImages/SampleInventory.png" />
-                </a>
-              </Grid>
-              <Grid item>
-                <LandingPageTooltip
-                  title={helpTextNotAvailable}
-                  placement="top"
-                >
-                  <img src="/assets/landingPageImages/ExploreDatasetsNotAvailable.png" />
-                </LandingPageTooltip>
-              </Grid>
-              <Grid item>
-                <LandingPageTooltip
-                  title={helpTextNotAvailable}
-                  placement="top"
-                >
-                  <img src="/assets/landingPageImages/SubmitDatasetsNotAvailable.png" />
-                </LandingPageTooltip>
-              </Grid>
-            </Grid>
-          ) : (
-            <div className={classes.centerButtonEmpty}>&nbsp;</div>
-          )}
-        </div>
-        <div>
-          <Typography variant="subtitle1" className={classes.centerTitle3}>
-            <Link onClick={handleSupport} className={classes.linkText}>
-              SUPPORT
-            </Link>{" "}
-            |{" "}
-            <Link onClick={handleContact} className={classes.linkText}>
-              CONTACT
-            </Link>
-          </Typography>
-        </div>
       </div>
     </div>
   );
