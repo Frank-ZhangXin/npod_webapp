@@ -25,12 +25,13 @@ const useStyles = makeStyles((theme) => ({
     height: "70vh",
   },
   centerTitle: {
+    marginTop: "20px",
     textShadow: "0 0 20px black",
     color: "#a9c24a",
     fontFamily: "Open Sans",
   },
   centerTitle2: {
-    //marginTop: "-50px",
+    marginTop: "-20px",
     color: "#fff",
     textShadow: "0 0 20px black",
     fontFamily: "Open Sans",
@@ -89,6 +90,7 @@ function Landing(props) {
   const [caseDataNum, setCaseDataNum] = useState(0);
   const [authed, setAuthed] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [logoSize, setLogoSize] = useState("");
   const [imageWidth, setImageWidth] = useState("");
   const [title1, setTitle1] = useState("h1");
   const [title2, setTitle2] = useState("h2");
@@ -116,21 +118,25 @@ function Landing(props) {
   const updateResponsiveWidth = () => {
     if (window.innerWidth >= 1920) {
       setImageWidth("30vh");
+      setLogoSize("290vh");
       setTitle1("h1");
       setTitle2("h3");
       setTitle4("h5");
     } else if (window.innerWidth >= 1360 && window.innerWidth < 1920) {
       setImageWidth("25vh");
+      setLogoSize("280vh");
       setTitle1("h1");
       setTitle2("h3");
       setTitle4("h5");
     } else if (window.innerWidth >= 800 && window.innerWidth < 1360) {
       setImageWidth("20vh");
+      setLogoSize("180vh");
       setTitle1("h2");
       setTitle2("h4");
       setTitle4("h6");
     } else {
       setImageWidth("15vh");
+      setLogoSize("140vh");
       setTitle1("h3");
       setTitle2("h5");
       setTitle4("h6");
@@ -156,6 +162,9 @@ function Landing(props) {
           alignItems="center"
           className={classes.centerBox}
         >
+          <Grid item>
+            <img src="/assets/npodLogoWhite.png" width={logoSize} />
+          </Grid>
           <Grid item>
             <Typography variant={title1} className={classes.centerTitle}>
               <span style={{ fontWeight: 300 }}>DATA</span>{" "}

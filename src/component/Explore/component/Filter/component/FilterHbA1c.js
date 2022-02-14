@@ -19,10 +19,11 @@ const useStyles = makeStyles((theme) => ({
   slider: {
     width: "97%",
     marginLeft: "5px",
-    marginTop: "15px",
-    marginBottom: "5px",
+    // marginTop: "15px",
+    // marginBottom: "5px",
   },
   gridContainer: {
+    marginTop: "-10",
     width: "100%",
   },
   gridItem: {

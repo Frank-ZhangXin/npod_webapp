@@ -100,7 +100,7 @@ function FilterAutoAntiboy(props) {
           <Box display="flex">
             <Box flexGrow={1}>
               <Typography variant="subtitle1" className={classes.title}>
-                Auto Antibody{"  "}
+                Autoantibody{"  "}
                 <FilterTooltip title={helpText} placement="right-start">
                   <HelpOutlineIcon className={classes.helpIcon} />
                 </FilterTooltip>
@@ -117,128 +117,82 @@ function FilterAutoAntiboy(props) {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <FormGroup row className={classes.formGroup}>
-            <Box
-              display="flex"
-              flexDirection="column"
-              className={classes.boxContainer}
-            >
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.gadaP}
-                      onChange={(event) => props.setGadaP(event.target.checked)}
-                      name="gadaP"
-                      color="primary"
-                      disabled={!props.aaEnable}
-                    />
-                  }
-                  label="GADA +"
-                />
+        {props.aaEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <FormGroup row className={classes.formGroup}>
+              <Box
+                display="flex"
+                flexDirection="column"
+                className={classes.boxContainer}
+              >
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.gadaP}
+                        onChange={(event) =>
+                          props.setGadaP(event.target.checked)
+                        }
+                        name="gadaP"
+                        color="primary"
+                        disabled={!props.aaEnable}
+                      />
+                    }
+                    label="GADA +"
+                  />
+                </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.ia2aP}
+                        onChange={(event) =>
+                          props.setIa2aP(event.target.checked)
+                        }
+                        name="ia2aP"
+                        color="primary"
+                        disabled={!props.aaEnable}
+                      />
+                    }
+                    label="IA2A +"
+                  />
+                </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.miaaP}
+                        onChange={(event) =>
+                          props.setMiaaP(event.target.checked)
+                        }
+                        name="miaaP"
+                        color="primary"
+                        disabled={!props.aaEnable}
+                      />
+                    }
+                    label="mIAA +"
+                  />
+                </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.znt8aP}
+                        onChange={(event) =>
+                          props.setZnt8aP(event.target.checked)
+                        }
+                        name="znt8aP"
+                        color="primary"
+                        disabled={!props.aaEnable}
+                      />
+                    }
+                    label="ZnT8A +"
+                  />
+                </Box>
               </Box>
-              {/* <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.gadaN}
-                      onChange={(event) => props.setGadaN(event.target.checked)}
-                      name="gadaN"
-                      color="secondary"
-                    />
-                  }
-                  label="GADA -"
-                />
-              </Box> */}
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.ia2aP}
-                      onChange={(event) => props.setIa2aP(event.target.checked)}
-                      name="ia2aP"
-                      color="primary"
-                      disabled={!props.aaEnable}
-                    />
-                  }
-                  label="IA2A +"
-                />
-              </Box>
-              {/* <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.ia2aN}
-                      onChange={(event) => props.setIa2aN(event.target.checked)}
-                      name="ia2aN"
-                      color="secondary"
-                    />
-                  }
-                  label="IA2A -"
-                />
-              </Box> */}
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.miaaP}
-                      onChange={(event) => props.setMiaaP(event.target.checked)}
-                      name="miaaP"
-                      color="primary"
-                      disabled={!props.aaEnable}
-                    />
-                  }
-                  label="mIAA +"
-                />
-              </Box>
-              {/* <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.miaaN}
-                      onChange={(event) => props.setMiaaN(event.target.checked)}
-                      name="miaaN"
-                      color="secondary"
-                    />
-                  }
-                  label="mIAA -"
-                />
-              </Box> */}
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.znt8aP}
-                      onChange={(event) =>
-                        props.setZnt8aP(event.target.checked)
-                      }
-                      name="znt8aP"
-                      color="primary"
-                      disabled={!props.aaEnable}
-                    />
-                  }
-                  label="ZnT8A +"
-                />
-              </Box>
-              {/* <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.znt8aN}
-                      onChange={(event) =>
-                        props.setZnt8aN(event.target.checked)
-                      }
-                      name="znt8aN"
-                      color="secondary"
-                    />
-                  }
-                  label="ZnT8A -"
-                />
-              </Box> */}
-            </Box>
-          </FormGroup>
-        </Grid>
+            </FormGroup>
+          </Grid>
+        )}
       </Grid>
     </div>
   );

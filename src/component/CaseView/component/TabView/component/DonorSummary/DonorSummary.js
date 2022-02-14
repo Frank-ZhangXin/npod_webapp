@@ -32,23 +32,23 @@ function DonorSummary(props) {
 
   return (
     <div>
-      <Grid container spacing={2} justify={"center"} alignItems={"stretch"}>
-        <Grid item xs={12} sm={3}>
+      <Grid container spacing={2} justify={"flex-start"} alignItems={"stretch"}>
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={3}>
           <Paper elevation={3} className={classes.paper}>
             <DonorInformation />
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={3}>
           <Paper elevation={3} className={classes.paper}>
             <LabTestResults />
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={3}>
           <Paper elevation={3} className={classes.paper}>
             <TransplantHLA />
           </Paper>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} sm={6} md={4} lg={3} xl={3}>
           <Paper elevation={3} className={classes.paper}>
             <HighResolutionHLA />
           </Paper>

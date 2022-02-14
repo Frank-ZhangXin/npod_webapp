@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
   },
   tabPanel: {
     maxHeight: "85vh",
-    overflow: "auto",
+    overflowY: "auto",
   },
 }));
 

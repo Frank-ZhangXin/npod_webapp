@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   dialogBackground: {
-    height: "90vh",
-    maxHeight: "95vh",
+    height: "80vh",
+    maxHeight: "85vh",
   },
   dialogContent: {
     height: "50vh",
@@ -50,28 +50,28 @@ function CaseView(props) {
   return (
     <div>
       <Dialog
-        fullWidth={fullWidth}
-        maxWidth={maxWidth}
+        fullWidth="true"
+        maxWidth="xl"
+        maxHeight="xl"
         open={props.open}
         onClose={handleClose}
         aria-labelledby="donnor-case-dialog-title"
-        classes={{ paper: classes.dialogBackground }}
+        classes={{ paper: classes.dialogBackground1 }}
       >
         <CaseViewTitle onClose={handleClose}>
           nPOD CASE ID: {props.currentCase.case_id} &nbsp; &nbsp; RRID:
           {props.currentCase.RR_id}
         </CaseViewTitle>
 
-        <DialogContent dividers>
-          {/* <DialogContentText></DialogContentText> */}
-          <TabView />
-        </DialogContent>
-        <DialogActions>
-          <Button color="primary">
-            <GetAppIcon />
-            Download All
-          </Button>
-        </DialogActions>
+        <div style={{ overflow: "hidden" }}>
+          <DialogContent dividers>
+            {/* <DialogContentText></DialogContentText> */}
+            <TabView />
+          </DialogContent>
+        </div>
+        {/* <DialogActions>
+          Case opertation like "Download Case"
+        </DialogActions> */}
       </Dialog>
     </div>
   );

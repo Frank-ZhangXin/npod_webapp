@@ -116,7 +116,7 @@ function FilterGender(props) {
           <FormGroup row className={classes.formGroup}>
             <Box
               display="flex"
-              flexDirection="column"
+              justifyContent={"space-between"}
               className={classes.boxContainer}
             >
               <Box>

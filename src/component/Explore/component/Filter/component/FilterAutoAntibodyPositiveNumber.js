@@ -103,7 +103,7 @@ function FilterAutoAntibodyPositiveNumber(props) {
           <Box display="flex">
             <Box flexGrow={1}>
               <Typography variant="subtitle1" className={classes.title}>
-                Auto Antibody Positive{"  "}
+                Autoantibody Positive{"  "}
                 <FilterTooltip title={helpText} placement="right-start">
                   <HelpOutlineIcon className={classes.helpIcon} />
                 </FilterTooltip>
@@ -120,100 +120,102 @@ function FilterAutoAntibodyPositiveNumber(props) {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <FormGroup row className={classes.formGroup}>
-            <Box
-              display="flex"
-              flexDirection="column"
-              className={classes.boxContainer}
-            >
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.zeroChecked}
-                      onChange={(event) =>
-                        props.setZeroChecked(event.target.checked)
-                      }
-                      name="zeroChecked"
-                      color="primary"
-                      disabled={!props.aaPositiveEnable}
-                    />
-                  }
-                  label="0"
-                />
-              </Box>
+        {props.aaPositiveEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <FormGroup row className={classes.formGroup}>
+              <Box
+                display="flex"
+                flexDirection="column"
+                className={classes.boxContainer}
+              >
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.zeroChecked}
+                        onChange={(event) =>
+                          props.setZeroChecked(event.target.checked)
+                        }
+                        name="zeroChecked"
+                        color="primary"
+                        disabled={!props.aaPositiveEnable}
+                      />
+                    }
+                    label="0"
+                  />
+                </Box>
 
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.oneChecked}
-                      onChange={(event) =>
-                        props.setOneChecked(event.target.checked)
-                      }
-                      name="oneChecked"
-                      color="primary"
-                      disabled={!props.aaPositiveEnable}
-                    />
-                  }
-                  label="1"
-                />
-              </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.oneChecked}
+                        onChange={(event) =>
+                          props.setOneChecked(event.target.checked)
+                        }
+                        name="oneChecked"
+                        color="primary"
+                        disabled={!props.aaPositiveEnable}
+                      />
+                    }
+                    label="1"
+                  />
+                </Box>
 
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.twoChecked}
-                      onChange={(event) =>
-                        props.setTwoChecked(event.target.checked)
-                      }
-                      name="twoChecked"
-                      color="primary"
-                      disabled={!props.aaPositiveEnable}
-                    />
-                  }
-                  label="2"
-                />
-              </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.twoChecked}
+                        onChange={(event) =>
+                          props.setTwoChecked(event.target.checked)
+                        }
+                        name="twoChecked"
+                        color="primary"
+                        disabled={!props.aaPositiveEnable}
+                      />
+                    }
+                    label="2"
+                  />
+                </Box>
 
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.threeChecked}
-                      onChange={(event) =>
-                        props.setThreeChecked(event.target.checked)
-                      }
-                      name="threeChecked"
-                      color="primary"
-                      disabled={!props.aaPositiveEnable}
-                    />
-                  }
-                  label="3"
-                />
-              </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.threeChecked}
+                        onChange={(event) =>
+                          props.setThreeChecked(event.target.checked)
+                        }
+                        name="threeChecked"
+                        color="primary"
+                        disabled={!props.aaPositiveEnable}
+                      />
+                    }
+                    label="3"
+                  />
+                </Box>
 
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.fourChecked}
-                      onChange={(event) =>
-                        props.setFourChecked(event.target.checked)
-                      }
-                      name="fourChecked"
-                      color="primary"
-                      disabled={!props.aaPositiveEnable}
-                    />
-                  }
-                  label="4"
-                />
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.fourChecked}
+                        onChange={(event) =>
+                          props.setFourChecked(event.target.checked)
+                        }
+                        name="fourChecked"
+                        color="primary"
+                        disabled={!props.aaPositiveEnable}
+                      />
+                    }
+                    label="4"
+                  />
+                </Box>
               </Box>
-            </Box>
-          </FormGroup>
-        </Grid>
+            </FormGroup>
+          </Grid>
+        )}
       </Grid>
     </div>
   );
