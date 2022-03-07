@@ -12,7 +12,7 @@ import { HashLoader } from "react-spinners";
 const useStyles = makeStyles((theme) => ({
   paper: {
     textAlign: "center",
-    minWidth: "100px",
+    minHeight: "31px",
     "&:hover": {
       backgroundColor: theme.palette.primary.light,
       cursor: "pointer",
@@ -66,11 +66,28 @@ function Search(props) {
     props.rawData
       // const filteredData = testData
       .filter((donor) => donor.is_public === 1)
+      // Case ID
+      .filter((donor) => {
+        if (props.selectedCaseId.length > 0 && props.caseIDEnable) {
+          if (
+            props.selectedCaseId
+              .map((obj) => obj.value)
+              .indexOf(donor.case_id) > -1
+          ) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return true;
+        }
+      })
       // Donor type
       .filter((donor) => {
         if (
           donor.donor_type_id !== null &&
-          props.selectedDonorType.length > 0
+          props.selectedDonorType.length > 0 &&
+          props.donorTypeEnable
         ) {
           const typeName = props.donorTypesMap[donor.donor_type_id];
           if (
@@ -92,6 +109,14 @@ function Search(props) {
             donor.age_years <= props.ageMax) ||
           props.ageEnable === false
       )
+      // Age Onset
+      .filter(
+        (donor) =>
+          (donor.age_onset_years !== null &&
+            donor.age_onset_years >= props.ageOnsetMin &&
+            donor.age_onset_years <= props.ageOnsetMax) ||
+          props.ageOnsetEnable === false
+      )
       // Gender
       .filter(
         (donor) =>
@@ -104,7 +129,7 @@ function Search(props) {
       )
       // Race
       .filter((donor) => {
-        if (props.selectedRace.length > 0) {
+        if (props.selectedRace.length > 0 && props.raceEnable) {
           if (donor.race_ethnicity !== null) {
             if (
               props.selectedRace
@@ -262,15 +287,22 @@ function Search(props) {
         </div>
       </div>
       <div className={classes.result}>
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           {filteredData.map((donorCase, index) => (
-            <Grid item xs={12} sm={4} md={3} lg={2} key={index}>
+            <Grid item xs={12} sm={3} md={2} lg={1} xl={1} key={index}>
               <Paper
                 elevation={3}
                 onClick={(e) => handleOpen(e, donorCase)}
                 className={classes.paper}
               >
-                <Typography variant="h5">{donorCase.case_id}</Typography>
+                {donorCase.case_id.length <= 4 && (
+                  <Typography variant="h6">{donorCase.case_id}</Typography>
+                )}
+                {donorCase.case_id.length > 4 && (
+                  <Typography variant="subtitle1">
+                    {donorCase.case_id}
+                  </Typography>
+                )}
               </Paper>
             </Grid>
           ))}
@@ -293,6 +325,12 @@ const mapStateToProps = (state) => {
     ageRange: state.explore.ageRange,
     ageMin: state.explore.ageMin,
     ageMax: state.explore.ageMax,
+
+    // Age Onset
+    ageOnsetEnable: state.explore.ageOnsetEnable,
+    ageOnsetRange: state.explore.ageOnsetRange,
+    ageOnsetMin: state.explore.ageOnsetMin,
+    ageOnsetMax: state.explore.ageOnsetMax,
 
     // Autoantibody type
     aaEnable: state.explore.aaEnable,
@@ -326,6 +364,7 @@ const mapStateToProps = (state) => {
     DDMax: state.explore.DDMax,
 
     // Donor Type (object array)
+    donorTypeEnable: state.explore.donorTypeEnable,
     selectedDonorType: state.explore.selectedDonorType,
 
     // Gender
@@ -345,6 +384,7 @@ const mapStateToProps = (state) => {
     insulitisNegativeChecked: state.explore.insulitisNegativeChecked,
 
     // Race
+    raceEnable: state.explore.raceEnable,
     selectedRace: state.explore.selectedRace,
 
     // C-Peptide
@@ -360,6 +400,9 @@ const mapStateToProps = (state) => {
 
     // Donor Types (map)
     donorTypesMap: state.explore.donorTypesMap,
+    // Case Id
+    caseIDEnable: state.explore.caseIDEnable,
+    selectedCaseId: state.explore.selectedCaseId,
   };
 };
 

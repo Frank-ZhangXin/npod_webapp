@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Select from "react-select";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
     textShadow: "0 0 20px white",
   },
+  helpText2: {
+    color: "#FF0000",
+  },
   switch: {
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1),
@@ -49,58 +52,25 @@ const FilterTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-const options = [
-  { value: "No Diabetes", label: "No Diabetes" },
-  { value: "Type 1 Diabetes", label: "Type 1 Diabetes" },
-  { value: "Autoantibody Positive", label: "Autoantibody Positive" },
-  { value: "Type 2 Diabetes", label: "Type 2 Diabetes" },
-  { value: "Other - No Diabetes", label: "Other - No Diabetes" },
-  { value: "Other - Diabetes", label: "Other - Diabetes" },
-  {
-    value: "Type 1 Diabetes Joslin Medalist",
-    label: "Type 1 Diabetes Joslin Medalist",
-  },
-  {
-    value: "Transplant",
-    label: "Transplant",
-  },
-  {
-    value: "Cystic Fibrosis",
-    label: "Cystic Fibrosis",
-  },
-  {
-    value: "Monogenic Diabetes",
-    label: "Monogenic Diabetes",
-  },
-  {
-    value: "Gestational Diabetes",
-    label: "Gestational Diabetes",
-  },
-  { value: "Pregnancy", label: "Pregnancy" },
-  {
-    value: "Gastric Bypass",
-    label: "Gastric Bypass",
-  },
-  { value: "Ketosis-Prone Diabetes", label: "Ketosis-Prone Diabetes" },
-  { value: "Pending", label: "Pending" },
-];
-
-function FilterDonorType(props) {
+function FilterCaseId(props) {
   const classes = useStyles();
+  const options = [];
+  for (let i = 0; i < props.allCaseId.length; i++) {
+    options.push({ value: props.allCaseId[i], label: props.allCaseId[i] });
+  }
 
   const helpText = (
     <React.Fragment>
       <div className={classes.helpText}>
         Hint:
         <br />
-        Select one or more donor types to display in search result. When
-        unselected, the filter will ignore donor type.
+        Make a customized case group by selecting donor case IDs.
       </div>
     </React.Fragment>
   );
 
   const handleSwitch = (event) => {
-    props.setDonorTypeEnable(event.target.checked);
+    props.setCaseIDEnable(event.target.checked);
   };
 
   return (
@@ -116,7 +86,7 @@ function FilterDonorType(props) {
           <Box display="flex">
             <Box flexGrow={1}>
               <Typography variant="subtitle1" className={classes.title}>
-                Donor Type{"  "}
+                Case ID{"  "}
                 <FilterTooltip title={helpText} placement="right-start">
                   <HelpOutlineIcon className={classes.helpIcon} />
                 </FilterTooltip>
@@ -124,25 +94,25 @@ function FilterDonorType(props) {
             </Box>
             <Box>
               <Switch
-                checked={props.donorTypeEnable}
+                checked={props.caseIDEnable}
                 onChange={handleSwitch}
-                name="donorTypeEnableSwitch"
+                name="CaseIDEnableSwitch"
                 className={classes.switch}
                 color="primary"
               />
             </Box>
           </Box>
         </Grid>
-        {props.donorTypeEnable && (
+        {props.caseIDEnable && (
           <Grid item xs={12} className={classes.gridItem}>
             <Select
               className={classes.multiSelect}
               value={props.selectedDonorType}
-              onChange={(value) => props.setSelectedDonorType(value)}
+              onChange={(value) => props.setSelectedCaseId(value)}
               options={options}
               isMulti
               closeMenuOnSelect={false}
-              isDisabled={!props.donorTypeEnable}
+              isDisabled={!props.caseIDEnable}
             />
           </Grid>
         )}
@@ -154,19 +124,20 @@ function FilterDonorType(props) {
 // subscribe
 const mapStateToProps = (state) => {
   return {
-    donorTypeEnable: state.explore.donorTypeEnable,
-    selectedDonorType: state.explore.selectedDonorType,
+    caseIDEnable: state.explore.caseIDEnable,
+    selectedCaseId: state.explore.selectedCaseId,
+    allCaseId: state.explore.allCaseId,
   };
 };
 
 // update
 const mapDispatchToProps = (dispatch) => {
   return {
-    setDonorTypeEnable: (newDonorTypeEnable) =>
-      dispatch({ type: "SET_DONOR_TYPE_ENABLE", value: newDonorTypeEnable }),
-    setSelectedDonorType: (newType) =>
-      dispatch({ type: "SET_SELECTED_TYPE", value: newType }),
+    setCaseIDEnable: (newCaseIDEnable) =>
+      dispatch({ type: "SET_CASE_ID_ENABLE", value: newCaseIDEnable }),
+    setSelectedCaseId: (newType) =>
+      dispatch({ type: "SET_SELECTED_CASE_ID", value: newType }),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterDonorType);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterCaseId);

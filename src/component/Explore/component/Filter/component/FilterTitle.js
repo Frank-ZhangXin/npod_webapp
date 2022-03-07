@@ -9,20 +9,30 @@ const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(2),
   },
+  title: {
+    paddingTop: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
+  Button: {
+    paddingTop: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
+  },
 }));
 
 function FilterTitle(props) {
   const classes = useStyles();
 
   return (
-    <div style={{ width: "100%" }}>
-      <Box display="flex" justifyContent="space-between">
-        <Box p={1}>
+    <div>
+      <Box display="flex">
+        <Box className={classes.title} flexGrow={1}>
           <Typography variant="h4" className={classes.root}>
             FILTERS
           </Typography>
         </Box>
-        <Box p={1}>
+        <Box className={classes.Button}>
           <Button
             variant="contained"
             color="primary"

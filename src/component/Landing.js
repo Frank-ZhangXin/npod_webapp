@@ -21,28 +21,28 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
   },
   centerBox: {
-    marginTop: "30vh",
-    height: "70vh",
+    marginTop: "15vh",
+    height: "85vh",
   },
   centerTitle: {
-    marginTop: "20px",
+    marginTop: "2vh",
     textShadow: "0 0 20px black",
     color: "#a9c24a",
-    fontFamily: "Open Sans",
+    fontFamily: "Palatino",
   },
   centerTitle2: {
-    marginTop: "-20px",
+    marginTop: "-3vh",
     color: "#fff",
     textShadow: "0 0 20px black",
-    fontFamily: "Open Sans",
+    fontFamily: "Palatino",
   },
   centerTitle3: {
-    marginTop: "8vh",
+    marginTop: "6vh",
   },
   centerTitle4: {
     display: "flex",
     justifyContent: "center",
-    marginTop: "8vh",
+    marginTop: "2vh",
     color: "#fff",
     fontWeight: "600",
     textShadow: "0 0 20px black",
@@ -167,7 +167,7 @@ function Landing(props) {
           </Grid>
           <Grid item>
             <Typography variant={title1} className={classes.centerTitle}>
-              <span style={{ fontWeight: 300 }}>DATA</span>{" "}
+              <span style={{ fontWeight: 400 }}>DATA</span>{" "}
               <span style={{ fontWeight: 700 }}>PORTAL</span>
             </Typography>
           </Grid>

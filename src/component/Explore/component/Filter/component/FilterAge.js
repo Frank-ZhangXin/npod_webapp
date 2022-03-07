@@ -198,48 +198,54 @@ function FilterAge(props) {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <Slider
-            className={classes.slider}
-            value={props.ageRange}
-            onChange={handleAgeRangeSliderChange}
-            disabled={!props.ageEnable}
-            valueLabelDisplay="auto"
-            min={0}
-            max={95}
-            aria-labelledby="age-range-slider"
-          />
-        </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <Grid
-            container
-            alignItems="center"
-            justify="space-between"
-            className={classes.gridContainer}
-          >
-            <Grid item>
-              <Typography variant="body1" color="textPrimary">
-                {props.ageMin}
-              </Typography>
-            </Grid>
-            <Grid item>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expanded,
-                })}
-                onClick={handleExpandClick}
-                disabled={!props.ageEnable}
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <Typography variant="body1" color="textPrimary">
-                {props.ageMax}
-              </Typography>
+        {props.ageEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <Slider
+              className={classes.slider}
+              value={props.ageRange}
+              onChange={handleAgeRangeSliderChange}
+              disabled={!props.ageEnable}
+              valueLabelDisplay="auto"
+              min={0}
+              max={95}
+              aria-labelledby="age-range-slider"
+            />
+          </Grid>
+        )}
+
+        {props.ageEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <Grid
+              container
+              alignItems="center"
+              justify="space-between"
+              className={classes.gridContainer}
+            >
+              <Grid item>
+                <Typography variant="body1" color="textPrimary">
+                  {props.ageMin}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  className={clsx(classes.expand, {
+                    [classes.expandOpen]: expanded,
+                  })}
+                  onClick={handleExpandClick}
+                  disabled={!props.ageEnable}
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <Typography variant="body1" color="textPrimary">
+                  {props.ageMax}
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        )}
+
         <Grid item xs={12} className={classes.gridItem}>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <Box
