@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     // marginBottom: "5px",
   },
   gridContainer: {
-    marginTop: "-10",
+    marginTop: "-10px",
     width: "100%",
   },
   gridItem: {
@@ -86,12 +86,11 @@ const FilterTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-function FilterHbA1c(props) {
+function FilterAge(props) {
   const classes = useStyles();
-
   const [expanded, setExpanded] = useState(false);
-  const [newMin, setNewMin] = useState(props.hMin);
-  const [newMax, setNewMax] = useState(props.hMax);
+  const [newMin, setNewMin] = useState(props.ageOnsetMin);
+  const [newMax, setNewMax] = useState(props.ageOnsetMax);
   const [showError, setShowError] = useState(false);
 
   const helpText = (
@@ -100,8 +99,8 @@ function FilterHbA1c(props) {
         Hint:
         <br />
         When the switch is off (
-        <Switch color="primary" className={classes.helpIcon2} />) , the
-        searching will ignore HbA1c.
+        <Switch color="primary" className={classes.helpIcon2} />) , the search
+        will ignore age onset.
         <br />
         When the switch is on (
         <Switch checked="true" color="primary" className={classes.helpIcon2} />)
@@ -122,7 +121,7 @@ function FilterHbA1c(props) {
   );
 
   useEffect(() => {
-    if (!props.hEnable) {
+    if (!props.ageOnsetEnable) {
       setExpanded(false);
     }
   });
@@ -131,15 +130,15 @@ function FilterHbA1c(props) {
     setExpanded(!expanded);
   };
 
-  const handleAgeRangeSliderChange = (event, newHRange) => {
-    props.setHRange(newHRange);
+  const handleAgeOnsetRangeSliderChange = (event, newAgeOnsetRange) => {
+    props.setAgeOnsetRange(newAgeOnsetRange);
   };
 
-  const handleMinHInputChange = (event) => {
+  const handleMinAgeOnsetInputChange = (event) => {
     setNewMin(event.target.value);
   };
 
-  const handleMaxHInputChange = (event) => {
+  const handleMaxAgeOnsetInputChange = (event) => {
     setNewMax(event.target.value);
   };
 
@@ -150,11 +149,11 @@ function FilterHbA1c(props) {
       numMin != null &&
       numMax != null &&
       numMin <= numMax &&
-      numMin >= 2 &&
-      numMax <= 20
+      numMin >= 0 &&
+      numMax <= 95
     ) {
-      props.setHMin(numMin);
-      props.setHMax(numMax);
+      props.setAgeOnsetMin(numMin);
+      props.setAgeOnsetMax(numMax);
       setShowError(false);
     } else {
       console.log("Invalid input!");
@@ -163,7 +162,7 @@ function FilterHbA1c(props) {
   };
 
   const handleSwitch = (event) => {
-    props.setHEnable(event.target.checked);
+    props.setAgeOnsetEnable(event.target.checked);
     if (!event.target.checked) {
       setExpanded(event.target.checked);
     }
@@ -182,7 +181,7 @@ function FilterHbA1c(props) {
           <Box display="flex">
             <Box flexGrow={1}>
               <Typography variant="subtitle1" className={classes.title}>
-                HbA1c{"  "}
+                Age Onset
                 <FilterTooltip title={helpText} placement="right-start">
                   <HelpOutlineIcon className={classes.helpIcon} />
                 </FilterTooltip>
@@ -190,32 +189,31 @@ function FilterHbA1c(props) {
             </Box>
             <Box>
               <Switch
-                checked={props.hEnable}
+                checked={props.ageOnsetEnable}
                 onChange={handleSwitch}
-                name="bmiEnableSwitch"
+                name="ageOnsetEnableSwitch"
                 className={classes.switch}
                 color="primary"
               />
             </Box>
           </Box>
         </Grid>
-        {props.hEnable && (
+        {props.ageOnsetEnable && (
           <Grid item xs={12} className={classes.gridItem}>
             <Slider
               className={classes.slider}
-              value={props.hRange}
-              onChange={handleAgeRangeSliderChange}
-              disabled={!props.hEnable}
+              value={props.ageOnsetRange}
+              onChange={handleAgeOnsetRangeSliderChange}
+              disabled={!props.ageOnsetEnable}
               valueLabelDisplay="auto"
-              min={2.0}
-              max={20.0}
-              step={0.1}
-              aria-labelledby="h-range-slider"
+              min={0}
+              max={95}
+              aria-labelledby="age-onset-range-slider"
             />
           </Grid>
         )}
 
-        {props.hEnable && (
+        {props.ageOnsetEnable && (
           <Grid item xs={12} className={classes.gridItem}>
             <Grid
               container
@@ -225,7 +223,7 @@ function FilterHbA1c(props) {
             >
               <Grid item>
                 <Typography variant="body1" color="textPrimary">
-                  {props.hMin}
+                  {props.ageOnsetMin}
                 </Typography>
               </Grid>
               <Grid item>
@@ -234,14 +232,14 @@ function FilterHbA1c(props) {
                     [classes.expandOpen]: expanded,
                   })}
                   onClick={handleExpandClick}
-                  disabled={!props.hEnable}
+                  disabled={!props.ageOnsetEnable}
                 >
                   <ExpandMoreIcon />
                 </IconButton>
               </Grid>
               <Grid item>
                 <Typography variant="body1" color="textPrimary">
-                  {props.hMax}
+                  {props.ageOnsetMax}
                 </Typography>
               </Grid>
             </Grid>
@@ -259,18 +257,18 @@ function FilterHbA1c(props) {
                 label="From"
                 variant="outlined"
                 className={classes.expendedTextfield}
-                defaultValue={props.hMin}
+                defaultValue={props.ageMin}
                 size="small"
-                onChange={handleMinHInputChange}
+                onChange={handleMinAgeOnsetInputChange}
                 error={showError}
               />
               <TextField
                 label="To"
                 variant="outlined"
                 className={classes.expendedTextfield}
-                defaultValue={props.hMax}
+                defaultValue={props.ageMax}
                 size="small"
-                onChange={handleMaxHInputChange}
+                onChange={handleMaxAgeOnsetInputChange}
                 error={showError}
               />
               <Button
@@ -292,23 +290,25 @@ function FilterHbA1c(props) {
 // subscribe
 const mapStateToProps = (state) => {
   return {
-    hEnable: state.explore.hEnable,
-    hRange: state.explore.hRange,
-    hMin: state.explore.hMin,
-    hMax: state.explore.hMax,
+    ageOnsetEnable: state.explore.ageOnsetEnable,
+    ageOnsetRange: state.explore.ageOnsetRange,
+    ageOnsetMin: state.explore.ageOnsetMin,
+    ageOnsetMax: state.explore.ageOnsetMax,
   };
 };
 
 // update
 const mapDispatchToProps = (dispatch) => {
   return {
-    setHEnable: (newHEnable) =>
-      dispatch({ type: "SET_H_ENABLE", value: newHEnable }),
-    setHRange: (newHRange) =>
-      dispatch({ type: "SET_H_RANGE", value: newHRange }),
-    setHMin: (newHMin) => dispatch({ type: "SET_H_MIN", value: newHMin }),
-    setHMax: (newHMax) => dispatch({ type: "SET_H_MAX", value: newHMax }),
+    setAgeOnsetEnable: (newAgeOnsetEnable) =>
+      dispatch({ type: "SET_AGE_ONSET_ENABLE", value: newAgeOnsetEnable }),
+    setAgeOnsetRange: (newAgeOnsetRange) =>
+      dispatch({ type: "SET_AGE_ONSET_RANGE", value: newAgeOnsetRange }),
+    setAgeOnsetMin: (newAgeOnsetMin) =>
+      dispatch({ type: "SET_AGE_ONSET_MIN", value: newAgeOnsetMin }),
+    setAgeOnsetMax: (newAgeOnsetMax) =>
+      dispatch({ type: "SET_AGE_ONSET_MAX", value: newAgeOnsetMax }),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterHbA1c);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterAge);

@@ -27,6 +27,21 @@ function Copyright() {
 }
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    minHeight: "100vh",
+    backgroundImage: `url(${
+      process.env.PUBLIC_URL + "/assets/supportPage.jpg"
+    })`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    //textAlign: "center",
+    //backgroundColor: "#282c34",
+    //flexDirection: "column",
+    //alignItems: "center",
+    //justifyContent: "center",
+    //color: "white",
+    //paddingTop: "130px",
+  },
   paper: {
     //marginTop: theme.spacing(2),
     display: "flex",
@@ -47,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(5),
     fontWeight: 600,
     alignSelf: "center",
-    color: "#01579b",
+    color: "white",
   },
   copyRight: {
     marginBottom: "50px",
@@ -90,17 +105,19 @@ function Support(props) {
   return (
     <div>
       <AuthHeader location="Support" />
-      <Container Width="md" maxWidth="lg" className={classes.container}>
-        <Typography variant="h3" className={classes.title}>
-          SUPPORT
-        </Typography>
-        <Paper className={classes.paper}>
-          <ReactMarkdown className={classes.markDown}>{post}</ReactMarkdown>
-        </Paper>
-        <Box mt={8} className={classes.copyRight}>
-          <Copyright />
-        </Box>
-      </Container>
+      <div className={classes.root}>
+        <Container Width="md" maxWidth="lg" className={classes.container}>
+          <Typography variant="h3" className={classes.title}>
+            SUPPORT
+          </Typography>
+          <Paper className={classes.paper}>
+            <ReactMarkdown className={classes.markDown}>{post}</ReactMarkdown>
+          </Paper>
+          <Box mt={8} className={classes.copyRight}>
+            <Copyright />
+          </Box>
+        </Container>
+      </div>
     </div>
   );
 }

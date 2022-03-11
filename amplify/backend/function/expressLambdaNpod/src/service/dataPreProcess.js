@@ -5,6 +5,7 @@ function dataPreProcess(data) {
     var thisCase = data[key];
     aabGenerator(thisCase);
     timeDurationGenerator(thisCase);
+    ageOnsetGenerator(thisCase);
     data[key] = thisCase;
   }
 }
@@ -191,6 +192,21 @@ function dayTimeValidate(dAte, tIme) {
   }
 
   return newDateTime;
+}
+
+// age onset generator: age_onset_years = age_years - diabetes_hx_years
+function ageOnsetGenerator(thisCase) {
+  if (
+    thisCase["age_years"] !== null &&
+    thisCase["diabetes_hx_years"] !== null &&
+    !isNaN(thisCase["age_years"]) &&
+    !isNaN(thisCase["diabetes_hx_years"])
+  ) {
+    thisCase["age_onset_years"] =
+      Number(thisCase["age_years"]) - Number(thisCase["diabetes_hx_years"]);
+  } else {
+    thisCase["age_onset_years"] = null;
+  }
 }
 
 module.exports = {

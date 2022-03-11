@@ -19,10 +19,11 @@ const useStyles = makeStyles((theme) => ({
   slider: {
     width: "97%",
     marginLeft: "5px",
-    marginTop: "15px",
-    marginBottom: "5px",
+    // marginTop: "15px",
+    // marginBottom: "5px",
   },
   gridContainer: {
+    marginTop: "-10px",
     width: "100%",
   },
   gridItem: {
@@ -122,7 +123,7 @@ function FilterDiabetesDuration(props) {
         If the Donor Type filter IS NOT specified, all diabetes cases are shown.
         <br />
         If the Donor Type filter IS specified, only cases with the selected
-        diabetes type are displayed. cases.
+        diabetes type are displayed.
       </div>
     </React.Fragment>
   );
@@ -188,7 +189,7 @@ function FilterDiabetesDuration(props) {
           <Box display="flex">
             <Box flexGrow={1}>
               <Typography variant="subtitle1" className={classes.title}>
-                Diabetes Duration(Years){"  "}
+                Diabetes Duration (Yrs){"  "}
                 <FilterTooltip title={helpText} placement="right-start">
                   <HelpOutlineIcon className={classes.helpIcon} />
                 </FilterTooltip>
@@ -205,48 +206,53 @@ function FilterDiabetesDuration(props) {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <Slider
-            className={classes.slider}
-            value={props.DDRange}
-            onChange={handleDDRangeSliderChange}
-            valueLabelDisplay="auto"
-            min={0}
-            max={85}
-            aria-labelledby="dd-range-slider"
-            disabled={!props.DDEnable}
-          />
-        </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <Grid
-            container
-            alignItems="center"
-            justify="space-between"
-            className={classes.gridContainer}
-          >
-            <Grid item>
-              <Typography variant="body1" color="textPrimary">
-                {props.DDMin}
-              </Typography>
-            </Grid>
-            <Grid item>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expanded,
-                })}
-                onClick={handleExpandClick}
-                disabled={!props.DDEnable}
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <Typography variant="body1" color="textPrimary">
-                {props.DDMax}
-              </Typography>
+        {props.DDEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <Slider
+              className={classes.slider}
+              value={props.DDRange}
+              onChange={handleDDRangeSliderChange}
+              valueLabelDisplay="auto"
+              min={0}
+              max={85}
+              aria-labelledby="dd-range-slider"
+              disabled={!props.DDEnable}
+            />
+          </Grid>
+        )}
+        {props.DDEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <Grid
+              container
+              alignItems="center"
+              justify="space-between"
+              className={classes.gridContainer}
+            >
+              <Grid item>
+                <Typography variant="body1" color="textPrimary">
+                  {props.DDMin}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  className={clsx(classes.expand, {
+                    [classes.expandOpen]: expanded,
+                  })}
+                  onClick={handleExpandClick}
+                  disabled={!props.DDEnable}
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <Typography variant="body1" color="textPrimary">
+                  {props.DDMax}
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        )}
+
         <Grid item xs={12} className={classes.gridItem}>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <Box

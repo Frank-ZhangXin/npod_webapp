@@ -5,6 +5,12 @@ const initialState = {
   ageMin: 0,
   ageMax: 95,
 
+  // Age Onset: the start age having diabetes
+  ageOnsetEnable: false,
+  ageOnsetRange: [0, 95],
+  ageOnsetMin: 0,
+  ageOnsetMax: 95,
+
   // Autoantibody
   aaEnable: false,
   gadaP: true,
@@ -37,6 +43,7 @@ const initialState = {
   DDMax: 85,
 
   // Donor Type (object array)
+  donorTypeEnable: false,
   selectedDonorType: [],
 
   // Gender
@@ -56,6 +63,7 @@ const initialState = {
   insulitisNegativeChecked: true,
 
   // Race (object array)
+  raceEnable: false,
   selectedRace: [],
 
   // C-Peptide
@@ -86,6 +94,11 @@ const initialState = {
 
   // sample Types Map
   sampleTypesMap: null,
+
+  // Case ID
+  caseIDEnable: false,
+  allCaseId: [],
+  selectedCaseId: [],
 };
 
 const exploreReducer = (state = initialState, action) => {
@@ -95,6 +108,7 @@ const exploreReducer = (state = initialState, action) => {
       console.log("reset triggered.");
       return {
         ...initialState,
+        allCaseId: state.allCaseId,
         rawData: state.rawData,
         donorTypesMap: state.donorTypesMap,
         causeOfDeathMap: state.causeOfDeathMap,
@@ -125,6 +139,32 @@ const exploreReducer = (state = initialState, action) => {
         ...state,
         ageRange: [state.ageRange[0], action.value],
         ageMax: action.value,
+      };
+
+    // Age Onset: the start age having diabetes
+    case "SET_AGE_ONSET_ENABLE":
+      return {
+        ...state,
+        ageOnsetEnable: action.value,
+      };
+    case "SET_AGE_ONSET_RANGE":
+      return {
+        ...state,
+        ageOnsetRange: action.value,
+        ageOnsetMin: action.value[0],
+        ageOnsetMax: action.value[1],
+      };
+    case "SET_AGE_ONSET_MIN":
+      return {
+        ...state,
+        ageOnsetRange: [action.value, state.ageOnsetRange[1]],
+        ageOnsetMin: action.value,
+      };
+    case "SET_AGE_ONSET_MAX":
+      return {
+        ...state,
+        ageOnsetRange: [state.ageOnsetRange[0], action.value],
+        ageOnsetMax: action.value,
       };
 
     // Autoantibody
@@ -259,6 +299,11 @@ const exploreReducer = (state = initialState, action) => {
       };
 
     // Donor Type
+    case "SET_DONOR_TYPE_ENABLE":
+      return {
+        ...state,
+        donorTypeEnable: action.value,
+      };
     case "SET_SELECTED_TYPE":
       return {
         ...state,
@@ -327,6 +372,11 @@ const exploreReducer = (state = initialState, action) => {
       };
 
     // Race
+    case "SET_RACE_ENABLE":
+      return {
+        ...state,
+        raceEnable: action.value,
+      };
     case "SET_SELECTED_RACE":
       return {
         ...state,
@@ -404,6 +454,23 @@ const exploreReducer = (state = initialState, action) => {
       return {
         ...state,
         sampleTypesMap: action.value,
+      };
+
+    // Case ID
+    case "SET_CASE_ID_ENABLE":
+      return {
+        ...state,
+        caseIDEnable: action.value,
+      };
+    case "SET_ALL_CASE_ID":
+      return {
+        ...state,
+        allCaseId: action.value,
+      };
+    case "SET_SELECTED_CASE_ID":
+      return {
+        ...state,
+        selectedCaseId: action.value,
       };
 
     default:

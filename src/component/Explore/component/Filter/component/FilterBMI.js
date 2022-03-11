@@ -19,10 +19,11 @@ const useStyles = makeStyles((theme) => ({
   slider: {
     width: "97%",
     marginLeft: "5px",
-    marginTop: "15px",
-    marginBottom: "5px",
+    // marginTop: "15px",
+    // marginBottom: "5px",
   },
   gridContainer: {
+    marginTop: "-10px",
     width: "100%",
   },
   gridItem: {
@@ -198,49 +199,55 @@ function FilterBMI(props) {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <Slider
-            className={classes.slider}
-            value={props.bmiRange}
-            onChange={handleBMIRangeSliderChange}
-            valueLabelDisplay="auto"
-            min={5.0}
-            max={60.0}
-            step={0.1}
-            aria-labelledby="bmi-range-slider"
-            disabled={!props.bmiEnable}
-          />
-        </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <Grid
-            container
-            alignItems="center"
-            justify="space-between"
-            className={classes.gridContainer}
-          >
-            <Grid item>
-              <Typography variant="body1" color="textPrimary">
-                {props.bmiMin}
-              </Typography>
-            </Grid>
-            <Grid item>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expanded,
-                })}
-                onClick={handleExpandClick}
-                disabled={!props.bmiEnable}
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </Grid>
-            <Grid item>
-              <Typography variant="body1" color="textPrimary">
-                {props.bmiMax}
-              </Typography>
+        {props.bmiEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <Slider
+              className={classes.slider}
+              value={props.bmiRange}
+              onChange={handleBMIRangeSliderChange}
+              valueLabelDisplay="auto"
+              min={5.0}
+              max={60.0}
+              step={0.1}
+              aria-labelledby="bmi-range-slider"
+              disabled={!props.bmiEnable}
+            />
+          </Grid>
+        )}
+
+        {props.bmiEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <Grid
+              container
+              alignItems="center"
+              justify="space-between"
+              className={classes.gridContainer}
+            >
+              <Grid item>
+                <Typography variant="body1" color="textPrimary">
+                  {props.bmiMin}
+                </Typography>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  className={clsx(classes.expand, {
+                    [classes.expandOpen]: expanded,
+                  })}
+                  onClick={handleExpandClick}
+                  disabled={!props.bmiEnable}
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              </Grid>
+              <Grid item>
+                <Typography variant="body1" color="textPrimary">
+                  {props.bmiMax}
+                </Typography>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+        )}
+
         <Grid item xs={12} className={classes.gridItem}>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <Box

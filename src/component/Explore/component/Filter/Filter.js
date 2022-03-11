@@ -1,7 +1,9 @@
 import React, { setState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import FilterCaseId from "./component/FilterCaseId";
 import FilterAge from "./component/FilterAge";
+import FilterAgeOnset from "./component/FilterAgeOnset";
 import FilterGender from "./component/FilterGender";
 import FilterRace from "./component/FilterRace";
 import FilterBMI from "./component/FilterBMI";
@@ -25,8 +27,10 @@ export default function Filter() {
   return (
     <div className={classes.root}>
       <FilterTitle />
+      <FilterCaseId />
       <FilterDonorType />
       <FilterDiabetesDuration />
+      <FilterAgeOnset />
       <FilterAge />
       <FilterGender />
       <FilterRace />

@@ -199,7 +199,8 @@ function Header(props) {
               <div>
                 <a style={{ textDecoration: "none" }} href="/">
                   {useLocation().pathname === "/" ? (
-                    <img src="/assets/npodLogoWhite.png" width={logoSize} />
+                    // <img src="/assets/npodLogoWhite.png" width={logoSize} />
+                    <div></div>
                   ) : (
                     <Typography className={classes.title1} variant={title1Size}>
                       nPOD

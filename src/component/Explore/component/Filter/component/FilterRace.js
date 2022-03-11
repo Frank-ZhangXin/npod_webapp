@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
 import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
+import Switch from "@material-ui/core/Switch";
 
 const useStyles = makeStyles((theme) => ({
   multiSelect: {
@@ -31,6 +32,10 @@ const useStyles = makeStyles((theme) => ({
   helpText: {
     padding: "10px",
     textShadow: "0 0 20px white",
+  },
+  switch: {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -75,6 +80,10 @@ function FilterRace(props) {
     </React.Fragment>
   );
 
+  const handleSwitch = (event) => {
+    props.setRaceEnable(event.target.checked);
+  };
+
   return (
     <div>
       <Grid
@@ -85,23 +94,39 @@ function FilterRace(props) {
         alignItems="center"
       >
         <Grid item xs={12} className={classes.gridItem}>
-          <Typography variant="subtitle1" className={classes.title}>
-            Race/Ethnicity{"  "}
-            <FilterTooltip title={helpText} placement="right-start">
-              <HelpOutlineIcon className={classes.helpIcon} />
-            </FilterTooltip>
-          </Typography>
+          <Box display="flex">
+            <Box flexGrow={1}>
+              <Typography variant="subtitle1" className={classes.title}>
+                Race/Ethnicity{"  "}
+                <FilterTooltip title={helpText} placement="right-start">
+                  <HelpOutlineIcon className={classes.helpIcon} />
+                </FilterTooltip>
+              </Typography>
+            </Box>
+            <Box>
+              <Switch
+                checked={props.raceEnable}
+                onChange={handleSwitch}
+                name="donorTypeEnableSwitch"
+                className={classes.switch}
+                color="primary"
+              />
+            </Box>
+          </Box>
         </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <Select
-            className={classes.multiSelect}
-            value={props.selectedRace}
-            onChange={(value) => props.setSelectedRace(value)}
-            options={options}
-            isMulti
-            closeMenuOnSelect={false}
-          />
-        </Grid>
+        {props.raceEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <Select
+              className={classes.multiSelect}
+              value={props.selectedRace}
+              onChange={(value) => props.setSelectedRace(value)}
+              options={options}
+              isMulti
+              closeMenuOnSelect={false}
+              isDisabled={!props.raceEnable}
+            />
+          </Grid>
+        )}
       </Grid>
     </div>
   );
@@ -110,6 +135,7 @@ function FilterRace(props) {
 // subscribe
 const mapStateToProps = (state) => {
   return {
+    raceEnable: state.explore.raceEnable,
     selectedRace: state.explore.selectedRace,
   };
 };
@@ -117,6 +143,8 @@ const mapStateToProps = (state) => {
 // update
 const mapDispatchToProps = (dispatch) => {
   return {
+    setRaceEnable: (newRaceEnable) =>
+      dispatch({ type: "SET_RACE_ENABLE", value: newRaceEnable }),
     setSelectedRace: (newRace) =>
       dispatch({ type: "SET_SELECTED_RACE", value: newRace }),
   };

@@ -31,6 +31,12 @@ function FetchRawData(props) {
     return await API.get("dbapi", "/db/case")
       .then((res) => {
         props.setRawData(res);
+        // save all case id
+        let allCaseId = [];
+        for (let i = 0; i < res.length; i++) {
+          allCaseId.push(res[i]["case_id"]);
+        }
+        props.setAllCaseId(allCaseId);
       })
       .catch((error) => console.log("Amplify API call error", error));
   }
@@ -123,6 +129,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: "SET_SIGNEDIN", value: newSignedIn }),
     setRawData: (newRawData) =>
       dispatch({ type: "SET_RAW_DATA", value: newRawData }),
+    setAllCaseId: (newRawData) =>
+      dispatch({ type: "SET_ALL_CASE_ID", value: newRawData }),
     setDonorTypesMap: (newDonorTypes) =>
       dispatch({ type: "SET_DONOR_TYPES_MAP", value: newDonorTypes }),
     setCauseOfDeathMap: (newCauseOfDeath) =>

@@ -123,48 +123,54 @@ function FilterInsulitis(props) {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <FormGroup row className={classes.formGroup}>
-            <Box
-              display="flex"
-              flexDirection="column"
-              className={classes.boxContainer}
-            >
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.insulitisPositiveChecked}
-                      onChange={(event) =>
-                        props.setInsulitisPositiveChecked(event.target.checked)
-                      }
-                      name="positiveChecked"
-                      color="primary"
-                      disabled={!props.insulitisEnable}
-                    />
-                  }
-                  label="+"
-                />
+        {props.insulitisEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <FormGroup row className={classes.formGroup}>
+              <Box
+                display="flex"
+                justifyContent={"space-between"}
+                className={classes.boxContainer}
+              >
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.insulitisPositiveChecked}
+                        onChange={(event) =>
+                          props.setInsulitisPositiveChecked(
+                            event.target.checked
+                          )
+                        }
+                        name="positiveChecked"
+                        color="primary"
+                        disabled={!props.insulitisEnable}
+                      />
+                    }
+                    label="+"
+                  />
+                </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.insulitisNegativeChecked}
+                        onChange={(event) =>
+                          props.setInsulitisNegativeChecked(
+                            event.target.checked
+                          )
+                        }
+                        name="negativeChecked"
+                        color="secondary"
+                        disabled={!props.insulitisEnable}
+                      />
+                    }
+                    label="–"
+                  />
+                </Box>
               </Box>
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.insulitisNegativeChecked}
-                      onChange={(event) =>
-                        props.setInsulitisNegativeChecked(event.target.checked)
-                      }
-                      name="negativeChecked"
-                      color="secondary"
-                      disabled={!props.insulitisEnable}
-                    />
-                  }
-                  label="-"
-                />
-              </Box>
-            </Box>
-          </FormGroup>
-        </Grid>
+            </FormGroup>
+          </Grid>
+        )}
       </Grid>
     </div>
   );

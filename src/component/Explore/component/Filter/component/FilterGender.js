@@ -112,48 +112,50 @@ function FilterGender(props) {
             </Box>
           </Box>
         </Grid>
-        <Grid item xs={12} className={classes.gridItem}>
-          <FormGroup row className={classes.formGroup}>
-            <Box
-              display="flex"
-              flexDirection="column"
-              className={classes.boxContainer}
-            >
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.maleChecked}
-                      onChange={(event) =>
-                        props.setMaleChecked(event.target.checked)
-                      }
-                      name="maleChecked"
-                      color="primary"
-                      disabled={!props.genderEnable}
-                    />
-                  }
-                  label="Male"
-                />
+        {props.genderEnable && (
+          <Grid item xs={12} className={classes.gridItem}>
+            <FormGroup row className={classes.formGroup}>
+              <Box
+                display="flex"
+                justifyContent={"space-between"}
+                className={classes.boxContainer}
+              >
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.maleChecked}
+                        onChange={(event) =>
+                          props.setMaleChecked(event.target.checked)
+                        }
+                        name="maleChecked"
+                        color="primary"
+                        disabled={!props.genderEnable}
+                      />
+                    }
+                    label="Male"
+                  />
+                </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.femaleChecked}
+                        onChange={(event) =>
+                          props.setFemaleChecked(event.target.checked)
+                        }
+                        name="femaleChecked"
+                        color="secondary"
+                        disabled={!props.genderEnable}
+                      />
+                    }
+                    label="Female"
+                  />
+                </Box>
               </Box>
-              <Box>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={props.femaleChecked}
-                      onChange={(event) =>
-                        props.setFemaleChecked(event.target.checked)
-                      }
-                      name="femaleChecked"
-                      color="secondary"
-                      disabled={!props.genderEnable}
-                    />
-                  }
-                  label="Female"
-                />
-              </Box>
-            </Box>
-          </FormGroup>
-        </Grid>
+            </FormGroup>
+          </Grid>
+        )}
       </Grid>
     </div>
   );

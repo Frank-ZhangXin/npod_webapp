@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: "100vh",
     backgroundImage: `url(${
-      process.env.PUBLIC_URL + "/assets/landingPage.jpg"
+      process.env.PUBLIC_URL + "/assets/caseExplorePage.jpg"
     })`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
@@ -60,8 +60,8 @@ export default function Explore() {
       <Header location="Case Explore" />
 
       <div className={classes.root}>
-        <Grid container spacing={2} justify={"center"} className={classes.grid}>
-          <Grid item xs={12} md={4} lg={3} xl={2}>
+        <Grid container spacing={1} justify={"center"} className={classes.grid}>
+          <Grid item xs={12} md={3} lg={3} xl={2}>
             <Paper
               elevation={3}
               style={{
@@ -72,7 +72,7 @@ export default function Explore() {
               <Filter />
             </Paper>
           </Grid>
-          <Grid item xs={12} md={7} lg={7} xl={7}>
+          <Grid item xs={12} md={7} lg={8} xl={8}>
             <Paper
               elevation={3}
               style={{
