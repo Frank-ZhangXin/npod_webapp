@@ -1,3 +1,5 @@
+var { get_max_insulin } = require("./readDatabase");
+
 function dataPreProcess(data) {
   console.log("Data pre processing starts...");
 

@@ -148,8 +148,6 @@ function Landing(props) {
     return () => window.removeEventListener("resize", updateResponsiveWidth);
   });
 
-  console.log("image width", imageWidth);
-
   return (
     <div>
       <Header location="Home" />

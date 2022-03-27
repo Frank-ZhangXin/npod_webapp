@@ -99,6 +99,13 @@ const initialState = {
   caseIDEnable: false,
   allCaseId: [],
   selectedCaseId: [],
+
+  // Dataset
+  datasetEnable: false,
+  functionalAssayChecked: false,
+  electronMicroscopyChecked: false,
+  highResHLAChecked: false,
+  immunophenotypingChecked: false,
 };
 
 const exploreReducer = (state = initialState, action) => {
@@ -471,6 +478,33 @@ const exploreReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedCaseId: action.value,
+      };
+
+    // Dataset
+    case "SET_DATASET_ENABLE":
+      return {
+        ...state,
+        datasetEnable: action.value,
+      };
+    case "SET_FUNCTIONALASSAY_CHECKED_ENABLE":
+      return {
+        ...state,
+        functionalAssayChecked: action.value,
+      };
+    case "SET_ELECTRONMICROSCOPY_CHECKED_ENABLE":
+      return {
+        ...state,
+        electronMicroscopyChecked: action.value,
+      };
+    case "SET_HIGHRESHLA_CHECKED_ENABLE":
+      return {
+        ...state,
+        highResHLAChecked: action.value,
+      };
+    case "SET_IMMUNOPHENOTYPING_CHECKED_ENABLE":
+      return {
+        ...state,
+        immunophenotypingChecked: action.value,
       };
 
     default:

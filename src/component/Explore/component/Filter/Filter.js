@@ -15,6 +15,7 @@ import FilterAutoAntibodyPositiveNumber from "./component/FilterAutoAntibodyPosi
 import FilterInsulitis from "./component/FilterInsulitis";
 import FilterCPeptide from "./component/FilterCPeptide";
 import FilterTitle from "./component/FilterTitle";
+import FilterDataset from "./component/FilterDataset";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +29,7 @@ export default function Filter() {
     <div className={classes.root}>
       <FilterTitle />
       <FilterCaseId />
+      <FilterDataset />
       <FilterDonorType />
       <FilterDiabetesDuration />
       <FilterAgeOnset />

@@ -62,7 +62,7 @@ const FilterTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
-function FilterGender(props) {
+function FilterDataset(props) {
   const classes = useStyles();
 
   const helpText = (
@@ -72,7 +72,7 @@ function FilterGender(props) {
         <br />
         When the switch is off (
         <Switch color="primary" className={classes.helpIcon2} />) , the search
-        will ignore sex.
+        will ignore dataset.
         <br />
         When the switch is on (
         <Switch checked="true" color="primary" className={classes.helpIcon2} />)
@@ -89,7 +89,7 @@ function FilterGender(props) {
           <Box display="flex">
             <Box flexGrow={1}>
               <Typography variant="subtitle1" className={classes.title}>
-                Sex{"  "}
+                Available Datasets{"  "}
                 <FilterTooltip title={helpText} placement="right-start">
                   <HelpOutlineIcon className={classes.helpIcon} />
                 </FilterTooltip>
@@ -97,53 +97,90 @@ function FilterGender(props) {
             </Box>
             <Box>
               <Switch
-                checked={props.genderEnable}
-                onChange={(e) => props.setGenderEnable(e.target.checked)}
-                name="genderEnableSwitch"
+                checked={props.datasetEnable}
+                onChange={(e) => props.setDatasetEnable(e.target.checked)}
+                name="datasetEnableSwitch"
                 className={classes.switch}
                 color="primary"
               />
             </Box>
           </Box>
         </Grid>
-        {props.genderEnable && (
+        {props.datasetEnable && (
           <Grid item xs={12} className={classes.gridItem}>
             <FormGroup row className={classes.formGroup}>
               <Box
                 display="flex"
-                justifyContent={"space-between"}
+                //justifyContent={"space-between"}
+                flexDirection="column"
                 className={classes.boxContainer}
               >
                 <Box>
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={props.maleChecked}
+                        checked={props.functionalAssayChecked}
                         onChange={(event) =>
-                          props.setMaleChecked(event.target.checked)
+                          props.setFunctionalAssayChecked(event.target.checked)
                         }
-                        name="maleChecked"
+                        name="functionalAssayChecked"
                         color="primary"
-                        disabled={!props.genderEnable}
+                        disabled={!props.datasetEnable}
                       />
                     }
-                    label="Male"
+                    label="Functional Assay"
                   />
                 </Box>
                 <Box>
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={props.femaleChecked}
+                        checked={props.electronMicroscopyChecked}
                         onChange={(event) =>
-                          props.setFemaleChecked(event.target.checked)
+                          props.setElectronMicroscopyChecked(
+                            event.target.checked
+                          )
                         }
-                        name="femaleChecked"
-                        color="secondary"
-                        disabled={!props.genderEnable}
+                        name="electronMicroscopyChecked"
+                        color="primary"
+                        disabled={!props.datasetEnable}
                       />
                     }
-                    label="Female"
+                    label="Electron Microscopy"
+                  />
+                </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.highResHLAChecked}
+                        onChange={(event) =>
+                          props.setHighResHLAChecked(event.target.checked)
+                        }
+                        name="highResHLAChecked"
+                        color="primary"
+                        disabled={!props.datasetEnable}
+                      />
+                    }
+                    label="High Resolution HLA"
+                  />
+                </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.immunophenotypingChecked}
+                        onChange={(event) =>
+                          props.setImmunophenotypingChecked(
+                            event.target.checked
+                          )
+                        }
+                        name="immunophenotypingChecked"
+                        color="primary"
+                        disabled={!props.datasetEnable}
+                      />
+                    }
+                    label="Immunophenotyping"
                   />
                 </Box>
               </Box>
@@ -158,22 +195,37 @@ function FilterGender(props) {
 // subscribe
 const mapStateToProps = (state) => {
   return {
-    genderEnable: state.explore.genderEnable,
-    maleChecked: state.explore.maleChecked,
-    femaleChecked: state.explore.femaleChecked,
+    datasetEnable: state.explore.datasetEnable,
+    functionalAssayChecked: state.explore.functionalAssayChecked,
+    electronMicroscopyChecked: state.explore.electronMicroscopyChecked,
+    highResHLAChecked: state.explore.highResHLAChecked,
+    immunophenotypingChecked: state.explore.immunophenotypingChecked,
   };
 };
 
 // update
 const mapDispatchToProps = (dispatch) => {
   return {
-    setGenderEnable: (newGenderEnable) =>
-      dispatch({ type: "SET_GENDER_ENABLE", value: newGenderEnable }),
-    setMaleChecked: (checked) =>
-      dispatch({ type: "SET_MALE_CHECKED", value: checked }),
-    setFemaleChecked: (checked) =>
-      dispatch({ type: "SET_FEMALE_CHECKED", value: checked }),
+    setDatasetEnable: (newDatasetEnable) =>
+      dispatch({ type: "SET_DATASET_ENABLE", value: newDatasetEnable }),
+    setFunctionalAssayChecked: (checked) =>
+      dispatch({ type: "SET_FUNCTIONALASSAY_CHECKED_ENABLE", value: checked }),
+    setElectronMicroscopyChecked: (checked) =>
+      dispatch({
+        type: "SET_ELECTRONMICROSCOPY_CHECKED_ENABLE",
+        value: checked,
+      }),
+    setHighResHLAChecked: (checked) =>
+      dispatch({
+        type: "SET_HIGHRESHLA_CHECKED_ENABLE",
+        value: checked,
+      }),
+    setImmunophenotypingChecked: (checked) =>
+      dispatch({
+        type: "SET_IMMUNOPHENOTYPING_CHECKED_ENABLE",
+        value: checked,
+      }),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterGender);
+export default connect(mapStateToProps, mapDispatchToProps)(FilterDataset);
