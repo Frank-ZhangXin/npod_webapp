@@ -48,8 +48,19 @@ async function pooledConnection(asyncAction) {
 
 // get all cases
 async function get_cases() {
+  const sql_glucose_insulin =
+    "SELECT `case_id`, MAX(`insulin_mU_L`) AS `glucose_insulin` FROM `slices_raw_data` AS `srd` WHERE `srd`.`time_minutes` > 15 AND `srd`.`time_minutes` <= 35 GROUP BY `srd`.`case_id`";
+  const sql_KCL_insulin =
+    "SELECT `case_id`, MAX(`insulin_mU_L`) AS `KCL_insulin` FROM `slices_raw_data` AS `srd` WHERE `srd`.`time_minutes` > 64 AND `srd`.`time_minutes` <= 80 AND `srd`.`case_id` != '6430' AND `srd`.`case_id` != '6431' GROUP BY `srd`.`case_id` UNION SELECT `case_id`, MAX(`insulin_mU_L`) AS `KCL_insulin` FROM `slices_raw_data` AS `srd` WHERE `srd`.`time_minutes` > 64 AND `srd`.`time_minutes` <= 95 AND `srd`.`case_id` = '6430' UNION SELECT `case_id`, MAX(`insulin_mU_L`) AS `KCL_insulin` FROM `slices_raw_data` AS `srd` WHERE `srd`.`time_minutes` > 64 AND `srd`.`time_minutes` <= 100 AND `srd`.`case_id` = '6431'";
   const sql =
-    "SELECT c.*, a.GADA, a.IA_2A, a.mIAA, a.ZnT8A, r.RIN, r.ratio, r.sample_type_id, e.electron_microscopy_images FROM cases AS c LEFT JOIN AAb AS a ON c.case_id = a.case_id AND a.is_public = 1 LEFT JOIN RNA AS r ON c.case_id = r.case_id AND r.is_public = 1 LEFT JOIN external_urls AS e ON c.case_id = e.case_id WHERE c.is_public = 1";
+    "SELECT c.*, a.GADA, a.IA_2A, a.mIAA, a.ZnT8A, r.RIN, r.ratio, r.sample_type_id, e.electron_microscopy_images, gSti.glucose_insulin, kclSti.KCL_insulin FROM cases AS c LEFT JOIN AAb AS a ON c.case_id = a.case_id AND a.is_public = 1 LEFT JOIN RNA AS r ON c.case_id = r.case_id AND r.is_public = 1 LEFT JOIN external_urls AS e ON c.case_id = e.case_id " +
+    "LEFT JOIN (" +
+    sql_glucose_insulin +
+    ") AS gSti ON c.case_id = gSti.case_id " +
+    "LEFT JOIN (" +
+    sql_KCL_insulin +
+    ") AS kclSti ON c.case_id = kclSti.case_id " +
+    "WHERE c.is_public = 1";
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {

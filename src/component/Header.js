@@ -1,7 +1,7 @@
 import "../App.css";
 import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
-import { Auth } from "aws-amplify";
+import { Auth, API } from "aws-amplify";
 import { Link, useLocation } from "react-router-dom";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
@@ -99,10 +99,119 @@ function Header(props) {
       const authRes = await Auth.currentAuthenticatedUser();
       console.log("Check auth response ", authRes);
       props.setUserName(authRes.username);
+      const authToken = (await Auth.currentSession()).getAccessToken().jwtToken;
+      console.log("Current user access tokoen is ", authToken);
     } catch (error) {
       console.log("Check Auth error ", error);
     }
   }
+
+  // List all users in a group
+  let nextToken;
+  async function listAdminGroup(limit) {
+    let apiName = "AdminQueries";
+    let path = "/listUsersInGroup";
+    let myInit = {
+      queryStringParameters: {
+        groupname: "admin",
+        limit: limit,
+        token: nextToken,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${(await Auth.currentSession())
+          .getAccessToken()
+          .getJwtToken()}`,
+      },
+    };
+    const { NextToken, ...rest } = await API.get(apiName, path, myInit);
+    nextToken = NextToken;
+    return rest;
+  }
+
+  // List all users
+  let nextToken2;
+  async function listUsers(limit) {
+    let apiName = "AdminQueries";
+    let path = "/listUsers";
+    let myInit = {
+      queryStringParameters: {
+        limit: limit,
+        token: nextToken2,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${(await Auth.currentSession())
+          .getAccessToken()
+          .getJwtToken()}`,
+      },
+    };
+    const { NextToken, ...rest } = await API.get(apiName, path, myInit);
+    nextToken2 = NextToken;
+    return rest;
+  }
+
+  // Get a user
+  async function getUser(name) {
+    let apiName = "AdminQueries";
+    let path = "/getUser";
+    let myInit = {
+      queryStringParameters: {
+        username: name,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${(await Auth.currentSession())
+          .getAccessToken()
+          .getJwtToken()}`,
+      },
+    };
+    const { ...rest } = await API.get(apiName, path, myInit);
+    return rest;
+  }
+
+  // Disable a user
+  async function disableUser(name) {
+    let apiName = "AdminQueries";
+    let path = "/disableUser";
+    let myInit = {
+      body: {
+        username: name,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${(await Auth.currentSession())
+          .getAccessToken()
+          .getJwtToken()}`,
+      },
+    };
+    const { ...rest } = await API.post(apiName, path, myInit);
+    return rest;
+  }
+
+  // Enable a user
+  async function enableUser(name) {
+    let apiName = "AdminQueries";
+    let path = "/EnableUser";
+    let myInit = {
+      body: {
+        username: name,
+      },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `${(await Auth.currentSession())
+          .getAccessToken()
+          .getJwtToken()}`,
+      },
+    };
+    const { ...rest } = await API.post(apiName, path, myInit);
+    return rest;
+  }
+
+  console.log("List all users", listUsers(50));
+  //console.log("Get a user", getUser("testuser2"));
+  //console.log("Enable a user", enableUser("testuser2"));
+  //console.log("Disable a user", disableUser("testuser2"));
 
   const classes = useStyles();
   const history = useHistory();

@@ -250,6 +250,25 @@ function Search(props) {
               donor.histopathology.toLowerCase().indexOf("insulitis") ===
                 -1)) ||
           props.insulitisEnable === false
+      )
+      // Dataset
+      .filter(
+        (donor) =>
+          (props.functionalAssayChecked === true &&
+            (donor.glucose_insulin || donor.KCL_insulin)) ||
+          (props.electronMicroscopyChecked === true &&
+            donor.electron_microscopy_images) ||
+          (props.highResHLAChecked === true &&
+            (donor.HLA_A ||
+              donor.HLA_B ||
+              donor.HLA_C ||
+              donor.HLA_DRB1 ||
+              donor.HLA_DQA1 ||
+              donor.HLA_DQB1 ||
+              donor.HLA_DPA1 ||
+              donor.HLA_DPB1)) ||
+          (props.immunophenotypingChecked === true && true) ||
+          props.datasetEnable === false
       );
   console.log(filteredData);
   return (
@@ -400,9 +419,17 @@ const mapStateToProps = (state) => {
 
     // Donor Types (map)
     donorTypesMap: state.explore.donorTypesMap,
+
     // Case Id
     caseIDEnable: state.explore.caseIDEnable,
     selectedCaseId: state.explore.selectedCaseId,
+
+    // Dataset
+    datasetEnable: state.explore.datasetEnable,
+    functionalAssayChecked: state.explore.functionalAssayChecked,
+    electronMicroscopyChecked: state.explore.electronMicroscopyChecked,
+    highResHLAChecked: state.explore.highResHLAChecked,
+    immunophenotypingChecked: state.explore.immunophenotypingChecked,
   };
 };
 

@@ -30,39 +30,39 @@ const useStyles = makeStyles((theme) => ({
 
 function PeakInsulinSecretionDuringStimulation(props) {
   const classes = useStyles();
-  const [glucoseStimulation, setGlucoseStimulation] = useState(null);
-  const [highKCLStimulation, setHighKCLStimulation] = useState(null);
+  // const [glucoseStimulation, setGlucoseStimulation] = useState(null);
+  // const [highKCLStimulation, setHighKCLStimulation] = useState(null);
 
-  useEffect(() => {
-    if (props.currentCase.case_id === "6430") {
-      GetMaxInsulin(props.currentCase.case_id, 95, 64, "KCL");
-    } else if (props.currentCase.case_id === "6431") {
-      GetMaxInsulin(props.currentCase.case_id, 100, 64, "KCL");
-    } else {
-      GetMaxInsulin(props.currentCase.case_id, 80, 64, "KCL");
-    }
-    GetMaxInsulin(props.currentCase.case_id, 35, 15, "glucose");
-  }, [props.currentCase.case_id]);
+  // useEffect(() => {
+  //   if (props.currentCase.case_id === "6430") {
+  //     GetMaxInsulin(props.currentCase.case_id, 95, 64, "KCL");
+  //   } else if (props.currentCase.case_id === "6431") {
+  //     GetMaxInsulin(props.currentCase.case_id, 100, 64, "KCL");
+  //   } else {
+  //     GetMaxInsulin(props.currentCase.case_id, 80, 64, "KCL");
+  //   }
+  //   GetMaxInsulin(props.currentCase.case_id, 35, 15, "glucose");
+  // }, [props.currentCase.case_id]);
 
-  async function GetMaxInsulin(caseId, highTime, lowTime, stiName) {
-    return await API.get("dbapi", "/db/max_insulin", {
-      queryStringParameters: {
-        case_id: caseId,
-        high_time: highTime,
-        low_time: lowTime,
-      },
-    })
-      .then((res) => {
-        if (stiName === "glucose") {
-          setGlucoseStimulation(res[0]["MAX(insulin_mU_L)"]);
-        } else if (stiName === "KCL") {
-          setHighKCLStimulation(res[0]["MAX(insulin_mU_L)"]);
-        }
-      })
-      .catch((err) => {
-        console.error("Get Max Insulin Error", err);
-      });
-  }
+  // async function GetMaxInsulin(caseId, highTime, lowTime, stiName) {
+  //   return await API.get("dbapi", "/db/max_insulin", {
+  //     queryStringParameters: {
+  //       case_id: caseId,
+  //       high_time: highTime,
+  //       low_time: lowTime,
+  //     },
+  //   })
+  //     .then((res) => {
+  //       if (stiName === "glucose") {
+  //         setGlucoseStimulation(res[0]["MAX(insulin_mU_L)"]);
+  //       } else if (stiName === "KCL") {
+  //         setHighKCLStimulation(res[0]["MAX(insulin_mU_L)"]);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.error("Get Max Insulin Error", err);
+  //     });
+  // }
 
   function createData(name, value) {
     return { name, value };
@@ -71,11 +71,15 @@ function PeakInsulinSecretionDuringStimulation(props) {
   const rows = [
     createData(
       "16.7mM Glucose Stimulation",
-      glucoseStimulation === null ? "Unavailable" : glucoseStimulation
+      props.currentCase.glucose_insulin === null
+        ? "Unavailable"
+        : props.currentCase.glucose_insulin
     ),
     createData(
       "High KCl Stimulation",
-      highKCLStimulation === null ? "Unavailable" : highKCLStimulation
+      props.currentCase.KCL_insulin === null
+        ? "Unavailable"
+        : props.currentCase.KCL_insulin
     ),
   ];
 
