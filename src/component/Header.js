@@ -99,8 +99,6 @@ function Header(props) {
       const authRes = await Auth.currentAuthenticatedUser();
       console.log("Check auth response ", authRes);
       props.setUserName(authRes.username);
-      const authToken = (await Auth.currentSession()).getAccessToken().jwtToken;
-      console.log("Current user access tokoen is ", authToken);
     } catch (error) {
       console.log("Check Auth error ", error);
     }

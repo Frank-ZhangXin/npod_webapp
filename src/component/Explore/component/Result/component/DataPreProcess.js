@@ -88,6 +88,38 @@ function DataPreProcess(props) {
           thisCase["HLA_DQB1"] = thisDQB1;
           thisCase["HLA_DPA1"] = thisDPA1;
           thisCase["HLA_DPB1"] = thisDPB1;
+          thisCase["A_1"] =
+            thisA.split(",")[0] === "null" ? null : thisA.split(",")[0];
+          thisCase["A_2"] =
+            thisA.split(",")[1] === "null" ? null : thisA.split(",")[1];
+          thisCase["B_1"] =
+            thisB.split(",")[0] === "null" ? null : thisB.split(",")[0];
+          thisCase["B_2"] =
+            thisB.split(",")[1] === "null" ? null : thisB.split(",")[1];
+          thisCase["C_1"] =
+            thisC.split(",")[0] === "null" ? null : thisC.split(",")[0];
+          thisCase["C_2"] =
+            thisC.split(",")[1] === "null" ? null : thisC.split(",")[1];
+          thisCase["DRB1_1"] =
+            thisDRB1.split(",")[0] === "null" ? null : thisDRB1.split(",")[0];
+          thisCase["DRB1_2"] =
+            thisDRB1.split(",")[1] === "null" ? null : thisDRB1.split(",")[1];
+          thisCase["DQA1_1"] =
+            thisDQA1.split(",")[0] === "null" ? null : thisDQA1.split(",")[0];
+          thisCase["DQA1_2"] =
+            thisDQA1.split(",")[1] === "null" ? null : thisDQA1.split(",")[1];
+          thisCase["DQB1_1"] =
+            thisDQB1.split(",")[0] === "null" ? null : thisDQB1.split(",")[0];
+          thisCase["DQB1_2"] =
+            thisDQB1.split(",")[1] === "null" ? null : thisDQB1.split(",")[1];
+          thisCase["DPA1_1"] =
+            thisDPA1.split(",")[0] === "null" ? null : thisDPA1.split(",")[0];
+          thisCase["DPA1_2"] =
+            thisDPA1.split(",")[1] === "null" ? null : thisDPA1.split(",")[1];
+          thisCase["DPB1_1"] =
+            thisDPB1.split(",")[0] === "null" ? null : thisDPB1.split(",")[0];
+          thisCase["DPB1_2"] =
+            thisDPB1.split(",")[1] === "null" ? null : thisDPB1.split(",")[1];
         } else {
           thisCase["HLA_transplant"] = null;
           thisCase["HLA_T_A"] = null;
@@ -102,6 +134,22 @@ function DataPreProcess(props) {
           thisCase["HLA_DQB1"] = null;
           thisCase["HLA_DPA1"] = null;
           thisCase["HLA_DPB1"] = null;
+          thisCase["A_1"] = null;
+          thisCase["A_2"] = null;
+          thisCase["B_1"] = null;
+          thisCase["B_2"] = null;
+          thisCase["C_1"] = null;
+          thisCase["C_2"] = null;
+          thisCase["DRB1_1"] = null;
+          thisCase["DRB1_2"] = null;
+          thisCase["DQA1_1"] = null;
+          thisCase["DQA1_2"] = null;
+          thisCase["DQB1_1"] = null;
+          thisCase["DQB1_2"] = null;
+          thisCase["DPA1_1"] = null;
+          thisCase["DPA1_2"] = null;
+          thisCase["DPB1_1"] = null;
+          thisCase["DPB1_2"] = null;
         }
       }
     }
@@ -118,7 +166,7 @@ function highResHLAGenerator(lowVal, highVal) {
   if (highVal && !highVal.includes(":") && highVal.length === 4) {
     highVal = highVal.substring(0, 2) + ":" + highVal.substring(2, 4);
   }
-  return lowVal + ", " + highVal;
+  return lowVal + "," + highVal;
 }
 
 // Subscribe

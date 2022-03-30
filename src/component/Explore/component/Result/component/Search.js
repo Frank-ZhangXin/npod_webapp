@@ -259,14 +259,22 @@ function Search(props) {
           (props.electronMicroscopyChecked === true &&
             donor.electron_microscopy_images) ||
           (props.highResHLAChecked === true &&
-            (donor.HLA_A ||
-              donor.HLA_B ||
-              donor.HLA_C ||
-              donor.HLA_DRB1 ||
-              donor.HLA_DQA1 ||
-              donor.HLA_DQB1 ||
-              donor.HLA_DPA1 ||
-              donor.HLA_DPB1)) ||
+            (donor.A_1 ||
+              donor.A_2 ||
+              donor.B_1 ||
+              donor.B_2 ||
+              donor.C_1 ||
+              donor.C_2 ||
+              donor.DRB1_1 ||
+              donor.DRB1_2 ||
+              donor.DQA1_1 ||
+              donor.DQA1_2 ||
+              donor.DQB1_1 ||
+              donor.DQB1_2 ||
+              donor.DPA1_1 ||
+              donor.DPA1_2 ||
+              donor.DPB1_1 ||
+              donor.DPB1_2)) ||
           (props.immunophenotypingChecked === true && true) ||
           props.datasetEnable === false
       );
@@ -298,7 +306,7 @@ function Search(props) {
                 </Typography>
               ) : (
                 <Typography variant="h6" color="secondary">
-                  {filteredData.length} cases are displayed
+                  {filteredData.length} cases are found
                 </Typography>
               )}
             </Box>
