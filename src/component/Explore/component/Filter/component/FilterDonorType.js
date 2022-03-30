@@ -105,13 +105,7 @@ function FilterDonorType(props) {
 
   return (
     <div>
-      <Grid
-        container
-        direction="column"
-        direction="column"
-        justify="center"
-        alignItems="center"
-      >
+      <Grid container direction="column" justify="center" alignItems="center">
         <Grid item xs={12} className={classes.gridItem}>
           <Box display="flex">
             <Box flexGrow={1}>

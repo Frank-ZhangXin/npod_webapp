@@ -1,18 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
+import Select from "react-select";
+import Box from "@material-ui/core/Box";
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    minWidth: "16vw",
+  },
   button: {
     marginBottom: theme.spacing(2),
+    marginLeft: "1vw",
+  },
+  multiSelect: {
+    minWidth: "10vw",
   },
 }));
 
+const options = [
+  { value: "All", label: "All" },
+  { value: "Functional Assay", label: "Functional Assay" },
+  { value: "High Res HLA", label: "High Res HLA" },
+];
+
 function ExportSpreadsheet(props) {
   const classes = useStyles();
+  const [selectedDownloadType, setSelectedDownloadType] = useState({
+    value: "All",
+    label: "All",
+  });
 
   function filterJSON(raw, donorTypesMap, causeOfDeathMap) {
     const allowedColumns = [
@@ -62,69 +81,70 @@ function ExportSpreadsheet(props) {
       "histopathology",
       "RIN",
     ];
-    const extraColumns = ["donor_type_id", "cause_of_death_id"];
-    const extraColumns2 = ["ICU_time_days", "Transit_time_minutes"];
+    const allowedColumns2 = [
+      "case_id",
+      "donor_type_id",
+      "diabetes_hx_years",
+      "age_years",
+      "gestational_age_weeks",
+      "sex",
+      "race_ethinicity",
+      "A_1",
+      "A_2",
+      "B_1",
+      "B_2",
+      "C_1",
+      "C_2",
+      "DRB1_1",
+      "DRB1_2",
+      "DQA1_1",
+      "DQA1_2",
+      "DQB1_1",
+      "DQB1_2",
+      "DPA1_1",
+      "DPA1_2",
+      "DPB1_1",
+      "DPB1_2",
+    ];
+    const allowedColumns3 = [
+      "case_id",
+      "donor_type_id",
+      "diabetes_hx_years",
+      "age_years",
+      "gestational_age_weeks",
+      "sex",
+      "race_ethinicity",
+      "glucose_insulin",
+      "KCL_insulin",
+    ];
     var newData = [];
-    console.log(donorTypesMap);
     raw.forEach((donor) => {
-      const filtered = Object.keys(donor)
-        .filter((key) => allowedColumns.includes(key))
+      const filteredDonor = Object.keys(donor)
+        .filter((key) => {
+          if (selectedDownloadType.value === "High Res HLA") {
+            return allowedColumns2.includes(key);
+          } else if (selectedDownloadType.value === "Functional Assay") {
+            return allowedColumns3.includes(key);
+          } else {
+            return allowedColumns.includes(key);
+          }
+        })
         .reduce((obj, key) => {
           if (key === "donor_type_id") {
-            obj["donor_type"] = donorTypesMap[donor[key]];
+            obj["donor_type"] = donorTypesMap[donor["donor_type_id"]];
           } else if (key === "cause_of_death_id") {
-            obj["cause_of_death"] = causeOfDeathMap[donor[key]];
+            obj["cause_of_death"] = causeOfDeathMap[donor["cause_of_death_id"]];
+          } else if (key === "glucose_insulin") {
+            obj["16.7mM Glucose Stimulation"] = donor["glucose_insulin"];
+          } else if (key === "KCL_insulin") {
+            obj["High KCl Stimulation"] = donor["KCL_insulin"];
           } else {
             obj[key] = donor[key];
           }
-          // AutoAntibody Results
-
-          // var aabRes = "";
-          // if ("autoantibody_results" in obj) {
-          //   aabRes = obj["autoantibody_results"];
-          // }
-          // if (key === "GADA_Result") {
-          //   if (donor[key] === "Positive") {
-          //     aabRes = aabRes + " " + "GADA: Positive;";
-          //   } else if (donor[key] === "Negative") {
-          //     aabRes = aabRes + " " + "GADA: Negative;";
-          //   } else {
-          //     aabRes = aabRes + " " + "GADA: Not tested;";
-          //   }
-          // }
-          // if (key === "IA_2A_Result") {
-          //   if (donor[key] === "Positive") {
-          //     aabRes = aabRes + " " + "IA_2A: Positive;";
-          //   } else if (donor[key] === "Negative") {
-          //     aabRes = aabRes + " " + "IA_2A: Negative;";
-          //   } else {
-          //     aabRes = aabRes + " " + "IA_2A: Not tested;";
-          //   }
-          // }
-          // if (key === "mIAA_Result") {
-          //   if (donor[key] === "Positive") {
-          //     aabRes = aabRes + " " + "mIAA: Positive;";
-          //   } else if (donor[key] === "Negative") {
-          //     aabRes = aabRes + " " + "mIAA: Negative;";
-          //   } else {
-          //     aabRes = aabRes + " " + "mIAA: Not tested;";
-          //   }
-          // }
-          // if (key === "ZnT8A_Result") {
-          //   if (donor[key] === "Positive") {
-          //     aabRes = aabRes + " " + "ZnT8A: Positive;";
-          //   } else if (donor[key] === "Negative") {
-          //     aabRes = aabRes + " " + "ZnT8A: Negative;";
-          //   } else {
-          //     aabRes = aabRes + " " + "ZnT8A: Not tested;";
-          //   }
-          // }
-          // obj["autoantibody_results"] = aabRes;
           return obj;
         }, {});
-      newData.push(filtered);
+      newData.push(filteredDonor);
     });
-    console.log(newData);
     return newData;
   }
 
@@ -134,24 +154,43 @@ function ExportSpreadsheet(props) {
   const csvData = props.csvData;
   const fileName = props.fileName;
   const exportToCSV = (csvData, fileName) => {
+    // workbook sheet
     const ws = XLSX.utils.json_to_sheet(
       filterJSON(csvData, props.donorTypesMap, props.causeOfDeathMap)
     );
+    // workbook
     const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const data = new Blob([excelBuffer], { type: fileType });
     FileSaver.saveAs(data, fileName + fileExtension);
   };
+
   return (
-    <div>
-      <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        onClick={(e) => exportToCSV(props.csvData, fileName)}
-      >
-        Download All
-      </Button>
+    <div className={classes.root}>
+      <Box display="flex" justifyContent="space-between">
+        <Box>
+          <Select
+            className={classes.multiSelect}
+            value={props.selectedDownloadType}
+            onChange={(value) => setSelectedDownloadType(value)}
+            options={options}
+            placeholder="All by default"
+            //isMulti
+            closeMenuOnSelect={true}
+            //isDisabled={!props.donorTypeEnable}
+          />
+        </Box>
+        <Box>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={(e) => exportToCSV(props.csvData, fileName)}
+          >
+            Download
+          </Button>
+        </Box>
+      </Box>
     </div>
   );
 }
