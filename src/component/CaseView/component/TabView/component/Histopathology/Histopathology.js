@@ -41,10 +41,10 @@ function Histopathology(props) {
             <ImageLink
               type="Immunohistochemistry"
               exist={props.currentCase.Aperio_id}
-              urlLink={
+              urlLinks={[
                 "https://aperioeslide.ahc.ufl.edu/eSlideTray.php?DisplayHeader=true&TableName=Case&Id=" +
-                props.currentCase.Aperio_id
-              }
+                  props.currentCase.Aperio_id,
+              ]}
             />
           </Paper>
         </Grid>
@@ -52,8 +52,8 @@ function Histopathology(props) {
           <Paper elevation={3} className={classes.paper}>
             <ImageLink
               type="Electron_Microscope"
-              exist={props.currentCase.electron_microscopy_images}
-              urlLink={props.currentCase.electron_microscopy_images}
+              exist={props.emiMap[props.currentCase.case_id]}
+              urlLinks={props.emiMap[props.currentCase.case_id]}
             />
           </Paper>
         </Grid>
@@ -67,6 +67,7 @@ const mapStateToProps = (state) => {
   return {
     // Filtered Data
     currentCase: state.explore.currentCase,
+    emiMap: state.explore.emiMap,
   };
 };
 

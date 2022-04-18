@@ -106,6 +106,9 @@ const initialState = {
   electronMicroscopyChecked: false,
   highResHLAChecked: false,
   immunophenotypingChecked: false,
+
+  // electron microscopy images map
+  emiMap: null,
 };
 
 const exploreReducer = (state = initialState, action) => {
@@ -505,6 +508,13 @@ const exploreReducer = (state = initialState, action) => {
       return {
         ...state,
         immunophenotypingChecked: action.value,
+      };
+
+    // electron microscopy images map
+    case "SET_EMI_MAP":
+      return {
+        ...state,
+        emiMap: action.value,
       };
 
     default:

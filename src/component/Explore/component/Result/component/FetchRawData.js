@@ -12,6 +12,7 @@ function FetchRawData(props) {
     fetchCauseOfDeath();
     fetchHLA();
     fetchSampleType();
+    fetchElectronMicroscopyImages();
 
     //console.log("fetch data was called.");
   }, []);
@@ -110,6 +111,26 @@ function FetchRawData(props) {
       .catch((error) => console.log("Amplify API call error", error));
   }
 
+  // fetch electron microscopy images and save as map
+  async function fetchElectronMicroscopyImages() {
+    return await API.get("dbapi", "/db/electron_microscopy_images")
+      .then((res) => {
+        // emi map
+        const tempMap = {};
+        for (var i = 0, sType; i < res.length; i++) {
+          let caseId = res[i].case_id;
+          let emLink = res[i].EM_link;
+          if (!(caseId in tempMap)) {
+            tempMap[caseId] = [];
+          }
+          tempMap[caseId].push(emLink);
+        }
+        console.log("emi map: ", tempMap);
+        props.setEmiMap(tempMap);
+      })
+      .catch((error) => console.log("Amplify API call error", error));
+  }
+
   return <div></div>;
 }
 
@@ -140,6 +161,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: "SET_HLA_MAP", value: newHLAMap }),
     setSampleTypesMap: (newSampleTypesMap) =>
       dispatch({ type: "SET_SAMPLETYPES_MAP", value: newSampleTypesMap }),
+    setEmiMap: (newEmiMap) =>
+      dispatch({ type: "SET_EMI_MAP", value: newEmiMap }),
   };
 };
 

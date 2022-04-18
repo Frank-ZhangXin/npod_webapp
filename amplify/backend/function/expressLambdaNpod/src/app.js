@@ -18,6 +18,7 @@ var {
   get_sample_types,
   get_max_insulin,
   get_percent_viability,
+  get_electron_microscopy_images,
 } = require("./service/readDatabase");
 
 var {
@@ -144,13 +145,19 @@ app.get("/db/percent_viability", function (req, res) {
   );
 });
 
+// get electron_microscopy_images
+app.get("/db/electron_microscopy_images", function (req, res) {
+  console.log("fetching electron_microscopy_images.");
+  get_electron_microscopy_images().then((promisedRes) => res.send(promisedRes));
+});
+
 /****************************
  * Example post method *
  ****************************/
 // test db credential
 app.post("/db/debug_db", function (req, res) {
   res.json({
-    success: `write_db_host: ${process.env.WRITE_DB_HOST}, write_db_user: ${process.env.WRITE_DB_USER}, write_db_password: ${process.env.WRITE_DB_PASS}, write_db_name: ${process.env.WRITE_DB_NAME}`,
+    success: `write_db_host: ${process.env.WRITE_DB_HOST}, write_db_name: ${process.env.WRITE_DB_NAME}`,
     url: req.url,
   });
 });

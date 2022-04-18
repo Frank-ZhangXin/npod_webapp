@@ -206,7 +206,7 @@ function Header(props) {
     return rest;
   }
 
-  console.log("List all users", listUsers(50));
+  //console.log("List all users", listUsers(50));
   //console.log("Get a user", getUser("testuser2"));
   //console.log("Enable a user", enableUser("testuser2"));
   //console.log("Disable a user", disableUser("testuser2"));
