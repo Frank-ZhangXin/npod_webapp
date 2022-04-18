@@ -199,6 +199,26 @@ async function get_percent_viability(caseId) {
   return await pooledConnection(asyncAction);
 }
 
+// get eletron_microscopy_images
+async function get_electron_microscopy_images() {
+  const sql = "SELECT * FROM `electron_microscopy_images`";
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch electron_microscopy_images] Totally ${result.length} electron_microscopy_images records were fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForRead: testPoolForRead,
   get_cases: get_cases,
@@ -208,4 +228,5 @@ module.exports = {
   get_sample_types: get_sample_types,
   get_max_insulin: get_max_insulin,
   get_percent_viability: get_percent_viability,
+  get_electron_microscopy_images: get_electron_microscopy_images,
 };

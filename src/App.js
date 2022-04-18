@@ -16,6 +16,8 @@ import ForgotPassword from "./route/ForgotPassword";
 import ChangePassword from "./route/ChangePassword";
 import ExplorePage from "./route/ExplorePage";
 import AdminPage from "./route/AdminPage";
+import WriteInPage from "./route/WriteInPage";
+import UserManagePage from "./route/UserManagePage";
 import SupportPage from "./route/SupportPage";
 import Contact from "./route/Contact";
 
@@ -66,7 +68,9 @@ function App(props) {
       <Route path="/forgotpassword" component={ForgotPassword} />
       <Route path="/changepassword" component={ChangePassword} />
       <Route path="/explore" component={ExplorePage} />
-      <Route path="/admin" component={AdminPage} />
+      <Route exact path="/admin" component={AdminPage} />
+      <Route path="/admin/writein" component={WriteInPage} />
+      <Route path="/admin/usermanage" component={UserManagePage} />
       <Route path="/support" component={SupportPage} />
       <Route path="/contact" component={Contact} />
     </Router>

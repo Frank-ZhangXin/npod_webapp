@@ -16,11 +16,11 @@
       "function": {
         "expressLambdaNpod": {
           "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
-          "s3Key": "amplify-builds/expressLambdaNpod-777a49665268756c4a32-build.zip"
+          "s3Key": "amplify-builds/expressLambdaNpod-6178536e342b39774f75-build.zip"
         },
         "AdminQueries0759059b": {
           "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
-          "s3Key": "amplify-builds/AdminQueries0759059b-52536862762b622b4274-build.zip"
+          "s3Key": "amplify-builds/AdminQueries0759059b-586c5975763343734f51-build.zip"
         }
       },
       "auth": {

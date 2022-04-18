@@ -52,6 +52,15 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  buttonList: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    margin: "5px",
+  },
   centerText: {
     backgroundColor: "rgba(255,255,255, 0.5)",
     padding: "10px",
@@ -62,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ImageLink({ type, exist, urlLink }) {
+function ImageLink({ type, exist, urlLinks }) {
   const classes = useStyles();
   return (
     <div>
@@ -83,14 +92,16 @@ function ImageLink({ type, exist, urlLink }) {
               </div>
               <div>
                 {exist ? (
-                  <Button
-                    target="_blank"
-                    variant="contained"
-                    color="primary"
-                    href={urlLink}
-                  >
-                    nPOD Online Pathology
-                  </Button>
+                  urlLinks.map((url) => (
+                    <Button
+                      target="_blank"
+                      variant="contained"
+                      color="primary"
+                      href={url}
+                    >
+                      nPOD Online Pathology
+                    </Button>
+                  ))
                 ) : (
                   <Button variant="contained">Not Available</Button>
                 )}
@@ -112,16 +123,19 @@ function ImageLink({ type, exist, urlLink }) {
               <div className={classes.centerText}>
                 <Typography variant="h5">Electron Microscopy Images</Typography>
               </div>
-              <div>
+              <div className={classes.buttonList}>
                 {exist ? (
-                  <Button
-                    target="_blank"
-                    variant="contained"
-                    color="primary"
-                    href={urlLink}
-                  >
-                    Open Microscopy
-                  </Button>
+                  urlLinks.map((url, idx) => (
+                    <Button
+                      target="_blank"
+                      variant="contained"
+                      color="primary"
+                      href={url}
+                      className={classes.button}
+                    >
+                      NANOTOMY {idx + 1}
+                    </Button>
+                  ))
                 ) : (
                   <Button variant="contained">Not Available</Button>
                 )}

@@ -210,8 +210,9 @@ export default function SignUp() {
         <a target="_blank" href="mailto:no-reply@verificationemail.com">
           no-reply@verificationemail.com
         </a>{" "}
-        to your email whitelist if you can't get the verification email
-        properly.
+        to your email whitelist in case you can't get the verification email
+        properly. If you still don't get the verification email in 10 mins,
+        please consider using another email to sign up.
       </div>
     </React.Fragment>
   );

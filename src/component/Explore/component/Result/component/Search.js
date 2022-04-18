@@ -251,13 +251,25 @@ function Search(props) {
                 -1)) ||
           props.insulitisEnable === false
       )
-      // Dataset
+      // Dataset: electron microscopy images
+      .filter(
+        (donor) =>
+          (props.electronMicroscopyChecked === true &&
+            props.emiMap[donor.case_id]) ||
+          props.electronMicroscopyChecked === false ||
+          props.datasetEnable === false
+      )
+      // Dataset: functional assay
       .filter(
         (donor) =>
           (props.functionalAssayChecked === true &&
             (donor.glucose_insulin || donor.KCL_insulin)) ||
-          (props.electronMicroscopyChecked === true &&
-            donor.electron_microscopy_images) ||
+          props.functionalAssayChecked === false ||
+          props.datasetEnable === false
+      )
+      // Dataset: high res HLA
+      .filter(
+        (donor) =>
           (props.highResHLAChecked === true &&
             (donor.A_1 ||
               donor.A_2 ||
@@ -275,9 +287,10 @@ function Search(props) {
               donor.DPA1_2 ||
               donor.DPB1_1 ||
               donor.DPB1_2)) ||
-          (props.immunophenotypingChecked === true && true) ||
+          props.highResHLAChecked === false ||
           props.datasetEnable === false
       );
+
   console.log(filteredData);
   return (
     <div className={classes.result_container}>
@@ -438,6 +451,9 @@ const mapStateToProps = (state) => {
     electronMicroscopyChecked: state.explore.electronMicroscopyChecked,
     highResHLAChecked: state.explore.highResHLAChecked,
     immunophenotypingChecked: state.explore.immunophenotypingChecked,
+
+    // Electron Microscopy Images
+    emiMap: state.explore.emiMap,
   };
 };
 

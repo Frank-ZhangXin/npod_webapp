@@ -10,6 +10,7 @@ import ClinicalHistory from "./component/ClinicalHistory/ClinicalHistory";
 import CaseProcessingAndTissueQuality from "./component/CaseProcessingAndTissueQuality/CaseProcessingAndTissueQuality";
 import FunctionalAssay from "./component/FunctionalAssay/FunctionalAssay";
 import Histopathology from "./component/Histopathology/Histopathology";
+import Immunophenotyping from "./component/Immunophenotyping/Immunophenotyping";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -139,7 +140,7 @@ export default function TabView() {
             <Histopathology />
           </TabPanel>
           <TabPanel value={value} index={5}>
-            Incoming Feature
+            <Immunophenotyping />
           </TabPanel>
         </div>
       </Paper>
