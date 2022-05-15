@@ -41,7 +41,7 @@ export default function VerifyAttributeWithCode(props) {
   const history = useHistory();
 
   useEffect(() => {
-    handleVerify();
+    //handleVerify();
   }, []);
 
   useEffect(() => {

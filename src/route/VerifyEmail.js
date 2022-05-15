@@ -101,7 +101,7 @@ export default function VerifyEmail(props) {
       console.log("Verify email error: ", error);
       setErrorMsg(error.message);
       showAlertHandler("fail");
-      setAlertTitle("Sign-up Error");
+      setAlertTitle("Verify Email Error");
       setAlertCotent(error.message);
       setOpenAlert(true);
     }
