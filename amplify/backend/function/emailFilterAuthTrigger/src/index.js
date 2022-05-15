@@ -21,12 +21,15 @@ exports.handler = (event, context, callback) => {
     //   "Please click following link to verify your email on nPOD " +
     //   event.request.linkParameter +
     //   " If you don't recognize this email, please discard it and contact nPOD admin.";
+    var verifyUrl =
+      "https://portal.jdrfnpod.org/verify?attribute=email&verify_code=" +
+      event.request.codeParameter;
     event.response.emailMessage =
-      "Please click following link to verify your email: https://portal.jdrfnpod.org/verify?attribute=email&verify_code=" +
-      event.request.codeParameter +
-      "\r\n" +
+      "Please click following link to verify your email: " +
+      `<a href="${verifyUrl}">${verifyUrl}</a>` +
+      "<br>" +
       "If you don't recognize this email, please discard it and report to nPOD admin." +
-      "\r\n" +
+      "<br>" +
       "Sent at " +
       dateTime +
       " UTC";

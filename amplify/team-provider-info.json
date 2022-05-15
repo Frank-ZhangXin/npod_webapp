@@ -24,7 +24,7 @@
         },
         "emailFilterAuthTrigger": {
           "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
-          "s3Key": "amplify-builds/emailFilterAuthTrigger-316c6c43477147567676-build.zip"
+          "s3Key": "amplify-builds/emailFilterAuthTrigger-5a4d6638526764396a4c-build.zip"
         },
         "postConfirmAuthTrigger": {
           "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
