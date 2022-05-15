@@ -21,6 +21,14 @@
         "AdminQueries0759059b": {
           "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
           "s3Key": "amplify-builds/AdminQueries0759059b-586c5975763343734f51-build.zip"
+        },
+        "emailFilterAuthTrigger": {
+          "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
+          "s3Key": "amplify-builds/emailFilterAuthTrigger-316c6c43477147567676-build.zip"
+        },
+        "postConfirmAuthTrigger": {
+          "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
+          "s3Key": "amplify-builds/postConfirmAuthTrigger-4c6c594a566954442f57-build.zip"
         }
       },
       "auth": {

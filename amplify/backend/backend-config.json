@@ -26,6 +26,16 @@
           ]
         }
       ]
+    },
+    "emailFilterAuthTrigger": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "postConfirmAuthTrigger": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "api": {
