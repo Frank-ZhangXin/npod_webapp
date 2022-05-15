@@ -1,6 +1,6 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
-import Amplify, { API, Hub, Auth } from "aws-amplify";
+import { Amplify, API, Hub, Auth } from "aws-amplify";
 import config from "./aws-exports";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -20,6 +20,8 @@ import WriteInPage from "./route/WriteInPage";
 import UserManagePage from "./route/UserManagePage";
 import SupportPage from "./route/SupportPage";
 import Contact from "./route/Contact";
+import VerifyEmail from "./route/VerifyEmail";
+import VerifyAttributeWithCode from "./route/VerifyAttributeWithCode";
 
 Amplify.configure({
   ...config,
@@ -66,6 +68,7 @@ function App(props) {
       <Route path="/signup" component={SignUp} />
       <Route path="/signupconfirm" component={SignUpConfirm} />
       <Route path="/forgotpassword" component={ForgotPassword} />
+      <Route path="/verifyemail" component={VerifyEmail} />
       <Route path="/changepassword" component={ChangePassword} />
       <Route path="/explore" component={ExplorePage} />
       <Route exact path="/admin" component={AdminPage} />
@@ -73,6 +76,7 @@ function App(props) {
       <Route path="/admin/usermanage" component={UserManagePage} />
       <Route path="/support" component={SupportPage} />
       <Route path="/contact" component={Contact} />
+      <Route path="/verify" component={VerifyAttributeWithCode} />
     </Router>
   );
 }

@@ -12,7 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import Auth from "@aws-amplify/auth";
+import { Auth } from "@aws-amplify/auth";
 import { useHistory } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -22,6 +22,7 @@ import AuthHeader from "../component/AuthHeader";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
 import EmailIcon from "@material-ui/icons/Email";
+import AlertDialog from "../component/AlertDialog";
 
 function Copyright() {
   return (
@@ -52,12 +53,29 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(3, 0, 0),
+  },
+  helperText: {
+    margin: theme.spacing(1, 0, 0),
+    color: "grey",
   },
   alert: {
     position: "fixed",
     bottom: 0,
     width: "100%",
+  },
+  passwordHint: {
+    marginTop: "1px",
+  },
+  passwordGreen: {
+    color: "green",
+    paddingLeft: "20px",
+    fontSize: 12,
+  },
+  passwordRed: {
+    color: "red",
+    paddingLeft: "20px",
+    fontSize: 12,
   },
 }));
 
@@ -65,6 +83,11 @@ export default function SignUp() {
   const classes = useStyles();
   const [username, setUsername] = useState(null);
   const [email, setEmail] = useState(null);
+  const [firstname, setFirstname] = useState(null);
+  const [lastname, setLastname] = useState(null);
+  const [organization, setOrganization] = useState(null);
+  const [institution, setInstitution] = useState(null);
+  const [project, setProject] = useState(null);
   const [password, setPassword] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [rePassword, setRePassword] = useState(null);
@@ -72,6 +95,15 @@ export default function SignUp() {
   const [showRePassword, setShowRePassword] = useState(false);
   const [showFail, setShowFail] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [met7Chars, setMet7Chars] = useState(false);
+  const [met1Upper, setMet1Upper] = useState(false);
+  const [met1Lower, setMet1Lower] = useState(false);
+  const [met1Number, setMet1Number] = useState(false);
+  const [met1Special, setMet1Special] = useState(false);
+  const [rePasswordMatch, setRePasswordMatch] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Notice");
+  const [alertContent, setAlertCotent] = useState("");
   const history = useHistory();
 
   const handleClickShowPassword = () => {
@@ -82,6 +114,52 @@ export default function SignUp() {
     setShowRePassword(!showRePassword);
   };
 
+  const handlePasswordCheck = (event) => {
+    const newVal = event.target.value;
+    var re1 = /.{7,}$/;
+    if (re1.test(newVal)) {
+      setMet7Chars(true);
+    } else {
+      setMet7Chars(false);
+    }
+    var re2 = /[A-Z]/;
+    if (re2.test(newVal)) {
+      setMet1Upper(true);
+    } else {
+      setMet1Upper(false);
+    }
+    var re3 = /[a-z]/;
+    if (re3.test(newVal)) {
+      setMet1Lower(true);
+    } else {
+      setMet1Lower(false);
+    }
+    var re4 = /[0-9]/;
+    if (re4.test(newVal)) {
+      setMet1Number(true);
+    } else {
+      setMet1Number(false);
+    }
+    var re5 = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+    if (re5.test(newVal)) {
+      setMet1Special(true);
+    } else {
+      setMet1Special(false);
+    }
+
+    setPassword(newVal);
+  };
+
+  const handleRePasswordCheck = (event) => {
+    const newVal = event.target.value;
+    if (newVal === password) {
+      setRePasswordMatch(true);
+    } else {
+      setRePasswordMatch(false);
+    }
+    setRePassword(newVal);
+  };
+
   const handleSumbit = async function (event) {
     event.preventDefault();
     try {
@@ -90,12 +168,14 @@ export default function SignUp() {
         username.length < 1 ||
         email === null ||
         email.length < 1 ||
+        firstname === null ||
+        firstname.length < 1 ||
+        lastname === null ||
+        lastname.length < 1 ||
         password === null ||
         password.length < 1 ||
         rePassword === null ||
-        rePassword.length < 1 ||
-        invitation === null ||
-        invitation.length < 1
+        rePassword.length < 1
       ) {
         throw "Error: All fields are required to fill!";
       }
@@ -103,17 +183,9 @@ export default function SignUp() {
       console.log(error);
       setErrorMsg(error);
       showAlertHandler("fail");
-      return;
-    }
-
-    try {
-      if (invitation !== "npodbetauser2021") {
-        throw "Error: Invitation code is invalid! Please contact admin for sign up";
-      }
-    } catch (error) {
-      console.log("Invitation Error: ", error);
-      setErrorMsg(error);
-      showAlertHandler("fail");
+      setAlertTitle("Sign-up Error");
+      setAlertCotent(error);
+      setOpenAlert(true);
       return;
     }
 
@@ -125,6 +197,9 @@ export default function SignUp() {
       console.log(error);
       setErrorMsg(error);
       showAlertHandler("fail");
+      setAlertTitle("Sign-up Error");
+      setAlertCotent(error);
+      setOpenAlert(true);
       return;
     }
 
@@ -136,15 +211,23 @@ export default function SignUp() {
       console.log(error);
       setErrorMsg(error);
       showAlertHandler("fail");
+      setAlertTitle("Sign-up Error");
+      setAlertCotent(error);
+      setOpenAlert(true);
       return;
     }
 
     try {
-      if (password !== rePassword) throw "Error: Two passwords don't match.";
+      if (password !== rePassword)
+        throw "Error: Re-input password doesn't match.";
     } catch (error) {
       console.log(error);
       setErrorMsg(error);
       showAlertHandler("fail");
+      setAlertTitle("Sign-up Error");
+      setAlertCotent(error);
+      setOpenAlert(true);
+
       return;
     }
 
@@ -154,14 +237,31 @@ export default function SignUp() {
         password,
         attributes: {
           email,
+          "custom:firstname": firstname,
+          "custom:lastname": lastname,
+          "custom:institution": institution ? institution : "None",
+          "custom:project": project ? project : "None",
         },
       });
       console.log("Signup response: ", response);
-      history.push("/signupconfirm", { user: username });
+      //history.push("/signupconfirm", { user: username });
     } catch (error) {
       console.log("Signup error: ", error);
       setErrorMsg(error.message);
-      showAlertHandler("fail");
+      if (
+        error.message ===
+        "CustomMessage failed with error Pending for approval."
+      ) {
+        setAlertTitle("Sign-up Notification");
+        setAlertCotent(
+          "Your sign up request has been submitted. The approval notice will be sent to your email after admin confirm your identity."
+        );
+        setOpenAlert(true);
+      } else {
+        setAlertTitle("Sign-up Error");
+        setAlertCotent(error.message);
+        setOpenAlert(true);
+      }
       return;
     }
   };
@@ -173,6 +273,14 @@ export default function SignUp() {
         setShowFail(false);
       }, 5000);
     }
+  };
+
+  const handleOpenAlert = () => {
+    setOpenAlert(true);
+  };
+
+  const handleGoHome = () => {
+    history.push("/");
   };
 
   const emailValidation = (theEmail) => {
@@ -188,7 +296,8 @@ export default function SignUp() {
     //   //except: /[aeiou]/,
     //   full: /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?][A-Za-z0-9]{7,}$/,
     // };
-    const re = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,}$/;
+    const re =
+      /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[a-zA-Z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{7,}$/;
 
     return re.test(thePassword);
   };
@@ -220,7 +329,15 @@ export default function SignUp() {
   return (
     <div>
       <AuthHeader location="Sign Up" />
-
+      <AlertDialog
+        title={alertTitle}
+        contentText={alertContent}
+        open={openAlert}
+        setOpen={setOpenAlert}
+        btn1Name="Back"
+        btn2Name="Home"
+        callBack={handleGoHome}
+      />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -228,7 +345,7 @@ export default function SignUp() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            nPOD Sign up
           </Typography>
           <form className={classes.form} noValidate onSubmit={handleSumbit}>
             <Grid container spacing={2}>
@@ -267,8 +384,7 @@ export default function SignUp() {
                   label="Password"
                   type={showPassword ? "text" : "password"}
                   id="password"
-                  onChange={(event) => setPassword(event.target.value)}
-                  helperText="Password must have minimum 7 characters and contain at least 1 UPPERCASE, 1 lower case, 1 number, 1 special character."
+                  onChange={handlePasswordCheck}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -285,6 +401,56 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
+                <Typography>
+                  <p style={{ fontSize: 12 }} className={classes.passwordHint}>
+                    Password requirement: <br></br>
+                    <span
+                      className={
+                        met7Chars ? classes.passwordGreen : classes.passwordRed
+                      }
+                    >
+                      At least 7 characters long
+                    </span>
+                    <br></br>
+                    <span
+                      className={
+                        met1Upper ? classes.passwordGreen : classes.passwordRed
+                      }
+                    >
+                      Includes at least 1 UPPERCASE alphbet character
+                    </span>
+                    <br></br>
+                    <span
+                      className={
+                        met1Lower ? classes.passwordGreen : classes.passwordRed
+                      }
+                    >
+                      Includes at least 1 lowercase alphbet character
+                    </span>
+                    <br></br>
+                    <span
+                      className={
+                        met1Number ? classes.passwordGreen : classes.passwordRed
+                      }
+                    >
+                      Includes at least 1 number
+                    </span>
+                    <br></br>
+                    <span
+                      className={
+                        met1Special
+                          ? classes.passwordGreen
+                          : classes.passwordRed
+                      }
+                    >
+                      Includes at least 1 special sign from ! @ # $ % ^ & * ( )
+                      _ + - = [ ] &#123; &#125; ; ' : " \ | , . &#60; &#62; / ?
+                    </span>
+                    <br></br>
+                  </p>
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   required
@@ -293,7 +459,7 @@ export default function SignUp() {
                   label="Re-input Password"
                   type={showRePassword ? "text" : "password"}
                   id="rePassword"
-                  onChange={(event) => setRePassword(event.target.value)}
+                  onChange={handleRePasswordCheck}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -310,17 +476,79 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
+                {rePasswordMatch ? (
+                  <p
+                    className={classes.passwordGreen}
+                    style={{ marginTop: "1px" }}
+                  >
+                    Re-input password matched.
+                  </p>
+                ) : (
+                  <p
+                    className={classes.passwordRed}
+                    style={{ marginTop: "1px" }}
+                  >
+                    Re-input password not matched.
+                  </p>
+                )}
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   required
                   fullWidth
-                  name="invitation"
-                  label="Invitation Code"
-                  type="text"
-                  id="invitation"
-                  onChange={(event) => setInvitation(event.target.value)}
-                  helperText={InvitationHelpText}
+                  id="firstname"
+                  label="First Name"
+                  name="firstname"
+                  autoComplete="given-name"
+                  onChange={(event) => setFirstname(event.target.value)}
                 />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="lastname"
+                  label="Last Name"
+                  name="lastname"
+                  autoComplete="family-name"
+                  onChange={(event) => setLastname(event.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="institution"
+                  label="Institution"
+                  name="institution"
+                  autoComplete="institution"
+                  onChange={(event) => setInstitution(event.target.value)}
+                />
+                <p className={classes.helperText}>
+                  <Typography variant="caption">
+                    Leave blank if you don't have one.
+                  </Typography>
+                </p>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="project"
+                  label="nPOD Approved Project"
+                  name="project"
+                  autoComplete="project"
+                  onChange={(event) => setProject(event.target.value)}
+                />
+                <p className={classes.helperText}>
+                  <Typography variant="caption">
+                    Leave blank if you don't have one.
+                  </Typography>
+                </p>
               </Grid>
             </Grid>
             <Button
@@ -330,8 +558,14 @@ export default function SignUp() {
               color="primary"
               className={classes.submit}
             >
-              EMAIl CONFIRMATION CODE
+              Sign Up
             </Button>
+            <p className={classes.helperText}>
+              <Typography variant="caption">
+                Click "SIGN UP" button to request the new account. The admin
+                will grant you the access after approval.
+              </Typography>
+            </p>
             <Grid container justify="flex-end">
               <Grid item>
                 <Link href="signin" variant="body2">

@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
+import EmailOutlinedIcon from "@material-ui/icons/EmailOutlined";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -17,6 +15,7 @@ import { useParams, useHistory } from "react-router-dom";
 import AuthHeader from "../component/AuthHeader";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
+import AlertDialog from "../component/AlertDialog";
 
 function Copyright() {
   return (
@@ -54,9 +53,13 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     width: "100%",
   },
+  helperText: {
+    margin: theme.spacing(1, 0, 0),
+    color: "grey",
+  },
 }));
 
-export default function SignUpConfirm(props) {
+export default function VerifyEmail(props) {
   const classes = useStyles();
   const user = (props.location.state && props.location.state.user) || "";
   const [username, setUsername] = useState("");
@@ -65,39 +68,42 @@ export default function SignUpConfirm(props) {
   const [errorMsg, setErrorMsg] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMsg, setSuccessMsg] = useState(null);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Notice");
+  const [alertContent, setAlertCotent] = useState("");
   const history = useHistory();
 
   useEffect(() => {
-    setUsername(user);
-    console.log("passed in user is ", user);
-    setSuccessMsg("Confirmation code is sent! Please check your email");
-    showAlertHandler("success");
+    checkAuth();
   }, []);
+
+  async function checkAuth() {
+    try {
+      const authRes = await Auth.currentAuthenticatedUser();
+      console.log("Check auth response ", authRes);
+    } catch (error) {
+      console.log("Check Auth error ", error);
+      history.push("/");
+    }
+  }
 
   const handleSumbit = async function (event) {
     event.preventDefault();
     try {
-      const response = await Auth.confirmSignUp(username, code);
-      console.log("Signup Confirm response: ", response);
-      history.push("/signin", { from: "signupconfirm" });
+      const response = await Auth.verifyCurrentUserAttribute("email");
+      console.log("Verify email result: ", response);
+      setAlertTitle("Verify Notice");
+      setAlertCotent(
+        "Sent verification email successfully. Please check your email inbox. You can send another one in 60 seconds if you don't receive it."
+      );
+      setOpenAlert(true);
     } catch (error) {
-      console.log("Signup Confirm error: ", error);
+      console.log("Verify email error: ", error);
       setErrorMsg(error.message);
       showAlertHandler("fail");
-    }
-  };
-
-  const handleResend = async function (event) {
-    event.preventDefault();
-    try {
-      const response = await Auth.resendSignUp(username);
-      console.log("Code resend response: ", response);
-      setSuccessMsg("The confirmation code is sent! Please check your email.");
-      showAlertHandler("success");
-    } catch (error) {
-      console.log("Code resend error: ", error);
-      setErrorMsg(error.message);
-      showAlertHandler("fail");
+      setAlertTitle("Sign-up Error");
+      setAlertCotent(error.message);
+      setOpenAlert(true);
     }
   };
 
@@ -115,47 +121,33 @@ export default function SignUpConfirm(props) {
     }
   };
 
+  const handleGoHome = () => {
+    history.push("/");
+  };
+
   return (
     <div>
-      <AuthHeader location="Sign Up Confirm" />
+      <AuthHeader location="Verify Email" />
 
+      <AlertDialog
+        title={alertTitle}
+        contentText={alertContent}
+        open={openAlert}
+        setOpen={setOpenAlert}
+        btn1Name="Back"
+        btn2Name="Home"
+        callBack={handleGoHome}
+      />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
           <Avatar className={classes.avatar}>
-            <LockOutlinedIcon />
+            <EmailOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up confirm
+            Verify Your Email
           </Typography>
           <form className={classes.form} noValidate onSubmit={handleSumbit}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  defaultValue={user}
-                  onChange={(event) => setUsername(event.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant="outlined"
-                  required
-                  fullWidth
-                  id="code"
-                  label="Confirmation Code"
-                  name="code"
-                  autoFocus
-                  onChange={(event) => setCode(event.target.value)}
-                />
-              </Grid>
-            </Grid>
             <Button
               type="submit"
               fullWidth
@@ -163,15 +155,13 @@ export default function SignUpConfirm(props) {
               color="primary"
               className={classes.submit}
             >
-              Confirm
+              Send Verify Link
             </Button>
-            <Grid container justify="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2" onClick={handleResend}>
-                  Didn't get the code? Resend
-                </Link>
-              </Grid>
-            </Grid>
+            <p className={classes.helperText}>
+              <Typography variant="caption">
+                Click the link coming to your email inbox after sending it.
+              </Typography>
+            </p>
           </form>
         </div>
         <Box mt={5}>

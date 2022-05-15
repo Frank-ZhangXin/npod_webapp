@@ -80,9 +80,16 @@ function createRows(uData) {
   let rows = [];
   for (let i = 0; i < uData.length; i++) {
     let name = uData[i].Username;
-    let email = uData[i].Attributes[2].Value;
-    let email_verified =
-      uData[i].Attributes[1].Value === "true" ? "Verified" : "Not Verified";
+    let email;
+    let email_verified;
+    uData[i].Attributes.forEach((attr) => {
+      if (attr.Name === "email") {
+        email = attr.Value;
+      } else if (attr.Name === "email_verified") {
+        email_verified = attr.Value === "true" ? "Verified" : "Not Verified";
+      }
+    });
+
     let status = uData[i].UserStatus;
     let enabled = uData[i].Enabled === true ? "Enabled" : "Disabled";
     let curRow = createData(name, email, email_verified, status, enabled);
@@ -176,6 +183,7 @@ export default function WriteIn() {
     setUserRows,
     createRows
   );
+  console.log("all user data: ", userData);
 
   return (
     <div>
