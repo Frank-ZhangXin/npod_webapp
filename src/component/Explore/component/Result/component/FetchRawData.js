@@ -13,6 +13,7 @@ function FetchRawData(props) {
     fetchHLA();
     fetchSampleType();
     fetchElectronMicroscopyImages();
+    fetchImmunophenotyping();
 
     //console.log("fetch data was called.");
   }, []);
@@ -125,8 +126,34 @@ function FetchRawData(props) {
           }
           tempMap[caseId].push(emLink);
         }
-        console.log("emi map: ", tempMap);
         props.setEmiMap(tempMap);
+      })
+      .catch((error) => console.log("Amplify API call error", error));
+  }
+
+  // fetch immunophenotyping and save as a map
+  async function fetchImmunophenotyping() {
+    return await API.get("dbapi", "/db/immunophenotyping")
+      .then((res) => {
+        // immun map
+        const tempMap = {};
+        res.forEach((immun) => {
+          let caseId = immun.case_id;
+          let sampleType = immun.sample_type;
+          if (!(caseId in tempMap)) {
+            tempMap[caseId] = {};
+          }
+          if (!(sampleType in tempMap[caseId])) {
+            tempMap[caseId][sampleType] = {};
+          }
+          Object.keys(immun).forEach((attr) => {
+            if (attr === "id" || attr === "case_id" || attr === "sample_type") {
+              return;
+            }
+            tempMap[caseId][sampleType][attr] = immun[attr];
+          });
+          props.setImmunMap(tempMap);
+        });
       })
       .catch((error) => console.log("Amplify API call error", error));
   }
@@ -163,6 +190,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: "SET_SAMPLETYPES_MAP", value: newSampleTypesMap }),
     setEmiMap: (newEmiMap) =>
       dispatch({ type: "SET_EMI_MAP", value: newEmiMap }),
+    setImmunMap: (newImmunMap) =>
+      dispatch({ type: "SET_IMMUN_MAP", value: newImmunMap }),
   };
 };
 

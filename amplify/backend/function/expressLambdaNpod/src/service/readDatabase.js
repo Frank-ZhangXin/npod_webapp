@@ -219,6 +219,26 @@ async function get_electron_microscopy_images() {
   return await pooledConnection(asyncAction);
 }
 
+// get immunophenotyping
+async function get_immunophenotyping() {
+  const sql = "SELECT * FROM `immunophenotyping`";
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch immunophenotyping] Totally ${result.length} immunophenotyping records were fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForRead: testPoolForRead,
   get_cases: get_cases,
@@ -229,4 +249,5 @@ module.exports = {
   get_max_insulin: get_max_insulin,
   get_percent_viability: get_percent_viability,
   get_electron_microscopy_images: get_electron_microscopy_images,
+  get_immunophenotyping: get_immunophenotyping,
 };

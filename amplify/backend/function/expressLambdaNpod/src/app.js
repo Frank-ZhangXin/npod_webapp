@@ -19,6 +19,7 @@ var {
   get_max_insulin,
   get_percent_viability,
   get_electron_microscopy_images,
+  get_immunophenotyping,
 } = require("./service/readDatabase");
 
 var {
@@ -149,6 +150,12 @@ app.get("/db/percent_viability", function (req, res) {
 app.get("/db/electron_microscopy_images", function (req, res) {
   console.log("fetching electron_microscopy_images.");
   get_electron_microscopy_images().then((promisedRes) => res.send(promisedRes));
+});
+
+// get immunophenotyping
+app.get("/db/immunophenotyping", function (req, res) {
+  console.log("fetching immunophenotyping.");
+  get_immunophenotyping().then((promisedRes) => res.send(promisedRes));
 });
 
 /****************************

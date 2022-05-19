@@ -21,19 +21,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const options = [
-  { value: "All", label: "All" },
+  { value: "All Case Info", label: "All" },
   { value: "Functional Assay", label: "Functional Assay" },
   { value: "High Res HLA", label: "High Res HLA" },
+  { value: "Immunophenotyping", label: "Immunophenotyping" },
 ];
 
 function ExportSpreadsheet(props) {
   const classes = useStyles();
   const [selectedDownloadType, setSelectedDownloadType] = useState({
-    value: "All",
+    value: "All Case Info",
     label: "All",
   });
 
-  function filterJSON(raw, donorTypesMap, causeOfDeathMap) {
+  function filterJSON(raw, donorTypesMap, causeOfDeathMap, immunMap) {
     const allowedColumns = [
       "case_id",
       "RR_id",
@@ -117,6 +118,7 @@ function ExportSpreadsheet(props) {
       "glucose_insulin",
       "KCL_insulin",
     ];
+    const allowedColumns4 = ["case_id"];
     var newData = [];
     raw.forEach((donor) => {
       const filteredDonor = Object.keys(donor)
@@ -125,6 +127,8 @@ function ExportSpreadsheet(props) {
             return allowedColumns2.includes(key);
           } else if (selectedDownloadType.value === "Functional Assay") {
             return allowedColumns3.includes(key);
+          } else if (selectedDownloadType.value === "Immunophenotyping") {
+            return allowedColumns4.includes(key);
           } else {
             return allowedColumns.includes(key);
           }
@@ -143,8 +147,31 @@ function ExportSpreadsheet(props) {
           }
           return obj;
         }, {});
+
       newData.push(filteredDonor);
     });
+    if (selectedDownloadType.value === "Immunophenotyping") {
+      var immunData = [];
+      newData.forEach((nData) => {
+        var theCaseId = nData.case_id;
+        if (theCaseId in props.immunMap) {
+          Object.keys(props.immunMap[theCaseId]).forEach((sampleType) => {
+            var immunObj = {};
+            immunObj["case_id"] = nData.case_id;
+            immunObj["sample_type"] = sampleType;
+            var immunObjMap = props.immunMap[nData.case_id][sampleType];
+            Object.keys(immunObjMap).forEach((attr) => {
+              immunObj[attr] = immunObjMap[attr];
+              if (attr === "acquisition_date") {
+                immunObj[attr] = immunObj[attr].slice(0, 10);
+              }
+            });
+            immunData.push(immunObj);
+          });
+        }
+      });
+      newData = immunData;
+    }
     return newData;
   }
 
@@ -152,11 +179,16 @@ function ExportSpreadsheet(props) {
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
   const fileExtension = ".xlsx";
   const csvData = props.csvData;
-  const fileName = props.fileName;
+  const fileName = selectedDownloadType.value + "-" + props.fileName;
   const exportToCSV = (csvData, fileName) => {
     // workbook sheet
     const ws = XLSX.utils.json_to_sheet(
-      filterJSON(csvData, props.donorTypesMap, props.causeOfDeathMap)
+      filterJSON(
+        csvData,
+        props.donorTypesMap,
+        props.causeOfDeathMap,
+        props.immunMap
+      )
     );
     // workbook
     const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
@@ -201,6 +233,7 @@ const mapStateToProps = (state, ownProps) => {
     donorTypesMap: state.explore.donorTypesMap,
     causeOfDeathMap: state.explore.causeOfDeathMap,
     hlaMap: state.explore.hlaMap,
+    immunMap: state.explore.immunMap,
   };
 };
 

@@ -109,6 +109,9 @@ const initialState = {
 
   // electron microscopy images map
   emiMap: null,
+
+  // immunophenotyping map
+  immunMap: null,
 };
 
 const exploreReducer = (state = initialState, action) => {
@@ -515,6 +518,13 @@ const exploreReducer = (state = initialState, action) => {
       return {
         ...state,
         emiMap: action.value,
+      };
+
+    // immunophenotyping map
+    case "SET_IMMUN_MAP":
+      return {
+        ...state,
+        immunMap: action.value,
       };
 
     default:

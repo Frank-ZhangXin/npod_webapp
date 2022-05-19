@@ -64,7 +64,7 @@ function Search(props) {
 
   const filtering = () =>
     props.rawData
-      // const filteredData = testData
+      // public case only
       .filter((donor) => donor.is_public === 1)
       // Case ID
       .filter((donor) => {
@@ -289,9 +289,22 @@ function Search(props) {
               donor.DPB1_2)) ||
           props.highResHLAChecked === false ||
           props.datasetEnable === false
+      )
+      .filter(
+        (donor) =>
+          (props.immunophenotypingChecked === true &&
+            donor.case_id in props.immunMap) ||
+          props.immunophenotypingChecked === false ||
+          props.datasetEnable === false
       );
 
   console.log(filteredData);
+  const currTime = new Date();
+  // Time format YYYY-MM-DD_HHMMSS
+  const timeStamp =
+    currTime.toISOString().split("T")[0] +
+    "_" +
+    currTime.toTimeString().split(" ")[0].replaceAll(":", "");
   return (
     <div className={classes.result_container}>
       <div className={classes.result_title}>
@@ -303,9 +316,7 @@ function Search(props) {
             <Box>
               <ExportSpreadsheet
                 csvData={filteredData}
-                fileName={
-                  "nPOD_download_spreadsheet_" + Date().toLocaleString()
-                }
+                fileName={"Download_From_nPOD_" + timeStamp}
               />
             </Box>
           </Box>
@@ -454,6 +465,9 @@ const mapStateToProps = (state) => {
 
     // Electron Microscopy Images
     emiMap: state.explore.emiMap,
+
+    // Immunophenotyping
+    immunMap: state.explore.immunMap,
   };
 };
 
