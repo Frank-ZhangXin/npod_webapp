@@ -26,7 +26,11 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "5px",
     width: "90%",
   },
-  title: {
+  alert2: {
+    marginTop: "4px",
+    marginBottom: "3px",
+  },
+  tip: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
     fontWeight: "900",
@@ -46,6 +50,15 @@ const useStyles = makeStyles((theme) => ({
   helpText: {
     padding: "10px",
     textShadow: "0 0 20px white",
+  },
+  title: {
+    margin: theme.spacing(1, 0, 2),
+    paddingTop: "3px",
+    paddingBottom: "3px",
+    backgroundColor: "#d9d9d9",
+  },
+  titleText: {
+    paddingLeft: "10px",
   },
 }));
 
@@ -137,28 +150,28 @@ export default function AAb_step6({
     {
       column: "GADA",
       input: "integerBox",
-      restrict: { type: "int", range: [0, 1500] },
+      restrict: { type: "float", range: [-0.1, 1500] },
       valid: useState(true),
       ops: [],
     },
     {
       column: "IA_2A",
       input: "integerBox",
-      restrict: { type: "int", range: [0, 450] },
+      restrict: { type: "float", range: [-0.1, 450] },
       valid: useState(true),
       ops: [],
     },
     {
       colum: "mIAA",
       input: "floatBox",
-      restrict: { type: "float", range: [0, 7] },
+      restrict: { type: "float", range: [-0.1, 7] },
       valid: useState(true),
       ops: [],
     },
     {
       colum: "ZnT8A",
       input: "floatBox",
-      restrict: { type: "float", range: [0, 300] },
+      restrict: { type: "float", range: [-0.1, 300] },
       valid: useState(true),
       ops: [],
     },
@@ -348,9 +361,14 @@ export default function AAb_step6({
 
   return (
     <div className={classes.root}>
+      <div className={classes.title}>
+        <Typography variant="h6" component="h6" className={classes.titleText}>
+          CASE ID: {caseId}
+        </Typography>
+      </div>
       <form noValidate>
         <div>
-          <Typography variant="body1" className={classes.title}>
+          <Typography variant="body1" className={classes.tip}>
             How-to-use{"  "}
             <AAbTooltip title={helpText} placement="right">
               <HelpOutlineIcon className={classes.helpIcon} />
@@ -394,6 +412,12 @@ export default function AAb_step6({
           </div>
         </div>
       </form>
+      {changed ? (
+        <Alert severity="warning" className={classes.alert2}>
+          You have unsaved changes. Click 'Update' to save them, otherwise they
+          will be lost.
+        </Alert>
+      ) : null}
       <Fade in={showExistMsg}>
         <Alert variant="filled" severity="info" className={classes.alert}>
           {AAbexistMsg}

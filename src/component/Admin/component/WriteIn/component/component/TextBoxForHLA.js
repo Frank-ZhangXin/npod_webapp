@@ -22,6 +22,13 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     fontSize: 12,
   },
+  labelColored: {
+    backgroundColor: "#fae7cf",
+    padding: "3px",
+  },
+  label: {
+    padding: "3px",
+  },
 }));
 
 function isValid(value, restrict) {
@@ -33,7 +40,7 @@ function isValid(value, restrict) {
     restrict.type === "string" &&
     restrict.range[0] <= value.length &&
     value.length <= restrict.range[1] &&
-    /^[0-9][0-9]:[0-9][0-9]$|^[0-9]:[0-9]$|^[0-9][0-9]\([0-9][0-9]\)$|^[0-9][0-9]:[0-9][0-9]\/0$/.test(
+    /^[0-9][0-9]:[0-9][0-9]$|^[0-9]:[0-9]$|^[0-9][0-9]\([0-9][0-9]\)$|^[0-9][0-9]:[0-9][0-9]\/0|^[0-9][0-9]$/.test(
       value
     )
   ) {
@@ -53,6 +60,7 @@ export default function TextBox({
 }) {
   const classes = useStyles();
   const [invalid, setInvalid] = useState(false);
+  const [labelChanged, setLabelChanged] = useState(false);
   const handleChange = (event) => {
     if (isValid(event.target.value, restrict)) {
       if (event.target.value === "") {
@@ -67,12 +75,17 @@ export default function TextBox({
       valid[1](false);
       setInvalid(true);
     }
+    setLabelChanged(true);
   };
   return (
     <div>
       <Box display="flex" alignItems="center">
         <Box>
-          <label>{name}:</label>
+          <label
+            className={labelChanged ? classes.labelColored : classes.label}
+          >
+            {name}:
+          </label>
         </Box>
         <Box>
           <input
@@ -86,8 +99,8 @@ export default function TextBox({
       {invalid ? (
         <p className={classes.hint_invalid}>
           Input is invalid, type: string, constrain: {restrict.range[0]} &lt;=
-          input length &lt;= {restrict.range[1]}, format: 0:0 or 00:00 or 00(00)
-          or 00:00/0
+          input length &lt;= {restrict.range[1]}, format: 00 or 0:0 or 00:00 or
+          00(00) or 00:00/0
         </p>
       ) : null}
     </div>

@@ -24,7 +24,11 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "5px",
     width: "90%",
   },
-  title: {
+  alert2: {
+    marginTop: "4px",
+    marginBottom: "3px",
+  },
+  tip: {
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
     fontWeight: "900",
@@ -44,6 +48,15 @@ const useStyles = makeStyles((theme) => ({
   helpText: {
     padding: "10px",
     textShadow: "0 0 20px white",
+  },
+  title: {
+    margin: theme.spacing(1, 0, 2),
+    paddingTop: "3px",
+    paddingBottom: "3px",
+    backgroundColor: "#d9d9d9",
+  },
+  titleText: {
+    paddingLeft: "10px",
   },
 }));
 
@@ -509,11 +522,18 @@ export default function HLA_step7({
     }
   }, [showUpdateError, showUpdateSuccess]);
 
+  console.log("HLA page changed", changed);
+
   return (
     <div className={classes.root}>
+      <div className={classes.title}>
+        <Typography variant="h6" component="h6" className={classes.titleText}>
+          CASE ID: {caseId}
+        </Typography>
+      </div>
       <form noValidate>
         <div>
-          <Typography variant="body1" className={classes.title}>
+          <Typography variant="body1" className={classes.tip}>
             How-to-use{"  "}
             <HLATooltip title={helpText} placement="right">
               <HelpOutlineIcon className={classes.helpIcon} />
@@ -602,6 +622,13 @@ export default function HLA_step7({
           </div>
         </div>
       </form>
+      {changed ? (
+        <Alert severity="warning" className={classes.alert2}>
+          You have unsaved changes. Click 'Update' to save them, otherwise they
+          will be lost.
+        </Alert>
+      ) : null}
+
       <Fade in={showExistMsg}>
         <Alert variant="filled" severity="info" className={classes.alert}>
           {HLAexistMsg}
