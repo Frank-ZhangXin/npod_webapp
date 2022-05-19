@@ -7,6 +7,7 @@ import useRetrieveTableColumn from "./component/useRetrieveTableColumn";
 import useUpdateCase from "./component/useUpdateCase";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,6 +15,15 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
       width: "25ch",
     },
+  },
+  title: {
+    margin: theme.spacing(1, 0, 2),
+    paddingTop: "3px",
+    paddingBottom: "3px",
+    backgroundColor: "#d9d9d9",
+  },
+  titleText: {
+    paddingLeft: "10px",
   },
   resizeInputBox: {
     resize: "vertical",
@@ -27,12 +37,19 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "5px",
     width: "90%",
   },
+  alert2: {
+    marginTop: "4px",
+    marginBottom: "3px",
+  },
 }));
 
-function opsGenerator(idArr, nameArr) {
+function opsGenerator(idArr, nameArr, otherArr = null) {
   const ops = [];
   for (let i = 0; i < idArr.length; i++) {
-    ops.push({ value: idArr[i], label: nameArr[i] });
+    let labelVar = otherArr
+      ? nameArr[i] + " (" + otherArr[i] + ")"
+      : nameArr[i];
+    ops.push({ value: idArr[i], label: labelVar });
   }
   ops.push({ value: null, label: "NULL" });
   return ops;
@@ -80,7 +97,8 @@ export default function CaseIdentificationAndQC_step1({
   const donorTypesOps = opsGenerator(donorTypes_id, donorTypes);
   const OPO_name = useRetrieveTableColumn("OPO", "OPO_name", "OPO_name");
   const OPO_id = useRetrieveTableColumn("OPO", "OPO_id", "OPO_name");
-  const OPOOps = opsGenerator(OPO_id, OPO_name);
+  const OPO_code = useRetrieveTableColumn("OPO", "OPO_code", "OPO_name");
+  const OPOOps = opsGenerator(OPO_id, OPO_name, OPO_code);
 
   const columnPropsList = [
     {
@@ -414,6 +432,11 @@ export default function CaseIdentificationAndQC_step1({
 
   return (
     <div className={classes.root}>
+      <div className={classes.title}>
+        <Typography variant="h6" component="h6" className={classes.titleText}>
+          CASE ID: {caseId}
+        </Typography>
+      </div>
       <form noValidate>
         <div>
           <div>
@@ -481,6 +504,13 @@ export default function CaseIdentificationAndQC_step1({
           </div>
         </div>
       </form>
+      {changed ? (
+        <Alert severity="warning" className={classes.alert2}>
+          You have unsaved changes. Click 'Update' to save them, otherwise they
+          will be lost.
+        </Alert>
+      ) : null}
+
       <Fade in={showError || showSuccess}>
         <Alert
           variant="filled"

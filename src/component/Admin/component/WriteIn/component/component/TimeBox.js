@@ -32,12 +32,20 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
   },
+  labelColored: {
+    backgroundColor: "#fae7cf",
+    padding: "3px",
+  },
+  label: {
+    padding: "3px",
+  },
 }));
 
 export default function TimeBox({ name, value, setValue, setChanged }) {
   const classes = useStyles();
   const [defaultTime, setDefaultTime] = useState(null);
   const [defaultValue, setDefaultValue] = useState(null);
+  const [labelChanged, setLabelChanged] = useState(false);
   useEffect(() => {
     setDefaultTime(value);
     setDefaultValue(moment("2021-09-22 " + value, "YYYY-MM-DD hh:mm:ss"));
@@ -53,13 +61,18 @@ export default function TimeBox({ name, value, setValue, setChanged }) {
     console.log(newValue && newValue.format("HH:mm"));
     setValue(newValue.format("HH:mm"));
     setDefaultValue(newValue);
+    setLabelChanged(true);
   };
 
   return (
     <div>
       <Box display="flex" alignItems="center">
         <Box>
-          <label>{name}:</label>
+          <label
+            className={labelChanged ? classes.labelColored : classes.label}
+          >
+            {name}:
+          </label>
         </Box>
         <Box>
           <StyledTimePicker

@@ -22,6 +22,13 @@ const useStyles = makeStyles((theme) => ({
     color: "red",
     fontSize: 12,
   },
+  labelColored: {
+    backgroundColor: "#fae7cf",
+    padding: "3px",
+  },
+  label: {
+    padding: "3px",
+  },
 }));
 
 function isValid(value, restrict) {
@@ -51,6 +58,7 @@ export default function FloatNumberBox({
 }) {
   const classes = useStyles();
   const [invalid, setInvalid] = useState(false);
+  const [labelChanged, setLabelChanged] = useState(false);
   const handleChange = (event) => {
     if (isValid(event.target.value, restrict)) {
       if (event.target.value === "") {
@@ -65,12 +73,17 @@ export default function FloatNumberBox({
       valid[1](false);
       setInvalid(true);
     }
+    setLabelChanged(true);
   };
   return (
     <div>
       <Box display="flex" alignItems="center">
         <Box>
-          <label>{name}:</label>
+          <label
+            className={labelChanged ? classes.labelColored : classes.label}
+          >
+            {name}:
+          </label>
         </Box>
         <Box>
           <input

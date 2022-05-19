@@ -11,11 +11,19 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "4px",
     marginBottom: "5px",
   },
+  labelColored: {
+    backgroundColor: "#fae7cf",
+    padding: "3px",
+  },
+  label: {
+    padding: "3px",
+  },
 }));
 
 export default function DateBox({ name, value, setValue, setChanged }) {
   const classes = useStyles();
   const [newDate, setNewDate] = useState(null);
+  const [labelChanged, setLabelChanged] = useState(false);
   const handleDateChange = (date) => {
     setValue(date.toLocaleDateString("en-CA").slice(0, 10));
     console.log(
@@ -24,12 +32,17 @@ export default function DateBox({ name, value, setValue, setChanged }) {
     );
     setNewDate(date);
     setChanged(true);
+    setLabelChanged(true);
   };
   return (
     <div>
       <Box display="flex" alignItems="center">
         <Box>
-          <label>{name}:</label>
+          <label
+            className={labelChanged ? classes.labelColored : classes.label}
+          >
+            {name}:
+          </label>
         </Box>
         <Box>
           <DatePicker

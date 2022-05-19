@@ -10,22 +10,35 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "4px",
     marginBottom: "5px",
   },
+  labelColored: {
+    backgroundColor: "#fae7cf",
+    padding: "3px",
+  },
+  label: {
+    padding: "3px",
+  },
 }));
 
 export default function DropBox({ name, value, setValue, setChanged, ops }) {
   const classes = useStyles();
   const [defaultValue, setDefaultValue] = useState(null);
+  const [labelChanged, setLabelChanged] = useState(false);
   const handleChange = (selected) => {
     setDefaultValue(selected);
     setValue(selected.value);
     setChanged(true);
+    setLabelChanged(true);
   };
 
   return (
     <div>
       <Box display="flex" alignItems="center">
         <Box>
-          <label>{name}:</label>
+          <label
+            className={labelChanged ? classes.labelColored : classes.label}
+          >
+            {name}:
+          </label>
         </Box>
         <Box>
           <Select

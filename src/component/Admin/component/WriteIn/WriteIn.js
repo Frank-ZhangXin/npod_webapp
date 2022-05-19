@@ -28,7 +28,21 @@ const useStyles = makeStyles((theme) => ({
     })`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "cover",
+    backgroundAttachment: "fixed",
     paddingTop: "130px",
+    paddingBottom: theme.spacing(5),
+  },
+  container: {
+    marginBottom: theme.spacing(5),
+    padding: theme.spacing(5, 5, 1),
+    backgroundColor: "white",
+    borderRadius: "3px",
+  },
+  title: {
+    marginBottom: theme.spacing(3),
+  },
+  stepper: {
+    padding: theme.spacing(1, 1, 1),
   },
   stepLabel: {
     "&:hover": {
@@ -384,6 +398,7 @@ export default function WriteIn() {
     setCreateAAb(false);
     setCreateHLA(false);
     setCreateRNA(false);
+    setChanged(false);
     if (activeStep - 1 === 0) {
       setUpdate(false);
     }
@@ -415,6 +430,7 @@ export default function WriteIn() {
       setCreateHLA(false);
       setCreateRNA(false);
       setActiveStep(step);
+      setChanged(false);
     }
     if (step === 0) {
       setUpdate(false);
@@ -441,8 +457,18 @@ export default function WriteIn() {
     <div>
       <Header location="Admin Page" />
       <div className={classes.root}>
-        <Container maxWidth="lg">
-          <Stepper nonLinear activeStep={activeStep} orientation="vertical">
+        <Container maxWidth="lg" className={classes.container}>
+          <div className={classes.title}>
+            <Typography variant="h4" component="h4">
+              Data Update and Create
+            </Typography>
+          </div>
+          <Stepper
+            nonLinear
+            activeStep={activeStep}
+            orientation="vertical"
+            className={classes.stepper}
+          >
             {steps.map((label, index) => (
               <Step key={label}>
                 <StepLabel

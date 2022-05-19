@@ -8,6 +8,7 @@ import useRetrieveTableColumnPossibleValue from "./component/useRetrieveTableCol
 import useUpdateCase from "./component/useUpdateCase";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
+import { Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,6 +20,19 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "5px",
     marginBottom: "5px",
     width: "90%",
+  },
+  alert2: {
+    marginTop: "4px",
+    marginBottom: "3px",
+  },
+  title: {
+    margin: theme.spacing(1, 0, 2),
+    paddingTop: "3px",
+    paddingBottom: "3px",
+    backgroundColor: "#d9d9d9",
+  },
+  titleText: {
+    paddingLeft: "10px",
   },
 }));
 
@@ -470,6 +484,11 @@ export default function HospitalLabs_step5({
 
   return (
     <div className={classes.root}>
+      <div className={classes.title}>
+        <Typography variant="h6" component="h6" className={classes.titleText}>
+          CASE ID: {caseId}
+        </Typography>
+      </div>
       <form noValidate>
         <div>
           <div>
@@ -564,6 +583,12 @@ export default function HospitalLabs_step5({
           </div>
         </div>
       </form>
+      {changed ? (
+        <Alert severity="warning" className={classes.alert2}>
+          You have unsaved changes. Click 'Update' to save them, otherwise they
+          will be lost.
+        </Alert>
+      ) : null}
       <Fade in={showError || showSuccess}>
         <Alert
           variant="filled"
