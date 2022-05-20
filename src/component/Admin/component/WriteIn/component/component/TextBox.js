@@ -79,7 +79,10 @@ export default function TextBox({
       valid[1](false);
       setInvalid(true);
     }
-    setLabelChanged(true);
+    // Case ID input doesn't need label notice for value changed
+    if (name !== "Case ID") {
+      setLabelChanged(true);
+    }
   };
   return (
     <div>

@@ -149,14 +149,14 @@ export default function AAb_step6({
     },
     {
       column: "GADA",
-      input: "integerBox",
+      input: "floatBox",
       restrict: { type: "float", range: [-0.1, 1500] },
       valid: useState(true),
       ops: [],
     },
     {
       column: "IA_2A",
-      input: "integerBox",
+      input: "floatBox",
       restrict: { type: "float", range: [-0.1, 450] },
       valid: useState(true),
       ops: [],
