@@ -1,0 +1,10 @@
+# USER AGREEMENT
+
+## FOR nPOD DATA PORTAL
+
+The goals of the nPOD project are to recover relevant tissue from our donor groups, share these gifts with approved scientific investigators who seek to prevent, reverse and ultimately cure the disease and foster collaboration amongst these investigators. This data portal contains data on donor summary, clinical history, case processing and tissue quality, functional assay, histopathology and immunophenotyping. A variety of investigator-generated data will also be available for download in future updates.
+In order to access or download data from the nPOD data portal, users must agree to the following terms. This is in addition to required IRB approval, which must be submitted to nPOD separately prior to access. Users agree to the following terms by accessing the nPOD data portal.
+Users of the nPOD data portal will not have access to or receive any identities or personally-identifiable information of data subjects, nor any information through which their identities could be readily ascertained. Users will not use data accessed or received from the nPOD data portal alone or in conjunction with other data, in an effort to reidentify any individual. Users agree not to ask nPOD personnel for any identifiable information, and acknowledge that University personnel will not provide this information even if requested.
+Only the nPOD approved investigators are permitted to access the data portal. Login information must not be shared with others. All data obtained through the portal will only be accessed or used by authorized users, and further distribution of any data is prohibited.
+All data provided through the nPOD data portal are provided as-is and without warranty, including without limitation any warranty of quality, accuracy, fitness for a particular purpose, or warranty of non-infringement of any intellectual property rights.
+Data provided through the nPOD data portal are not intended or designed for use in medical treatment decisions, and the University of Florida and its affiliates, employees and agents will have no responsibility or liability for any injuries in any way related to such use.

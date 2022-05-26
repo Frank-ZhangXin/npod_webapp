@@ -43,7 +43,11 @@ exports.handler = (event, context, callback) => {
     var body =
       "Hi " +
       event.userName +
-      ", your sign-up on nPOD has been received and waiting for approval.";
+      ", your sign-up on nPOD has been received and waiting for approval." +
+      "\r\n" +
+      "You have agreed and understand nPOD website terms and conditions." +
+      "\r\n" +
+      "Please check: https://portal.jdrfnpod.org/useragreement for details.";
     var body2 = "\r\n" + "Sent at " + dateTime + " UTC";
     var toAdmin = "npod.aws@gmail.com";
     var subjectAdmin = "New User Sign-up on nPOD";

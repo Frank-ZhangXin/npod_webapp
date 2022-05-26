@@ -20,7 +20,11 @@ exports.handler = (event, context, callback) => {
     "\r\n" +
     "Now you can login and start using the account now." +
     "\r\n" +
-    "Log in here: https://portal.jdrfnpod.org/signin";
+    "Log in here: https://portal.jdrfnpod.org/signin" +
+    "\r\n" +
+    "Please verify your email address after first time login." +
+    "\r\n" +
+    "Verify your email: https://portal.jdrfnpod.org/verifyemail";
   var body2 = "\r\n" + "Sent at " + dateTime + " UTC";
   if (event.request.userAttributes.email) {
     sendEmail(to, subject, body + " " + body2, function (status) {

@@ -24,11 +24,11 @@
         },
         "emailFilterAuthTrigger": {
           "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
-          "s3Key": "amplify-builds/emailFilterAuthTrigger-5a4d6638526764396a4c-build.zip"
+          "s3Key": "amplify-builds/emailFilterAuthTrigger-424a516d544e61354266-build.zip"
         },
         "postConfirmAuthTrigger": {
           "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
-          "s3Key": "amplify-builds/postConfirmAuthTrigger-4c6c594a566954442f57-build.zip"
+          "s3Key": "amplify-builds/postConfirmAuthTrigger-73316c466c4f79723469-build.zip"
         }
       },
       "auth": {
