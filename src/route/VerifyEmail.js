@@ -159,7 +159,7 @@ export default function VerifyEmail(props) {
             </Button>
             <p className={classes.helperText}>
               <Typography variant="caption">
-                Click the link coming to your email inbox after sending it.
+                Click the link in your email inbox to verify your email address
               </Typography>
             </p>
           </form>

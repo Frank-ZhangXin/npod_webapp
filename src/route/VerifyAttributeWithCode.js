@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function VerifyAttributeWithCode(props) {
   const classes = useStyles();
+  // const [signedIn, setSignedIn] = useState(false);
   const [success, setSuccess] = useState(false);
   const [message, setMessage] = useState("Default message");
   const [countDowm, setCountDown] = useState(15);
@@ -41,15 +42,29 @@ export default function VerifyAttributeWithCode(props) {
   const history = useHistory();
 
   useEffect(() => {
-    handleVerify();
+    checkAuth();
   }, []);
 
-  useEffect(() => {
-    countDownHandler();
-    if (countDowm === 0) {
-      history.push("/");
+  async function checkAuth() {
+    try {
+      const authRes = await Auth.currentAuthenticatedUser();
+      handleVerify();
+      countDownHandler();
+      if (countDowm === 0) {
+        history.push("/");
+      }
+    } catch (error) {
+      console.log("On verify page, this user has not signed in yet.");
+      history.push("/resetpassword", { verify_code: code });
     }
-  });
+  }
+
+  // useEffect(() => {
+  //   countDownHandler();
+  //   if (countDowm === 0) {
+  //     history.push("/");
+  //   }
+  // });
 
   const countDownHandler = () => {
     const timer = setTimeout(() => {

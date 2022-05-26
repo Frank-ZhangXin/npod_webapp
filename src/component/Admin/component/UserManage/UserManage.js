@@ -108,8 +108,7 @@ export default function WriteIn() {
   const [confirmClicked, setConfirmClicked] = useState(0);
 
   useEffect(() => {
-    let nextToken;
-    async function listUsers(limit) {
+    async function listUsers(limit, nextToken, allUsers = []) {
       let apiName = "AdminQueries";
       let path = "/listUsers";
       let myInit = {
@@ -125,14 +124,20 @@ export default function WriteIn() {
         },
       };
       const { NextToken, ...rest } = await API.get(apiName, path, myInit);
+      allUsers.push(rest);
       nextToken = NextToken;
-      return rest;
+      // recursion to exhausting all users
+      if (nextToken) {
+        return listUsers(limit, nextToken, allUsers);
+      } else {
+        return allUsers;
+      }
     }
-    listUsers(59)
+    listUsers(null, null)
       .then((res) => {
         console.log("list all users: sucess");
-        setUserData(res.Users);
-        setUserRows(createRows(res.Users));
+        setUserData(res[0].Users);
+        setUserRows(createRows(res[0].Users));
       })
       .catch((err) => console.error("list all users error: ", err));
   }, []);

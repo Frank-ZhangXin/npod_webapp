@@ -12,7 +12,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import Auth from "@aws-amplify/auth";
+import { Auth } from "@aws-amplify/auth";
 import { useHistory } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -21,6 +21,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
 import AuthHeader from "../component/AuthHeader";
+import AlertDialog from "../component/AlertDialog";
 
 function Copyright() {
   return (
@@ -76,6 +77,9 @@ export default function ForgotPassword() {
   const [successMsg, setSuccessMsg] = useState(null);
   const [showFail, setShowFail] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertTitle, setAlertTitle] = useState("Notice");
+  const [alertContent, setAlertCotent] = useState("");
 
   const handleChange = (event) => {
     event.persist();
@@ -90,19 +94,26 @@ export default function ForgotPassword() {
     setShowNewPassword(!showNewPassword);
   };
 
-  const handleSumbitSendCode = async function (event) {
+  const handleSumbitSendVerification = async function (event) {
     event.preventDefault();
     const { username } = formState;
     try {
       const response = await Auth.forgotPassword(username);
-      console.log("SendCode response: ", response);
-      setSuccessMsg("Confirmation code was sent! Please check your email");
+      console.log("Reset password response (send verification): ", response);
+      setSuccessMsg("Verification was sent! Please check your email");
       showAlertHandler("success");
-      updateFormState(() => ({ ...formState, formType: "setNewPassword" }));
+      setAlertTitle("Reset Password Notice");
+      setAlertCotent(
+        "Verification was sent, please check the email and click the link to reset your password"
+      );
+      setOpenAlert(true);
     } catch (error) {
-      console.log("SendCode error: ", error);
+      console.log("Reset password error (send verification): ", error);
       setErrorMsg(error.message);
       showAlertHandler("fail");
+      setAlertTitle("Reset Password Error");
+      setAlertCotent("Reset password has an error: " + error.message);
+      setOpenAlert(true);
     }
   };
 
@@ -140,66 +151,82 @@ export default function ForgotPassword() {
     }
   };
 
+  const handleGoHome = () => {
+    history.push("/");
+  };
+
   return (
     <div>
       <AuthHeader location="Forgot Password" />
       {/* Send Confirmation Code */}
-      {formType === "sendCode" && (
-        <div>
-          <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-              <Avatar className={classes.avatar}>
-                <LockOutlinedIcon />
-              </Avatar>
-              <Typography component="h1" variant="h5">
-                Reset Password
-              </Typography>
-              <form
-                className={classes.form}
-                noValidate
-                onSubmit={handleSumbitSendCode}
+      <AlertDialog
+        title={alertTitle}
+        contentText={alertContent}
+        open={openAlert}
+        setOpen={setOpenAlert}
+        btn1Name="Back"
+        btn2Name="Home"
+        callBack={handleGoHome}
+      />
+      <div>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Reset Password
+            </Typography>
+            <form
+              className={classes.form}
+              noValidate
+              onSubmit={handleSumbitSendVerification}
+            >
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="username"
+                    label="Username"
+                    name="username"
+                    autoComplete="username"
+                    autoFocus
+                    onChange={handleChange}
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
               >
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <TextField
-                      variant="outlined"
-                      margin="normal"
-                      required
-                      fullWidth
-                      id="username"
-                      label="Username"
-                      name="username"
-                      autoComplete="username"
-                      autoFocus
-                      onChange={handleChange}
-                    />
-                  </Grid>
+                Send Verify Link
+              </Button>
+              <p className={classes.helperText}>
+                <Typography variant="caption">
+                  Click the link in your email inbox to verify your identity
+                </Typography>
+              </p>
+              <Grid container justify="flex-end">
+                <Grid item>
+                  <Link href="signin" variant="body2">
+                    Already have an account? Sign in
+                  </Link>
                 </Grid>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                >
-                  Email Confirm Code
-                </Button>
-                <Grid container justify="flex-end">
-                  <Grid item>
-                    <Link href="signin" variant="body2">
-                      Already have an account? Sign in
-                    </Link>
-                  </Grid>
-                </Grid>
-              </form>
-            </div>
-            <Box mt={5}>
-              <Copyright />
-            </Box>
-          </Container>
-        </div>
-      )}
+              </Grid>
+            </form>
+          </div>
+          <Box mt={5}>
+            <Copyright />
+          </Box>
+        </Container>
+      </div>
 
       {/* Set new password */}
       {formType === "setNewPassword" && (

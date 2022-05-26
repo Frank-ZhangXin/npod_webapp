@@ -91,7 +91,6 @@ export default function SignUp() {
   const [password, setPassword] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [rePassword, setRePassword] = useState(null);
-  const [invitation, setInvitation] = useState(null);
   const [showRePassword, setShowRePassword] = useState(false);
   const [showFail, setShowFail] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -104,6 +103,7 @@ export default function SignUp() {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState("Notice");
   const [alertContent, setAlertCotent] = useState("");
+  const [agreeFeed, setAgreeFeed] = useState(false);
   const history = useHistory();
 
   const handleClickShowPassword = () => {
@@ -148,6 +148,11 @@ export default function SignUp() {
     }
 
     setPassword(newVal);
+    if (newVal !== rePassword) {
+      setRePasswordMatch(false);
+    } else {
+      setRePasswordMatch(true);
+    }
   };
 
   const handleRePasswordCheck = (event) => {
