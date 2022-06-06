@@ -43,12 +43,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function opsGenerator(idArr, nameArr, otherArr = null) {
+function opsGenerator(idArr, nameArr) {
   const ops = [];
   for (let i = 0; i < idArr.length; i++) {
-    let labelVar = otherArr
-      ? nameArr[i] + " (" + otherArr[i] + ")"
-      : nameArr[i];
+    ops.push({ value: idArr[i], label: idArr[i] });
+  }
+  ops.push({ value: null, label: "NULL" });
+  return ops;
+}
+
+function opsGenerator2(idArr, nameArr, otherArr) {
+  const ops = [];
+  for (let i = 0; i < idArr.length; i++) {
+    let labelVar = nameArr[i] + " (" + otherArr[i] + ")";
     ops.push({ value: idArr[i], label: labelVar });
   }
   ops.push({ value: null, label: "NULL" });
@@ -98,7 +105,7 @@ export default function CaseIdentificationAndQC_step1({
   const OPO_name = useRetrieveTableColumn("OPO", "OPO_name", "OPO_name");
   const OPO_id = useRetrieveTableColumn("OPO", "OPO_id", "OPO_name");
   const OPO_code = useRetrieveTableColumn("OPO", "OPO_code", "OPO_name");
-  const OPOOps = opsGenerator(OPO_id, OPO_name, OPO_code);
+  const OPOOps = opsGenerator2(OPO_id, OPO_name, OPO_code);
 
   const columnPropsList = [
     {

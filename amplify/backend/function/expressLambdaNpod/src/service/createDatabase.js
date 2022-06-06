@@ -139,11 +139,8 @@ async function get_one_table_one_column_all_existing_values(
   column_name,
   sort_by
 ) {
-  const sql = `SELECT ${column_name}, ${sort_by} FROM ${table_name}`;
+  const sql = `SELECT ${column_name} FROM ${table_name} ORDER BY ${sort_by}`;
   console.log("sql: " + sql);
-  function compare(a, b) {
-    return a[sort_by] - b[sort_by];
-  }
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
@@ -153,8 +150,7 @@ async function get_one_table_one_column_all_existing_values(
           console.log(
             `[Fetch table column] Table ${table_name} column ${column_name} was fetched.`
           );
-          const sorted_res = result.sort(compare);
-          resolve(sorted_res.map((res) => res[column_name]));
+          resolve(result.map((res) => res[column_name]));
         }
       });
     });
@@ -184,11 +180,8 @@ async function get_one_table_one_column_all_existing_values_with_conditions(
         '"';
     }
   }
-  const sql = `SELECT ${column_name}, ${sort_by} FROM ${table_name} WHERE ${conditionsClause}`;
+  const sql = `SELECT ${column_name} FROM ${table_name} WHERE ${conditionsClause} ORDER BY ${sort_by}`;
   console.log("sql: " + sql);
-  function compare(a, b) {
-    return a[sort_by] - b[sort_by];
-  }
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
@@ -198,8 +191,7 @@ async function get_one_table_one_column_all_existing_values_with_conditions(
           console.log(
             `[Fetch table column] Table ${table_name} column ${column_name} was fetched.`
           );
-          const sorted_res = result.sort(compare);
-          resolve(sorted_res.map((res) => res[column_name]));
+          resolve(result.map((res) => res[column_name]));
         }
       });
     });
