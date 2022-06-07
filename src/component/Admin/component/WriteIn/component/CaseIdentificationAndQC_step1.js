@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 function opsGenerator(idArr, nameArr) {
   const ops = [];
   for (let i = 0; i < idArr.length; i++) {
-    ops.push({ value: idArr[i], label: idArr[i] });
+    ops.push({ value: idArr[i], label: nameArr[i] });
   }
   ops.push({ value: null, label: "NULL" });
   return ops;
