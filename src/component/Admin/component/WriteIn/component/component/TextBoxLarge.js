@@ -105,7 +105,7 @@ export default function TextBoxLarge({
           <textarea
             type="text"
             defaultValue={value || ""}
-            onChange={handleChange}
+            onInput={handleChange}
             className={invalid ? classes.errInput : classes.inputLarge}
           ></textarea>
         </Box>
