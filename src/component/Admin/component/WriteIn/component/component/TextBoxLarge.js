@@ -67,7 +67,6 @@ export default function TextBoxLarge({
   const [labelChanged, setLabelChanged] = useState(false);
   const handleChange = (event) => {
     var newVal = TextCheckAndFix(event.target.value);
-    console.log("new value after check and fix", newVal);
     if (isValid(newVal, restrict)) {
       if (newVal === "") {
         setValue(null);
