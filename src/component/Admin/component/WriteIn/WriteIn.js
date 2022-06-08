@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Header from "./../../../Header";
 import Container from "@material-ui/core/Container";
+import { Box } from "@material-ui/core";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
@@ -31,8 +32,11 @@ const useStyles = makeStyles((theme) => ({
     backgroundAttachment: "fixed",
     paddingTop: "130px",
     paddingBottom: theme.spacing(5),
+    display: "flex",
+    justifyContent: "center",
   },
   container: {
+    minWidth: "75vw",
     marginBottom: theme.spacing(5),
     padding: theme.spacing(5, 5, 1),
     backgroundColor: "white",
@@ -457,7 +461,7 @@ export default function WriteIn() {
     <div>
       <Header location="Admin Page" />
       <div className={classes.root}>
-        <Container maxWidth="lg" className={classes.container}>
+        <Box className={classes.container}>
           <div className={classes.title}>
             <Typography variant="h4" component="h4">
               Data Update and Create
@@ -585,7 +589,7 @@ export default function WriteIn() {
               </Button>
             </Paper>
           )}
-        </Container>
+        </Box>
       </div>
     </div>
   );

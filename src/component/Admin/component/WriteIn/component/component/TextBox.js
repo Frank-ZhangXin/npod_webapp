@@ -98,7 +98,7 @@ export default function TextBox({
           <input
             type="text"
             defaultValue={value}
-            onChange={handleChange}
+            onInput={handleChange}
             className={invalid ? classes.input_invalid : classes.input}
           />
         </Box>

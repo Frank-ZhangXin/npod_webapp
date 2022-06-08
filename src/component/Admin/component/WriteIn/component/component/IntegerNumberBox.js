@@ -90,7 +90,7 @@ export default function IntegerNumberBox({
           <input
             type="text"
             defaultValue={value}
-            onChange={handleChange}
+            onInput={handleChange}
             className={invalid ? classes.errInput : classes.input}
           />
         </Box>
