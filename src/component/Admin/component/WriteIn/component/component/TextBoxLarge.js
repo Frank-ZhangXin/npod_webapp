@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import Box from "@material-ui/core/Box";
+import TextCheckAndFix from "./TextCheckAndFix";
 
 const useStyles = makeStyles((theme) => ({
   inputLarge: {
@@ -65,11 +66,13 @@ export default function TextBoxLarge({
   const [invalid, setInvalid] = useState(false);
   const [labelChanged, setLabelChanged] = useState(false);
   const handleChange = (event) => {
-    if (isValid(event.target.value, restrict)) {
-      if (event.target.value === "") {
+    var newVal = TextCheckAndFix(event.target.value);
+    console.log("new value after check and fix", newVal);
+    if (isValid(newVal, restrict)) {
+      if (newVal === "") {
         setValue(null);
       } else {
-        setValue(event.target.value);
+        setValue(newVal);
       }
       setChanged(true);
       valid[1](true);
