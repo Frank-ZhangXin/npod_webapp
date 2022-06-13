@@ -155,7 +155,7 @@ export default function VerifyEmail(props) {
               color="primary"
               className={classes.submit}
             >
-              Send Verify Link
+              Send Verification Link
             </Button>
             <p className={classes.helperText}>
               <Typography variant="caption">
