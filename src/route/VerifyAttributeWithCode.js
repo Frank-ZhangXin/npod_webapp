@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import AuthHeader from "../component/AuthHeader";
 import { Auth } from "@aws-amplify/auth";
 import Container from "@material-ui/core/Container";
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VerifyAttributeWithCode(props) {
+function VerifyAttributeWithCode(props) {
   const classes = useStyles();
   // const [signedIn, setSignedIn] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -47,7 +48,6 @@ export default function VerifyAttributeWithCode(props) {
 
   async function checkAuth() {
     try {
-      const authRes = await Auth.currentAuthenticatedUser();
       handleVerify();
       countDownHandler();
       if (countDowm === 0) {
@@ -59,12 +59,12 @@ export default function VerifyAttributeWithCode(props) {
     }
   }
 
-  // useEffect(() => {
-  //   countDownHandler();
-  //   if (countDowm === 0) {
-  //     history.push("/");
-  //   }
-  // });
+  useEffect(() => {
+    countDownHandler();
+    if (countDowm === 0) {
+      history.push("/");
+    }
+  });
 
   const countDownHandler = () => {
     const timer = setTimeout(() => {
@@ -78,6 +78,7 @@ export default function VerifyAttributeWithCode(props) {
       console.log("Verify email result: ", response);
       setSuccess(true);
       setMessage("Now you can close this window or wait for redirecting.");
+      await Auth.signOut();
     } catch (error) {
       console.log("Verify email error: ", error);
       setSuccess(false);
@@ -114,3 +115,12 @@ export default function VerifyAttributeWithCode(props) {
     </div>
   );
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setSignedIn: (newSignedIn) =>
+      dispatch({ type: "SET_SIGNEDIN", value: newSignedIn }),
+  };
+};
+
+export default connect(mapDispatchToProps)(VerifyAttributeWithCode);
