@@ -24,6 +24,8 @@ exports.handler = (event, context, callback) => {
     "\r\n" +
     "Please verify your email address after first time login." +
     "\r\n" +
+    "(this is crucial if you ever need to reset your password)." +
+    "\r\n" +
     "Verify your email: https://portal.jdrfnpod.org/verifyemail";
   var body2 = "\r\n" + "Sent at " + dateTime + " UTC";
   if (event.request.userAttributes.email) {

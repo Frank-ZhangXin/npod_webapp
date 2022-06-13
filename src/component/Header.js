@@ -22,6 +22,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
 import LockIcon from "@material-ui/icons/Lock";
 import Tooltip from "@material-ui/core/Tooltip";
+import NotificationsActiveIcon from "@material-ui/icons/NotificationsActive";
 
 const HideOnScroll = (props) => {
   const trigger = useScrollTrigger({
@@ -55,6 +56,12 @@ const useStyles = makeStyles((theme) => ({
     color: "#FFF",
     marginRight: "1px",
   },
+  title3: {
+    flexGrow: 1,
+    fontWeight: 300,
+    color: "#FFF",
+    marginRight: "-11vw",
+  },
   icon: {
     marginRight: "3px",
   },
@@ -72,6 +79,17 @@ const useStyles = makeStyles((theme) => ({
     },
     textShadow: "0 0 20px black",
     textDecoration: "none",
+  },
+  authButton2: {
+    marginRight: theme.spacing(1),
+    color: "#FFF",
+    "&:hover": {
+      background: "none",
+    },
+    textShadow: "0 0 20px black",
+    textDecoration: "none",
+    borderRadius: "3px",
+    border: "2px solid #fcba03",
   },
   helpText: {
     padding: "10px",
@@ -99,117 +117,17 @@ function Header(props) {
       const authRes = await Auth.currentAuthenticatedUser();
       console.log("Check auth response ", authRes);
       props.setUserName(authRes.username);
+      props.setSignedIn(true);
+      if (authRes.attributes.email_verified) {
+        setEmailVerified(true);
+      } else {
+        setEmailVerified(false);
+      }
     } catch (error) {
       console.log("Check Auth error ", error);
+      props.setSignedIn(false);
     }
   }
-
-  // List all users in a group
-  let nextToken;
-  async function listAdminGroup(limit) {
-    let apiName = "AdminQueries";
-    let path = "/listUsersInGroup";
-    let myInit = {
-      queryStringParameters: {
-        groupname: "admin",
-        limit: limit,
-        token: nextToken,
-      },
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${(await Auth.currentSession())
-          .getAccessToken()
-          .getJwtToken()}`,
-      },
-    };
-    const { NextToken, ...rest } = await API.get(apiName, path, myInit);
-    nextToken = NextToken;
-    return rest;
-  }
-
-  // List all users
-  let nextToken2;
-  async function listUsers(limit) {
-    let apiName = "AdminQueries";
-    let path = "/listUsers";
-    let myInit = {
-      queryStringParameters: {
-        limit: limit,
-        token: nextToken2,
-      },
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${(await Auth.currentSession())
-          .getAccessToken()
-          .getJwtToken()}`,
-      },
-    };
-    const { NextToken, ...rest } = await API.get(apiName, path, myInit);
-    nextToken2 = NextToken;
-    return rest;
-  }
-
-  // Get a user
-  async function getUser(name) {
-    let apiName = "AdminQueries";
-    let path = "/getUser";
-    let myInit = {
-      queryStringParameters: {
-        username: name,
-      },
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${(await Auth.currentSession())
-          .getAccessToken()
-          .getJwtToken()}`,
-      },
-    };
-    const { ...rest } = await API.get(apiName, path, myInit);
-    return rest;
-  }
-
-  // Disable a user
-  async function disableUser(name) {
-    let apiName = "AdminQueries";
-    let path = "/disableUser";
-    let myInit = {
-      body: {
-        username: name,
-      },
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${(await Auth.currentSession())
-          .getAccessToken()
-          .getJwtToken()}`,
-      },
-    };
-    const { ...rest } = await API.post(apiName, path, myInit);
-    return rest;
-  }
-
-  // Enable a user
-  async function enableUser(name) {
-    let apiName = "AdminQueries";
-    let path = "/EnableUser";
-    let myInit = {
-      body: {
-        username: name,
-      },
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${(await Auth.currentSession())
-          .getAccessToken()
-          .getJwtToken()}`,
-      },
-    };
-    const { ...rest } = await API.post(apiName, path, myInit);
-    return rest;
-  }
-
-  //console.log("List all users", listUsers(50));
-  //console.log("Get a user", getUser("testuser2"));
-  //console.log("Enable a user", enableUser("testuser2"));
-  //console.log("Disable a user", disableUser("testuser2"));
 
   const classes = useStyles();
   const history = useHistory();
@@ -218,6 +136,7 @@ function Header(props) {
   const [title1Size, setTitle1Size] = useState("");
   const [title2Size, setTitle2Size] = useState("");
   const [avatarSize, setAvatarSize] = useState("");
+  const [emailVerified, setEmailVerified] = useState(false);
 
   const updateResponsiveWidth = () => {
     if (window.innerWidth >= 1920) {
@@ -274,6 +193,10 @@ function Header(props) {
     history.push("/changepassword");
   };
 
+  const goVerifyEmailHandler = () => {
+    history.push("/verifyemail");
+  };
+
   const accountOpenHandler = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -291,6 +214,15 @@ function Header(props) {
   const helpTextAfterSignIn = (
     <React.Fragment>
       <div className={classes.helpText}>Sign Out/ Account Management</div>
+    </React.Fragment>
+  );
+
+  const helpTextEmailVerify = (
+    <React.Fragment>
+      <div className={classes.helpText}>
+        Your email is not verified yet. Please go to Click here to veify it.
+        Otherwise you will lose the ability to recover your account.
+      </div>
     </React.Fragment>
   );
 
@@ -336,6 +268,26 @@ function Header(props) {
               ) : (
                 <div className={classes.title2}></div>
               )}
+
+              {!emailVerified && props.signedIn ? (
+                <div className={classes.title3}>
+                  <HeaderTooltip title={helpTextEmailVerify} placement="bottom">
+                    <IconButton
+                      className={classes.authButton2}
+                      aria-label="caseExplore"
+                      onClick={goVerifyEmailHandler}
+                    >
+                      <NotificationsActiveIcon />{" "}
+                      <Typography
+                        variant={avatarSize}
+                        style={{ fontWeight: 300, marginLeft: "5px" }}
+                      >
+                        Email Not Verified
+                      </Typography>
+                    </IconButton>
+                  </HeaderTooltip>
+                </div>
+              ) : null}
 
               {props.signedIn ? (
                 // After sign in

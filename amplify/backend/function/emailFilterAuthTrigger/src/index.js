@@ -38,7 +38,7 @@ exports.handler = (event, context, callback) => {
     context.done(null, event);
   } else {
     console.log("Blocking user and send out notice.");
-    var to = event.request.userAttributes.email;
+    var to = [event.request.userAttributes.email];
     var subject = "Your Sign-up on nPOD is received";
     var body =
       "Hi " +
@@ -49,7 +49,8 @@ exports.handler = (event, context, callback) => {
       "\r\n" +
       "Please check: https://portal.jdrfnpod.org/useragreement for details.";
     var body2 = "\r\n" + "Sent at " + dateTime + " UTC";
-    var toAdmin = "npod.aws@gmail.com";
+    //var toAdmin = "npod.aws@gmail.com";
+    var toAdmin = ["npod@pathology.ufl.edu", "npod.aws@gmail.com"];
     var subjectAdmin = "New User Sign-up on nPOD";
     var bodyAdmin =
       "New user just signed up." +
@@ -104,7 +105,7 @@ exports.handler = (event, context, callback) => {
 function sendEmail(to, subject, body, completedCallback) {
   var eParams = {
     Destination: {
-      ToAddresses: [to],
+      ToAddresses: to,
     },
     Message: {
       Body: {
