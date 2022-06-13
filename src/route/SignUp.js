@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -23,6 +23,12 @@ import Alert from "@material-ui/lab/Alert";
 import Fade from "@material-ui/core/Fade";
 import EmailIcon from "@material-ui/icons/Email";
 import AlertDialog from "../component/AlertDialog";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import ReactMarkdown from "react-markdown";
 
 function Copyright() {
   return (
@@ -77,6 +83,26 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "20px",
     fontSize: 12,
   },
+  userAgreementBox: {
+    display: "flex",
+  },
+  userAgreementDialog: {
+    width: "50vw",
+  },
+  userDisagree: {
+    color: "red",
+    marginLeft: "10px",
+  },
+  userAgree: {
+    color: "green",
+    marginLeft: "10px",
+  },
+  markDown: {
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(5),
+    paddingLeft: theme.spacing(15),
+    paddingRight: theme.spacing(15),
+  },
 }));
 
 export default function SignUp() {
@@ -103,8 +129,21 @@ export default function SignUp() {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState("Notice");
   const [alertContent, setAlertCotent] = useState("");
-  const [agreeFeed, setAgreeFeed] = useState(false);
+  const [agreement, setAgreement] = useState(true);
+  const [openUserAgreement, setOpenUserAgreement] = useState(false);
+  const [post, setPost] = useState("");
   const history = useHistory();
+
+  useEffect(() => {
+    const setTheText = async () => {
+      const fileName = "userAgreementText";
+      const file = await import(`../component/UserAgreement/${fileName}.txt`);
+      const response = await fetch(file.default);
+      const text = await response.text();
+      setPost(text);
+    };
+    setTheText();
+  }, []);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -237,6 +276,20 @@ export default function SignUp() {
     }
 
     try {
+      if (agreement !== true)
+        throw "Error: User has to agree the nPOD User Agreement prior the sign-up.";
+    } catch (error) {
+      console.log(error);
+      setErrorMsg(error);
+      showAlertHandler("fail");
+      setAlertTitle("Sign-up Error");
+      setAlertCotent(error);
+      setOpenAlert(true);
+
+      return;
+    }
+
+    try {
       const response = await Auth.signUp({
         username,
         password,
@@ -288,6 +341,20 @@ export default function SignUp() {
     history.push("/");
   };
 
+  const handleClickUserAgreement = () => {
+    setOpenUserAgreement(!openUserAgreement);
+  };
+
+  const handleUserAgree = () => {
+    setAgreement(true);
+    setOpenUserAgreement(false);
+  };
+
+  const handleUserDisagree = () => {
+    setAgreement(false);
+    setOpenUserAgreement(false);
+  };
+
   const emailValidation = (theEmail) => {
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -334,6 +401,26 @@ export default function SignUp() {
   return (
     <div>
       <AuthHeader location="Sign Up" />
+      <Dialog
+        open={openUserAgreement}
+        onClose={handleClickUserAgreement}
+        fullWidth="true"
+        maxWidth="md"
+      >
+        {/* <DialogTitle>{"nPOD User Agreement"}</DialogTitle> */}
+        <DialogContent>
+          <h1 align="center">nPOD User Agreement</h1>
+          <ReactMarkdown className={classes.markDown}>{post}</ReactMarkdown>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleUserDisagree} color="primary">
+            Disagree
+          </Button>
+          <Button onClick={handleUserAgree} color="primary" autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
       <AlertDialog
         title={alertTitle}
         contentText={alertContent}
@@ -552,6 +639,29 @@ export default function SignUp() {
                 <p className={classes.helperText}>
                   <Typography variant="caption">
                     Leave blank if you don't have one.
+                  </Typography>
+                </p>
+              </Grid>
+              <Grid item xs={12}>
+                <Box className={classes.userAgreementBox}>
+                  <Button
+                    variant="contained"
+                    onClick={handleClickUserAgreement}
+                  >
+                    nPOD User Agreement
+                  </Button>{" "}
+                  <p
+                    className={
+                      agreement ? classes.userAgree : classes.userDisagree
+                    }
+                  >
+                    {agreement ? "User agrees" : "User does not agree"}
+                  </p>
+                </Box>
+                <p className={classes.helperText}>
+                  <Typography variant="caption">
+                    Click to read "nPOD User Agreement" then select "Agree" or
+                    not.
                   </Typography>
                 </p>
               </Grid>

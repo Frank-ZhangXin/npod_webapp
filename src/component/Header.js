@@ -220,8 +220,8 @@ function Header(props) {
   const helpTextEmailVerify = (
     <React.Fragment>
       <div className={classes.helpText}>
-        Your email is not verified yet. Please go to Click here to veify it.
-        Otherwise you will lose the ability to recover your account.
+        Your email is not verified yet. Click here to veify it. Otherwise you
+        are unable to recover the account and receive notification.
       </div>
     </React.Fragment>
   );
