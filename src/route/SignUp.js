@@ -129,7 +129,7 @@ export default function SignUp() {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertTitle, setAlertTitle] = useState("Notice");
   const [alertContent, setAlertCotent] = useState("");
-  const [agreement, setAgreement] = useState(true);
+  const [agreement, setAgreement] = useState(false);
   const [openUserAgreement, setOpenUserAgreement] = useState(false);
   const [post, setPost] = useState("");
   const history = useHistory();
