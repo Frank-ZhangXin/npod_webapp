@@ -1,25 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Link from "@material-ui/core/Link";
-import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import AuthHeader from "..//AuthHeader";
-import { Paper } from "@material-ui/core";
-import Markdown from "./Markdown";
-import ReactMarkdown from "react-markdown";
-
-// TODO: Remember me function need further implementation.
-// For now, Cognito will let user opt in remembering device.
+import { Box, Grid, Paper } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import SupportContent from "./SupportContent";
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {"Copyright © "}
-      <Link color="inherit" href="https://nPOD.org/">
+      <a color="inherit" href="https://nPOD.org/">
         nPOD
-      </Link>{" "}
+      </a>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -28,95 +23,218 @@ function Copyright() {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    minHeight: "100vh",
+    // minHeight: "150vh",
     backgroundImage: `url(${
       process.env.PUBLIC_URL + "/assets/supportPage.jpg"
     })`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    //textAlign: "center",
-    //backgroundColor: "#282c34",
-    //flexDirection: "column",
-    //alignItems: "center",
-    //justifyContent: "center",
-    //color: "white",
-    //paddingTop: "130px",
-  },
-  paper: {
-    //marginTop: theme.spacing(2),
+    backgroundRepeat: "repeat-y",
+    // backgroundSize: "cover",
     display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    justifyContent: "flex-start",
   },
-  markDown: {
-    paddingTop: "50px",
-    paddingBottom: "50px",
-    paddingLeft: "100px",
-    paddingRight: "100px",
+
+  ul: {
+    listStyle: "none",
   },
-  container: {
-    display: "flex",
-    flexDirection: "column",
+  li: {
+    "&.active": {
+      "& a": {
+        color: "#333",
+        fontWeight: "500",
+        paddingLeft: "15px",
+        paddingTop: "3px",
+        paddingBottom: "3px",
+        borderLeft: "2px solid #000",
+      },
+    },
+    "& a": {
+      "&:hover": {
+        color: "#666",
+      },
+      "&:active": {
+        color: "#000",
+      },
+      fontSize: "20px",
+      paddingLeft: "15px",
+      paddingTop: "3px",
+      paddingBottom: "3px",
+      borderLeft: "1px solid #ccc",
+      textDecoration: "none",
+      color: "#ccc",
+      transition: "all 50ms ease-in-out",
+    },
   },
-  title: {
-    margin: theme.spacing(5),
-    fontWeight: 600,
-    alignSelf: "center",
-    color: "white",
-  },
-  copyRight: {
-    marginBottom: "50px",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-  alert: {
-    position: "fixed",
-    bottom: 0,
+  contentList: {
+    marginTop: "100px",
+    paddingTop: "40px",
+    paddingBottom: "40px",
     width: "100%",
+    // marginRight: "auto",
+    marginLeft: "3vw",
+    position: "sticky",
+    top: 50,
+
+    "& h2": {
+      paddingLeft: "35px",
+    },
+  },
+  articleContainer: {
+    marginTop: "100px",
+    width: "60%",
+    marginLeft: "12vw",
+    // marginRight: "auto",
+  },
+  articlePaper: {
+    padding: "50px 60px",
   },
 }));
 
 function Support(props) {
   const classes = useStyles();
-  const [post, setPost] = useState("");
+  const [viewTopTitle, setViewTopTitle] = useState();
 
   useEffect(() => {
-    const setTheText = async () => {
-      const fileName = "supportText";
-      const file = await import(`./${fileName}.txt`);
-      const response = await fetch(file.default);
-      const text = await response.text();
-      setPost(text);
-    };
-    setTheText();
+    const observer = new IntersectionObserver((entries) => {
+      // if (entry.isIntersecting === true) {
+      //   console.log("You're viewing " + entry.target.id);
+      // }
+      entries.forEach((entry) => {
+        const id = entry.target.getAttribute("id");
+        try {
+          if (entry.intersectionRatio > 0) {
+            document
+              .querySelector(`ul li a[href="/support#${id}"]`)
+              .parentElement.classList.add("active");
+          } else {
+            document
+              .querySelector(`ul li a[href="/support#${id}"]`)
+              .parentElement.classList.remove("active");
+          }
+        } catch (error) {}
+      });
+    });
+    document.querySelectorAll("section[id]").forEach((section) => {
+      observer.observe(section);
+    });
   }, []);
 
-  console.log("(out of useeffect)md file content", post);
-  const test_text = "# sample title";
+  const topics = ["how-to", "sign-up", "sign-in", "explore-cases"];
+
   return (
     <div>
       <AuthHeader location="Support" />
       <div className={classes.root}>
-        <Container Width="md" maxWidth="lg" className={classes.container}>
-          <Typography variant="h3" className={classes.title}>
-            SUPPORT
-          </Typography>
-          <Paper className={classes.paper}>
-            <ReactMarkdown className={classes.markDown}>{post}</ReactMarkdown>
+        <div className={classes.articleContainer}>
+          <Paper className={classes.articlePaper}>
+            <SupportContent />
           </Paper>
-          <Box mt={8} className={classes.copyRight}>
-            <Copyright />
-          </Box>
-        </Container>
+        </div>
+        <div>
+          <Paper className={classes.contentList}>
+            <h2>Topics of Content</h2>
+            <ul className={classes.ul}>
+              {/* {topics.map((topic) => (
+                <li className={classes.li}>
+                  <Link
+                    to={"/support#" + topic}
+                    onClick={() => {
+                      let target = document.getElementById({ topic });
+                      target &&
+                        target.scrollIntoView({
+                          behavior: "smooth",
+                          block: "start",
+                        });
+                    }}
+                  >
+                    {topic
+                      .split("-")
+                      .map((word) => word[0].toUpperCase() + word.slice(1))
+                      .join(" ")}
+                  </Link>
+                </li>
+              ))} */}
+              <li className={classes.li}>
+                <Link
+                  to="/support#introduction"
+                  onClick={() => {
+                    let target = document.getElementById("introduction");
+                    target &&
+                      target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                  }}
+                >
+                  Introduction
+                </Link>
+              </li>
+              <li className={classes.li}>
+                <Link
+                  to="/support#sign-up"
+                  onClick={() => {
+                    let target = document.getElementById("sign-up");
+                    target &&
+                      target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                  }}
+                >
+                  Sign Up
+                </Link>
+              </li>
+              <li className={classes.li}>
+                <Link
+                  to="/support#sign-in"
+                  onClick={() => {
+                    let target = document.getElementById("sign-in");
+                    target &&
+                      target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                  }}
+                >
+                  Sign In
+                </Link>
+              </li>
+              <li className={classes.li}>
+                <Link
+                  to="/support#explore-cases"
+                  onClick={() => {
+                    let target = document.getElementById("explore-cases");
+                    target &&
+                      target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                  }}
+                >
+                  Explore Cases
+                </Link>
+              </li>
+              <li className={classes.li}>
+                <Link
+                  to="/support#explore-datasets-and-submit-datasets"
+                  onClick={() => {
+                    let target = document.getElementById(
+                      "explore-datasets-and-submit-datasets"
+                    );
+                    target &&
+                      target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                  }}
+                >
+                  Explore/Submit Datasets
+                </Link>
+              </li>
+            </ul>
+          </Paper>
+        </div>
+
+        <div style={{ paddingBottom: "2000px" }}>blah</div>
       </div>
     </div>
   );
