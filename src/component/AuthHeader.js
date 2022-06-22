@@ -13,6 +13,7 @@ import { Helmet } from "react-helmet";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    backgroundColor: "#263238",
   },
   menuButton: {
     marginRight: theme.spacing(1),
@@ -22,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+  },
+  appBar: {
+    color: "transparent",
   },
 }));
 
@@ -38,7 +42,7 @@ export default function AuthHeader({ location }) {
       <Helmet>
         <title>nPOD {location}</title>
       </Helmet>
-      <AppBar position="static">
+      <AppBar position="static" color="primary">
         <Toolbar>
           <IconButton
             edge="start"
