@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${
       process.env.PUBLIC_URL + "/assets/supportPage.jpg"
     })`,
-    backgroundRepeat: "repeat-y",
+    backgroundRepeat: "repeat",
     // backgroundSize: "cover",
     display: "flex",
     justifyContent: "flex-start",
@@ -35,16 +35,20 @@ const useStyles = makeStyles((theme) => ({
 
   ul: {
     listStyle: "none",
+    width: "12vw",
   },
   li: {
+    paddingLeft: "25px",
+    textIndent: "-20px",
+    paddingTop: "10px",
+    paddingBottom: "10px",
+    borderLeft: "3px solid #ccc",
     "&.active": {
+      borderLeft: "3px solid #000",
       "& a": {
         color: "#333",
-        fontWeight: "500",
-        paddingLeft: "15px",
-        paddingTop: "3px",
-        paddingBottom: "3px",
-        borderLeft: "2px solid #000",
+        // fontWeight: "500",
+        paddingLeft: "20px",
       },
     },
     "& a": {
@@ -55,10 +59,7 @@ const useStyles = makeStyles((theme) => ({
         color: "#000",
       },
       fontSize: "20px",
-      paddingLeft: "15px",
-      paddingTop: "3px",
-      paddingBottom: "3px",
-      borderLeft: "1px solid #ccc",
+      paddingLeft: "20px",
       textDecoration: "none",
       color: "#ccc",
       transition: "all 50ms ease-in-out",
@@ -68,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "100px",
     paddingTop: "40px",
     paddingBottom: "40px",
+    paddingLeft: "20px",
     width: "100%",
     // marginRight: "auto",
     marginLeft: "3vw",
@@ -81,8 +83,8 @@ const useStyles = makeStyles((theme) => ({
   articleContainer: {
     marginTop: "100px",
     width: "60%",
-    marginLeft: "12vw",
-    // marginRight: "auto",
+    marginLeft: "10vw",
+    paddingBottom: "20vh",
   },
   articlePaper: {
     padding: "50px 60px",
@@ -118,7 +120,14 @@ function Support(props) {
     });
   }, []);
 
-  const topics = ["how-to", "sign-up", "sign-in", "explore-cases"];
+  const topics = [
+    "introduction",
+    "sign-up",
+    "sign-in",
+    "explore-cases",
+    "sample-inventory",
+    "explore-datasets-and-submit-datasets",
+  ];
 
   return (
     <div>
@@ -133,27 +142,31 @@ function Support(props) {
           <Paper className={classes.contentList}>
             <h2>Topics of Content</h2>
             <ul className={classes.ul}>
-              {/* {topics.map((topic) => (
-                <li className={classes.li}>
-                  <Link
-                    to={"/support#" + topic}
-                    onClick={() => {
-                      let target = document.getElementById({ topic });
-                      target &&
-                        target.scrollIntoView({
-                          behavior: "smooth",
-                          block: "start",
-                        });
-                    }}
-                  >
-                    {topic
-                      .split("-")
-                      .map((word) => word[0].toUpperCase() + word.slice(1))
-                      .join(" ")}
-                  </Link>
-                </li>
-              ))} */}
-              <li className={classes.li}>
+              {topics.map((topic) => {
+                const linkTo = "/support#" + topic;
+                const linkElement = topic;
+                return (
+                  <li className={classes.li}>
+                    <Link
+                      to={linkTo}
+                      onClick={() => {
+                        let target = document.getElementById(`${topic}`);
+                        target &&
+                          target.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                      }}
+                    >
+                      {topic
+                        .split("-")
+                        .map((word) => word[0].toUpperCase() + word.slice(1))
+                        .join(" ")}
+                    </Link>
+                  </li>
+                );
+              })}
+              {/* <li className={classes.li}>
                 <Link
                   to="/support#introduction"
                   onClick={() => {
@@ -215,6 +228,21 @@ function Support(props) {
               </li>
               <li className={classes.li}>
                 <Link
+                  to="/support#sample-inventory"
+                  onClick={() => {
+                    let target = document.getElementById("sample-inventory");
+                    target &&
+                      target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                      });
+                  }}
+                >
+                  Sample Inventory
+                </Link>
+              </li>
+              <li className={classes.li}>
+                <Link
                   to="/support#explore-datasets-and-submit-datasets"
                   onClick={() => {
                     let target = document.getElementById(
@@ -229,7 +257,7 @@ function Support(props) {
                 >
                   Explore/Submit Datasets
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </Paper>
         </div>
