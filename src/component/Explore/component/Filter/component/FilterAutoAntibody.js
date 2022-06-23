@@ -16,23 +16,38 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
-  gridContainer: {
-    width: "125%",
+  gridContainer: (props) => {
+    return props.aaEnable
+      ? {
+          maxWidth: "90%",
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingTop: "5px",
+          paddingBottom: "5px",
+          borderTop: "1px solid #ccc",
+          borderLeft: "1px solid #ccc",
+          borderRight: "3px solid #b8b8b8",
+          borderBottom: "4px solid #b8b8b8",
+          borderRadius: "5px",
+          marginBottom: "5px",
+        }
+      : {};
   },
   gridItem: {
-    width: "75%",
+    width: (props) => (props.aaEnable ? "85%" : "75%"),
   },
   title: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(1),
-    fontWeight: "900",
+    marginTop: theme.spacing(1),
+    // marginBottom: theme.spacing(1),
+    fontWeight: "600",
+    fontSize: "15px",
     display: "flex",
     alignItems: "center",
     flexWrap: "wrap",
   },
   switch: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1),
+    // marginTop: theme.spacing(2),
+    // marginBottom: theme.spacing(1),
   },
   boxContainer: {
     width: "100%",
@@ -66,7 +81,7 @@ const FilterTooltip = withStyles((theme) => ({
 }))(Tooltip);
 
 function FilterAutoAntiboy(props) {
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   const helpText = (
     <React.Fragment>
@@ -92,9 +107,9 @@ function FilterAutoAntiboy(props) {
       <Grid
         container
         direction="column"
-        direction="column"
         justify="center"
         alignItems="center"
+        className={classes.gridContainer}
       >
         <Grid item xs={12} className={classes.gridItem}>
           <Box display="flex">

@@ -18,8 +18,13 @@ import FilterTitle from "./component/FilterTitle";
 import FilterDataset from "./component/FilterDataset";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingBottom: theme.spacing(2),
+  root: {},
+  filter: {
+    maxHeight: "65vh",
+    // overflow: "auto",
+    overflowX: "hidden",
+    scrollbarGutter: "stable",
+    paddingBottom: theme.spacing(5),
   },
 }));
 
@@ -28,20 +33,22 @@ export default function Filter() {
   return (
     <div className={classes.root}>
       <FilterTitle />
-      <FilterCaseId />
-      <FilterDataset />
-      <FilterDonorType />
-      <FilterDiabetesDuration />
-      <FilterAgeOnset />
-      <FilterAge />
-      <FilterGender />
-      <FilterRace />
-      <FilterBMI />
-      <FilterCPeptide />
-      <FilterHbA1c />
-      <FilterAutoAntibody />
-      <FilterAutoAntibodyPositiveNumber />
-      <FilterInsulitis />
+      <div className={classes.filter}>
+        <FilterCaseId />
+        <FilterDataset />
+        <FilterDonorType />
+        <FilterDiabetesDuration />
+        <FilterAgeOnset />
+        <FilterAge />
+        <FilterGender />
+        <FilterRace />
+        <FilterBMI />
+        <FilterCPeptide />
+        <FilterHbA1c />
+        <FilterAutoAntibody />
+        <FilterAutoAntibodyPositiveNumber />
+        <FilterInsulitis />
+      </div>
     </div>
   );
 }

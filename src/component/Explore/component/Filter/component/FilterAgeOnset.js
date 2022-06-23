@@ -22,24 +22,38 @@ const useStyles = makeStyles((theme) => ({
     // marginTop: "15px",
     // marginBottom: "5px",
   },
-  gridContainer: {
-    marginTop: "-10px",
-    width: "100%",
+  gridContainer: (props) => {
+    return props.ageOnsetEnable
+      ? {
+          maxWidth: "90%",
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingTop: "5px",
+          paddingBottom: "5px",
+          borderTop: "1px solid #ccc",
+          borderLeft: "1px solid #ccc",
+          borderRight: "3px solid #b8b8b8",
+          borderBottom: "4px solid #b8b8b8",
+          borderRadius: "5px",
+          marginBottom: "5px",
+        }
+      : {};
   },
   gridItem: {
-    width: "75%",
+    width: (props) => (props.ageOnsetEnable ? "85%" : "75%"),
   },
   title: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(1),
-    fontWeight: "900",
+    marginTop: theme.spacing(1),
+    // marginBottom: theme.spacing(1),
+    fontWeight: "600",
+    fontSize: "15px",
     display: "flex",
     alignItems: "center",
     flexWrap: "wrap",
   },
   switch: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1),
+    // marginTop: theme.spacing(2),
+    // marginBottom: theme.spacing(1),
   },
   expand: {
     transform: "rotate(0deg)",
@@ -74,6 +88,22 @@ const useStyles = makeStyles((theme) => ({
     padding: "10px",
     textShadow: "0 0 20px white",
   },
+  activateGridContainer: {
+    maxWidth: "90%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    paddingTop: "5px",
+    paddingBottom: "5px",
+    borderTop: "1px solid #ccc",
+    borderLeft: "1px solid #ccc",
+    borderRight: "3px solid #b8b8b8",
+    borderBottom: "4px solid #b8b8b8",
+    borderRadius: "5px",
+    marginBottom: "5px",
+  },
+  activateGridItem: {
+    width: "85%",
+  },
 }));
 
 const FilterTooltip = withStyles((theme) => ({
@@ -86,8 +116,42 @@ const FilterTooltip = withStyles((theme) => ({
   },
 }))(Tooltip);
 
+const AntSwitch = withStyles((theme) => ({
+  root: {
+    width: 30,
+    height: 16,
+    padding: 0,
+    display: "flex",
+  },
+  switchBase: {
+    padding: 3,
+    color: theme.palette.grey[500],
+    "&$checked": {
+      transform: "translateX(12px)",
+      color: theme.palette.common.white,
+      "& + $track": {
+        opacity: 1,
+        backgroundColor: theme.palette.primary.main,
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
+  thumb: {
+    width: 12,
+    height: 12,
+    boxShadow: "none",
+  },
+  track: {
+    border: `1px solid ${theme.palette.grey[500]}`,
+    borderRadius: 16 / 2,
+    opacity: 1,
+    backgroundColor: theme.palette.common.white,
+  },
+  checked: {},
+}))(Switch);
+
 function FilterAge(props) {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const [expanded, setExpanded] = useState(false);
   const [newMin, setNewMin] = useState(props.ageOnsetMin);
   const [newMax, setNewMax] = useState(props.ageOnsetMax);
@@ -173,9 +237,9 @@ function FilterAge(props) {
       <Grid
         container
         direction="column"
-        direction="column"
         justify="center"
         alignItems="center"
+        className={classes.gridContainer}
       >
         <Grid item xs={12} className={classes.gridItem}>
           <Box display="flex">
@@ -215,12 +279,7 @@ function FilterAge(props) {
 
         {props.ageOnsetEnable && (
           <Grid item xs={12} className={classes.gridItem}>
-            <Grid
-              container
-              alignItems="center"
-              justify="space-between"
-              className={classes.gridContainer}
-            >
+            <Grid container alignItems="center" justify="space-between">
               <Grid item>
                 <Typography variant="body1" color="textPrimary">
                   {props.ageOnsetMin}
