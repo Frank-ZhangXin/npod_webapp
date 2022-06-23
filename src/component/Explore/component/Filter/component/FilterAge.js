@@ -17,29 +17,42 @@ import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 
 const useStyles = makeStyles((theme) => ({
   slider: {
-    width: "97%",
-    marginLeft: "5px",
+    width: "100%",
     // marginTop: "15px",
     // marginBottom: "5px",
   },
-  gridContainer: {
-    marginTop: "-10px",
-    width: "100%",
+  gridContainer: (props) => {
+    return props.ageEnable
+      ? {
+          maxWidth: "90%",
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingTop: "5px",
+          paddingBottom: "5px",
+          borderTop: "1px solid #ccc",
+          borderLeft: "1px solid #ccc",
+          borderRight: "3px solid #b8b8b8",
+          borderBottom: "4px solid #b8b8b8",
+          borderRadius: "5px",
+          marginBottom: "5px",
+        }
+      : {};
   },
   gridItem: {
-    width: "75%",
+    width: (props) => (props.ageEnable ? "85%" : "75%"),
   },
   title: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(1),
-    fontWeight: "900",
+    marginTop: theme.spacing(1),
+    // marginBottom: theme.spacing(1),
+    fontWeight: "600",
+    fontSize: "15px",
     display: "flex",
     alignItems: "center",
     flexWrap: "wrap",
   },
   switch: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1),
+    // marginTop: theme.spacing(2),
+    // marginBottom: theme.spacing(1),
   },
   expand: {
     transform: "rotate(0deg)",
@@ -87,7 +100,7 @@ const FilterTooltip = withStyles((theme) => ({
 }))(Tooltip);
 
 function FilterAge(props) {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const [expanded, setExpanded] = useState(false);
   const [newMin, setNewMin] = useState(props.ageMin);
   const [newMax, setNewMax] = useState(props.ageMax);
@@ -173,9 +186,9 @@ function FilterAge(props) {
       <Grid
         container
         direction="column"
-        direction="column"
         justify="center"
         alignItems="center"
+        className={classes.gridContainer}
       >
         <Grid item xs={12} className={classes.gridItem}>
           <Box display="flex">
@@ -215,12 +228,7 @@ function FilterAge(props) {
 
         {props.ageEnable && (
           <Grid item xs={12} className={classes.gridItem}>
-            <Grid
-              container
-              alignItems="center"
-              justify="space-between"
-              className={classes.gridContainer}
-            >
+            <Grid container alignItems="center" justify="space-between">
               <Grid item>
                 <Typography variant="body1" color="textPrimary">
                   {props.ageMin}

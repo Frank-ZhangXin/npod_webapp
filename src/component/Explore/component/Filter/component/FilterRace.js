@@ -12,17 +12,40 @@ import Switch from "@material-ui/core/Switch";
 const useStyles = makeStyles((theme) => ({
   multiSelect: {
     width: "100%",
+    paddingBottom: "10px",
+  },
+  gridContainer: (props) => {
+    return props.raceEnable
+      ? {
+          maxWidth: "90%",
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingTop: "5px",
+          paddingBottom: "5px",
+          borderTop: "1px solid #ccc",
+          borderLeft: "1px solid #ccc",
+          borderRight: "3px solid #b8b8b8",
+          borderBottom: "4px solid #b8b8b8",
+          borderRadius: "5px",
+          marginBottom: "5px",
+        }
+      : {};
   },
   gridItem: {
-    width: "75%",
+    width: (props) => (props.raceEnable ? "85%" : "75%"),
   },
   title: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(1),
-    fontWeight: "900",
+    marginTop: theme.spacing(1),
+    // marginBottom: theme.spacing(1),
+    fontWeight: "600",
+    fontSize: "15px",
     display: "flex",
     alignItems: "center",
     flexWrap: "wrap",
+  },
+  switch: {
+    // marginTop: theme.spacing(2),
+    // marginBottom: theme.spacing(1),
   },
   helpIcon: {
     fontSize: 18,
@@ -32,10 +55,6 @@ const useStyles = makeStyles((theme) => ({
   helpText: {
     padding: "10px",
     textShadow: "0 0 20px white",
-  },
-  switch: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -67,7 +86,7 @@ const options = [
 ];
 
 function FilterRace(props) {
-  const classes = useStyles();
+  const classes = useStyles(props);
 
   const helpText = (
     <React.Fragment>
@@ -89,9 +108,9 @@ function FilterRace(props) {
       <Grid
         container
         direction="column"
-        direction="column"
         justify="center"
         alignItems="center"
+        className={classes.gridContainer}
       >
         <Grid item xs={12} className={classes.gridItem}>
           <Box display="flex">

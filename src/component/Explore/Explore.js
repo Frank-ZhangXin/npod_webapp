@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${
       process.env.PUBLIC_URL + "/assets/caseExplorePage.jpg"
     })`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
+    backgroundRepeat: "repeat",
+    // backgroundSize: "cover",
     //textAlign: "center",
     //backgroundColor: "#282c34",
     //flexDirection: "column",
@@ -26,14 +26,14 @@ const useStyles = makeStyles((theme) => ({
     //justifyContent: "center",
     //color: "white",
     paddingTop: "130px",
+    paddingBottom: "50px",
   },
   filter_paper: {
-    marginBottom: "30px",
+    position: "sticky",
+    top: 50,
   },
   result_paper: {
     padding: theme.spacing(2),
-    position: "sticky",
-    top: 0,
   },
   grid: {
     width: "100%",
@@ -60,7 +60,7 @@ export default function Explore() {
       <Header location="Case Explore" />
 
       <div className={classes.root}>
-        <Grid container spacing={1} justify={"center"} className={classes.grid}>
+        <Grid container spacing={2} justify={"center"} className={classes.grid}>
           <Grid item xs={12} md={3} lg={3} xl={2}>
             <Paper
               elevation={3}

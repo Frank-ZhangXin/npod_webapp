@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
   ul: {
     listStyle: "none",
-    width: "12vw",
+    width: "230px",
   },
   li: {
     paddingLeft: "25px",
@@ -69,10 +69,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "100px",
     paddingTop: "40px",
     paddingBottom: "40px",
-    paddingLeft: "20px",
     width: "100%",
     // marginRight: "auto",
-    marginLeft: "3vw",
+    marginLeft: "2vw",
     position: "sticky",
     top: 50,
 
@@ -82,8 +81,10 @@ const useStyles = makeStyles((theme) => ({
   },
   articleContainer: {
     marginTop: "100px",
-    width: "60%",
-    marginLeft: "10vw",
+    width: "100%",
+    maxWidth: "68vw",
+    minWidth: "700px",
+    marginLeft: "5vw",
     paddingBottom: "20vh",
   },
   articlePaper: {
@@ -166,98 +167,6 @@ function Support(props) {
                   </li>
                 );
               })}
-              {/* <li className={classes.li}>
-                <Link
-                  to="/support#introduction"
-                  onClick={() => {
-                    let target = document.getElementById("introduction");
-                    target &&
-                      target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                  }}
-                >
-                  Introduction
-                </Link>
-              </li>
-              <li className={classes.li}>
-                <Link
-                  to="/support#sign-up"
-                  onClick={() => {
-                    let target = document.getElementById("sign-up");
-                    target &&
-                      target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                  }}
-                >
-                  Sign Up
-                </Link>
-              </li>
-              <li className={classes.li}>
-                <Link
-                  to="/support#sign-in"
-                  onClick={() => {
-                    let target = document.getElementById("sign-in");
-                    target &&
-                      target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                  }}
-                >
-                  Sign In
-                </Link>
-              </li>
-              <li className={classes.li}>
-                <Link
-                  to="/support#explore-cases"
-                  onClick={() => {
-                    let target = document.getElementById("explore-cases");
-                    target &&
-                      target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                  }}
-                >
-                  Explore Cases
-                </Link>
-              </li>
-              <li className={classes.li}>
-                <Link
-                  to="/support#sample-inventory"
-                  onClick={() => {
-                    let target = document.getElementById("sample-inventory");
-                    target &&
-                      target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                  }}
-                >
-                  Sample Inventory
-                </Link>
-              </li>
-              <li className={classes.li}>
-                <Link
-                  to="/support#explore-datasets-and-submit-datasets"
-                  onClick={() => {
-                    let target = document.getElementById(
-                      "explore-datasets-and-submit-datasets"
-                    );
-                    target &&
-                      target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start",
-                      });
-                  }}
-                >
-                  Explore/Submit Datasets
-                </Link>
-              </li> */}
             </ul>
           </Paper>
         </div>

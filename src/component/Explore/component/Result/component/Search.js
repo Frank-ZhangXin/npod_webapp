@@ -12,7 +12,7 @@ import { HashLoader } from "react-spinners";
 const useStyles = makeStyles((theme) => ({
   paper: {
     textAlign: "center",
-    minHeight: "31px",
+    minHeight: "2vh",
     "&:hover": {
       backgroundColor: theme.palette.primary.light,
       cursor: "pointer",
@@ -36,9 +36,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "3px",
     paddingRight: "5px",
     paddingBottom: "3px",
-    maxHeight: "85vh",
-    overflow: "auto",
-    overflowX: "hidden",
+    // maxHeight: "80vh",
+    // overflow: "auto",
+    // overflowX: "hidden",
   },
   progress: {
     display: "flex",

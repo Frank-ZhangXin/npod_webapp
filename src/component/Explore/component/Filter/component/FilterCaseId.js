@@ -12,17 +12,40 @@ import Switch from "@material-ui/core/Switch";
 const useStyles = makeStyles((theme) => ({
   multiSelect: {
     width: "100%",
+    paddingBottom: "10px",
+  },
+  gridContainer: (props) => {
+    return props.caseIDEnable
+      ? {
+          maxWidth: "90%",
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingTop: "5px",
+          paddingBottom: "5px",
+          borderTop: "1px solid #ccc",
+          borderLeft: "1px solid #ccc",
+          borderRight: "3px solid #b8b8b8",
+          borderBottom: "4px solid #b8b8b8",
+          borderRadius: "5px",
+          marginBottom: "5px",
+        }
+      : {};
   },
   gridItem: {
-    width: "75%",
+    width: (props) => (props.caseIDEnable ? "85%" : "75%"),
   },
   title: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(1),
-    fontWeight: "900",
+    marginTop: theme.spacing(1),
+    // marginBottom: theme.spacing(1),
+    fontWeight: "600",
+    fontSize: "15px",
     display: "flex",
     alignItems: "center",
     flexWrap: "wrap",
+  },
+  switch: {
+    // marginTop: theme.spacing(2),
+    // marginBottom: theme.spacing(1),
   },
   helpIcon: {
     fontSize: 18,
@@ -35,10 +58,6 @@ const useStyles = makeStyles((theme) => ({
   },
   helpText2: {
     color: "#FF0000",
-  },
-  switch: {
-    marginTop: theme.spacing(2),
-    marginBottom: theme.spacing(1),
   },
 }));
 
@@ -53,7 +72,7 @@ const FilterTooltip = withStyles((theme) => ({
 }))(Tooltip);
 
 function FilterCaseId(props) {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const options = [];
   for (let i = 0; i < props.allCaseId.length; i++) {
     options.push({ value: props.allCaseId[i], label: props.allCaseId[i] });
@@ -78,9 +97,9 @@ function FilterCaseId(props) {
       <Grid
         container
         direction="column"
-        direction="column"
         justify="center"
         alignItems="center"
+        className={classes.gridContainer}
       >
         <Grid item xs={12} className={classes.gridItem}>
           <Box display="flex">
