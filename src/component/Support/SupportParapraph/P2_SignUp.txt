@@ -10,7 +10,7 @@ The following page should show up. Please, fill out all the fields. This will he
 4. Enter your First and Last name
 5. Enter your institution
 6. Indicate if you have an approved nPOD project
-7. Read and click "Agree" in "NPOD USER AGREEMENT"
+7. Read and click "Agree" in ["NPOD USER AGREEMENT"](https://portal.jdrfnpod.org/useragreement)
 
 ![](/assets/suppportPage/p1/support_p1_1.png)
 

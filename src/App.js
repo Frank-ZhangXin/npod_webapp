@@ -19,7 +19,7 @@ import AdminPage from "./route/AdminPage";
 import WriteInPage from "./route/WriteInPage";
 import UserManagePage from "./route/UserManagePage";
 import SupportPage from "./route/SupportPage";
-import Contact from "./route/Contact";
+import ContactPage from "./route/ContactPage";
 import VerifyEmail from "./route/VerifyEmail";
 import VerifyAttributeWithCode from "./route/VerifyAttributeWithCode";
 import UserAgreementPage from "./route/UserAgreementPage";
@@ -77,7 +77,7 @@ function App(props) {
       <Route path="/admin/writein" component={WriteInPage} />
       <Route path="/admin/usermanage" component={UserManagePage} />
       <Route path="/support" component={SupportPage} />
-      <Route path="/contact" component={Contact} />
+      <Route path="/contact" component={ContactPage} />
       <Route path="/verify" component={VerifyAttributeWithCode} />
       <Route path="/useragreement" component={UserAgreementPage} />
       <Route path="/resetpassword" component={ResetPassword} />
