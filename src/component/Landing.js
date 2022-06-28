@@ -66,8 +66,15 @@ const useStyles = makeStyles((theme) => ({
   },
   linkText: {
     textDecoration: "none",
-    padding: "2px",
+    margin: "0 8px",
+    padding: "5px",
     color: "white",
+    border: "2px solid transparent",
+
+    "&:hover": {
+      border: "2px solid #ffffff",
+      borderRadius: "2px",
+    },
   },
   helpText: {
     padding: "10px",
@@ -228,8 +235,8 @@ function Landing(props) {
             <Typography variant={title4} className={classes.centerTitle4}>
               <Link onClick={handleSupport} className={classes.linkText}>
                 SUPPORT
-              </Link>{" "}
-              |{" "}
+              </Link>
+
               <Link onClick={handleContact} className={classes.linkText}>
                 CONTACT
               </Link>
