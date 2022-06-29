@@ -80,6 +80,19 @@ export default function SupportContent() {
       >
         {p6}
       </section>
+      <section
+        className={classes.section}
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+        }}
+      >
+        <p style={{ fontStyle: "italic" }}>
+          Prepared by University of Florida, nPOD{" "}
+          <span style={{ fontStyle: "normal" }}>|</span> Version 1{" "}
+          <span style={{ fontStyle: "normal" }}>|</span> July 2022
+        </p>
+      </section>
     </div>
   );
 }
