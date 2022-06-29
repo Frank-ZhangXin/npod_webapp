@@ -2,7 +2,7 @@
 
 To sign up, go to: <https://portal.jdrfnpod.org/signup>
 
-The following page should show up. Please, fill out all the fields. This will help the administrative team to identify your project and authorize your access to the portal.
+Please, fill out all the fields. This will help the administrative team identify your project and authorize your access to the portal.
 
 1. Choose a username
 2. Enter your university or institution email address
@@ -10,7 +10,9 @@ The following page should show up. Please, fill out all the fields. This will he
 4. Enter your First and Last name
 5. Enter your institution
 6. Indicate if you have an approved nPOD project
-7. Read and click "Agree" in ["NPOD USER AGREEMENT"](https://portal.jdrfnpod.org/useragreement)
+7. Read and click "Agree" in ["NPOD USER AGREEMENT\*"](https://portal.jdrfnpod.org/useragreement)
+
+\*Sign up can only be completed after you agree to the nPOD User agreement. You can always access a copy of the agreement [here](https://portal.jdrfnpod.org/useragreement)
 
 ![](/assets/suppportPage/p1/support_p1_1.png)
 
@@ -18,10 +20,15 @@ After you have filled out all required fields, click “SIGN UP.” A message wi
 
 ![](/assets/suppportPage/p1/support_p1_2.png)
 
-After you receive your confirmation email, please follow the steps to verify your email. This is crucial in case you ever need to reset your password. After logging in go to <https://portal.jdrfnpod.org/verifyemail>
+After you receive your confirmation email, please follow the steps to verify your email. **This is crucial in case you ever need to reset your password.** After logging in go to <https://portal.jdrfnpod.org/verifyemail>
 
-The link will redirect you to send yourself a verification link. Click “SEND VERIFICATION LINK.” You will receive an email on your inbox with a unique link to verify your email. After clicking the link you should see a confirmation that your email has been verified.
+Click “SEND VERIFICATION LINK”
+You will receive an email with a unique link to verify your email. After clicking the link, you should see confirmation that your email has been verified.
 
 ![](/assets/suppportPage/p1/support_p1_3.png)
+
+If you do not verify your email, you will be reminded to do so while using the portal. This will not restrict your access to the database features. However, an icon will appear at the top of the page until your email is verified.
+
+![](/assets/suppportPage/p1/support_p1_4.png)
 
 If you encounter any issues, please email <npod@pathology.ufl.edu>
