@@ -30,10 +30,6 @@ const useStyles = makeStyles((theme) => ({
   title: {
     paddingBottom: theme.spacing(2),
   },
-  title2: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
   centerBox: {
     maxHeight: "80vh",
     //width: "100%",
@@ -47,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     padding: "2vh",
   },
   container: {
+    marginTop: theme.spacing(4),
     maxHeight: "70vh",
     width: "100%",
   },
@@ -64,6 +61,11 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
     //minWidth: 650,
   },
+  tableRow: {
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
   greenVal: {
     color: "green",
   },
@@ -72,8 +74,28 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createData(name, email, email_verified, status, enabled) {
-  return { name, email, email_verified, status, enabled };
+function createData(
+  name,
+  email,
+  email_verified,
+  status,
+  enabled,
+  firstName,
+  lastName,
+  institution,
+  project
+) {
+  return {
+    name,
+    email,
+    email_verified,
+    status,
+    enabled,
+    firstName,
+    lastName,
+    institution,
+    project,
+  };
 }
 
 function createRows(uData) {
@@ -92,7 +114,53 @@ function createRows(uData) {
 
     let status = uData[i].UserStatus;
     let enabled = uData[i].Enabled === true ? "Enabled" : "Disabled";
-    let curRow = createData(name, email, email_verified, status, enabled);
+    let firstName;
+    try {
+      firstName = uData[i].Attributes.find(
+        (attr) => attr.Name === "custom:firstname"
+      ).Value;
+    } catch (err) {
+      firstName = "None";
+    }
+
+    let lastName;
+    try {
+      lastName = uData[i].Attributes.find(
+        (attr) => attr.Name === "custom:lastname"
+      ).Value;
+    } catch (err) {
+      lastName = "None";
+    }
+
+    let institution;
+    try {
+      institution = uData[i].Attributes.find(
+        (attr) => attr.Name === "custom:institution"
+      ).Value;
+    } catch (err) {
+      institution = "None";
+    }
+
+    let project;
+    try {
+      project = uData[i].Attributes.find(
+        (attr) => attr.Name === "custom:project"
+      ).Value;
+    } catch (err) {
+      project = "None";
+    }
+
+    let curRow = createData(
+      name,
+      email,
+      email_verified,
+      status,
+      enabled,
+      firstName,
+      lastName,
+      institution,
+      project
+    );
     rows.push(curRow);
   }
   return rows;
@@ -106,6 +174,8 @@ export default function WriteIn() {
   const [disableClicked, setDisableClicked] = useState(0);
   const [enableClicked, setEnableClicked] = useState(0);
   const [confirmClicked, setConfirmClicked] = useState(0);
+  const [showDetail, setShowDetail] = useState(false);
+  const [detailName, setDetailName] = useState();
 
   useEffect(() => {
     async function listUsers(limit, nextToken, allUsers = []) {
@@ -142,7 +212,7 @@ export default function WriteIn() {
       .catch((err) => console.error("list all users error: ", err));
   }, []);
 
-  const handleRowClick = (event, name) => {
+  const handleCheckboxClick = (event, name) => {
     const newSelected = new Set(selected);
     if (selected.has(name)) {
       newSelected.delete(name);
@@ -150,6 +220,11 @@ export default function WriteIn() {
       newSelected.add(name);
     }
     setSelected(newSelected);
+  };
+
+  const handleRowClick = (event, name) => {
+    setShowDetail((prev) => !prev);
+    setDetailName(name);
   };
 
   const handleDisableClick = (event) => {
@@ -199,8 +274,11 @@ export default function WriteIn() {
             <Box>
               <Paper className={classes.centerPaper}>
                 <div>
-                  <Typography variant="h5" className={classes.title}>
+                  <Typography variant="h4" className={classes.title}>
                     User Management
+                  </Typography>
+                  <Typography variant="subtitle">
+                    Tip: Click the row to show details
                   </Typography>
                 </div>
                 <div>
@@ -212,7 +290,7 @@ export default function WriteIn() {
                       <TableHead>
                         <TableRow>
                           <TableCell></TableCell>
-                          <TableCell>Name</TableCell>
+                          <TableCell>Username</TableCell>
                           <TableCell align="left">Email</TableCell>
                           <TableCell align="left">Email Verified</TableCell>
                           <TableCell align="left">Status</TableCell>
@@ -230,12 +308,33 @@ export default function WriteIn() {
                                   onClick={(event) =>
                                     handleRowClick(event, row.name)
                                   }
+                                  className={classes.tableRow}
                                 >
-                                  <TableCell>
+                                  <TableCell
+                                    onClick={(event) =>
+                                      handleCheckboxClick(event, row.name)
+                                    }
+                                  >
                                     <Checkbox checked={isRowSelected} />
                                   </TableCell>
                                   <TableCell component="th" scope="row">
-                                    {row.name}
+                                    {showDetail && detailName === row.name ? (
+                                      <div>
+                                        <b>Userame: </b>
+                                        {row.name}
+                                        <br></br>
+                                        <b>Full Name: </b>
+                                        {row.firstName} {row.lastName}
+                                        <br></br>
+                                        <b>Institution: </b>
+                                        {row.institution}
+                                        <br></br>
+                                        <b>Project: </b>
+                                        {row.project}
+                                      </div>
+                                    ) : (
+                                      row.name
+                                    )}
                                   </TableCell>
                                   <TableCell align="left">
                                     {row.email}
@@ -277,6 +376,7 @@ export default function WriteIn() {
                               );
                             })
                           : null}
+                        <TableRow>blah</TableRow>
                       </TableBody>
                     </Table>
                   </TableContainer>
