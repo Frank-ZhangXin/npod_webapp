@@ -176,8 +176,10 @@ export default function WriteIn() {
   const [confirmClicked, setConfirmClicked] = useState(0);
   const [showDetail, setShowDetail] = useState(false);
   const [detailName, setDetailName] = useState();
+  const [userCount, setUserCount] = useState();
 
   useEffect(() => {
+    let cycle = 1;
     async function listUsers(limit, nextToken, allUsers = []) {
       let apiName = "AdminQueries";
       let path = "/listUsers";
@@ -194,8 +196,9 @@ export default function WriteIn() {
         },
       };
       const { NextToken, ...rest } = await API.get(apiName, path, myInit);
-      allUsers.push(rest);
+      allUsers.push(rest.Users);
       nextToken = NextToken;
+
       // recursion to exhausting all users
       if (nextToken) {
         return listUsers(limit, nextToken, allUsers);
@@ -206,8 +209,13 @@ export default function WriteIn() {
     listUsers(null, null)
       .then((res) => {
         console.log("list all users: sucess");
-        setUserData(res[0].Users);
-        setUserRows(createRows(res[0].Users));
+        // res is a 2D array, each sub-array is users fetched in each round of recursion
+        let userList = res.reduce((merge, userSubList) => {
+          return [...merge, ...userSubList];
+        }, []);
+        setUserData(userList);
+        setUserCount(userList.length);
+        setUserRows(createRows(userList));
       })
       .catch((err) => console.error("list all users error: ", err));
   }, []);
@@ -277,9 +285,15 @@ export default function WriteIn() {
                   <Typography variant="h4" className={classes.title}>
                     User Management
                   </Typography>
-                  <Typography variant="subtitle">
-                    Tip: Click the row to show details
+                  <Typography variant="subtitle1">
+                    Tip: Click the row to show detail. Click one more time to
+                    fold detail.
                   </Typography>
+                  {userCount ? (
+                    <Typography variant="subtitle1">
+                      {userCount} users in total
+                    </Typography>
+                  ) : null}
                 </div>
                 <div>
                   <TableContainer
@@ -376,7 +390,6 @@ export default function WriteIn() {
                               );
                             })
                           : null}
-                        <TableRow>blah</TableRow>
                       </TableBody>
                     </Table>
                   </TableContainer>
