@@ -7,6 +7,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import { TableSortLabel } from "@material-ui/core";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -75,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function createData(
-  name,
+  username,
   email,
   email_verified,
   status,
@@ -86,7 +87,7 @@ function createData(
   project
 ) {
   return {
-    name,
+    username,
     email,
     email_verified,
     status,
@@ -101,7 +102,7 @@ function createData(
 function createRows(uData) {
   let rows = [];
   for (let i = 0; i < uData.length; i++) {
-    let name = uData[i].Username;
+    let username = uData[i].Username;
     let email;
     let email_verified;
     uData[i].Attributes.forEach((attr) => {
@@ -151,7 +152,7 @@ function createRows(uData) {
     }
 
     let curRow = createData(
-      name,
+      username,
       email,
       email_verified,
       status,
@@ -166,6 +167,34 @@ function createRows(uData) {
   return rows;
 }
 
+function descendingComparator(a, b, orderBy) {
+  const x = String(a[orderBy]).toLowerCase();
+  const y = String(b[orderBy]).toLowerCase();
+  if (y < x) {
+    return -1;
+  }
+  if (y > x) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator(order, orderBy) {
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
+
 export default function WriteIn() {
   const classes = useStyles();
   const [userData, setUserData] = useState();
@@ -177,6 +206,8 @@ export default function WriteIn() {
   const [showDetail, setShowDetail] = useState(false);
   const [detailName, setDetailName] = useState();
   const [userCount, setUserCount] = useState();
+  const [orderBy, setOrderBy] = useState();
+  const [order, setOrder] = useState();
 
   useEffect(() => {
     let cycle = 1;
@@ -247,6 +278,12 @@ export default function WriteIn() {
     setConfirmClicked((prev) => prev + 1);
   };
 
+  const handleSort = (property) => (event) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
   const isSelected = (name) => selected.has(name);
 
   const disableResult = useDisable(
@@ -304,41 +341,139 @@ export default function WriteIn() {
                       <TableHead>
                         <TableRow>
                           <TableCell></TableCell>
+                          <TableCell
+                            sortDirection={
+                              orderBy === "username" ? order : false
+                            }
+                          >
+                            <TableSortLabel
+                              active={orderBy === "username"}
+                              direction={orderBy === "username" ? order : "asc"}
+                              onClick={handleSort("username")}
+                            >
+                              Username
+                            </TableSortLabel>
+                          </TableCell>
+                          <TableCell
+                            sortDirection={
+                              orderBy === "firstName" ? order : false
+                            }
+                          >
+                            <TableSortLabel
+                              active={orderBy === "firstName"}
+                              direction={
+                                orderBy === "firstName" ? order : "asc"
+                              }
+                              onClick={handleSort("firstName")}
+                            >
+                              Firstname
+                            </TableSortLabel>
+                          </TableCell>
+                          <TableCell
+                            sortDirection={
+                              orderBy === "lastName" ? order : false
+                            }
+                          >
+                            <TableSortLabel
+                              active={orderBy === "lastName"}
+                              direction={orderBy === "lastName" ? order : "asc"}
+                              onClick={handleSort("lastName")}
+                            >
+                              Lastname
+                            </TableSortLabel>
+                          </TableCell>
+                          <TableCell
+                            sortDirection={orderBy === "email" ? order : false}
+                          >
+                            <TableSortLabel
+                              active={orderBy === "email"}
+                              direction={orderBy === "email" ? order : "asc"}
+                              onClick={handleSort("email")}
+                            >
+                              Email
+                            </TableSortLabel>
+                          </TableCell>
+                          <TableCell
+                            sortDirection={
+                              orderBy === "email_verified" ? order : false
+                            }
+                          >
+                            <TableSortLabel
+                              active={orderBy === "email_verified"}
+                              direction={
+                                orderBy === "email_verified" ? order : "asc"
+                              }
+                              onClick={handleSort("email_verified")}
+                            >
+                              Email Verified
+                            </TableSortLabel>
+                          </TableCell>
+                          <TableCell
+                            sortDirection={orderBy === "status" ? order : false}
+                          >
+                            <TableSortLabel
+                              active={orderBy === "status"}
+                              direction={orderBy === "status" ? order : "asc"}
+                              onClick={handleSort("status")}
+                            >
+                              Status
+                            </TableSortLabel>
+                          </TableCell>
+                          <TableCell
+                            sortDirection={
+                              orderBy === "enabled" ? order : false
+                            }
+                          >
+                            <TableSortLabel
+                              active={orderBy === "enabled"}
+                              direction={orderBy === "enabled" ? order : "asc"}
+                              onClick={handleSort("enabled")}
+                            >
+                              Enabled
+                            </TableSortLabel>
+                          </TableCell>
+                        </TableRow>
+                      </TableHead>
+
+                      {/* <TableHead>
+                        <TableRow>
+                          <TableCell></TableCell>
                           <TableCell>Username</TableCell>
                           <TableCell align="left">Email</TableCell>
                           <TableCell align="left">Email Verified</TableCell>
                           <TableCell align="left">Status</TableCell>
                           <TableCell align="left">Enabled</TableCell>
                         </TableRow>
-                      </TableHead>
+                      </TableHead> */}
                       <TableBody>
                         {useRows
-                          ? useRows.map((row) => {
-                              const isRowSelected = isSelected(row.name);
+                          ? stableSort(
+                              useRows,
+                              getComparator(order, orderBy)
+                            ).map((row) => {
+                              const isRowSelected = isSelected(row.username);
                               return (
                                 <TableRow
-                                  key={row.name}
+                                  key={row.username}
                                   hover
                                   onClick={(event) =>
-                                    handleRowClick(event, row.name)
+                                    handleRowClick(event, row.username)
                                   }
                                   className={classes.tableRow}
                                 >
                                   <TableCell
                                     onClick={(event) =>
-                                      handleCheckboxClick(event, row.name)
+                                      handleCheckboxClick(event, row.username)
                                     }
                                   >
                                     <Checkbox checked={isRowSelected} />
                                   </TableCell>
                                   <TableCell component="th" scope="row">
-                                    {showDetail && detailName === row.name ? (
+                                    {showDetail &&
+                                    detailName === row.username ? (
                                       <div>
                                         <b>Userame: </b>
-                                        {row.name}
-                                        <br></br>
-                                        <b>Full Name: </b>
-                                        {row.firstName} {row.lastName}
+                                        {row.username}
                                         <br></br>
                                         <b>Institution: </b>
                                         {row.institution}
@@ -347,8 +482,14 @@ export default function WriteIn() {
                                         {row.project}
                                       </div>
                                     ) : (
-                                      row.name
+                                      row.username
                                     )}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {row.firstName}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    {row.lastName}
                                   </TableCell>
                                   <TableCell align="left">
                                     {row.email}
