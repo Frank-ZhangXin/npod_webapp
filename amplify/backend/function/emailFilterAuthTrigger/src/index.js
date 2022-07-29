@@ -17,22 +17,38 @@ exports.handler = (event, context, callback) => {
   // Identify why was this function invoked
   if (event.request.userAttributes["cognito:user_status"] === "CONFIRMED") {
     event.response.emailSubject = "nPOD Email Verification Link";
-    // event.response.emailMessage =
-    //   "Please click following link to verify your email on nPOD " +
-    //   event.request.linkParameter +
-    //   " If you don't recognize this email, please discard it and contact nPOD admin.";
-    var verifyUrl =
-      "https://portal.jdrfnpod.org/verify?attribute=email&verify_code=" +
-      event.request.codeParameter;
-    event.response.emailMessage =
-      "Please click following link to verify your email: " +
-      `<a href="${verifyUrl}">${verifyUrl}</a>` +
-      "<br>" +
-      "If you don't recognize this email, please discard it and report to nPOD admin." +
-      "<br>" +
-      "Sent at " +
-      dateTime +
-      " UTC";
+
+    if (event.triggerSource === "CustomMessage_VerifyUserAttribute") {
+      var verifyUrl =
+        "https://portal.jdrfnpod.org/verify?attribute=email&verify_code=" +
+        event.request.codeParameter +
+        "&action=verifyattribute";
+      event.response.emailMessage =
+        "Please click following link to verify your email: " +
+        `<a href="${verifyUrl}">${verifyUrl}</a>` +
+        "<br>" +
+        "If you don't recognize this email, please discard it and report to nPOD admin." +
+        "<br>" +
+        "Sent at " +
+        dateTime +
+        " UTC";
+    }
+
+    if (event.triggerSource === "CustomMessage_ForgotPassword") {
+      var verifyUrl =
+        "https://portal.jdrfnpod.org/verify?attribute=password&verify_code=" +
+        event.request.codeParameter +
+        "&action=forgotpassword";
+      event.response.emailMessage =
+        "Please click following link to verify your email: " +
+        `<a href="${verifyUrl}">${verifyUrl}</a>` +
+        "<br>" +
+        "If you don't recognize this email, please discard it and report to nPOD admin." +
+        "<br>" +
+        "Sent at " +
+        dateTime +
+        " UTC";
+    }
 
     // Return to Amazon Cognito
     context.done(null, event);
