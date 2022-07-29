@@ -40,24 +40,16 @@ function VerifyAttributeWithCode(props) {
   const queryParams = new URLSearchParams(window.location.search);
   const attr = queryParams.get("attribute");
   const code = queryParams.get("verify_code");
+  const action = queryParams.get("action");
   const history = useHistory();
 
   useEffect(() => {
-    checkAuth();
-  }, []);
-
-  async function checkAuth() {
-    try {
+    if (action === "verifyattribute") {
       handleVerify();
-      countDownHandler();
-      if (countDowm === 0) {
-        history.push("/");
-      }
-    } catch (error) {
-      console.log("On verify page, this user has not signed in yet.");
+    } else if (action === "forgotpassword") {
       history.push("/resetpassword", { verify_code: code });
     }
-  }
+  }, []);
 
   useEffect(() => {
     countDownHandler();
