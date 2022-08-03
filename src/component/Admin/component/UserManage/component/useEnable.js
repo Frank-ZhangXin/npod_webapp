@@ -6,6 +6,7 @@ export default function useEnable(
   enableClicked,
   setUserData,
   setUserRows,
+  setUserCount,
   createRows
 ) {
   let result;
@@ -18,12 +19,16 @@ export default function useEnable(
           console.log("successfully enabled: ", name);
           result = true;
           // update user list
-          const listRes = listUsers(59);
-          listRes
+          listUsers(null, null)
             .then((res) => {
               console.log("list all users: sucess");
-              setUserData(res.Users);
-              setUserRows(createRows(res.Users));
+              // res is a 2D array, each sub-array is users fetched in each round of recursion
+              let userList = res.reduce((merge, userSubList) => {
+                return [...merge, ...userSubList];
+              }, []);
+              setUserData(userList);
+              setUserCount(userList.length);
+              setUserRows(createRows(userList));
             })
             .catch((err) => console.error("list all users error: ", err));
         })
@@ -59,12 +64,12 @@ export default function useEnable(
     return rest;
   }
 
-  async function listUsers(count, nextToken = null) {
-    console.log("listing all users after enable user");
+  async function listUsers(limit, nextToken, allUsers = []) {
     let apiName = "AdminQueries";
     let path = "/listUsers";
     let myInit = {
-      body: {
+      queryStringParameters: {
+        limit: limit,
         token: nextToken,
       },
       headers: {
@@ -75,8 +80,15 @@ export default function useEnable(
       },
     };
     const { NextToken, ...rest } = await API.get(apiName, path, myInit);
+    allUsers.push(rest.Users);
     nextToken = NextToken;
-    return rest;
+
+    // recursion to exhausting all users
+    if (nextToken) {
+      return listUsers(limit, nextToken, allUsers);
+    } else {
+      return allUsers;
+    }
   }
 
   return result;

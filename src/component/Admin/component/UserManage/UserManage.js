@@ -17,6 +17,8 @@ import { Auth, API } from "aws-amplify";
 import useDisable from "./component/useDisable";
 import useEnable from "./component/useEnable";
 import useConfirm from "./component/useConfirm";
+import useDelete from "./component/userDelete";
+import AlertDialog from "../../../AlertDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -203,11 +205,13 @@ export default function WriteIn() {
   const [disableClicked, setDisableClicked] = useState(0);
   const [enableClicked, setEnableClicked] = useState(0);
   const [confirmClicked, setConfirmClicked] = useState(0);
+  const [deleteClicked, setDeleteClicked] = useState(0);
   const [showDetail, setShowDetail] = useState(false);
   const [detailName, setDetailName] = useState();
   const [userCount, setUserCount] = useState();
   const [orderBy, setOrderBy] = useState();
   const [order, setOrder] = useState();
+  const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
     let cycle = 1;
@@ -278,6 +282,11 @@ export default function WriteIn() {
     setConfirmClicked((prev) => prev + 1);
   };
 
+  const handleDeleteClick = (event) => {
+    setDeleteClicked((prev) => prev + 1);
+    setOpenAlert(false);
+  };
+
   const handleSort = (property) => (event) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -291,6 +300,7 @@ export default function WriteIn() {
     disableClicked,
     setUserData,
     setUserRows,
+    setUserCount,
     createRows
   );
   const enableResult = useEnable(
@@ -298,6 +308,7 @@ export default function WriteIn() {
     enableClicked,
     setUserData,
     setUserRows,
+    setUserCount,
     createRows
   );
 
@@ -306,14 +317,33 @@ export default function WriteIn() {
     confirmClicked,
     setUserData,
     setUserRows,
+    setUserCount,
     createRows
   );
+  const deleteResult = useDelete(
+    [...selected],
+    deleteClicked,
+    setUserData,
+    setUserRows,
+    setUserCount,
+    createRows
+  );
+
   console.log("all user data: ", userData);
 
   return (
     <div>
       <Header location="Admin Page" />
       <div className={classes.root}>
+        <AlertDialog
+          title="Warning"
+          contentText="Delete these users permanently?"
+          open={openAlert}
+          setOpen={setOpenAlert}
+          btn1Name="Cancel"
+          btn2Name="Delete"
+          callBack={handleDeleteClick}
+        />
         <div>
           <Box className={classes.centerBox}>
             <Box>
@@ -541,6 +571,7 @@ export default function WriteIn() {
                       variant="contained"
                       color="primary"
                       className={classes.button}
+                      style={{ backgroundColor: "#339900" }}
                       onClick={handleEnableClick}
                     >
                       Enable
@@ -549,18 +580,32 @@ export default function WriteIn() {
                   <Box>
                     <Button
                       variant="contained"
-                      color="secondary"
+                      color="defult"
                       className={classes.button}
+                      style={{ backgroundColor: "#ffcc00" }}
                       onClick={handleDisableClick}
                     >
                       Disable
+                    </Button>
+                  </Box>
+                  <Box>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      style={{ backgroundColor: "#cc3300" }}
+                      onClick={(event) => {
+                        setOpenAlert(true);
+                      }}
+                    >
+                      Delete
                     </Button>
                   </Box>
 
                   <Box>
                     <Button
                       variant="contained"
-                      color="default"
+                      color="primary"
                       className={classes.button}
                       onClick={handleConfirmClick}
                     >
