@@ -6,6 +6,7 @@ export default function useConfirm(
   confirmClicked,
   setUserData,
   setUserRows,
+  setUserCount,
   createRows
 ) {
   let result;
@@ -19,12 +20,16 @@ export default function useConfirm(
           console.log("successfully confirm: ", name);
           result = true;
           // update user list
-          const listRes = listUsers(59);
-          listRes
+          listUsers(null, null)
             .then((res) => {
               console.log("list all users: sucess");
-              setUserData(res.Users);
-              setUserRows(createRows(res.Users));
+              // res is a 2D array, each sub-array is users fetched in each round of recursion
+              let userList = res.reduce((merge, userSubList) => {
+                return [...merge, ...userSubList];
+              }, []);
+              setUserData(userList);
+              setUserCount(userList.length);
+              setUserRows(createRows(userList));
             })
             .catch((err) => console.error("list all users error: ", err));
         })
@@ -60,12 +65,12 @@ export default function useConfirm(
     return rest;
   }
 
-  async function listUsers(count, nextToken = null) {
-    console.log("listing all users after disable user");
+  async function listUsers(limit, nextToken, allUsers = []) {
     let apiName = "AdminQueries";
     let path = "/listUsers";
     let myInit = {
-      body: {
+      queryStringParameters: {
+        limit: limit,
         token: nextToken,
       },
       headers: {
@@ -76,8 +81,15 @@ export default function useConfirm(
       },
     };
     const { NextToken, ...rest } = await API.get(apiName, path, myInit);
+    allUsers.push(rest.Users);
     nextToken = NextToken;
-    return rest;
+
+    // recursion to exhausting all users
+    if (nextToken) {
+      return listUsers(limit, nextToken, allUsers);
+    } else {
+      return allUsers;
+    }
   }
 
   return result;

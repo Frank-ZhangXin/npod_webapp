@@ -18,6 +18,7 @@ const awsServerlessExpressMiddleware = require("aws-serverless-express/middlewar
 const {
   addUserToGroup,
   removeUserFromGroup,
+  deleteUser,
   confirmUserSignUp,
   disableUser,
   enableUser,
@@ -110,6 +111,21 @@ app.post("/removeUserFromGroup", async (req, res, next) => {
       req.body.username,
       req.body.groupname
     );
+    res.status(200).json(response);
+  } catch (err) {
+    next(err);
+  }
+});
+
+app.post("/deleteUser", async (req, res, next) => {
+  if (!req.body.username) {
+    const err = new Error("username is required");
+    err.statusCode = 400;
+    return next(err);
+  }
+
+  try {
+    const response = await deleteUser(req.body.username);
     res.status(200).json(response);
   } catch (err) {
     next(err);

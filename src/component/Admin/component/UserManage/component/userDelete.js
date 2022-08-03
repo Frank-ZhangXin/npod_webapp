@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Auth, API } from "aws-amplify";
 
-export default function useDisable(
+export default function useDelete(
   nameList,
-  disableClicked,
+  deleteClicked,
   setUserData,
   setUserRows,
   setUserCount,
@@ -11,13 +11,12 @@ export default function useDisable(
 ) {
   let result;
   useEffect(() => {
-    // disable loop
     for (const idx in nameList) {
       const name = nameList[idx];
       let err;
-      const disableRes = disableUser(name)
+      const deleteRes = deleteUser(name)
         .then((res) => {
-          console.log("successfully disabled: ", name);
+          console.log("successfully deleted: ", name);
           result = true;
           // update user list
           listUsers(null, null)
@@ -34,7 +33,7 @@ export default function useDisable(
             .catch((err) => console.error("list all users error: ", err));
         })
         .catch((error) => {
-          console.error("failed to disable user: " + name, error);
+          console.error("failed to delete user: " + name, error);
           err = error;
           result = false;
         });
@@ -42,12 +41,12 @@ export default function useDisable(
         break;
       }
     }
-  }, [disableClicked]);
+  }, [deleteClicked]);
 
-  async function disableUser(name, nextToken = null) {
-    console.log("Disabling user ", name);
+  async function deleteUser(name, nextToken = null) {
+    console.log("Deleting user ", name);
     let apiName = "AdminQueries";
-    let path = "/disableUser";
+    let path = "/deleteUser";
     let myInit = {
       body: {
         username: name,
