@@ -220,7 +220,7 @@ export default function HospitalLabs_step5({
     {
       colum: "admission_ABG_HCO3",
       input: "floatBox",
-      restrict: { type: "float", range: [10, 35] },
+      restrict: { type: "float", range: [0, 35] },
       valid: useState(true),
       ops: [],
     },
