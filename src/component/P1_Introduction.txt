@@ -1,0 +1,5 @@
+# Introduction
+
+Welcome to the nPOD Data Portal! This site functions as a hub for accessing the latest information on cases collected by the biorepository, sample inventory currently available for study, and datasets provided by nPOD investigators and collaborators.
+
+The nPOD DataShare legacy site will be available for sample request placement and limited data access. The most accurate and up-to-date data will be accessible through the nPOD Data Portal; please view and download data from the new site as DataShare is in the process of being archived. We ask for your patience during this transition.

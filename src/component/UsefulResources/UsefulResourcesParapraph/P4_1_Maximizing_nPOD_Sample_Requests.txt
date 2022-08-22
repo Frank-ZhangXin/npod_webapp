@@ -1,0 +1,13 @@
+## Maximizing nPOD Sample Requests
+
+As any veteran nPOD investigator knows, every donor case is different.  While it is tempting to order based on donor classification alone, we encourage our investigators to be highly selective when requesting material for their studies and to take into consideration both the donor’s clinical history and histopathology report.  All nPOD case information is compiled in two distinct databases, Online Pathology and Data Portal.
+
+Our Online Pathology database, hosted by Aperio eSlide Manager, displays basic donor demographics alongside high quality 20x scanned brightfield images of pancreas, spleen, lymph node, and duodenum sections.  While not every sample type will be available for every case, several available blocks are screened by H&E and stained for insulin, glucagon, CD3, and other pertinent markers.  In the event that insulitis is found in Type 1 cases, all available pancreas blocks are screened.  Viewing images in Online Pathology gives you the ability to make informed decisions about which sample blocks are most relevant to your study.
+
+Our second database, nPOD Data Portal, supplies an abundance of clinical data, shared nPOD investigator data, and access to our sample request system.  Using Data Portal in conjunction with Online Pathology allows you to match cases of interest by age, gender, autoantibody status, BMI, and a host of other variables while viewing images from available samples at the same time.  In this webinar, the nPOD OPPC team will provide guidance and general tips for navigating both databases and ordering the samples that best suit your needs.
+
+You can to view a recording of the webinar or download [PowerPoint](https://www.jdrfnpod.org/wordpress/wp-content/uploads/2017/06/2016-Webinar-Maximizing-Your-nPOD-Sample-Request.pdf) presentation
+
+<div style="display:flex; justify-content: center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/9N-kyH5tauQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>

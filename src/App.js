@@ -24,6 +24,7 @@ import VerifyEmail from "./route/VerifyEmail";
 import VerifyAttributeWithCode from "./route/VerifyAttributeWithCode";
 import UserAgreementPage from "./route/UserAgreementPage";
 import ResetPassword from "./route/ResetPassword";
+import UsefulResourcesPage from "./route/UsefulResourcesPage";
 
 Amplify.configure({
   ...config,
@@ -81,6 +82,7 @@ function App(props) {
       <Route path="/verify" component={VerifyAttributeWithCode} />
       <Route path="/useragreement" component={UserAgreementPage} />
       <Route path="/resetpassword" component={ResetPassword} />
+      <Route path="/usefulresources" component={UsefulResourcesPage} />
     </Router>
   );
 }

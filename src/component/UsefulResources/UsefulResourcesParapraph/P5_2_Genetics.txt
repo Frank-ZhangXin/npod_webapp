@@ -1,0 +1,15 @@
+## Genetics in the prediction of Type 1 diabetes
+
+Evaluating the risk of developing Type 1 Diabetes depends on determining an individual’s HLA type and calculating the genetic risk score (T1D-GRS). You can download the high resolution HLA dataset for every nPOD case from this portal. To assist you in the interpretation of these data, you may want to learn about HLA Basic Terminology and Nomenclature by watching this Clinical Chemistry Trainee Council webinar:
+
+<div style="display:flex; justify-content: center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/VPtnjWLhC2U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+or getting familiar with these two studies:
+
+🌐 [Genetics of the HLA Region in the Prediction of Type 1 diabetes](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3233362/pdf/nihms335405.pdf)
+
+🌐 [Race-Specific Type 1 diabetes Risk for HLA-DR7 haplotypes](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3193161/pdf/nihms-322263.pdf)
+
+[Genetic risk score (GRS)](https://en.wikipedia.org/wiki/Polygenic_score), which facilitates the integration of complex genetic information, has been developed and incorporated into models and algorithms for classification, prognosis, and prediction of different diseases and responses to preventive and therapeutic interventions. Over 75 genetic loci within and outside of the HLA region influence type 1 diabetes risk. nPOD investigator [Dr. Richard Oram](https://www.exeter.ac.uk/research/diabetes/our-researchers/richardoram/) developed a cheap, simple method to assess T1D genetic risk score (T1D GRS) and developed the T1DT2D Prediction Model which you can try [here](https://www.diabetesgenes.org/t1dt2d-prediction-model/). The performance of this clinical diagnostic model was tested on the nPOD cohort. Curious about the outcome of this study? Read results [here](https://onlinelibrary.wiley.com/doi/epdf/10.1111/dme.14361). The T1D GRS will soon be available for the majority of nPOD cases through this portal.
