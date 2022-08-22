@@ -1,0 +1,45 @@
+# Protocol Resources for Life Scientists
+
+When doing life science research, the best way to save time and increase your efficiency is to use and modify existing protocols. It is rare that you will ever need to come up with your own protocol from scratch and preexisting protocols can save you time. Finding protocols when you don’t know where to look can be time consuming and monotonous. To save you the effort of searching the internet high and low trying to find a procedure to follow, here are 10 public incredibly useful protocol resources:
+
+<a href="http://www.protocol-online.org/prot/" target="_blank" style="margin-left: 30px">
+    <img style="display: inline-block; padding: 5px" src="http://www.protocol-online.org/images/logo_new1.jpg"></img>
+</a>
+
+**[PROTOCOL ONLINE](http://www.protocol-online.org/prot/)** is large database of life science protocols provided by suppliers, researchers and labs around the world. Protocols are divided into categories and subcategories making them easy to find.
+
+<a href="https://www.nature.com/nprot/" target="_blank" style="margin-left: 30px">
+    <img style="display: inline-block; padding: 10px" src="https://media.springernature.com/full/nature-cms/uploads/product/nprot/header-6f7afc72462868d038c151ea95d916ad.svg"></img>
+</a>
+
+**[NATURE PROTOCOLS](https://www.nature.com/nprot/)** is a collection of vigorously peer-reviewed protocols that have been approved for publishing. These protocols are not free to access; however, there are a variety of sponsored protocols available at no cost. And [NATURE PROTOCOL EXCHANGE](https://protocolexchange.researchsquare.com/) is an open source database so there are no fees for accessing protocols that have been uploaded by other users. There is no peer-review process that protocols go through before being published on the protocol exchange.
+
+<a href="https://www.jove.com/" target="_blank" style="margin-left: 30px;">
+    <img style="display: inline-block; padding: 10px; max-height: 40px" src="https://www.jove.com/img/logos/jove-logo-black.svg"></img>
+</a>
+
+**[JOURNAL of VISUALIZED EXPERIMENTS(JoVE)](https://www.jove.com/)** is a peer-reviewed journal that publishes visual experiments such as videos or images. The idea behind JoVE is that using visualized science, the reproducibility of protocols will be increased. Moreover, it will decrease the amount of time scientists spend learning new techniques because they will be able to follow along with the protocol visually. Many of the video protocols published on JoVE require a subscriptions, but there are also some available as open-access experiments. JoVE publishes a wide variety protocol videos. Some of the methodologies featured in their journal are newly discovered or updated, while others are standard, common techniques. JoVE publishes works related to both the life and physical sciences and they are organized by subjects such as biology, immunology, engineering, etc.
+
+<a href="https://openwetware.org/wiki/Main_Page" target="_blank" style="margin-left: 30px">
+    <img style="display: inline-block; padding: 10px; max-width: 300px" src="https://s3-us-west-2.amazonaws.com/oww-files-public/b/ba/OWW_Logo.png"></img>
+</a>
+
+**[OPEN WETWARE](https://openwetware.org/wiki/Main_Page)** is a wiki page set up in 2005 by graduate students at MIT. It was created to share discoveries and information in biology among members of the scientific community. The page features various sections including protocols, labs, and courses. You can add your lab to OpenWetWare by submitting a request to join. More importantly, protocols are free to access without creating an account. They’re organized by categories, but the site also has an option to search through their protocols so it is easy to find what you’re looking for.
+
+<a href="https://bio-protocol.org/Default.aspx" target="_blank" style="margin-left: 30px">
+    <img style="display: inline-block; padding: 8px; max-height: 40px" src="https://en-cdn.bio-protocol.org/images/header-logo.png"></img>
+</a>
+
+**[BIO-PROTOCOL](https://bio-protocol.org/Default.aspx)** is a site created by a group of biologists from Stanford. They saw an area where life science research was lacking—the reproducibility of experiments. The protocols are published and accessed at no cost, but must be related to the life sciences. They are detailed and peer-reviewed to ensure accuracy and reproducibility. Furthermore, there is a moderated question and answer forum associated with each protocol so if there are any areas of confusion, they can be addressed in a collaborative manner. You can access protocols by field of research or organism.
+
+<a href="https://www.protocols.io/" target="_blank" style="margin-left: 30px">
+    <img style="display: inline-block; padding: 5px; background-color: #0d72b5; max-width: 280px" src="https://www.protocols.io/img/learn-more/logo.png"></img>
+</a>
+
+**[PROTOCOL.IO](https://www.protocols.io/)** is an open-source database of protocols for the life sciences. What sets Protocols.io apart from other protocol databases is that users can clone and edit protocols when they find out something new and want to update what the previous author had written. There is also an application where you can access Protocols.io from your mobile device and follow the experiments step-by-step, marking each instruction complete as you go.
+
+<a href="https://scigine.com/blog/" target="_blank" style="margin-left: 30px">
+    <img style="display: inline-block; padding: 5px; max-width: 180px" src="https://scontent-lga3-2.xx.fbcdn.net/v/t31.18172-8/12916878_1168116979879487_3858649904318465774_o.png?_nc_cat=102&ccb=1-7&_nc_sid=174925&_nc_ohc=ZlG-0Dx7ssEAX83edPM&_nc_ht=scontent-lga3-2.xx&oh=00_AT-NwTKQAiQVOzf9VklUAUuoJTK0j389E5lxlgM9Fnt5IA&oe=6326AB35"></img>
+</a>
+
+**[SCIGINE](https://scigine.com/blog/)** is a scientific method search engine designed to search the web and its database of updated protocols for scientific methods. After finding a protocol, you can edit it to match exactly how you performed your experiment. 

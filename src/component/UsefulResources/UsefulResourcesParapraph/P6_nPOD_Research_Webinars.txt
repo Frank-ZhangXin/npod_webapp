@@ -1,0 +1,44 @@
+# nPOD Research Webinars
+
+A cornerstone of the nPOD program is collaboration, with an emphasis on identifying synergies among projects and actively promoting working groups. Our philosophy stems from recognition of the unique circumstances of nPOD, where many investigators are studying samples from the same patients. Real-time data sharing is proving of critical importance, especially for coordinated working groups. To facilitate data sharing and scientific hypothesis generation, we often hold online webinars.
+
+## 🎦 nPOD microRNA/Slices Webinar
+
+Small RNA molecules are important in gene regulation and can also be exploited as disease biomarkers in the circulation. The discussion will also include ongoing and future studies of nPOD donors, including in pancreas slices, with relevance for the regulation of key pathways related to type 1 diabetes.
+
+**Discussion led by**: Romano Regazzi, PhD and Alberto Pugliese, PhD.
+
+<div style="display:flex; justify-content: center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/H7320lGD2Kc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+## 🎦 Innate Immunity in Type 1 Diabetes in NPOD Donors
+
+In December 2020, nPOD held a stimulating webinar on the role of macrophages in type 1 diabetes. A number of people expressed interest on the topic, and it has been suggested to examine more broadly the contribution of the innate immune system to the pathogenesis of type 1 diabetes. Building on the above, we would like to organize a follow-up webinar discussion possibly leading to the organization of a collaborative working group. The group could conceive an experimental strategy for coordinated investigations of nPOD donors and apply innovative study methodologies. 
+
+**Discussion led by**:  Alberto Pugliese, MD, Sally Kent, PhD, Hubert Tse, PhD, Bruce Verchere, PhD, Xiangwei Xiao, MD, PhD and Rachel Friedman, PhD
+
+<div style="display:flex; justify-content: center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/S_UXFgcWkKo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+## 🎦 nPOD Case Deep Dive: case 6243
+
+The nPOD “Deep Dive” Case Study webinar series aims to unite the efforts, expertise, and resources of various Investigators within the nPOD cohort in order to paint a uniquely detailed and comprehensive picture of the development of type 1 diabetes in individual donors of interest. By “comparing notes” in this way, we believe this webinar series will provide a unique opportunity for a deep analysis of individual nPOD donors, based on the synthesis of each presenter’s area of expertise. Not only will this series allow each Investigator to add their “part” to the “whole”, it is also our hope that each nPOD Investigator will be able to walk away from the webinar with new insights from other studies that will inform their research going forward.
+This series will begin with the well-studied nPOD Case #6243. This donor was a 13-year-old male who had T1D for 5 years, was mIAA+, and as a “typical” T1D case with both insulitis and insulin-positive islets, will be a fantastic starting place for such an in-depth and collaborative analysis.
+
+<div style="display:flex; justify-content: center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/ocWd8RNx6sE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+## 🎦 Islet-Infiltrating T Cell Repertoire: Two Studies
+
+Broad Repertoire of Autoreactive T Cells from the Islets of Donors with Type 1 Diabetes:
+In this webinar, we will be discussing our recent study on the analyses of live, autoreactive CD4 and CD8 T cells derived directly from the islets of donors with type 1 diabetes (Babon et. al., Nature Medicine, 2016, PMID: 27798614). We will be discussing the islet samples, handling of the islets, isolation and growth of T cells from the islets, and analyses of their autoreactivity and function to known islet peptide targets and to modified peptides. We will also discuss current and future studies in these ongoing analyses.
+
+Islet-Derived CD4 T Cells Targeting Proinsulin in Human Autoimmune Diabetes:
+Type 1 diabetes results from chronic autoimmune destruction of insulin-producing beta cells within pancreatic islets. While insulin is a critical self-antigen in animal models of autoimmune diabetes, due to extremely limited access to pancreas samples, little is known about human antigenic targets for islet-infiltrating T-cells. In this webinar, we will show that proinsulin peptides are targeted by islet-infiltrating T-cells from type 1 diabetes patients. We identified hundreds of T-cells from inflamed pancreatic islets of three young type 1 diabetes organ donors with a short disease duration with high risk HLA genes using a direct T-cell receptor (TCR) sequencing approach without long-term cell culture. Among 85 selected CD4 TCRs tested for reactivity to preproinsulin peptides presented by diabetes-susceptible HLA-DQ and -DR molecules, one T-cell recognized C-peptide amino acids 19-35, and two clones from separate donors responded to insulin B chain amino acids 9-23 (B:9-23) which is known to be a critical self-antigen driving disease progress in animal models of autoimmune diabetes. These B:9-23-specific T-cells from islets responded to whole proinsulin and islets, while previously identified B:9-23 responsive clones from peripheral blood did not, highlighting the importance of proinsulin-specific T-cells in the islet microenvironment.
+
+<div style="display:flex; justify-content: center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/k5NXDbuxyhQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>

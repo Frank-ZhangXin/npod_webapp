@@ -1,0 +1,25 @@
+## RRID PORTAL: HOW-TO AND WHY IS IT NECESSARY?
+
+The [Resource Identification Portal](https://scicrunch.org/resources) promotes research resource identification, discovery, and reuse by providing a central location where researchers can obtain Research Resource Identifiers (RRIDs). RRIDs are unique identifiers for referencing a source material in manuscripts and are based on public information that is not personally identifiable. RRIDs can enable search engines to find all published papers in which an nPOD case was used, link readers to nPOD resources, and identify biosamples unambiguously. Thus, using RRID identifiers in addition to original nPOD case IDs ensures reproducibility of methods and data integration between many nPOD studies.  The use of RRIDs is highly encouraged and many investigators are already including them in recent manuscripts.
+
+### How to find the RRID for every nPOD case?
+
+#### Using nPOD Data Portal
+
+1. Go to “Explore Cases” page in the [nPOD Data Portal](https://portal.jdrfnpod.org/)
+
+2. Click the “DOWNLOAD” button at the top right corner of the page to download all available data for all cases.  If you refined your search using filtering criteria, only data for cases fitting those criteria will be downloaded. 
+![](/assets/usefulResourcesPage/useful_resources_p4_1.png)
+
+3. In the downloaded file, the 2nd column is populated with the RRID number for each case.
+![](/assets/usefulResourcesPage/useful_resources_p4_2.png)
+
+#### Using RRID Portal
+
+1. Go to the [RRID PORTAL](https://scicrunch.org/resources)
+2. Click “FIND BIOSAMPLES” and enter the nPOD Case ID in the search bar.
+3. Paste the RRID into your paper along with nPOD Case ID.
+
+### Does nPOD itself have an RRID?  The answer is YES!
+
+It is **nPOD; RRID:SCR_014641**. This RRID should be used in the acknowledgment section for all publications that report findings obtained through the use of nPOD samples and resources. 

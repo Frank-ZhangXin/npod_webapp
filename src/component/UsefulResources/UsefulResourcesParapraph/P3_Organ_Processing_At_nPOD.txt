@@ -1,0 +1,36 @@
+# Organ Processing at nPOD
+
+All organs are processed by the Organ Processing and Pathology Core (OPPC) according to established Standard Operating Procedures (SOPs). Like the nPOD Coordinating Center, our OPPC staff is on call 24/7/365 days per year. 
+
+## Pancreas
+
+Every pancreas is subjected to systematic anatomic dissection as shown in the diagram below. Our pancreas processing SOPs have evolved over time to accommodate new assays and technologies. For example, we now routinely generate live pancreas slices in addition to generating formalin fixed paraffin embedded (FFPE) and optimal cutting temperature medium embedded (OCT) blocks as well as vials of snap frozen tissue for RNA/DNA and protein extraction. We are actively working on establishing the islet isolation protocol in our lab with the goal of distributing isolated pancreatic islets from the pancreas of donors without diabetes, positive for autoantibodies without diabetes and those with Type 1 diabetes. For detailed organ processing SOPs click [here](https://www.jdrfnpod.org/wordpress/wp-content/uploads/2021/05/OPPC-SOP-57.7-Case-Processing.pdf).
+
+![](/assets/usefulResourcesPage/useful_resources_p3_1.png)
+
+## Pancreatic Tissue slices
+
+Are you interested in seeing how we generate fresh tissue slices for functional studies? No problem! You can watch the video we recorded for you.
+
+Youtube video is here.
+
+You can also learn more about pancreatic tissue slices from these two ground-breaking publications:
+
+🌐 [Pancreas tissue slices from organ donors enable in situ analysis of type 1 diabetes pathogenesis.](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7205437/)
+
+🌐 [Long-term culture of human pancreatic slices as a model to study real-time islet regeneration](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7324563/)
+
+&#10067; Did you know that you can generate tissue slices from mouse pancreas and use them in a variety of different studies? This highly informative video created by [the laboratory of nPOD investigator Dr. Edward Phelps](https://www.bme.ufl.edu/labs/phelps/ed-phelps/) will show you how.
+
+	
+🌐 [Observing islet function and islet-immune cell interactions in live pancreatic tissue slices](https://www.jove.com/v/62207/observing-islet-function-islet-immune-cell-interactions-live)
+
+## Spleen, Pancreatic Lymph Nodes, Duodenum
+
+As done with pancreas, tissue from these organs are processed in FFPE and OCT tissue blocks and vials with snap-frozen tissue. In addition, we isolate and cryopreserve total immune cell populations from spleen and PLNs.
+
+![](/assets/usefulResourcesPage/useful_resources_p3_2.png)
+
+![](/assets/usefulResourcesPage/useful_resources_p3_3.png)
+
+![](/assets/usefulResourcesPage/useful_resources_p3_4.png)

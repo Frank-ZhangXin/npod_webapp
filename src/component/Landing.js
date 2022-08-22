@@ -114,12 +114,8 @@ function Landing(props) {
     history.push("/explore");
   };
 
-  const handleSupport = () => {
-    history.push("/support");
-  };
-
-  const handleContact = () => {
-    history.push("/contact");
+  const handleUsefuleResources = () => {
+    history.push("/usefulresources");
   };
 
   const updateResponsiveWidth = () => {
@@ -226,6 +222,14 @@ function Landing(props) {
                     />
                   </LandingPageTooltip>
                 </Box>
+                <Box className={classes.centerButton}>
+                  <Link onClick={handleUsefuleResources}>
+                    <img
+                      style={{ width: imageWidth }}
+                      src="/assets/landingPageImages/UsefulResources.png"
+                    />
+                  </Link>
+                </Box>
               </Box>
             ) : (
               <div className={classes.centerButtonEmpty}>&nbsp;</div>
@@ -233,13 +237,13 @@ function Landing(props) {
           </Grid>
           <Grid item>
             <Typography variant={title4} className={classes.centerTitle4}>
-              <Link onClick={handleSupport} className={classes.linkText}>
+              <a href="/support" target="_blank" className={classes.linkText}>
                 SUPPORT
-              </Link>
+              </a>
 
-              <Link onClick={handleContact} className={classes.linkText}>
+              <a href="contact" target="_blank" className={classes.linkText}>
                 CONTACT
-              </Link>
+              </a>
             </Typography>
           </Grid>
         </Grid>
