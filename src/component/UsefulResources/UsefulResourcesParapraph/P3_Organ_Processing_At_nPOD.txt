@@ -8,11 +8,13 @@ Every pancreas is subjected to systematic anatomic dissection as shown in the di
 
 ![](/assets/usefulResourcesPage/useful_resources_p3_1.png)
 
-## Pancreatic Tissue slices
+## Pancreatic Tissue Slices
 
 Are you interested in seeing how we generate fresh tissue slices for functional studies? No problem! You can watch the video we recorded for you.
 
-Youtube video is here.
+<div style="display:flex; justify-content: center">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/9N-kyH5tauQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
 
 You can also learn more about pancreatic tissue slices from these two ground-breaking publications:
 

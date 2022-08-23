@@ -6,8 +6,8 @@ Our Online Pathology database, hosted by Aperio eSlide Manager, displays basic d
 
 Our second database, nPOD Data Portal, supplies an abundance of clinical data, shared nPOD investigator data, and access to our sample request system.  Using Data Portal in conjunction with Online Pathology allows you to match cases of interest by age, gender, autoantibody status, BMI, and a host of other variables while viewing images from available samples at the same time.  In this webinar, the nPOD OPPC team will provide guidance and general tips for navigating both databases and ordering the samples that best suit your needs.
 
-You can to view a recording of the webinar or download [PowerPoint](https://www.jdrfnpod.org/wordpress/wp-content/uploads/2017/06/2016-Webinar-Maximizing-Your-nPOD-Sample-Request.pdf) presentation
+You can view a recording of the webinar or download [PowerPoint](https://www.jdrfnpod.org/wordpress/wp-content/uploads/2017/06/2016-Webinar-Maximizing-Your-nPOD-Sample-Request.pdf) presentation
 
 <div style="display:flex; justify-content: center">
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/9N-kyH5tauQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/RvMcF6mx76Q" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
