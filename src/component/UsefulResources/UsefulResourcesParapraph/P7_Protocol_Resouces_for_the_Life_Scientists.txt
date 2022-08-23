@@ -3,7 +3,7 @@
 When doing life science research, the best way to save time and increase your efficiency is to use and modify existing protocols. It is rare that you will ever need to come up with your own protocol from scratch and preexisting protocols can save you time. Finding protocols when you don’t know where to look can be time consuming and monotonous. To save you the effort of searching the internet high and low trying to find a procedure to follow, here are 10 public incredibly useful protocol resources:
 
 <a href="http://www.protocol-online.org/prot/" target="_blank" style="margin-left: 30px">
-    <img style="display: inline-block; padding: 5px" src="http://www.protocol-online.org/images/logo_new1.jpg"></img>
+    <img style="display: inline-block; padding: 5px" src="/assets/usefulResourcesPage/useful_resources_p7_1.jpg"></img>
 </a>
 
 **[PROTOCOL ONLINE](http://www.protocol-online.org/prot/)** is large database of life science protocols provided by suppliers, researchers and labs around the world. Protocols are divided into categories and subcategories making them easy to find.
@@ -36,7 +36,7 @@ When doing life science research, the best way to save time and increase your ef
     <img style="display: inline-block; padding: 5px; background-color: #0d72b5; max-width: 280px" src="https://www.protocols.io/img/learn-more/logo.png"></img>
 </a>
 
-**[PROTOCOL.IO](https://www.protocols.io/)** is an open-source database of protocols for the life sciences. What sets Protocols.io apart from other protocol databases is that users can clone and edit protocols when they find out something new and want to update what the previous author had written. There is also an application where you can access Protocols.io from your mobile device and follow the experiments step-by-step, marking each instruction complete as you go.
+**[PROTOCOLS.IO](https://www.protocols.io/)** is an open-source database of protocols for the life sciences. What sets Protocols.io apart from other protocol databases is that users can clone and edit protocols when they find out something new and want to update what the previous author had written. There is also an application where you can access Protocols.io from your mobile device and follow the experiments step-by-step, marking each instruction complete as you go.
 
 <a href="https://scigine.com/blog/" target="_blank" style="margin-left: 30px">
     <img style="display: inline-block; padding: 5px; max-width: 180px" src="https://scontent-lga3-2.xx.fbcdn.net/v/t31.18172-8/12916878_1168116979879487_3858649904318465774_o.png?_nc_cat=102&ccb=1-7&_nc_sid=174925&_nc_ohc=ZlG-0Dx7ssEAX83edPM&_nc_ht=scontent-lga3-2.xx&oh=00_AT-NwTKQAiQVOzf9VklUAUuoJTK0j389E5lxlgM9Fnt5IA&oe=6326AB35"></img>
