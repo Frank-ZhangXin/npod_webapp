@@ -52,7 +52,6 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonBox: {
     display: "flex",
-    justifyContent: "flex-end",
     width: "80vw",
   },
   button: {
@@ -566,6 +565,19 @@ export default function WriteIn() {
                   </TableContainer>
                 </div>
                 <Box className={classes.buttonBox}>
+                  <Box flexGrow={1}>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.button}
+                      style={{ backgroundColor: "#cc3300" }}
+                      onClick={(event) => {
+                        setOpenAlert(true);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
                   <Box>
                     <Button
                       variant="contained"
@@ -586,19 +598,6 @@ export default function WriteIn() {
                       onClick={handleDisableClick}
                     >
                       Disable
-                    </Button>
-                  </Box>
-                  <Box>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      className={classes.button}
-                      style={{ backgroundColor: "#cc3300" }}
-                      onClick={(event) => {
-                        setOpenAlert(true);
-                      }}
-                    >
-                      Delete
                     </Button>
                   </Box>
 
