@@ -40,6 +40,6 @@ If you do not have an account, use the [Online Pathology Password Request Form](
 
 ![](/assets/suppportPage/p1/support_p4_7.png)
 
-Upon your login, you will be taken directly to the image viewer where you will see the image tray with all available images for the case.
+Upon your login, you will be taken directly to the image viewer where you will see the image tray with all available images for the case. Please review [this user guide](https://www.jdrfnpod.org/wordpress/wp-content/uploads/2018/06/nPOD-Online-Pathology-User-Guide-2018-Update.pdf) to aid in your navigation of Aperio eSlide Manager.
 
 ![](/assets/suppportPage/p1/support_p4_8.png)
