@@ -554,7 +554,121 @@ async function create_RNA(columns) {
           reject(error);
         } else {
           console.log(
-            `[Write Database][Insert new HLA] The case ${columns.case_id} was inserted.`
+            `[Write Database][Insert new RNA] The case ${columns.case_id} was inserted.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// Create new samples
+async function create_sample(columns) {
+  let keys = "";
+  let values = "";
+  for (let [key, value] of Object.entries(columns)) {
+    if (value !== null) {
+      columns[key] = "'" + value + "'";
+    }
+    if (keys === "") {
+      keys = key;
+    } else {
+      keys += "," + key;
+    }
+    if (values === "") {
+      values = columns[key];
+    } else {
+      values += "," + columns[key];
+    }
+  }
+  // increment vial_id from current max value plus 1
+  const vial_id_value = "(SELECT MAX(st.vial_id) FROM samples_test as st)+1,";
+  keys = "vial_id," + keys;
+  values = vial_id_value + values;
+  const sql = `INSERT INTO samples_test(${keys}) VALUES(${values})`;
+  console.log("sql:", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Write Database][Insert new samples] The case ${columns.case_id} was inserted.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// Check if sample exists
+async function check_sample_exist(case_id) {
+  console.log("Checking samples table case " + case_id + " exist");
+  const sql = `SELECT COUNT(1) FROM samples_test WHERE case_id='${case_id}'`;
+  console.log("sql", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(`[Fetch samples] check case ${case_id} exists.`);
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// get all vial_id by one case_id (multiple samples records scenario)
+async function get_all_vial_id(case_id) {
+  console.log("From samples table, getting all vial_id of the case " + case_id);
+  const sql = `SELECT vial_id FROM samples_test WHERE case_id='${case_id}'`;
+  console.log("sql", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch samples] Fetching all vial_id of the case ${case_id} was fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// Get one sample row all columns values
+async function get_one_sample_all_column_values(case_id, vial_id, columns) {
+  let columnStr = "";
+  for (let i = 0; i < columns.length; i++) {
+    if (i === 0) {
+      columnStr = columns[i];
+    } else {
+      columnStr = columnStr + "," + columns[i];
+    }
+  }
+  //console.log(columnStr);
+  const sql = `SELECT ${columnStr} FROM samples_test WHERE case_id='${case_id}' AND vial_id='${vial_id}'`;
+  console.log("sql: " + sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch samples columns] Sample ${vial_id} Case ${case_id} column ${columnStr} was fetched.`
           );
           resolve(result);
         }
@@ -588,4 +702,8 @@ module.exports = {
   get_all_RNA_id: get_all_RNA_id,
   get_one_RNA_all_column_values: get_one_RNA_all_column_values,
   create_RNA: create_RNA,
+  create_sample: create_sample,
+  check_sample_exist: check_sample_exist,
+  get_all_vial_id: get_all_vial_id,
+  get_one_sample_all_column_values: get_one_sample_all_column_values,
 };
