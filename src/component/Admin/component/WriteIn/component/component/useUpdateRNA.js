@@ -55,7 +55,7 @@ export default function useUpdateRNA(
         setUpdateMsg("[RNA] Update is failed");
         console.log("[RNA Update] Amplify API call error", error);
         console.log("[RNA] Update fail case ID", the_case_id);
-        console.log("[RNA] Update fail AAb ID", the_RNA_id);
+        console.log("[RNA] Update fail RNA ID", the_RNA_id);
         console.log("[RNA] Update fail columns", columnNames);
         console.log("[RNA] Update fail values", columnValues);
       });

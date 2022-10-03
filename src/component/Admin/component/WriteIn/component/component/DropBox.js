@@ -27,7 +27,11 @@ export default function DropBox({ name, value, setValue, setChanged, ops }) {
     setDefaultValue(selected);
     setValue(selected.value);
     // Dropdown list for selecting AAb and RNA table record doesn't need to be set as "changed"
-    if (name !== "RNA ID List" && name !== "AAb ID List") {
+    if (
+      name !== "RNA ID List" &&
+      name !== "AAb ID List" &&
+      name !== "Vial ID List"
+    ) {
       setLabelChanged(true);
       setChanged(true);
     }

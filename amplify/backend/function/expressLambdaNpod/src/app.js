@@ -43,6 +43,10 @@ var {
   get_all_RNA_id,
   get_one_RNA_all_column_values,
   create_RNA,
+  create_sample,
+  check_sample_exist,
+  get_all_vial_id,
+  get_one_sample_all_column_values,
 } = require("./service/createDatabase");
 
 var {
@@ -51,9 +55,14 @@ var {
   update_AAb,
   update_HLA,
   update_RNA,
+  update_sample,
 } = require("./service/updateDatabase");
 
-var { testPoolForDelete, delete_case } = require("./service/deleteDatabase");
+var {
+  testPoolForDelete,
+  delete_case,
+  delete_sample,
+} = require("./service/deleteDatabase");
 
 // declare a new express app
 var app = express();
@@ -363,6 +372,44 @@ app.post("/db/create_RNA", function (req, res) {
   create_RNA(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
 });
 
+// create a new sample
+app.post("/db/create_sample", function (req, res) {
+  console.log("Creating new sample...");
+  console.log(req.body);
+  create_sample(req.body["columns"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
+// check sample exist
+app.post("/db/check_sample_exist", function (req, res) {
+  console.log("Checking sample exist...");
+  console.log(req.body);
+  check_sample_exist(req.body["case_id"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
+// get all RNA_id by one case_id
+app.post("/db/get_all_vial_id", function (req, res) {
+  console.log("Getting all vial_id...");
+  console.log(req.body);
+  get_all_vial_id(req.body["case_id"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
+// get one sample all column values
+app.post("/db/get_one_sample_all_column_values", function (req, res) {
+  console.log("Getting RNA object case.");
+  console.log(req.body);
+  get_one_sample_all_column_values(
+    req.body["case_id"],
+    req.body["vial_id"],
+    req.body["columns"]
+  ).then((promisedRes) => res.send(promisedRes));
+});
+
 /****************************
  * Example put method *
  ****************************/
@@ -403,6 +450,16 @@ app.put("/db/update_RNA", function (req, res) {
   update_RNA(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
 });
 
+// Update sample
+app.put("/db/update_sample", function (req, res) {
+  // Add your code here
+  console.log("Updating sample.");
+  console.log(req.body);
+  update_sample(req.body["columns"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
 app.put("/db/test_db", function (req, res) {
   // Add your code here
   console.log("Testing database connection...");
@@ -421,9 +478,18 @@ app.put("/db/test_db", function (req, res) {
  * Example delete method *
  ****************************/
 
+// delete case
 app.delete("/db/delete_case", function (req, res) {
   console.log("deleting cases.");
   delete_case(req.body["case_id"]).then((promisedRes) => res.send(promisedRes));
+});
+
+// delete sample
+app.delete("/db/delete_sample", function (req, res) {
+  console.log("deleting sample.");
+  delete_sample(req.body["case_id"], req.body["vial_id"]).then((promisedRes) =>
+    res.send(promisedRes)
+  );
 });
 
 app.delete("/db/test_db", function (req, res) {

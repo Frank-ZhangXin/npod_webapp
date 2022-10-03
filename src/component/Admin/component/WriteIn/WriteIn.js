@@ -20,6 +20,7 @@ import HospitalLabs_step5 from "./component/HospitalLabs_step5";
 import AAb_step6 from "./component/AAb_step6";
 import HLA_step7 from "./component/HLA_step7";
 import RNA_step8 from "./component/RNA_step8";
+import Sample_step9 from "./component/Sample_step9";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,6 +78,7 @@ function getSteps() {
     "AAb",
     "HLA",
     "RNA",
+    "Sample",
   ];
 }
 
@@ -91,10 +93,12 @@ export default function WriteIn() {
   const [AAbExist, setAAbExist] = useState(false);
   const [HLAExist, setHLAExist] = useState(false);
   const [RNAExist, setRNAExist] = useState(false);
+  const [sampleExist, setSampleExist] = useState(false);
   const [createCase, setCreateCase] = useState(false);
   const [createAAb, setCreateAAb] = useState(false);
   const [createHLA, setCreateHLA] = useState(false);
   const [createRNA, setCreateRNA] = useState(false);
+  const [createSample, setCreateSample] = useState(false);
   const [update, setUpdate] = useState(false);
   const [changed, setChanged] = useState(false);
   const [accept, setAccept] = useState(false);
@@ -114,6 +118,9 @@ export default function WriteIn() {
   const [accept7, setAccept7] = useState(false);
   const [update8, setUpdate8] = useState(false);
   const [accept8, setAccept8] = useState(false);
+  const [update9, setUpdate9] = useState(false);
+  const [accept9, setAccept9] = useState(false);
+  const [delete9, setDelete9] = useState(false);
 
   function getStepContent(step) {
     switch (step) {
@@ -222,6 +229,20 @@ export default function WriteIn() {
             setChanged={setChanged}
           />
         );
+      case 9:
+        return (
+          <Sample_step9
+            caseId={caseId}
+            exist={sampleExist}
+            setExist={setSampleExist}
+            create={createSample}
+            update={update9}
+            deleting={delete9}
+            changed={changed}
+            setAccept={setAccept9}
+            setChanged={setChanged}
+          />
+        );
       default:
         return "Unknown step";
     }
@@ -244,9 +265,17 @@ export default function WriteIn() {
     setAccept5(false);
     setUpdate6(false);
     setAccept6(false);
+    setUpdate7(false);
+    setAccept7(false);
+    setUpdate8(false);
+    setAccept8(false);
+    setUpdate9(false);
+    setAccept9(false);
+    setDelete9(false);
     setCreateAAb(false);
     setCreateHLA(false);
     setCreateRNA(false);
+    setCreateSample(false);
   };
 
   const totalSteps = () => {
@@ -283,7 +312,17 @@ export default function WriteIn() {
         setAccept5(false);
         setUpdate6(false);
         setAccept6(false);
+        setUpdate7(false);
+        setAccept7(false);
+        setUpdate8(false);
+        setAccept8(false);
+        setUpdate9(false);
+        setAccept9(false);
+        setDelete9(false);
         setCreateAAb(false);
+        setCreateHLA(false);
+        setCreateRNA(false);
+        setCreateSample(false);
         setChanged(false);
       }
     } else {
@@ -304,9 +343,13 @@ export default function WriteIn() {
       setAccept7(false);
       setUpdate8(false);
       setAccept8(false);
+      setUpdate9(false);
+      setAccept9(false);
+      setDelete9(false);
       setCreateAAb(false);
       setCreateHLA(false);
       setCreateRNA(false);
+      setCreateSample(false);
       setChanged(false);
     }
   };
@@ -328,6 +371,16 @@ export default function WriteIn() {
 
   const handleCreateRNA = () => {
     setCreateRNA(true);
+    setChanged(false);
+  };
+
+  const handleCreateSample = () => {
+    setCreateSample(true);
+    setChanged(false);
+  };
+
+  const handleDeleteSample = () => {
+    setDelete9(true);
     setChanged(false);
   };
 
@@ -354,9 +407,13 @@ export default function WriteIn() {
         setAccept7(false);
         setUpdate8(false);
         setAccept8(false);
+        setUpdate9(false);
+        setAccept9(false);
+        setDelete9(false);
         setCreateAAb(false);
         setCreateHLA(false);
         setCreateRNA(false);
+        setCreateSample(false);
         setChanged(false);
       }
     } else if (activeStep === 1) {
@@ -375,6 +432,8 @@ export default function WriteIn() {
       setUpdate7(true);
     } else if (activeStep === 8) {
       setUpdate8(true);
+    } else if (activeStep === 9) {
+      setUpdate9(true);
     }
 
     setChanged(false);
@@ -399,9 +458,12 @@ export default function WriteIn() {
     setAccept7(false);
     setUpdate8(false);
     setAccept8(false);
+    setAccept9(false);
+    setDelete9(false);
     setCreateAAb(false);
     setCreateHLA(false);
     setCreateRNA(false);
+    setCreateSample(false);
     setChanged(false);
     if (activeStep - 1 === 0) {
       setUpdate(false);
@@ -430,9 +492,12 @@ export default function WriteIn() {
       setAccept7(false);
       setUpdate8(false);
       setAccept8(false);
+      setAccept9(false);
+      setDelete9(false);
       setCreateAAb(false);
       setCreateHLA(false);
       setCreateRNA(false);
+      setCreateSample(false);
       setActiveStep(step);
       setChanged(false);
     }
@@ -557,6 +622,18 @@ export default function WriteIn() {
                           Create
                         </Button>
                       ) : null}
+                      {/* Sample Create */}
+                      {activeStep === 9 ? (
+                        <Button
+                          disabled={caseId === ""}
+                          onClick={handleCreateSample}
+                          className={classes.button}
+                          variant="contained"
+                          color="secondary"
+                        >
+                          Create
+                        </Button>
+                      ) : null}
 
                       <Button
                         disabled={
@@ -564,6 +641,7 @@ export default function WriteIn() {
                           (AAbExist === false && activeStep === 6) ||
                           (HLAExist === false && activeStep === 7) ||
                           (RNAExist === false && activeStep === 8) ||
+                          (sampleExist === false && activeStep === 9) ||
                           caseId === ""
                         }
                         onClick={handleUpdate}
@@ -572,6 +650,15 @@ export default function WriteIn() {
                         color="secondary"
                       >
                         Update
+                      </Button>
+                      <Button
+                        disabled={sampleExist !== true || activeStep !== 9}
+                        onClick={handleDeleteSample}
+                        className={classes.button}
+                        variant="contained"
+                        color="secondary"
+                      >
+                        Delete
                       </Button>
                     </div>
                   </div>

@@ -289,7 +289,7 @@ export default function RNA_step8({
 
   const [checkFail, setCheckFail] = useState(false);
   const [RNAExist, setRNAExist] = useState(false);
-  const [RNAexistMsg, setRNAExistMsg] = useState("Checking RNA existing...");
+  const [RNAExistMsg, setRNAExistMsg] = useState("Checking RNA existing...");
   const [showExistMsg, setShowExistMsg] = useState(false);
   const [createMsg, setCreateMsg] = useState("");
   const [createSuccess, setCreateSuccess] = useState(false);
@@ -406,7 +406,9 @@ export default function RNA_step8({
 
   useEffect(() => {
     if (RNAExist) {
-      setRNAExistMsg("RNA case exists, click 'Update' to proceed updating.");
+      setRNAExistMsg(
+        "RNA of this case exists, click 'Update' to proceed updating."
+      );
     } else {
       setRNAExistMsg(
         "RNA case DOES NOT exist, click 'Create' to proceed creating."
@@ -540,7 +542,7 @@ export default function RNA_step8({
       ) : null}
       <Fade in={showExistMsg}>
         <Alert variant="filled" severity="info" className={classes.alert}>
-          {RNAexistMsg}
+          {RNAExistMsg}
         </Alert>
       </Fade>
       <Fade in={showCreateMsg}>

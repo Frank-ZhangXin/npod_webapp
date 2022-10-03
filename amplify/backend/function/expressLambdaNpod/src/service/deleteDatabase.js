@@ -67,7 +67,29 @@ async function delete_case(case_id) {
   return await pooledConnection(asyncAction);
 }
 
+// delete sample row
+async function delete_sample(case_id, vial_id) {
+  const sql = `DELETE FROM samples_test WHERE case_id=${case_id} AND vial_id=${vial_id}`;
+  console.log("sql is", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Delete Database][Delete samples] vial id ${vial_id} of the case ${case_id} was deleted.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForDelete: testPoolForDelete,
   delete_case: delete_case,
+  delete_sample: delete_sample,
 };

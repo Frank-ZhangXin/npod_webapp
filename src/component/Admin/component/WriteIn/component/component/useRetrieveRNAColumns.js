@@ -25,13 +25,13 @@ export default function useRetrieveRNAColumns(caseId, RNAIdValue, columnList) {
         for (let i = 0; i < columnList.length; i++) {
           valueArray.push(res[0][columnList[i]]);
         }
-        console.log("[RNA] Retrieved existing case column values", valueArray);
+        console.log("[RNA] Retrieved existing RNA column values", valueArray);
         setResult(valueArray);
       })
       .catch((error) => {
-        console.log("[RNA Retrieve] Retrieve case columns failed.");
+        console.log("[RNA Retrieve] Retrieve RNA columns failed.");
         console.log("[RNA Retrieve] Failed case id", the_case_id);
-        console.log("[AAb] Failed RNA id", the_RNA_id);
+        console.log("[RNA] Failed RNA id", the_RNA_id);
         console.log("[RNA Retrieve] Failed columnList", columns);
         console.log("[RNA Retrieve] Amplify API call error", error);
       });
