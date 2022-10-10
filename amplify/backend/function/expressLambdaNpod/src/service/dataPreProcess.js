@@ -137,9 +137,9 @@ function timeDurationGenerator(thisCase, HLAMap) {
     thisCase.cross_clamp_time,
     thisCase.case_id
   ); // string
-  if (admissionDayTime && deathDayTime) {
+  if (admissionDayTime && crossClampDayTime) {
     var start = new Date(admissionDayTime);
-    var end = new Date(deathDayTime);
+    var end = new Date(crossClampDayTime);
     var dur = end - start; // millisec
     ICU_time_days =
       ((dur * 1.0) / 1000 / 86400).toFixed(2).toString() + " days";
