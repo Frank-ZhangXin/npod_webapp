@@ -25,6 +25,10 @@ import VerifyAttributeWithCode from "./route/VerifyAttributeWithCode";
 import UserAgreementPage from "./route/UserAgreementPage";
 import ResetPassword from "./route/ResetPassword";
 import UsefulResourcesPage from "./route/UsefulResourcesPage";
+import DatasetExplorePage from "./route/DatasetExplorePage";
+import DatasetSubmitPage from "./route/DatasetSubmitPage";
+import DatasetManagePage from "./route/DatasetManagePage";
+import DatasetDisplayPage from "./route/DatasetDisplayPage";
 
 Amplify.configure({
   ...config,
@@ -73,7 +77,8 @@ function App(props) {
       <Route path="/forgotpassword" component={ForgotPassword} />
       <Route path="/verifyemail" component={VerifyEmail} />
       <Route path="/changepassword" component={ChangePassword} />
-      <Route path="/explore" component={ExplorePage} />
+      <Route path="/explore/" component={ExplorePage} />
+      <Route path="/explore/:caseId" component={ExplorePage} />
       <Route exact path="/admin" component={AdminPage} />
       <Route path="/admin/writein" component={WriteInPage} />
       <Route path="/admin/usermanage" component={UserManagePage} />
@@ -83,6 +88,13 @@ function App(props) {
       <Route path="/useragreement" component={UserAgreementPage} />
       <Route path="/resetpassword" component={ResetPassword} />
       <Route path="/usefulresources" component={UsefulResourcesPage} />
+      <Route path="/dataset-explore" component={DatasetExplorePage} />
+      <Route path="/dataset-submit" component={DatasetSubmitPage} />
+      <Route path="/dataset-manage" component={DatasetManagePage} />
+      <Route
+        path="/dataset-display/:datasetId"
+        component={DatasetDisplayPage}
+      />
     </Router>
   );
 }

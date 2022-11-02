@@ -49,7 +49,10 @@ function Result(props) {
       <DataPreProcess />
       {/* Show search result */}
 
-      <Search setDialogue={handleSetDialogue} />
+      <Search
+        setDialogue={handleSetDialogue}
+        requestedCaseId={props.requestedCaseId}
+      />
       <CaseView open={open} setDialogue={handleSetDialogue} />
     </div>
   );

@@ -52,6 +52,7 @@ function Search(props) {
   const classes = useStyles();
   const { promiseInProgress } = usePromiseTracker();
   const [filteredData, setFilteredData] = useState([]);
+  const [requestedCase, setRequestedCase] = useState(null);
 
   const handleOpen = (e, donorCase) => {
     props.setCurrentCase(donorCase);
@@ -61,6 +62,23 @@ function Search(props) {
   useEffect(() => {
     setFilteredData(filtering());
   }, [props]);
+
+  useEffect(() => {
+    if (typeof props.requestedCaseId !== "undefined") {
+      setRequestedCase(
+        filteredData.filter(
+          (donor) => donor.case_id === props.requestedCaseId
+        )[0]
+      );
+    }
+  }, [props.requestedCaseId, filteredData]);
+
+  useEffect(() => {
+    if (typeof requestedCase !== "undefined" && requestedCase !== null) {
+      props.setCurrentCase(requestedCase);
+      props.setDialogue(true);
+    }
+  }, [requestedCase]);
 
   const filtering = () =>
     props.rawData
@@ -298,7 +316,8 @@ function Search(props) {
           props.datasetEnable === false
       );
 
-  console.log(filteredData);
+  console.log("filtered case data", filteredData);
+  console.log("requested case", requestedCase);
   const currTime = new Date();
   // Time format YYYY-MM-DD_HHMMSS
   const timeStamp =

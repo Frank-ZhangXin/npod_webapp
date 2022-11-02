@@ -47,12 +47,12 @@ async function pooledConnection(asyncAction) {
 }
 
 // get all cases
-async function get_cases() {
+async function get_cases(caseIdList = null) {
   const sql_glucose_insulin =
     "SELECT `case_id`, MAX(`insulin_mU_L`) AS `glucose_insulin` FROM `slices_raw_data` AS `srd` WHERE `srd`.`time_minutes` > 15 AND `srd`.`time_minutes` <= 35 GROUP BY `srd`.`case_id`";
   const sql_KCL_insulin =
     "SELECT `case_id`, MAX(`insulin_mU_L`) AS `KCL_insulin` FROM `slices_raw_data` AS `srd` WHERE `srd`.`time_minutes` > 64 AND `srd`.`time_minutes` <= 80 AND `srd`.`case_id` != '6430' AND `srd`.`case_id` != '6431' GROUP BY `srd`.`case_id` UNION SELECT `case_id`, MAX(`insulin_mU_L`) AS `KCL_insulin` FROM `slices_raw_data` AS `srd` WHERE `srd`.`time_minutes` > 64 AND `srd`.`time_minutes` <= 95 AND `srd`.`case_id` = '6430' UNION SELECT `case_id`, MAX(`insulin_mU_L`) AS `KCL_insulin` FROM `slices_raw_data` AS `srd` WHERE `srd`.`time_minutes` > 64 AND `srd`.`time_minutes` <= 100 AND `srd`.`case_id` = '6431'";
-  const sql =
+  let sql =
     "SELECT c.*, a.GADA, a.IA_2A, a.mIAA, a.ZnT8A, r.RIN, r.ratio, r.sample_type_id, e.electron_microscopy_images, gSti.glucose_insulin, kclSti.KCL_insulin FROM cases AS c LEFT JOIN AAb AS a ON c.case_id = a.case_id AND a.is_public = 1 LEFT JOIN RNA AS r ON c.case_id = r.case_id AND r.is_public = 1 LEFT JOIN external_urls AS e ON c.case_id = e.case_id " +
     "LEFT JOIN (" +
     sql_glucose_insulin +
@@ -61,6 +61,17 @@ async function get_cases() {
     sql_KCL_insulin +
     ") AS kclSti ON c.case_id = kclSti.case_id " +
     "WHERE c.is_public = 1";
+
+  if (caseIdList !== null) {
+    sql += " AND c.case_id IN (";
+    caseIdList.forEach((id) => {
+      sql += id;
+      sql += ",";
+    });
+    sql = sql.slice(0, -1);
+    sql += ")";
+  }
+
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
       newConnection.query(sql, (error, result) => {
@@ -70,6 +81,27 @@ async function get_cases() {
           dataPreProcess(result);
           console.log(
             `[Fetch cases] Totally ${result.length} cases were fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// get all cases ids
+async function get_all_case_ids() {
+  const sql = "SELECT case_id FROM cases ORDER BY case_id";
+  console.log("sql", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch cases] Totally ${result.length} case ids were fetched.`
           );
           resolve(result);
         }
@@ -239,9 +271,93 @@ async function get_immunophenotyping() {
   return await pooledConnection(asyncAction);
 }
 
+// get all datasets by author
+async function get_datasets_by_author(author) {
+  const sql = `SELECT * FROM dataset WHERE author="${author}"`;
+  console.log("sql query:", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch dataset] Totally ${result.length} dataset records were fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// get all datasets
+async function get_all_datasets() {
+  const sql = `SELECT * FROM dataset`;
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch dataset] Totally ${result.length} dataset records were fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// get dataset by datasetId
+async function get_dataset_by_datasetId(the_dataset_id) {
+  const sql = `SELECT * FROM dataset WHERE dataset_id="${the_dataset_id}"`;
+  console.log("sql query:", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch dataset] Totally ${result.length} dataset records were fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// get case_id from dataset_case_identifier by dataset_id
+async function get_caseId_by_datasetId(the_dataset_id) {
+  const sql = `SELECT case_id FROM dataset_case_identifier WHERE dataset_id="${the_dataset_id}" GROUP BY case_id ORDER BY case_id ASC`;
+  console.log("sql query:", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch dataset_case_identifier] Totally ${result.length} case_id records were fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForRead: testPoolForRead,
   get_cases: get_cases,
+  get_all_case_ids: get_all_case_ids,
   get_donor_types: get_donor_types,
   get_cause_of_death: get_cause_of_death,
   get_HLA: get_HLA,
@@ -250,4 +366,8 @@ module.exports = {
   get_percent_viability: get_percent_viability,
   get_electron_microscopy_images: get_electron_microscopy_images,
   get_immunophenotyping: get_immunophenotyping,
+  get_datasets_by_author: get_datasets_by_author,
+  get_all_datasets: get_all_datasets,
+  get_dataset_by_datasetId: get_dataset_by_datasetId,
+  get_caseId_by_datasetId: get_caseId_by_datasetId,
 };

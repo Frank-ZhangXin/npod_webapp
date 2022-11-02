@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Explore() {
+export default function Explore(props) {
   const classes = useStyles();
   return (
     <div>
@@ -80,7 +80,7 @@ export default function Explore() {
               }}
               className={classes.result_paper}
             >
-              <Result />
+              <Result requestedCaseId={props.requestedCaseId} />
             </Paper>
           </Grid>
         </Grid>
