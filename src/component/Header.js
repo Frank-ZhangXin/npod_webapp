@@ -133,9 +133,9 @@ function Header(props) {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [logoSize, setLogoSize] = useState("");
-  const [title1Size, setTitle1Size] = useState("");
-  const [title2Size, setTitle2Size] = useState("");
-  const [avatarSize, setAvatarSize] = useState("");
+  const [title1Size, setTitle1Size] = useState("h3");
+  const [title2Size, setTitle2Size] = useState("h4");
+  const [avatarSize, setAvatarSize] = useState("large");
   const [emailVerified, setEmailVerified] = useState(false);
 
   const updateResponsiveWidth = () => {
@@ -279,7 +279,7 @@ function Header(props) {
                     >
                       <NotificationsActiveIcon />{" "}
                       <Typography
-                        variant={avatarSize}
+                        variant={title2Size}
                         style={{ fontWeight: 300, marginLeft: "5px" }}
                       >
                         Email Not Verified
