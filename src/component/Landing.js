@@ -110,14 +110,6 @@ function Landing(props) {
     </React.Fragment>
   );
 
-  const handleExploreCase = () => {
-    history.push("/explore");
-  };
-
-  const handleUsefuleResources = () => {
-    history.push("/usefulresources");
-  };
-
   const updateResponsiveWidth = () => {
     if (window.innerWidth >= 1920) {
       setImageWidth("30vh");
@@ -185,12 +177,12 @@ function Landing(props) {
                 className={classes.centerTitle3}
               >
                 <Box className={classes.centerButton}>
-                  <Link onClick={handleExploreCase}>
+                  <a href="/explore" target="_blank">
                     <img
                       style={{ width: imageWidth }}
                       src="/assets/landingPageImages/ExploreCases.png"
                     />
-                  </Link>
+                  </a>
                 </Box>
                 <Box className={classes.centerButton}>
                   <a target="_blank" href="http://npoddatashare.coh.org">
@@ -223,12 +215,12 @@ function Landing(props) {
                   </LandingPageTooltip>
                 </Box>
                 <Box className={classes.centerButton}>
-                  <Link onClick={handleUsefuleResources}>
+                  <a href="/usefulresources" target="_blank">
                     <img
                       style={{ width: imageWidth }}
                       src="/assets/landingPageImages/UsefulResources.png"
                     />
-                  </Link>
+                  </a>
                 </Box>
               </Box>
             ) : (
