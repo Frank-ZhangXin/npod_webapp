@@ -16,11 +16,12 @@ function DatasetSubmitPage(props) {
       console.log("Check auth response ", authRes);
       console.log(
         "user group",
-        authRes.signInUserSession.accessToken.payload["cognito:groups"][0]
+        authRes.signInUserSession.accessToken.payload["cognito:groups"]
       );
       if (
-        authRes.signInUserSession.accessToken.payload["cognito:groups"][0] ===
-        "dataset_user"
+        authRes.signInUserSession.accessToken.payload[
+          "cognito:groups"
+        ].includes("dataset_user")
       ) {
         console.log("Welcome to dataset page!");
       } else {
