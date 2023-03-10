@@ -16,11 +16,12 @@ export default function WriteInPage() {
       console.log("Check auth response ", authRes);
       console.log(
         "user group",
-        authRes.signInUserSession.accessToken.payload["cognito:groups"][0]
+        authRes.signInUserSession.accessToken.payload["cognito:groups"]
       );
       if (
-        authRes.signInUserSession.accessToken.payload["cognito:groups"][0] ===
-        "admin"
+        authRes.signInUserSession.accessToken.payload[
+          "cognito:groups"
+        ].includes("admin")
       ) {
         setAdminAccess(true);
         console.log("Welcome to admin page!");
