@@ -8,6 +8,7 @@ var pool = mysql.createPool({
   user: process.env.WRITE_DB_USER,
   password: process.env.WRITE_DB_PASS,
   database: process.env.WRITE_DB_NAME,
+  multipleStatements: true,
 });
 
 async function testPoolForCreate() {
@@ -678,6 +679,86 @@ async function get_one_sample_all_column_values(case_id, vial_id, columns) {
   return await pooledConnection(asyncAction);
 }
 
+// create dataset table
+async function create_dataset(datasetObj) {
+  const ds = datasetObj;
+  const sql = `INSERT INTO dataset(author, pi, pi_email, poc, poc_email, dataset_name, description, number_of_cases, published, publication_link, pm_id, dataset_type, raw_data_file_link, created_time, updated_time) VALUES("${ds.author}", "${ds.pi}", "${ds.pi_email}", "${ds.poc}", "${ds.poc_email}", "${ds.dataset_name}", "${ds.description}", ${ds.number_of_cases}, ${ds.published}, "${ds.publication_link}", "${ds.pm_id}", "${ds.dataset_type}", "${ds.raw_data_file_link}", "${ds.created_time}", "${ds.updated_time}"); SELECT LAST_INSERT_ID()`;
+  console.log("sql: " + sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          console.log("sql error", error);
+          reject(error);
+        } else {
+          console.log(
+            `[Inert new dataset] Table dataset has been inserted with a new raw. Dataset name is ${ds.dataset_name}`
+          );
+          console.log("create dataset result", result);
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// create dataset_case_identifier table
+async function create_dataset_case_identifier(datasetCaseIdentifierObjList) {
+  const ciList = datasetCaseIdentifierObjList;
+  console.log(ciList);
+  let sql = `INSERT INTO dataset_case_identifier(dataset_id, case_id, data_file_id, sample_type) VALUES`;
+  let newValue = "";
+  ciList.forEach((ci) => {
+    newValue +=
+      `(` +
+      `"${ci.dataset_id}", "${ci.case_id}", "${ci.data_file_id}", "${ci.sample_type}"` +
+      `),`;
+  });
+
+  sql += newValue.slice(0, -1); // remove last comma
+  console.log("sql: " + sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          console.log("sql error", error);
+          reject(error);
+        } else {
+          console.log(
+            `[Inert new dataset case identifier] Table dataset_case_identifier has been inserted with a new raw. Dataset id is ${ciList[0].dataset_id}`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// create dataset_example_data_file
+async function create_dataset_example_data_file(datasetExampleDataFileObj) {
+  const edf = datasetExampleDataFileObj;
+  const sql = `INSERT INTO dataset_example_data_file(file_store, dataset_id) VALUES("${edf.file_store}", "${edf.dataset_id}")`;
+  console.log("sql: " + sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          console.log("sql error", error);
+          reject(error);
+        } else {
+          console.log(
+            `[Inert new dataset example data file] Table dataset_example_data_file has been inserted with a new raw. Dataset id is ${edf.dataset_id}`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForCreate: testPoolForCreate,
   create_case: create_case,
@@ -706,4 +787,7 @@ module.exports = {
   check_sample_exist: check_sample_exist,
   get_all_vial_id: get_all_vial_id,
   get_one_sample_all_column_values: get_one_sample_all_column_values,
+  create_dataset: create_dataset,
+  create_dataset_case_identifier: create_dataset_case_identifier,
+  create_dataset_example_data_file: create_dataset_example_data_file,
 };

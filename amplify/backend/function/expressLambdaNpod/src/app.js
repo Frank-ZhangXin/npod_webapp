@@ -12,6 +12,7 @@ var awsServerlessExpressMiddleware = require("aws-serverless-express/middleware"
 var {
   testPoolForRead,
   get_cases,
+  get_all_case_ids,
   get_donor_types,
   get_cause_of_death,
   get_HLA,
@@ -20,6 +21,10 @@ var {
   get_percent_viability,
   get_electron_microscopy_images,
   get_immunophenotyping,
+  get_datasets_by_author,
+  get_all_datasets,
+  get_dataset_by_datasetId,
+  get_caseId_by_datasetId,
 } = require("./service/readDatabase");
 
 var {
@@ -47,6 +52,9 @@ var {
   check_sample_exist,
   get_all_vial_id,
   get_one_sample_all_column_values,
+  create_dataset,
+  create_dataset_case_identifier,
+  create_dataset_example_data_file,
 } = require("./service/createDatabase");
 
 var {
@@ -56,6 +64,7 @@ var {
   update_HLA,
   update_RNA,
   update_sample,
+  update_dataset,
 } = require("./service/updateDatabase");
 
 var {
@@ -110,7 +119,18 @@ app.get("/db/test_db", function (req, res) {
 // get cases
 app.get("/db/case", function (req, res) {
   console.log("fetching cases.");
-  get_cases().then((promisedRes) => res.send(promisedRes));
+  if (typeof req.query.caseIdList !== "undefined") {
+    const caseIdList = req.query.caseIdList.split(",");
+    get_cases(caseIdList).then((promisedRes) => res.send(promisedRes));
+  } else {
+    get_cases().then((promisedRes) => res.send(promisedRes));
+  }
+});
+
+// get case ids
+app.get("/db/all_case_ids", function (req, res) {
+  console.log("fetching case ids.");
+  get_all_case_ids().then((promisedRes) => res.send(promisedRes));
 });
 
 // get donor_types
@@ -165,6 +185,36 @@ app.get("/db/electron_microscopy_images", function (req, res) {
 app.get("/db/immunophenotyping", function (req, res) {
   console.log("fetching immunophenotyping.");
   get_immunophenotyping().then((promisedRes) => res.send(promisedRes));
+});
+
+// get datasets by author
+app.get("/db/datasets_by_author", function (req, res) {
+  console.log("fetching datasets by author.");
+  get_datasets_by_author(req.query.author).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
+// get all datasets
+app.get("/db/datasets", function (req, res) {
+  console.log("fetching all datasets.");
+  get_all_datasets().then((promisedRes) => res.send(promisedRes));
+});
+
+// get dataset by datasetId
+app.get("/db/dataset_by_datasetId", function (req, res) {
+  console.log("fetching dataset by datasetId.");
+  get_dataset_by_datasetId(req.query.dataset_id).then((promisedRes) =>
+    res.send(promisedRes)
+  );
+});
+
+// get caseId by datasetId
+app.get("/db/caseId_by_datasetId", function (req, res) {
+  console.log("fetching caseId by datasetId.");
+  get_caseId_by_datasetId(req.query.dataset_id).then((promisedRes) =>
+    res.send(promisedRes)
+  );
 });
 
 /****************************
@@ -410,13 +460,39 @@ app.post("/db/get_one_sample_all_column_values", function (req, res) {
   ).then((promisedRes) => res.send(promisedRes));
 });
 
+// create dataset
+app.post("/db/create_dataset", function (req, res) {
+  console.log("creating new row in dataset...");
+  console.log(req.body);
+  create_dataset(req.body.datasetObj).then((promiseRes) =>
+    res.send(promiseRes)
+  );
+});
+
+// create dataset_case_identifier
+app.post("/db/create_dataset_case_identifier", function (req, res) {
+  console.log("creating new row in dataset_case_identifier...");
+  console.log(req.body);
+  create_dataset_case_identifier(req.body.datasetCaseIdentifierObjList).then(
+    (promiseRes) => res.send(promiseRes)
+  );
+});
+
+// create dataset_example_data_file
+app.post("/db/create_dataset_example_data_file", function (req, res) {
+  console.log("creating new row in dataset_example_data_file...");
+  console.log(req.body);
+  create_dataset_example_data_file(req.body.datasetExampleDataFileObj).then(
+    (promiseRes) => res.send(promiseRes)
+  );
+});
+
 /****************************
  * Example put method *
  ****************************/
 
 // Update cases
 app.put("/db/update_case", function (req, res) {
-  // Add your code here
   console.log("Updating case.");
   console.log(req.body);
   update_case(
@@ -428,7 +504,6 @@ app.put("/db/update_case", function (req, res) {
 
 // Update AAb
 app.put("/db/update_AAb", function (req, res) {
-  // Add your code here
   console.log("Updating AAb.");
   console.log(req.body);
   update_AAb(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
@@ -436,7 +511,6 @@ app.put("/db/update_AAb", function (req, res) {
 
 // Update HLA
 app.put("/db/update_HLA", function (req, res) {
-  // Add your code here
   console.log("Updating HLA.");
   console.log(req.body);
   update_HLA(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
@@ -444,7 +518,6 @@ app.put("/db/update_HLA", function (req, res) {
 
 // Update RNA
 app.put("/db/update_RNA", function (req, res) {
-  // Add your code here
   console.log("Updating RNA.");
   console.log(req.body);
   update_RNA(req.body["columns"]).then((promisedRes) => res.send(promisedRes));
@@ -452,7 +525,6 @@ app.put("/db/update_RNA", function (req, res) {
 
 // Update sample
 app.put("/db/update_sample", function (req, res) {
-  // Add your code here
   console.log("Updating sample.");
   console.log(req.body);
   update_sample(req.body["columns"]).then((promisedRes) =>
@@ -460,8 +532,16 @@ app.put("/db/update_sample", function (req, res) {
   );
 });
 
+// Update dataset
+app.put("/db/update_dataset", function (req, res) {
+  console.log("Updating dataset.");
+  console.log(req.body);
+  update_dataset(req.body["dataset_id"], req.body["columns"]).then(
+    (promisedRes) => res.send(promisedRes)
+  );
+});
+
 app.put("/db/test_db", function (req, res) {
-  // Add your code here
   console.log("Testing database connection...");
   testPoolForUpdate()
     .then(() => {
@@ -493,7 +573,6 @@ app.delete("/db/delete_sample", function (req, res) {
 });
 
 app.delete("/db/test_db", function (req, res) {
-  // Add your code here
   console.log("Testing database connection...");
   testPoolForDelete()
     .then(() => {

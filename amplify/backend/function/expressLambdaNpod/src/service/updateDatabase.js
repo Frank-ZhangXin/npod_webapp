@@ -182,7 +182,7 @@ async function update_RNA(columns) {
 async function update_sample(columns) {
   let updateStr = "";
   for (let [key, value] of Object.entries(columns)) {
-    if (value !== null) {
+    if (value !== null && value !== "null") {
       columns[key] = "'" + value + "'";
     }
     if (updateStr === "") {
@@ -191,7 +191,39 @@ async function update_sample(columns) {
       updateStr += "," + key + "=" + columns[key];
     }
   }
-  const sql = `UPDATE samples_test SET ${updateStr} WHERE case_id=${columns.case_id} AND vial_id=${columns.vial_id}`;
+  const sql = `UPDATE samples SET ${updateStr} WHERE case_id=${columns.case_id} AND vial_id=${columns.vial_id}`;
+  console.log("sql: ", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Update the sample] The case ${columns.case_id} was updated.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// update dataset
+async function update_dataset(dataset_id, columns) {
+  let updateStr = "";
+  for (let [key, value] of Object.entries(columns)) {
+    if (value !== null && value !== "null") {
+      columns[key] = "'" + value + "'";
+    }
+    if (updateStr === "") {
+      updateStr = key + "=" + columns[key];
+    } else {
+      updateStr += "," + key + "=" + columns[key];
+    }
+  }
+  const sql = `UPDATE dataset SET ${updateStr} WHERE dataset_id=${dataset_id}`;
   console.log("sql: ", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -217,4 +249,5 @@ module.exports = {
   update_HLA: update_HLA,
   update_RNA: update_RNA,
   update_sample: update_sample,
+  update_dataset: update_dataset,
 };

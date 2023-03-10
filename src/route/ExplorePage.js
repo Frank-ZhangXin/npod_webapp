@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Explore from "../component/Explore/Explore";
 import { connect } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Amplify, { API, Hub, Auth } from "aws-amplify";
 
 function ExplorePage(props) {
@@ -20,8 +20,12 @@ function ExplorePage(props) {
       history.push("/signin");
     }
   }
+  let { caseId } = useParams();
+  console.log("On explore page, requested case id", caseId);
 
-  return <div>{props.signedIn ? <Explore /> : null}</div>;
+  return (
+    <div>{props.signedIn ? <Explore requestedCaseId={caseId} /> : null}</div>
+  );
 }
 
 // Subscribe
