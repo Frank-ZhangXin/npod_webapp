@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Storage } from "aws-amplify";
+import { Storage, API } from "aws-amplify";
 
 export default function useGetAllExistingCaseIds(
   setAllCaseIds,
   resetButtongClicked
 ) {
   useEffect(() => {
-    getCaseList();
+    //getCaseListFromStorage();
+    getCaseListFromDb();
   }, [resetButtongClicked]);
-  async function getCaseList() {
+  async function getCaseListFromStorage() {
     try {
       await Storage.list("cases/").then((allFiles) => {
         if (allFiles.length !== 0) {
@@ -29,5 +30,20 @@ export default function useGetAllExistingCaseIds(
     } catch (error) {
       console.error("[S3]Get case list error", error);
     }
+  }
+
+  async function getCaseListFromDb() {
+    const nowTime = new Date().toLocaleString().replace(",", "");
+    console.log("Retrieving cases by case id list...");
+    return await API.get("dbapi", "/db/all_case_ids")
+      .then((res) => {
+        console.log("Retrieve case id list in image upload success!", res);
+        const convertFunc = (item) => ({ caseId: item.case_id });
+        const caseIdListTemp = res.map(convertFunc);
+        setAllCaseIds(caseIdListTemp);
+      })
+      .catch((error) => {
+        console.log("Get case id list in image upload  fail", error);
+      });
   }
 }
