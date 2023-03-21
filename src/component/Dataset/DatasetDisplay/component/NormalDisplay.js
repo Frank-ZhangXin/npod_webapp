@@ -5,13 +5,16 @@ import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import useRetrieveCaseIdByDatasetId from "./component/useRetrieveCaseIdByDatasetId";
 import useRetrieveCaseIdList from "./component/useRetrieveCaseByCaseIdList";
 import useRetrieveDonorTypeMap from "./component/useRetriveDonorTypeMap";
+import { Chart } from "react-google-charts";
+import ButtonDownloadCsvFromJson from "./component/ButtonDownloadCsvFromJson";
+import ExampleDataFileGrid from "./component/ExampleDataFIleGrid";
 
 const PaperPanel = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   //textAlign: "center",
   width: "100%",
-  minHeight: "80vh",
+  // minHeight: "80vh",
 }));
 
 function DataPaper(props) {
@@ -92,7 +95,7 @@ const DataEntry = ({
   </Box>
 );
 
-function DataEntryForCaseId(props) {
+function DataEntryWrapper(props) {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Box sx={{ marginTop: 2, marginLeft: 3, marginRight: 3 }}>
@@ -195,6 +198,8 @@ export default function NormalDisplay({ datasetObj }) {
     useState(null);
   const [donorTypeMapRetrieveFail, setDonorTypeMapRetrieveFail] =
     useState(null);
+  const [donorTypeChartData, setDonorTypeChartData] = useState([]);
+  const [sexChartData, setSexChartData] = useState([]);
 
   useEffect(() => {
     try {
@@ -224,42 +229,55 @@ export default function NormalDisplay({ datasetObj }) {
     setDonorTypeMapRetrieveFail
   );
 
-  const handleCaseButtonClick = (event) => {};
-
   // console.log("current dataset", datasetObj);
   // console.log("all related case ID", caseIdList);
   console.log("requested cases", requestedCases);
   // console.log("donor type map", donorTypeMap);
 
+  const chartDataGen = (chartObj, name) => {
+    let tempChartData = [["Key", "Value"]];
+    for (let [key, value] of Object.entries(chartObj)) {
+      tempChartData.push([key, value]);
+    }
+    if (name === "donor type") {
+      setDonorTypeChartData(tempChartData);
+    } else if (name === "sex") {
+      setSexChartData(tempChartData);
+    }
+  };
+
   useEffect(() => {
     if (requestedCases.length !== 0 && donorTypeMap !== null) {
-      let donorTypeCountMap = new Map();
+      let donorTypeCount = {};
       for (let i = 0; i < requestedCases.length; i++) {
         const currDonorTypeId = requestedCases[i]["donor_type_id"];
         const currDonorType = donorTypeMap[currDonorTypeId];
-        if (!donorTypeCountMap.has(currDonorType)) {
-          donorTypeCountMap.set(currDonorType, 0);
+        if (!donorTypeCount.hasOwnProperty(currDonorType)) {
+          donorTypeCount[currDonorType] = 0;
         }
-        donorTypeCountMap.set(
-          currDonorType,
-          donorTypeCountMap.get(currDonorType) + 1
-        );
+        donorTypeCount[currDonorType] += 1;
       }
-      console.log("donor type count map", donorTypeCountMap);
+      console.log("donor type count", donorTypeCount);
+      chartDataGen(donorTypeCount, "donor type");
     }
 
     if (requestedCases.length !== 0) {
-      let sexCountMap = new Map();
+      let sexCount = {};
       for (let i = 0; i < requestedCases.length; i++) {
         const currSex = requestedCases[i]["sex"];
-        if (!sexCountMap.has(currSex)) {
-          sexCountMap.set(currSex, 0);
+        if (!sexCount.hasOwnProperty(currSex)) {
+          sexCount[currSex] = 0;
         }
-        sexCountMap.set(currSex, sexCountMap.get(currSex) + 1);
+        sexCount[currSex] += 1;
       }
-      console.log("sex count map", sexCountMap);
+      console.log("sex count map", sexCount);
+      chartDataGen(sexCount, "sex");
     }
   }, [requestedCases, donorTypeMap]);
+
+  console.log("dataset obj", datasetObj);
+  console.log("donor type chart data", donorTypeChartData);
+  console.log("sex chart data", sexChartData);
 
   return (
     <div>
@@ -285,7 +303,7 @@ export default function NormalDisplay({ datasetObj }) {
             </Box>
             <Box>
               <Subtitle1>
-                Created Time:{" "}
+                Created Date:{" "}
                 <span style={{ color: "#e85a80", fontWeight: 600 }}>
                   {datasetObj.created_time.slice(0, 10)}
                 </span>
@@ -293,7 +311,7 @@ export default function NormalDisplay({ datasetObj }) {
             </Box>
             <Box>
               <Subtitle1>
-                Updated Time:{" "}
+                Updated Date:{" "}
                 <span style={{ color: "#e85a80", fontWeight: 600 }}>
                   {datasetObj.updated_time.slice(0, 10)}
                 </span>
@@ -344,7 +362,7 @@ export default function NormalDisplay({ datasetObj }) {
               }
               type={datasetObj.publication_link !== "null" ? "link" : null}
             />
-            <DataEntryForCaseId name="Unique Cases">
+            <DataEntryWrapper name="Unique Cases">
               <Typography
                 variant="subtitle2"
                 sx={{ marginLeft: 2, color: "#474747" }}
@@ -356,7 +374,42 @@ export default function NormalDisplay({ datasetObj }) {
                 cases. Click any case to explore more
               </Typography>
               <CaseButtonMatrix caseList={caseIdList} />
-            </DataEntryForCaseId>
+              {requestedCases.length !== 0 ? (
+                <ButtonDownloadCsvFromJson jsonData={requestedCases} />
+              ) : null}
+            </DataEntryWrapper>
+            <DataEntryWrapper name="Case Data Summary">
+              <Box sx={{ display: "flex", flexDirection: "row" }}>
+                <Box>
+                  {donorTypeChartData.length !== 0 ? (
+                    <Chart
+                      chartType="PieChart"
+                      width="550px"
+                      height="550px"
+                      data={donorTypeChartData}
+                      options={{
+                        title: "Donor Type",
+                        pieHole: 0.4,
+                        is3D: false,
+                      }}
+                    />
+                  ) : (
+                    <Typography variant="subtitle2">None</Typography>
+                  )}
+                </Box>
+                <Box>
+                  {sexChartData.length !== 0 ? (
+                    <Chart
+                      chartType="PieChart"
+                      width="550px"
+                      height="550px"
+                      data={sexChartData}
+                      options={{ title: "Sex", pieHole: 0.4, is3D: false }}
+                    />
+                  ) : null}
+                </Box>
+              </Box>
+            </DataEntryWrapper>
           </DataPaper>
 
           <Title2 text="Data" />
@@ -375,6 +428,9 @@ export default function NormalDisplay({ datasetObj }) {
                   : null
               }
             />
+            <DataEntryWrapper name="Example Data File Preview">
+              <ExampleDataFileGrid datasetId={datasetObj.dataset_id} />
+            </DataEntryWrapper>
           </DataPaper>
         </PaperPanel>
       ) : null}

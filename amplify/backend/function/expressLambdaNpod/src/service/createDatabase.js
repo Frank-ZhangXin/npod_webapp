@@ -682,7 +682,7 @@ async function get_one_sample_all_column_values(case_id, vial_id, columns) {
 // create dataset table
 async function create_dataset(datasetObj) {
   const ds = datasetObj;
-  const sql = `INSERT INTO dataset(author, pi, pi_email, poc, poc_email, dataset_name, description, number_of_cases, published, publication_link, pm_id, dataset_type, raw_data_file_link, created_time, updated_time) VALUES("${ds.author}", "${ds.pi}", "${ds.pi_email}", "${ds.poc}", "${ds.poc_email}", "${ds.dataset_name}", "${ds.description}", ${ds.number_of_cases}, ${ds.published}, "${ds.publication_link}", "${ds.pm_id}", "${ds.dataset_type}", "${ds.raw_data_file_link}", "${ds.created_time}", "${ds.updated_time}"); SELECT LAST_INSERT_ID()`;
+  const sql = `INSERT INTO dataset(author, pi, pi_email, poc, poc_email, dataset_name, description, number_of_analyses, published, publication_link, pm_id, dataset_type, raw_data_file_link, created_time, updated_time) VALUES("${ds.author}", "${ds.pi}", "${ds.pi_email}", "${ds.poc}", "${ds.poc_email}", "${ds.dataset_name}", "${ds.description}", ${ds.number_of_analyses}, ${ds.published}, "${ds.publication_link}", "${ds.pm_id}", "${ds.dataset_type}", "${ds.raw_data_file_link}", "${ds.created_time}", "${ds.updated_time}"); SELECT LAST_INSERT_ID()`;
   console.log("sql: " + sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {

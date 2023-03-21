@@ -49,6 +49,7 @@ export default function DatasetForm({ setDatasetInfo }) {
   const [datasetCreateSuccess, setDatasetCreateSuccess] = useState(null);
   const [datasetCreateFail, setDatasetCreateFail] = useState(null);
   const [caseIdentifierData, setCaseIdentifierData] = useState([]);
+  const [exampleDataFile, setExampleDataFile] = useState(null);
 
   useEffect(() => {
     setCurrentUserAsAuthor();
@@ -114,12 +115,18 @@ export default function DatasetForm({ setDatasetInfo }) {
     reader.readAsBinaryString(file);
   };
 
+  const handleUploadExampleDataFile = (event) => {
+    const file = event.target.files[0];
+    setExampleDataFile(file);
+  };
+
   useCreateDataset(
     values,
     submitButtonClicked,
     setDatasetCreateSuccess,
     setDatasetCreateFail,
-    caseIdentifierData
+    caseIdentifierData,
+    exampleDataFile
   );
 
   console.log(values);
@@ -182,7 +189,7 @@ export default function DatasetForm({ setDatasetInfo }) {
         <TextField
           sx={{ width: 500 }}
           id="numberOfAnalyses"
-          label="Number of Cases"
+          label="Number of Analyses"
           onChange={handleChange("numberOfAnalyses")}
         />
       </Box>
@@ -254,7 +261,12 @@ export default function DatasetForm({ setDatasetInfo }) {
         <InputLabel>Data File</InputLabel>
         <Button variant="outlined" component="label">
           Choose File
-          <input hidden accept="image/*" multiple type="file" />
+          <input
+            hidden
+            accept=".csv"
+            type="file"
+            onChange={handleUploadExampleDataFile}
+          />
         </Button>
         <Typography variant="subtitle1">(File type: *.csv)</Typography>
       </Box>

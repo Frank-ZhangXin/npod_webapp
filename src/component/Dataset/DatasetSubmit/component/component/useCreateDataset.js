@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { API, Auth } from "aws-amplify";
+import { API, Auth, Storage } from "aws-amplify";
 
 export default function useCreateDataset(
   values,
   submitButtonClicked,
   setDatasetCreateSuccess,
   setDatasetCreateFail,
-  caseIdentifierData
+  caseIdentifierData,
+  exampleDataFile
 ) {
   const [latestDatasetId, setLatestDatasetId] = useState(null);
   useEffect(() => {
@@ -17,9 +18,10 @@ export default function useCreateDataset(
 
   useEffect(() => {
     if (latestDatasetId !== null) {
-      console.log("latest dataset id was changed.");
-      console.log("case identifier data", caseIdentifierData);
       createCaseIdentifier(caseIdentifierData, latestDatasetId);
+      if (exampleDataFile !== null) {
+        createExampleDataFile(exampleDataFile, latestDatasetId);
+      }
     }
   }, [latestDatasetId]);
 
@@ -99,5 +101,28 @@ export default function useCreateDataset(
         setDatasetCreateSuccess(null);
         setDatasetCreateFail("New Dataset Create fail" + error);
       });
+  }
+
+  async function createExampleDataFile(theFile, theDatasetId) {
+    try {
+      const filePath = "public/datasets/" + theDatasetId + "/";
+      await Storage.put(theFile.name, theFile, {
+        level: "public",
+        contentType: "text/csv",
+        customPrefix: {
+          public: filePath,
+        },
+      }).then((result) => {
+        console.log("Upload file result:", result);
+        setDatasetCreateSuccess(
+          "Example data file has been successfully uploaded."
+        );
+        setDatasetCreateFail(null);
+      });
+    } catch (error) {
+      console.log("Error uploading file when creating dataset", error);
+      setDatasetCreateSuccess(null);
+      setDatasetCreateFail("Error uploading file when creating dataset");
+    }
   }
 }
