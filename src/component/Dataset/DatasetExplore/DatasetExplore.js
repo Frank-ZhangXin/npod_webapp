@@ -51,7 +51,7 @@ export default function DatasetExplore() {
           fontSize: 48,
         }}
       >
-        Explore Datasets
+        Explore Omics Datasets
       </Paper>
       <Grid container spacing={2} sx={{ padding: 5 }}>
         <Grid item xs={6} md={4}>

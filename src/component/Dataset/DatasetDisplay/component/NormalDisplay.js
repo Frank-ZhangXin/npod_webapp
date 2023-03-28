@@ -4,14 +4,20 @@ import { Box, Paper, Typography, Button } from "@mui/material";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import useRetrieveCaseIdByDatasetId from "./component/useRetrieveCaseIdByDatasetId";
 import useRetrieveCaseIdList from "./component/useRetrieveCaseByCaseIdList";
-import useRetrieveDonorTypeMap from "./component/useRetriveDonorTypeMap";
+import useRetrieveDonorTypeMap from "./component/useRetrieveDonorTypeMap";
+import useRetrieveCauseOfDeathMap from "./component/useRetrieveCauseOfDeathMap";
+import useRetrieveHLAMap from "./component/useRetrieveHLAMap";
+import { Chart } from "react-google-charts";
+import ButtonDownloadCsvFromJson from "./component/ButtonDownloadCsvFromJson";
+import ExampleDataFileGrid from "./component/ExampleDataFIleGrid";
+import usePreprocessCaseData from "./component/usePreprocessCaseData";
 
 const PaperPanel = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
   //textAlign: "center",
   width: "100%",
-  minHeight: "80vh",
+  // minHeight: "80vh",
 }));
 
 function DataPaper(props) {
@@ -92,7 +98,7 @@ const DataEntry = ({
   </Box>
 );
 
-function DataEntryForCaseId(props) {
+function DataEntryWrapper(props) {
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Box sx={{ marginTop: 2, marginLeft: 3, marginRight: 3 }}>
@@ -106,8 +112,8 @@ function DataEntryForCaseId(props) {
       </Box>
       <Box
         sx={{
-          marginLeft: 3,
-          marginRight: 3,
+          marginLeft: 5,
+          marginRight: 5,
         }}
       >
         {props.children}
@@ -116,10 +122,18 @@ function DataEntryForCaseId(props) {
   );
 }
 
+function ChartBox(props) {
+  return (
+    <Paper elevation={3} sx={{ width: "80%" }}>
+      {props.children}
+    </Paper>
+  );
+}
+
 const CaseButtonMatrix = ({ caseList }) => (
   <Box sx={{ display: "flex", flexWrap: "wrap" }}>
     {caseList.map((item, key) => (
-      <Box sx={{ margin: 2 }}>
+      <Box sx={{ marginBottom: 2, marginTop: 2, marginRight: 2 }}>
         <Button
           variant="outlined"
           onClick={() =>
@@ -190,11 +204,26 @@ export default function NormalDisplay({ datasetObj }) {
     useState(null);
   const [requestedCasesRetrieveFail, setRequestedCasesRetrieveFail] =
     useState(null);
+
+  const [filteredRequestedCases, setFilteredRequestedCases] = useState([]);
   const [donorTypeMap, setDonorTypeMap] = useState(null);
   const [donorTypeMapRetrieveSuccess, setDonorTypeMapRetrieveSuccess] =
     useState(null);
   const [donorTypeMapRetrieveFail, setDonorTypeMapRetrieveFail] =
     useState(null);
+  const [causeOfDeathMap, setCauseOfDeathMap] = useState(null);
+  const [causeOfDeathRetrieveSuccess, setCauseOfDeathMapRetrieveSuccess] =
+    useState(null);
+  const [causeOfDeathRetrieveFail, setCauseOfDeathMapRetrieveFail] =
+    useState(null);
+
+  const [HLAMap, setHLAMap] = useState(null);
+  const [HLARetrieveSuccess, setHLAMapRetrieveSuccess] = useState(null);
+  const [HLARetrieveFail, setHLAMapRetrieveFail] = useState(null);
+
+  const [donorTypeChartData, setDonorTypeChartData] = useState([]);
+  const [sexChartData, setSexChartData] = useState([]);
+  const [raceChartData, setRaceChartData] = useState([]);
 
   useEffect(() => {
     try {
@@ -224,42 +253,36 @@ export default function NormalDisplay({ datasetObj }) {
     setDonorTypeMapRetrieveFail
   );
 
-  const handleCaseButtonClick = (event) => {};
+  useRetrieveCauseOfDeathMap(
+    setCauseOfDeathMap,
+    setCaseIdRetrieveSuccess,
+    setCauseOfDeathMapRetrieveFail
+  );
+
+  useRetrieveHLAMap(setHLAMap, setHLAMapRetrieveSuccess, setHLAMapRetrieveFail);
+
+  usePreprocessCaseData(
+    requestedCases,
+    donorTypeMap,
+    causeOfDeathMap,
+    HLAMap,
+    setDonorTypeChartData,
+    setSexChartData,
+    setRaceChartData,
+    setFilteredRequestedCases
+  );
 
   // console.log("current dataset", datasetObj);
   // console.log("all related case ID", caseIdList);
-  console.log("requested cases", requestedCases);
+  // console.log("requested cases", requestedCases);
   // console.log("donor type map", donorTypeMap);
+  // console.log("cause of death map", causeOfDeathMap);
 
-  useEffect(() => {
-    if (requestedCases.length !== 0 && donorTypeMap !== null) {
-      let donorTypeCountMap = new Map();
-      for (let i = 0; i < requestedCases.length; i++) {
-        const currDonorTypeId = requestedCases[i]["donor_type_id"];
-        const currDonorType = donorTypeMap[currDonorTypeId];
-        if (!donorTypeCountMap.has(currDonorType)) {
-          donorTypeCountMap.set(currDonorType, 0);
-        }
-        donorTypeCountMap.set(
-          currDonorType,
-          donorTypeCountMap.get(currDonorType) + 1
-        );
-      }
-      console.log("donor type count map", donorTypeCountMap);
-    }
-
-    if (requestedCases.length !== 0) {
-      let sexCountMap = new Map();
-      for (let i = 0; i < requestedCases.length; i++) {
-        const currSex = requestedCases[i]["sex"];
-        if (!sexCountMap.has(currSex)) {
-          sexCountMap.set(currSex, 0);
-        }
-        sexCountMap.set(currSex, sexCountMap.get(currSex) + 1);
-      }
-      console.log("sex count map", sexCountMap);
-    }
-  }, [requestedCases, donorTypeMap]);
+  console.log("dataset obj", datasetObj);
+  console.log("fitered requested cases", filteredRequestedCases);
+  // console.log("donor type chart data", donorTypeChartData);
+  // console.log("sex chart data", sexChartData);
+  // console.log("HLA map", HLAMap);
 
   return (
     <div>
@@ -285,7 +308,7 @@ export default function NormalDisplay({ datasetObj }) {
             </Box>
             <Box>
               <Subtitle1>
-                Created Time:{" "}
+                Created Date:{" "}
                 <span style={{ color: "#e85a80", fontWeight: 600 }}>
                   {datasetObj.created_time.slice(0, 10)}
                 </span>
@@ -293,7 +316,7 @@ export default function NormalDisplay({ datasetObj }) {
             </Box>
             <Box>
               <Subtitle1>
-                Updated Time:{" "}
+                Updated Date:{" "}
                 <span style={{ color: "#e85a80", fontWeight: 600 }}>
                   {datasetObj.updated_time.slice(0, 10)}
                 </span>
@@ -344,11 +367,8 @@ export default function NormalDisplay({ datasetObj }) {
               }
               type={datasetObj.publication_link !== "null" ? "link" : null}
             />
-            <DataEntryForCaseId name="Unique Cases">
-              <Typography
-                variant="subtitle2"
-                sx={{ marginLeft: 2, color: "#474747" }}
-              >
+            <DataEntryWrapper name="Unique Cases">
+              <Typography variant="subtitle2" sx={{ color: "#474747" }}>
                 Found{" "}
                 <span style={{ color: "#e85a80", fontWeight: 600 }}>
                   {caseIdList.length}
@@ -356,7 +376,105 @@ export default function NormalDisplay({ datasetObj }) {
                 cases. Click any case to explore more
               </Typography>
               <CaseButtonMatrix caseList={caseIdList} />
-            </DataEntryForCaseId>
+              {requestedCases.length !== 0 ? (
+                <ButtonDownloadCsvFromJson jsonData={filteredRequestedCases} />
+              ) : null}
+            </DataEntryWrapper>
+            <DataEntryWrapper name="Case Data Summary">
+              <Box sx={{ display: "flex", flexDirection: "column" }}>
+                <Box sx={{ paddingTop: 2 }}>
+                  {donorTypeChartData.length !== 0 ? (
+                    <ChartBox>
+                      <Chart
+                        chartType="PieChart"
+                        width="100%"
+                        height="500px"
+                        data={donorTypeChartData}
+                        options={{
+                          title: "DONOR TYPE",
+                          titleTextStyle: {
+                            fontSize: 18,
+                            color: "#454545",
+                          },
+                          pieHole: 0.4,
+                          is3D: false,
+                          legend: { textStyle: { fontSize: 20 } },
+                        }}
+                      />
+                    </ChartBox>
+                  ) : (
+                    <Typography variant="subtitle2">None</Typography>
+                  )}
+                </Box>
+                <Box sx={{ paddingTop: 4 }}>
+                  {sexChartData.length !== 0 ? (
+                    <ChartBox>
+                      <Chart
+                        chartType="PieChart"
+                        width="100%"
+                        height="500px"
+                        data={sexChartData}
+                        options={{
+                          title: "SEX",
+                          titleTextStyle: {
+                            fontSize: 18,
+                            color: "#454545",
+                          },
+                          pieHole: 0.4,
+                          is3D: false,
+                          slices: {
+                            0: { color: "#454545" },
+                            1: { color: "#adadad" },
+                          },
+                          legend: { textStyle: { fontSize: 20 } },
+                        }}
+                      />
+                      {/* <Chart
+                        chartType="BarChart"
+                        data={sexChartData}
+                        width="100%"
+                        height="400px"
+                        options={{
+                          title: "Sex",
+                          hAxis: {
+                            title: "Percentage",
+                            minValue: 0,
+                          },
+                          // vAxis: {
+                          //   title: "Gender",
+                          // },
+                          chartArea: { width: "60%" },
+                          colors: ["#b0120a", "#ffab91"],
+                          legend: { position: "none" },
+                        }}
+                      /> */}
+                    </ChartBox>
+                  ) : null}
+                </Box>
+                <Box sx={{ paddingTop: 4 }}>
+                  {raceChartData.length !== 0 ? (
+                    <ChartBox>
+                      <Chart
+                        chartType="PieChart"
+                        width="100%"
+                        height="500px"
+                        data={raceChartData}
+                        options={{
+                          title: "Race/Ethnicity",
+                          titleTextStyle: {
+                            fontSize: 18,
+                            color: "#454545",
+                          },
+                          pieHole: 0.4,
+                          is3D: false,
+                          legend: { textStyle: { fontSize: 20 } },
+                        }}
+                      />
+                    </ChartBox>
+                  ) : null}
+                </Box>
+              </Box>
+            </DataEntryWrapper>
           </DataPaper>
 
           <Title2 text="Data" />
@@ -375,6 +493,9 @@ export default function NormalDisplay({ datasetObj }) {
                   : null
               }
             />
+            <DataEntryWrapper name="Example Data File Preview">
+              <ExampleDataFileGrid datasetId={datasetObj.dataset_id} />
+            </DataEntryWrapper>
           </DataPaper>
         </PaperPanel>
       ) : null}
