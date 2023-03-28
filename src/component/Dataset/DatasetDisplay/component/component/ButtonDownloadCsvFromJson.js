@@ -15,10 +15,10 @@ export default function ButtonDownloadCsvFromJson({ jsonData }) {
     const data = new Blob([writeBuffer], { type: fileType });
     FileSaver.saveAs(data, fName + fExtension);
   };
+
   return (
     <Button
       variant="contained"
-      sx={{ marginLeft: 2 }}
       onClick={() => exportToXlsx(jsonData, fileName, fileExtension)}
     >
       Download Case Data
