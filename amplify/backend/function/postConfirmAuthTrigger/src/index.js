@@ -12,21 +12,19 @@ exports.handler = (event, context, callback) => {
   var dateTime = date + " " + time;
 
   var to = event.request.userAttributes.email;
-  var subject = "Your Sign-up on nPOD is confirmed!";
+  var subject = "Finish your sign-up on nPOD: Verify the email!";
   var body =
     "Congratulations, " +
     event.userName +
     "! Your sign-up has been confirmed. " +
     "\r\n" +
-    "Now you can login and start using the account now." +
+    "Please VERIFY your email address after first time login on nPOD." +
     "\r\n" +
     "Log in here: https://portal.jdrfnpod.org/signin" +
     "\r\n" +
-    "Please verify your email address after first time login." +
+    "Verify your email here: https://portal.jdrfnpod.org/verifyemail" +
     "\r\n" +
-    "(this is crucial if you ever need to reset your password)." +
-    "\r\n" +
-    "Verify your email: https://portal.jdrfnpod.org/verifyemail";
+    "(this is crucial if you ever need to reset your password and recover your account).";
   var body2 = "\r\n" + "Sent at " + dateTime + " UTC";
   if (event.request.userAttributes.email) {
     sendEmail(to, subject, body + " " + body2, function (status) {

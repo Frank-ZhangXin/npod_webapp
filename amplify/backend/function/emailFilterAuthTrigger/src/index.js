@@ -55,11 +55,11 @@ exports.handler = (event, context, callback) => {
   } else {
     console.log("Blocking user and send out notice.");
     var to = [event.request.userAttributes.email];
-    var subject = "Your Sign-up on nPOD is received";
+    var subject = "Your Sign-up on nPOD is pending for approval";
     var body =
       "Hi " +
       event.userName +
-      ", your sign-up on nPOD has been received and waiting for approval." +
+      ", we got your sign-up on nPOD request and it's waiting for approval." +
       "\r\n" +
       "You have agreed and understand nPOD website terms and conditions." +
       "\r\n" +
