@@ -1,6 +1,5 @@
 const mysql = require("mysql");
 const dotenv = require("dotenv").config();
-const writeColumnMap = require("./updateColumnMap");
 
 var pool = mysql.createPool({
   connectLimit: 10,
@@ -759,6 +758,51 @@ async function create_dataset_example_data_file(datasetExampleDataFileObj) {
   return await pooledConnection(asyncAction);
 }
 
+// create new rows in a table by table name, matrix of updating data
+async function create_new_rows_into_table(table_name, matrix) {
+  let headers = Object.keys(matrix[0]);
+
+  let the_table_name = "HLA_test"; // <=============== Temp table name, real one in the args
+  let sql1 = `INSERT INTO ${the_table_name}(`;
+  let sql2 = "";
+  headers.forEach((h) => {
+    sql2 += h;
+    sql2 += ",";
+  });
+  sql2 = sql2.slice(0, -1);
+  sql2 += ") ";
+  let sql3 = "VALUES";
+  matrix.forEach((objectRow) => {
+    let rowForSql = "(";
+    headers.forEach((header) => {
+      rowForSql += `"${objectRow[header]}", `;
+    });
+    rowForSql = rowForSql.slice(0, -2);
+    rowForSql += "),";
+    sql3 += rowForSql;
+  });
+  sql3 = sql3.slice(0, -1);
+
+  let sql = sql1 + sql2 + sql3;
+
+  console.log("sql: " + sql);
+  let sql_test = `select * from ${table_name} where case_id="6567"`;
+
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(`Insert new rows in table ${table_name} successful!`);
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForCreate: testPoolForCreate,
   create_case: create_case,
@@ -790,4 +834,5 @@ module.exports = {
   create_dataset: create_dataset,
   create_dataset_case_identifier: create_dataset_case_identifier,
   create_dataset_example_data_file: create_dataset_example_data_file,
+  create_new_rows_into_table: create_new_rows_into_table,
 };

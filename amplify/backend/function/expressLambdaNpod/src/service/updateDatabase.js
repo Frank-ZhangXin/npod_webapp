@@ -1,6 +1,5 @@
 const mysql = require("mysql");
 const dotenv = require("dotenv").config();
-const updateColumnMap = require("./updateColumnMap");
 
 var pool = mysql.createPool({
   connectLimit: 10,
@@ -8,6 +7,7 @@ var pool = mysql.createPool({
   user: process.env.WRITE_DB_USER,
   password: process.env.WRITE_DB_PASS,
   database: process.env.WRITE_DB_NAME,
+  multipleStatements: true,
 });
 
 async function testPoolForUpdate() {
@@ -115,9 +115,16 @@ async function update_AAb(columns) {
 }
 
 // update HLA
-async function update_HLA(columns) {
+async function update_HLA(
+  columns,
+  isBatch = false,
+  tempTableName = "HLA_test"
+) {
   let updateStr = "";
   for (let [key, value] of Object.entries(columns)) {
+    if (key === "case_id") {
+      continue;
+    }
     if (value !== null) {
       columns[key] = "'" + value + "'";
     }
@@ -127,7 +134,8 @@ async function update_HLA(columns) {
       updateStr += "," + key + "=" + columns[key];
     }
   }
-  const sql = `UPDATE HLA SET ${updateStr} WHERE case_id=${columns.case_id}`;
+  const tableName = isBatch ? tempTableName : "HLA";
+  const sql = `UPDATE ${tableName} SET ${updateStr} WHERE case_id='${columns.case_id}'`;
   console.log("sql: ", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -159,7 +167,7 @@ async function update_RNA(columns) {
       updateStr += "," + key + "=" + columns[key];
     }
   }
-  const sql = `UPDATE RNA SET ${updateStr} WHERE case_id=${columns.case_id} AND RNA_id=${columns.RNA_id}`;
+  const sql = `UPDATE RNA SET ${updateStr} WHERE case_id='${columns.case_id}' AND RNA_id='${columns.RNA_id}'`;
   console.log("sql: ", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -191,7 +199,7 @@ async function update_sample(columns) {
       updateStr += "," + key + "=" + columns[key];
     }
   }
-  const sql = `UPDATE samples SET ${updateStr} WHERE case_id=${columns.case_id} AND vial_id=${columns.vial_id}`;
+  const sql = `UPDATE samples SET ${updateStr} WHERE case_id='${columns.case_id}' AND vial_id='${columns.vial_id}'`;
   console.log("sql: ", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -223,7 +231,7 @@ async function update_dataset(dataset_id, columns) {
       updateStr += "," + key + "=" + columns[key];
     }
   }
-  const sql = `UPDATE dataset SET ${updateStr} WHERE dataset_id=${dataset_id}`;
+  const sql = `UPDATE dataset SET ${updateStr} WHERE dataset_id='${dataset_id}'`;
   console.log("sql: ", sql);
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
@@ -242,6 +250,25 @@ async function update_dataset(dataset_id, columns) {
   return await pooledConnection(asyncAction);
 }
 
+// Batch update a table
+async function batch_update_table(tableName, matrix) {
+  const resList = [];
+  let updateFunc;
+  let targetTable = tableName;
+  switch (tableName) {
+    case "HLA":
+      updateFunc = update_HLA;
+      targetTable = "HLA_test";
+  }
+  for (const row of matrix) {
+    let rowRes = updateFunc
+      ? updateFunc(row, true, targetTable)
+      : "The updating table is not supported";
+    resList.push(rowRes);
+  }
+  return await Promise.all(resList);
+}
+
 module.exports = {
   testPoolForUpdate: testPoolForUpdate,
   update_case: update_case,
@@ -250,4 +277,5 @@ module.exports = {
   update_RNA: update_RNA,
   update_sample: update_sample,
   update_dataset: update_dataset,
+  batch_update_table: batch_update_table,
 };

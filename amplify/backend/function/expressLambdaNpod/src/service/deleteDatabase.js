@@ -1,6 +1,5 @@
 const mysql = require("mysql");
 const dotenv = require("dotenv").config();
-const writeColumnMap = require("./updateColumnMap");
 
 var pool = mysql.createPool({
   connectLimit: 10,
