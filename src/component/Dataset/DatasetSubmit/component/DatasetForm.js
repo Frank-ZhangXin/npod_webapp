@@ -24,7 +24,7 @@ import useCreateDataset from "./component/useCreateDataset";
 import XLSX from "xlsx";
 
 export default function DatasetForm({ setDatasetInfo }) {
-  const [values, setValues] = useState({
+  const initStates = {
     datasetName: "",
     description: "",
     pi: "",
@@ -38,18 +38,60 @@ export default function DatasetForm({ setDatasetInfo }) {
     datasetType: [],
     rawDataFileLink: "",
     publicationLink: "",
+    datasetNameAvailableLength: 200,
+    descriptionAvailableLength: 1000,
+    submitButtonClicked: 0,
+    datasetCreateSuccess: null,
+    datasetCreateFail: null,
+    caseIdentifierData: [],
+    caseIdentifierFileName: null,
+    exampleDataFile: null,
+    exampleDataFileName: null,
+  };
+  const [values, setValues] = useState({
+    datasetName: initStates.datasetName,
+    description: initStates.description,
+    pi: initStates.pi,
+    piEmail: initStates.piEmail,
+    poc: initStates.poc,
+    pocEmail: initStates.pocEmail,
+    author: initStates.author,
+    numberOfAnalyses: initStates.numberOfAnalyses,
+    published: initStates.published,
+    pmId: initStates.pmId,
+    datasetType: initStates.datasetType,
+    rawDataFileLink: initStates.rawDataFileLink,
+    publicationLink: initStates.publicationLink,
   });
-  const [datasetNameAvailableLength, setDataseAvailabletNameLength] =
-    useState(200);
+  const [datasetNameAvailableLength, setDataseAvailabletNameLength] = useState(
+    initStates.datasetNameAvailableLength
+  );
   const datasetNameHelperText = datasetNameAvailableLength + " characters left";
-  const [descriptionAvailableLength, setDescriptionAvailableLength] =
-    useState(1000);
+  const [descriptionAvailableLength, setDescriptionAvailableLength] = useState(
+    initStates.descriptionAvailableLength
+  );
   const descriptionHelperText = descriptionAvailableLength + " characters left";
-  const [submitButtonClicked, setSubmitButtonClicked] = useState(0);
-  const [datasetCreateSuccess, setDatasetCreateSuccess] = useState(null);
-  const [datasetCreateFail, setDatasetCreateFail] = useState(null);
-  const [caseIdentifierData, setCaseIdentifierData] = useState([]);
-  const [exampleDataFile, setExampleDataFile] = useState(null);
+  const [submitButtonClicked, setSubmitButtonClicked] = useState(
+    initStates.submitButtonClicked
+  );
+  const [datasetCreateSuccess, setDatasetCreateSuccess] = useState(
+    initStates.datasetCreateSuccess
+  );
+  const [datasetCreateFail, setDatasetCreateFail] = useState(
+    initStates.datasetCreateFail
+  );
+  const [caseIdentifierData, setCaseIdentifierData] = useState(
+    initStates.caseIdentifierData
+  );
+  const [caseIdentifierFileName, setCaseIdentifierFileName] = useState(
+    initStates.caseIdentifierFileName
+  );
+  const [exampleDataFile, setExampleDataFile] = useState(
+    initStates.exampleDataFile
+  );
+  const [exampleDataFileName, setExampleDataFileName] = useState(
+    initStates.exampleDataFileName
+  );
 
   useEffect(() => {
     setCurrentUserAsAuthor();
@@ -58,12 +100,12 @@ export default function DatasetForm({ setDatasetInfo }) {
   useEffect(() => {
     if (datasetCreateSuccess !== null) {
       const sucessTimer = setTimeout(() => {
-        setDatasetCreateSuccess(null);
-      }, 5000);
+        resetAllStates();
+      }, 3000);
     } else if (datasetCreateFail !== null) {
       const failTimer = setTimeout(() => {
-        setDatasetCreateFail(null);
-      }, 5000);
+        resetAllStates();
+      }, 3000);
     }
   }, [datasetCreateSuccess, datasetCreateFail]);
 
@@ -76,6 +118,37 @@ export default function DatasetForm({ setDatasetInfo }) {
     }
   }
 
+  function resetAllStates() {
+    setValues({
+      datasetName: initStates.datasetName,
+      description: initStates.description,
+      pi: initStates.pi,
+      piEmail: initStates.piEmail,
+      poc: initStates.poc,
+      pocEmail: initStates.pocEmail,
+      author: values["author"],
+      numberOfAnalyses: initStates.numberOfAnalyses,
+      published: initStates.published,
+      pmId: initStates.pmId,
+      datasetType: initStates.datasetType,
+      rawDataFileLink: initStates.rawDataFileLink,
+      publicationLink: initStates.publicationLink,
+    });
+    setDataseAvailabletNameLength(initStates.datasetNameAvailableLength);
+    setDescriptionAvailableLength(initStates.descriptionAvailableLength);
+    setSubmitButtonClicked(initStates.submitButtonClicked);
+    setDatasetCreateSuccess(initStates.datasetCreateSuccess);
+    setDatasetCreateFail(initStates.datasetCreateFail);
+    setCaseIdentifierData(initStates.caseIdentifierData);
+    setCaseIdentifierFileName(initStates.caseIdentifierFileName);
+    setExampleDataFile(initStates.exampleDataFile);
+    setExampleDataFileName(initStates.exampleDataFileName);
+  }
+
+  const handleReset = () => {
+    resetAllStates();
+  };
+
   const handleChange = (prop) => (event) => {
     if (prop === "datasetName") {
       setDataseAvailabletNameLength(200 - event.target.value.length);
@@ -85,17 +158,12 @@ export default function DatasetForm({ setDatasetInfo }) {
     }
     setValues({ ...values, [prop]: event.target.value });
   };
+
   const handleDateChange = (date) => {
     setValues({
       ...values,
       create_date: date.toLocaleDateString("en-CA").slice(0, 10),
     });
-  };
-  const handleFormChange = (event) => {
-    setDatasetInfo(() => ({
-      ...setDatasetInfo,
-      [event.target.name]: event.target.value,
-    }));
   };
 
   const hanldeSubmitButtonClicked = (event) => {
@@ -104,6 +172,7 @@ export default function DatasetForm({ setDatasetInfo }) {
 
   const handleUploadCaseIdentifier = (event) => {
     const file = event.target.files[0];
+    setCaseIdentifierFileName(file.name);
     const reader = new FileReader();
     reader.onload = (readerEvent) => {
       const workbook = XLSX.read(readerEvent.target.result, { type: "binary" });
@@ -117,6 +186,7 @@ export default function DatasetForm({ setDatasetInfo }) {
 
   const handleUploadExampleDataFile = (event) => {
     const file = event.target.files[0];
+    setExampleDataFileName(file.name);
     setExampleDataFile(file);
   };
 
@@ -132,10 +202,18 @@ export default function DatasetForm({ setDatasetInfo }) {
   console.log(values);
 
   return (
-    <Box sx={{ padding: 5, display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Typography variant="h5" sx={{ marginTop: 8 }}>
+        Create a new dataset
+      </Typography>
+
+      <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
+        Please fill the form about the dataset
+      </Typography>
       <Box sx={{ paddingTop: 2 }}>
         <TextField
           sx={{ width: 500 }}
+          value={values.pi}
           id="pi"
           label="PI"
           onChange={handleChange("pi")}
@@ -144,6 +222,7 @@ export default function DatasetForm({ setDatasetInfo }) {
       <Box sx={{ paddingTop: 2 }}>
         <TextField
           sx={{ width: 500 }}
+          value={values.piEmail}
           id="piEmail"
           label="PI Email"
           onChange={handleChange("piEmail")}
@@ -152,6 +231,7 @@ export default function DatasetForm({ setDatasetInfo }) {
       <Box sx={{ paddingTop: 2 }}>
         <TextField
           sx={{ width: 500 }}
+          value={values.poc}
           id="poc"
           label="POC"
           onChange={handleChange("poc")}
@@ -160,6 +240,7 @@ export default function DatasetForm({ setDatasetInfo }) {
       <Box sx={{ paddingTop: 2 }}>
         <TextField
           sx={{ width: 500 }}
+          value={values.pocEmail}
           id="pocEmail"
           label="POC Email"
           onChange={handleChange("pocEmail")}
@@ -168,6 +249,7 @@ export default function DatasetForm({ setDatasetInfo }) {
       <Box sx={{ paddingTop: 2 }}>
         <TextField
           sx={{ width: 500 }}
+          value={values.datasetName}
           id="datasetName"
           label="Dataset Name"
           onChange={handleChange("datasetName")}
@@ -177,6 +259,7 @@ export default function DatasetForm({ setDatasetInfo }) {
       <Box sx={{ paddingTop: 2 }}>
         <TextField
           sx={{ width: 500 }}
+          value={values.description}
           id="description"
           label="Description"
           multiline
@@ -188,6 +271,7 @@ export default function DatasetForm({ setDatasetInfo }) {
       <Box sx={{ paddingTop: 2 }}>
         <TextField
           sx={{ width: 500 }}
+          value={values.numberOfAnalyses}
           id="numberOfAnalyses"
           label="Number of Analyses"
           onChange={handleChange("numberOfAnalyses")}
@@ -210,6 +294,7 @@ export default function DatasetForm({ setDatasetInfo }) {
           <Box sx={{ paddingTop: 2 }}>
             <TextField
               sx={{ width: 500 }}
+              value={values.pmId}
               id="pmId"
               label="PMID"
               onChange={handleChange("pmId")}
@@ -218,6 +303,7 @@ export default function DatasetForm({ setDatasetInfo }) {
           <Box sx={{ paddingTop: 2 }}>
             <TextField
               sx={{ width: 500 }}
+              value={values.publicationLink}
               id="publicationLink"
               label="Publication Link"
               onChange={handleChange("publicationLink")}
@@ -229,6 +315,7 @@ export default function DatasetForm({ setDatasetInfo }) {
       <Box sx={{ paddingTop: 2 }}>
         <TextField
           sx={{ width: 500 }}
+          value={values.datasetType}
           id="datasetType"
           label="Dataset Type"
           onChange={handleChange("datasetType")}
@@ -237,6 +324,7 @@ export default function DatasetForm({ setDatasetInfo }) {
       <Box sx={{ paddingTop: 2 }}>
         <TextField
           sx={{ width: 500 }}
+          value={values.rawDataFileLink}
           id="rawDataFileLink"
           label="Raw Data File Link"
           onChange={handleChange("rawDataFileLink")}
@@ -245,6 +333,13 @@ export default function DatasetForm({ setDatasetInfo }) {
       </Box>
       <Box sx={{ paddingTop: 2 }}>
         <InputLabel>Case Identifier</InputLabel>
+
+        {caseIdentifierFileName ? (
+          <Typography variant="subtitle1">
+            Selected file: {caseIdentifierFileName}
+          </Typography>
+        ) : null}
+
         <Button variant="outlined" component="label">
           Choose File
           <input
@@ -259,6 +354,13 @@ export default function DatasetForm({ setDatasetInfo }) {
 
       <Box sx={{ paddingTop: 2 }}>
         <InputLabel>Data File</InputLabel>
+
+        {exampleDataFileName ? (
+          <Typography variant="subtitle1">
+            Selected file: {exampleDataFileName}
+          </Typography>
+        ) : null}
+
         <Button variant="outlined" component="label">
           Choose File
           <input
@@ -271,22 +373,36 @@ export default function DatasetForm({ setDatasetInfo }) {
         <Typography variant="subtitle1">(File type: *.csv)</Typography>
       </Box>
       <Box sx={{ paddingTop: 2 }}>
-        <Button variant="contained" onClick={hanldeSubmitButtonClicked}>
+        <Button
+          variant="contained"
+          sx={{ width: "100px" }}
+          onClick={hanldeSubmitButtonClicked}
+        >
           Submit
         </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          sx={{ marginLeft: 4, width: "100px" }}
+          onClick={handleReset}
+        >
+          Reset
+        </Button>
       </Box>
-      <Box>
-        <Fade in={datasetCreateFail !== null}>
-          <Alert variant="filled" severity="error">
-            {datasetCreateFail}
-          </Alert>
-        </Fade>
-        <Fade in={datasetCreateSuccess !== null}>
-          <Alert variant="filled" severity="success">
-            {datasetCreateSuccess}
-          </Alert>
-        </Fade>
-      </Box>
+      {datasetCreateFail !== null || datasetCreateSuccess !== null ? (
+        <Box>
+          <Fade in={datasetCreateFail !== null}>
+            <Alert variant="filled" severity="error">
+              {datasetCreateFail}
+            </Alert>
+          </Fade>
+          <Fade in={datasetCreateSuccess !== null}>
+            <Alert variant="filled" severity="success">
+              {datasetCreateSuccess}
+            </Alert>
+          </Fade>
+        </Box>
+      ) : null}
     </Box>
   );
 }

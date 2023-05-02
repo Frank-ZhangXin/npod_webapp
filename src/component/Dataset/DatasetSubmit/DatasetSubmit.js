@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import DatasetForm from "./component/DatasetForm";
 
 const PaperPanel = styled(Paper)(({ theme }) => ({
@@ -55,7 +56,28 @@ export default function DatasetSubmit() {
       </Paper>
 
       <PaperPanel>
-        <DatasetForm />
+        <Box sx={{ display: "flex", flexDirection: "column", width: "50vw" }}>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <DatasetForm />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row-reverse",
+            }}
+          >
+            <Button
+              variant="outlined"
+              component="label"
+              sx={{ marginTop: 4, marginBottom: 9 }}
+              onClick={() =>
+                window.open(`${window.location.origin}/dataset-manage`)
+              }
+            >
+              View Your Datasets
+            </Button>
+          </Box>
+        </Box>
       </PaperPanel>
     </Box>
   );

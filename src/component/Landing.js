@@ -193,26 +193,20 @@ function Landing(props) {
                   </a>
                 </Box>
                 <Box className={classes.centerButton}>
-                  <LandingPageTooltip
-                    title={helpTextNotAvailable}
-                    placement="top"
-                  >
+                  <a href="/dataset-explore" target="_blank">
                     <img
                       style={{ width: imageWidth }}
-                      src="/assets/landingPageImages/ExploreDatasetsNotAvailable.png"
+                      src="/assets/landingPageImages/ExploreDatasets.png"
                     />
-                  </LandingPageTooltip>
+                  </a>
                 </Box>
                 <Box className={classes.centerButton}>
-                  <LandingPageTooltip
-                    title={helpTextNotAvailable}
-                    placement="top"
-                  >
+                  <a href="/dataset-submit" target="_blank">
                     <img
                       style={{ width: imageWidth }}
-                      src="/assets/landingPageImages/SubmitDatasetsNotAvailable.png"
+                      src="/assets/landingPageImages/SubmitDatasets.png"
                     />
-                  </LandingPageTooltip>
+                  </a>
                 </Box>
                 <Box className={classes.centerButton}>
                   <a href="/usefulresources" target="_blank">
