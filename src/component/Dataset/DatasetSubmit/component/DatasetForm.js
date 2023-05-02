@@ -100,12 +100,12 @@ export default function DatasetForm({ setDatasetInfo }) {
   useEffect(() => {
     if (datasetCreateSuccess !== null) {
       const sucessTimer = setTimeout(() => {
-        setDatasetCreateSuccess(null);
-      }, 5000);
+        resetAllStates();
+      }, 3000);
     } else if (datasetCreateFail !== null) {
       const failTimer = setTimeout(() => {
-        setDatasetCreateFail(null);
-      }, 5000);
+        resetAllStates();
+      }, 3000);
     }
   }, [datasetCreateSuccess, datasetCreateFail]);
 
@@ -202,7 +202,14 @@ export default function DatasetForm({ setDatasetInfo }) {
   console.log(values);
 
   return (
-    <Box sx={{ padding: 5, display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Typography variant="h5" sx={{ marginTop: 8 }}>
+        Create a new dataset
+      </Typography>
+
+      <Typography variant="subtitle1" sx={{ marginTop: 2 }}>
+        Please fill the form about the dataset
+      </Typography>
       <Box sx={{ paddingTop: 2 }}>
         <TextField
           sx={{ width: 500 }}
@@ -382,18 +389,20 @@ export default function DatasetForm({ setDatasetInfo }) {
           Reset
         </Button>
       </Box>
-      <Box>
-        <Fade in={datasetCreateFail !== null}>
-          <Alert variant="filled" severity="error">
-            {datasetCreateFail}
-          </Alert>
-        </Fade>
-        <Fade in={datasetCreateSuccess !== null}>
-          <Alert variant="filled" severity="success">
-            {datasetCreateSuccess}
-          </Alert>
-        </Fade>
-      </Box>
+      {datasetCreateFail !== null || datasetCreateSuccess !== null ? (
+        <Box>
+          <Fade in={datasetCreateFail !== null}>
+            <Alert variant="filled" severity="error">
+              {datasetCreateFail}
+            </Alert>
+          </Fade>
+          <Fade in={datasetCreateSuccess !== null}>
+            <Alert variant="filled" severity="success">
+              {datasetCreateSuccess}
+            </Alert>
+          </Fade>
+        </Box>
+      ) : null}
     </Box>
   );
 }
