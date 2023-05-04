@@ -7,7 +7,7 @@ export default function ImportData() {
   return (
     <div>
       <ImportHLADataFile />
-      <ImportRNADataFile />
+      {/* <ImportRNADataFile /> */}
     </div>
   );
 }

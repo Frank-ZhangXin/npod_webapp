@@ -25,6 +25,8 @@ var {
   get_all_datasets,
   get_dataset_by_datasetId,
   get_caseId_by_datasetId,
+  get_table_column_headers_by_table_name,
+  get_primary_key_values_by_table_name,
 } = require("./service/readDatabase");
 
 var {
@@ -55,6 +57,7 @@ var {
   create_dataset,
   create_dataset_case_identifier,
   create_dataset_example_data_file,
+  create_new_rows_into_table,
 } = require("./service/createDatabase");
 
 var {
@@ -65,6 +68,7 @@ var {
   update_RNA,
   update_sample,
   update_dataset,
+  batch_update_table,
 } = require("./service/updateDatabase");
 
 var {
@@ -214,6 +218,22 @@ app.get("/db/caseId_by_datasetId", function (req, res) {
   console.log("fetching caseId by datasetId.");
   get_caseId_by_datasetId(req.query.dataset_id).then((promisedRes) =>
     res.send(promisedRes)
+  );
+});
+
+// get table headers by table name
+app.get("/db/table_headers_by_table_name", function (req, res) {
+  console.log("fetching table_headers by table_name.");
+  get_table_column_headers_by_table_name(req.query.table_name).then(
+    (promisedRes) => res.send(promisedRes)
+  );
+});
+
+// get primary key's values by table name
+app.get("/db/primary_key_values_by_table_name", function (req, res) {
+  console.log("fetching table_headers by table_name.");
+  get_primary_key_values_by_table_name(req.query.table_name).then(
+    (promisedRes) => res.send(promisedRes)
   );
 });
 
@@ -487,9 +507,34 @@ app.post("/db/create_dataset_example_data_file", function (req, res) {
   );
 });
 
+// create_new_rows_into_table
+
+// create dataset_example_data_file
+app.post("/db/create_new_rows_into_table", function (req, res) {
+  console.log(`creating new rows into the table ${req.body.table_name}`);
+  console.log(req.body);
+  create_new_rows_into_table(req.body.table_name, req.body.matrix).then(
+    (promiseRes) => res.send(promiseRes)
+  );
+});
+
 /****************************
  * Example put method *
  ****************************/
+
+// test update db
+app.put("/db/test_db", function (req, res) {
+  console.log("Testing database connection...");
+  testPoolForUpdate()
+    .then(() => {
+      console.log("Database connection is successful!");
+      res.status(200).json({ Database_connection: true });
+    })
+    .catch(() => {
+      console.log("Error: Database connection is failed!");
+      res.status(500).json({ Database_connection: false });
+    });
+});
 
 // Update cases
 app.put("/db/update_case", function (req, res) {
@@ -541,17 +586,13 @@ app.put("/db/update_dataset", function (req, res) {
   );
 });
 
-app.put("/db/test_db", function (req, res) {
-  console.log("Testing database connection...");
-  testPoolForUpdate()
-    .then(() => {
-      console.log("Database connection is successful!");
-      res.status(200).json({ Database_connection: true });
-    })
-    .catch(() => {
-      console.log("Error: Database connection is failed!");
-      res.status(500).json({ Database_connection: false });
-    });
+// batch update table
+app.put("/db/batch_update_table", function (req, res) {
+  console.log("Updating multiple rows in a table...");
+  console.log(req.body);
+  batch_update_table(req.body["table_name"], req.body["matrix"]).then(
+    (promiseRes) => res.send(promiseRes)
+  );
 });
 
 /****************************

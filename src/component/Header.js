@@ -13,6 +13,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import BuildIcon from "@material-ui/icons/Build";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
@@ -123,6 +124,15 @@ function Header(props) {
       } else {
         setEmailVerified(false);
       }
+      if (
+        authRes.signInUserSession.accessToken.payload[
+          "cognito:groups"
+        ].includes("admin")
+      ) {
+        setDisplayAdminAccess(true);
+      } else {
+        setDisplayAdminAccess(false);
+      }
     } catch (error) {
       console.log("Check Auth error ", error);
       props.setSignedIn(false);
@@ -137,6 +147,7 @@ function Header(props) {
   const [title2Size, setTitle2Size] = useState("h4");
   const [avatarSize, setAvatarSize] = useState("large");
   const [emailVerified, setEmailVerified] = useState(false);
+  const [displayAdminAccess, setDisplayAdminAccess] = useState(false);
 
   const updateResponsiveWidth = () => {
     if (window.innerWidth >= 1920) {
@@ -364,6 +375,28 @@ function Header(props) {
                   </IconButton>
                 </HeaderTooltip>
               )}
+              {props.signedIn ? (
+                <div>
+                  <IconButton
+                    edge="end"
+                    className={classes.authButton}
+                    aria-label="avatar"
+                    onClick={() =>
+                      window.open(`${window.location.origin}/admin`)
+                    }
+                  >
+                    <BuildIcon className={classes.icon} fontSize={avatarSize} />
+                    <div>
+                      <Typography
+                        className={classes.title1}
+                        variant={title2Size}
+                      >
+                        Admin
+                      </Typography>
+                    </div>
+                  </IconButton>
+                </div>
+              ) : null}
             </Toolbar>
           </AppBar>
         </HideOnScroll>

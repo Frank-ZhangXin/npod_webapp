@@ -8,6 +8,7 @@ var pool = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
+  multipleStatements: true,
 });
 
 async function testPoolForRead() {
@@ -354,6 +355,56 @@ async function get_caseId_by_datasetId(the_dataset_id) {
   return await pooledConnection(asyncAction);
 }
 
+// get table headers by table name
+async function get_table_column_headers_by_table_name(table_name) {
+  const sql = `SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA="npod" and TABLE_NAME="${table_name}"`;
+  console.log("sql query", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch dataset] Totally ${result.length} column headers were fetched.`
+          );
+          let rt = result.map((item) => item.COLUMN_NAME);
+          resolve(rt);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// get primary keys by table name
+async function get_primary_key_values_by_table_name(table_name) {
+  const sql1 = `SELECT @col_name := column_name FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE WHERE constraint_name = "PRIMARY" AND table_schema = "npod" AND table_name = "${table_name}" LIMIT 1;`;
+
+  const sql2 = `SET @sql = CONCAT("SELECT \`", @col_name, "\` FROM \`", "${table_name}", "\`;");`;
+
+  const sql3 = `PREPARE stmt FROM @sql; EXECUTE stmt;`;
+
+  const sql = sql1 + " " + sql2 + " " + sql3;
+
+  console.log("sql query: ", sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch dataset] Totally ${result[3].length} primary keys were fetched.`
+          );
+          resolve(result[3]);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForRead: testPoolForRead,
   get_cases: get_cases,
@@ -370,4 +421,7 @@ module.exports = {
   get_all_datasets: get_all_datasets,
   get_dataset_by_datasetId: get_dataset_by_datasetId,
   get_caseId_by_datasetId: get_caseId_by_datasetId,
+  get_table_column_headers_by_table_name:
+    get_table_column_headers_by_table_name,
+  get_primary_key_values_by_table_name: get_primary_key_values_by_table_name,
 };

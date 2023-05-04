@@ -37,6 +37,7 @@ export default function DatasetPage({ datasetId, currUser }) {
               variant="contained"
               onClick={handleClickEdit}
               sx={{ width: 100 }}
+              disabled={true} // TO-DO dataset editing function
             >
               Edit
             </Button>

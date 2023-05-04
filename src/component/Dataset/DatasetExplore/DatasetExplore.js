@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import Filter from "./component/Filter";
 import DatasetCardList from "./component/DatasetCardList";
 
@@ -54,7 +55,7 @@ export default function DatasetExplore() {
         Explore Omics Datasets
       </Paper>
       <Grid container spacing={2} sx={{ padding: 5 }}>
-        <Grid item xs={6} md={4}>
+        <Grid item xs={2} md={3}>
           <PaperPanel>
             <Filter
               filterSelected={filterSelected}
@@ -64,6 +65,16 @@ export default function DatasetExplore() {
         </Grid>
         <Grid item xs={6} md={8}>
           <PaperPanel>
+            <Button
+              variant="contained"
+              component="label"
+              sx={{ marginTop: 3, marginLeft: 3 }}
+              onClick={() =>
+                window.open(`${window.location.origin}/dataset-manage`)
+              }
+            >
+              View Your Datasets
+            </Button>
             <DatasetCardList filterSelected={filterSelected} />
           </PaperPanel>
         </Grid>

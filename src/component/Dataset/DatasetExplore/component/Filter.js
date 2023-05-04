@@ -10,6 +10,7 @@ import {
   Chip,
   Autocomplete,
   TextField,
+  Typography,
 } from "@mui/material";
 
 export default function Filter({ filterSelected, setFilterSelected }) {
@@ -148,6 +149,9 @@ export default function Filter({ filterSelected, setFilterSelected }) {
         </FormGroup>
       </FormControl> */}
       {/* ------Type filter------ */}
+      <Typography variant="h5" sx={{ marginTop: 3, marginLeft: 2 }}>
+        FOR DEMO ONLY
+      </Typography>
       <FormControl sx={{ m: 3 }}>
         <FormLabel>Type</FormLabel>
         <FormGroup sx={{ ml: 2 }}>

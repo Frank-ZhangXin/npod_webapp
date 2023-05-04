@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => ({
   },
   centerBox: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     height: "65vh",
@@ -99,6 +99,13 @@ export default function Admin() {
       <Header location="Admin Page" />
       <div>
         <Box className={classes.centerBox}>
+          <Typography
+            variant="h3"
+            style={{ color: "white", fontWeight: 600, marginBottom: 10 }}
+            className={classes.userManageText}
+          >
+            Welcome to Admin Portal
+          </Typography>
           <Box className={classes.centerPad}>
             <Box className={classes.writeIn} onClick={dwiHandler}>
               <Typography variant="h2" className={classes.writeInText}>
