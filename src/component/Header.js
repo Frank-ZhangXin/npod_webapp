@@ -124,14 +124,16 @@ function Header(props) {
       } else {
         setEmailVerified(false);
       }
-      if (
-        authRes.signInUserSession.accessToken.payload[
-          "cognito:groups"
-        ].includes("admin")
-      ) {
-        setDisplayAdminAccess(true);
-      } else {
-        setDisplayAdminAccess(false);
+      if ("cognito:groups" in authRes.signInUserSession.accessToken.payload) {
+        if (
+          authRes.signInUserSession.accessToken.payload[
+            "cognito:groups"
+          ].includes("admin")
+        ) {
+          setDisplayAdminAccess(true);
+        } else {
+          setDisplayAdminAccess(false);
+        }
       }
     } catch (error) {
       console.log("Check Auth error ", error);
@@ -375,7 +377,7 @@ function Header(props) {
                   </IconButton>
                 </HeaderTooltip>
               )}
-              {props.signedIn ? (
+              {displayAdminAccess && props.signedIn ? (
                 <div>
                   <IconButton
                     edge="end"
