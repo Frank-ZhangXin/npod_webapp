@@ -102,11 +102,12 @@ function Landing(props) {
   const [title1, setTitle1] = useState("h1");
   const [title2, setTitle2] = useState("h2");
   const [title4, setTitle4] = useState("subtitle1");
+  const [displayDatasetSubmit, setDisplayDatasetSubmit] = useState(false);
   const history = useHistory();
 
   const helpTextNotAvailable = (
     <React.Fragment>
-      <div className={classes.helpText}>Coming Soon</div>
+      <div className={classes.helpText}>Dataset group user only</div>
     </React.Fragment>
   );
 
@@ -137,11 +138,40 @@ function Landing(props) {
       setTitle4("h6");
     }
   };
+
   useEffect(() => {
     updateResponsiveWidth();
     window.addEventListener("resize", updateResponsiveWidth);
     return () => window.removeEventListener("resize", updateResponsiveWidth);
   });
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
+
+  async function checkAuth() {
+    try {
+      const authRes = await Auth.currentAuthenticatedUser();
+
+      if ("cognito:groups" in authRes.signInUserSession.accessToken.payload) {
+        if (
+          authRes.signInUserSession.accessToken.payload[
+            "cognito:groups"
+          ].includes("dataset_user") ||
+          authRes.signInUserSession.accessToken.payload[
+            "cognito:groups"
+          ].includes("admin")
+        ) {
+          setDisplayDatasetSubmit(true);
+        } else {
+          setDisplayDatasetSubmit(false);
+        }
+      }
+    } catch (error) {
+      console.log("Check Auth error ", error);
+      props.setSignedIn(false);
+    }
+  }
 
   return (
     <div>
@@ -200,14 +230,29 @@ function Landing(props) {
                     />
                   </a>
                 </Box>
-                <Box className={classes.centerButton}>
-                  <a href="/dataset-submit" target="_blank">
-                    <img
-                      style={{ width: imageWidth }}
-                      src="/assets/landingPageImages/SubmitDatasets.png"
-                    />
-                  </a>
-                </Box>
+                {displayDatasetSubmit ? (
+                  <Box className={classes.centerButton}>
+                    <a href="/dataset-submit" target="_blank">
+                      <img
+                        style={{ width: imageWidth }}
+                        src="/assets/landingPageImages/SubmitDatasets.png"
+                      />
+                    </a>
+                  </Box>
+                ) : (
+                  <Box className={classes.centerButton}>
+                    <LandingPageTooltip
+                      title={helpTextNotAvailable}
+                      placement="top"
+                    >
+                      <img
+                        style={{ width: imageWidth }}
+                        src="/assets/landingPageImages/SubmitDatasetsNotAvailable.png"
+                      />
+                    </LandingPageTooltip>
+                  </Box>
+                )}
+
                 <Box className={classes.centerButton}>
                   <a href="/usefulresources" target="_blank">
                     <img
