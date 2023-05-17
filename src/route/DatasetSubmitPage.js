@@ -18,17 +18,22 @@ function DatasetSubmitPage(props) {
         "user group",
         authRes.signInUserSession.accessToken.payload["cognito:groups"]
       );
-      if (
-        authRes.signInUserSession.accessToken.payload[
-          "cognito:groups"
-        ].includes("dataset_user")
-      ) {
-        console.log("Welcome to dataset page!");
-      } else {
-        history.push("/");
-        console.log(
-          "Dataset page accessing is failed, since you are not dataset user."
-        );
+      if ("cognito:groups" in authRes.signInUserSession.accessToken.payload) {
+        if (
+          authRes.signInUserSession.accessToken.payload[
+            "cognito:groups"
+          ].includes("dataset_user") ||
+          authRes.signInUserSession.accessToken.payload[
+            "cognito:groups"
+          ].includes("admin")
+        ) {
+          console.log("Welcome to dataset page!");
+        } else {
+          history.push("/");
+          console.log(
+            "Dataset page accessing is failed, since you are not dataset user."
+          );
+        }
       }
     } catch (error) {
       console.log(error);
