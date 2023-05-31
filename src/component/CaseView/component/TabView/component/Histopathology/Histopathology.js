@@ -42,7 +42,7 @@ function Histopathology(props) {
               type="Immunohistochemistry"
               exist={props.currentCase.Aperio_id}
               urlLinks={[
-                "https://aperioeslide.ahc.ufl.edu/eSlideTray.php?DisplayHeader=true&TableName=Case&Id=" +
+                "https://aperioeslide.ahc.ufl.edu/app/WebViewer/view/case/Id/" +
                   props.currentCase.Aperio_id,
               ]}
             />
