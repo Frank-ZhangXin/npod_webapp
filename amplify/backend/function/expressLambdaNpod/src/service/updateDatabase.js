@@ -118,7 +118,7 @@ async function update_AAb(columns) {
 async function update_HLA(
   columns,
   isBatch = false,
-  tempTableName = "HLA_test"
+  tempTableName = "HLA_temp"
 ) {
   let updateStr = "";
   for (let [key, value] of Object.entries(columns)) {
@@ -258,7 +258,7 @@ async function batch_update_table(tableName, matrix) {
   switch (tableName) {
     case "HLA":
       updateFunc = update_HLA;
-      targetTable = "HLA_test";
+      targetTable = "HLA_temp";
   }
   for (const row of matrix) {
     let rowRes = updateFunc

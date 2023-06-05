@@ -211,13 +211,13 @@ export default function ImportHLADataFile() {
   useRetrieveTableHeaders("HLA", setTableHeaders);
   useRetrieveTableHeaders("RNA", setTableHeaders);
 
-  useRetrieveExisitingPrimaryKeyValues("HLA_test", setTablePrimaryKeyValues); // Note: testing set, need revert later
+  useRetrieveExisitingPrimaryKeyValues("HLA_temp", setTablePrimaryKeyValues); // Note: testing set, need revert later
   useRetrieveExisitingPrimaryKeyValues("RNA", setTablePrimaryKeyValues);
 
   useCheckImportFileFormat(
     "HLA",
     allRawFileData["HLA"],
-    allTablePrimaryKeyValues["HLA_test"], // Note: testing set, need revert later
+    allTablePrimaryKeyValues["HLA_temp"], // Note: testing set, need revert later
     HLAHeadersMapping,
     setDataToSend
   );

@@ -762,7 +762,7 @@ async function create_dataset_example_data_file(datasetExampleDataFileObj) {
 async function create_new_rows_into_table(table_name, matrix) {
   let headers = Object.keys(matrix[0]);
 
-  let the_table_name = "HLA_test"; // <=============== Temp table name, real one in the args
+  let the_table_name = "HLA_temp"; // <=============== Temp table name, real one in the args
   let sql1 = `INSERT INTO ${the_table_name}(`;
   let sql2 = "";
   headers.forEach((h) => {
