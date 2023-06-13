@@ -68,6 +68,7 @@ var {
   update_RNA,
   update_sample,
   update_dataset,
+  update_slices_raw_data,
   batch_update_table,
 } = require("./service/updateDatabase");
 
@@ -583,6 +584,15 @@ app.put("/db/update_dataset", function (req, res) {
   console.log(req.body);
   update_dataset(req.body["dataset_id"], req.body["columns"]).then(
     (promisedRes) => res.send(promisedRes)
+  );
+});
+
+// Update slices_raw_data
+app.put("/db/update_slices_raw_data", function (req, res) {
+  console.log("Updating slices_raw_data.");
+  console.log(req.body);
+  update_slices_raw_data(req.body["columns"]).then((promisedRes) =>
+    res.send(promisedRes)
   );
 });
 

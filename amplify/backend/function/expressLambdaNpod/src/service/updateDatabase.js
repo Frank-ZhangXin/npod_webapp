@@ -250,16 +250,60 @@ async function update_dataset(dataset_id, columns) {
   return await pooledConnection(asyncAction);
 }
 
+// update slices_raw_data
+async function update_slices_raw_data(
+  columns,
+  isBatch = false,
+  tempTableName = "slices_raw_data_temp"
+) {
+  let updateStr = "";
+  for (let [key, value] of Object.entries(columns)) {
+    if (key === "id") {
+      continue;
+    }
+    if (value !== null) {
+      columns[key] = "'" + value + "'";
+    }
+    if (updateStr === "") {
+      updateStr = key + "=" + columns[key];
+    } else {
+      updateStr += "," + key + "=" + columns[key];
+    }
+  }
+  const tableName = isBatch ? tempTableName : "slices_raw_data";
+  const sql = `UPDATE ${tableName} SET ${updateStr} WHERE id='${columns.id}'`;
+  console.log("sql: ", sql);
+  const test_sql = `SELECT * FROM ${tableName}`;
+  // console.log("test sql: ", test_sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Update the slices_raw_data_temp] The case ${columns.id} was updated.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 // Batch update a table
 async function batch_update_table(tableName, matrix) {
   const resList = [];
   let updateFunc;
   let targetTable = tableName;
-  switch (tableName) {
+  switch (tableName.split("_temp")[0]) {
     case "HLA":
       updateFunc = update_HLA;
-      targetTable = "HLA_temp";
+    case "slices_raw_data":
+      updateFunc = update_slices_raw_data;
   }
+
   for (const row of matrix) {
     let rowRes = updateFunc
       ? updateFunc(row, true, targetTable)
@@ -277,5 +321,6 @@ module.exports = {
   update_RNA: update_RNA,
   update_sample: update_sample,
   update_dataset: update_dataset,
+  update_slices_raw_data: update_slices_raw_data,
   batch_update_table: batch_update_table,
 };

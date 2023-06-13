@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 export default function useCheckImportFileFormat(
   tableName,
+  primaryKey,
   rawFileData,
   primaryKeyValuesArr,
   headerMapping,
@@ -24,7 +25,7 @@ export default function useCheckImportFileFormat(
       theExsitingDataArr
     );
 
-    const checkPrimaryKeyMapping = headerMapping["case_id"] ? true : false;
+    const checkPrimaryKeyMapping = headerMapping[primaryKey] ? true : false;
     const checkDataToUpdateAtLeastOneHeaderMapped =
       checkAtLeastOneHeaderMapped(theDataToUpdate);
     const checkDataToCreateAtLeastOneHeaderMapped =
@@ -81,7 +82,7 @@ export default function useCheckImportFileFormat(
     let res = false;
     for (const theObject of theObjectArr) {
       for (const key in theObject) {
-        if (key !== "case_id" && theObject[key]) {
+        if (key !== primaryKey && theObject[key]) {
           res = res || true;
         }
       }
