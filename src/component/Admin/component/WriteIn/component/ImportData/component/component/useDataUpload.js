@@ -3,7 +3,7 @@ import { API } from "aws-amplify";
 
 export default function useDataUpload(
   checkRes,
-  HLAUploadClicked,
+  uploadClicked,
   dataToCreate,
   dataToUpdate,
   tableName,
@@ -18,7 +18,7 @@ export default function useDataUpload(
     if (dataToUpdate.length !== 0 && checkRes) {
       updateData(dataToUpdate);
     }
-  }, [HLAUploadClicked]);
+  }, [uploadClicked]);
 
   async function createData(theData) {
     const nowTime = new Date().toLocaleString().replace(",", "");
@@ -27,7 +27,7 @@ export default function useDataUpload(
 
     return await API.post("dbapi", "/db/create_new_rows_into_table", {
       body: {
-        table_name: tableName,
+        table_name: tableName + "_temp",
         matrix: dataFilter(theData),
       },
     })
@@ -67,7 +67,7 @@ export default function useDataUpload(
 
     return await API.put("dbapi", "/db/batch_update_table", {
       body: {
-        table_name: tableName,
+        table_name: tableName + "_temp",
         matrix: dataFilter(theData),
       },
     })

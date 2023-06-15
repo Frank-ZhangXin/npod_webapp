@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Typography, TextField, Fade } from "@material-ui/core";
+import { Button, Typography, TextField, Fade, Box } from "@material-ui/core";
 import { Autocomplete, Alert } from "@material-ui/lab";
 import useRetrieveTableHeaders from "./component/useRetrieveTableHeaders";
 import useRetrieveExisitingPrimaryKeyValues from "./component/useRetrieveExistingPrimaryKeyValues";
@@ -45,23 +45,29 @@ export default function ImportHLADataFile() {
     allRawFileData: {
       HLA: [],
       RNA: [],
+      slices_raw_data: [],
     },
     allRawFileNames: {
       HLA: null,
       RNA: null,
+      slices_raw_data: null,
     },
     allRawFileHeaders: {
       HLA: [],
       RNA: [],
+      slices_raw_data: [],
     },
     allTableHeaders: {
       HLA: [],
       RNA: [],
+      slices_raw_data: [],
     },
     HLAHeadersMapping: {},
+    slicesRawDataHeadersMapping: {},
     allTablePrimaryKeyValues: {
       HLA: [],
       RNA: [],
+      slices_raw_data: [],
     },
     allTableDataToSend: {
       HLA: {
@@ -74,18 +80,26 @@ export default function ImportHLADataFile() {
         dataToUpdate: [],
         dataToCreate: [],
       },
+      slices_raw_data: {
+        checkRes: false,
+        dataToUpdate: [],
+        dataToCreate: [],
+      },
     },
     uploadFail: {
       HLA: null,
       RNA: null,
+      slices_raw_data: null,
     },
     uploadSuccess: {
       HLA: null,
       RNA: null,
+      slices_raw_data: null,
     },
     allUploadClicked: {
       HLA: 0,
       RNA: 0,
+      slices_raw_data: 0,
     },
   };
 
@@ -110,6 +124,9 @@ export default function ImportHLADataFile() {
   const [HLAHeadersMapping, setHLAHeadersMapping] = useState(
     initStates.HLAHeadersMapping
   );
+
+  const [slicesRawDataHeadersMapping, setSlicesRawDataHeadersMapping] =
+    useState(initStates.slicesRawDataHeadersMapping);
 
   const [allTablePrimaryKeyValues, setAllTablePrimaryKeyValues] = useState(
     initStates.allTablePrimaryKeyValues
@@ -190,6 +207,7 @@ export default function ImportHLADataFile() {
     setAllRawFileNames(initStates.allRawFileNames);
     setAllRawFileHeaders(initStates.allRawFileHeaders);
     setHLAHeadersMapping(initStates.HLAHeadersMapping);
+    setSlicesRawDataHeadersMapping(initStates.slicesRawDataHeadersMapping);
     setAllTableDataToSend(initStates.allTableDataToSend);
     setUploadSuccess(initStates.uploadSuccess);
     setUploadFail(initStates.uploadFail);
@@ -210,24 +228,53 @@ export default function ImportHLADataFile() {
 
   useRetrieveTableHeaders("HLA", setTableHeaders);
   useRetrieveTableHeaders("RNA", setTableHeaders);
+  useRetrieveTableHeaders("slices_raw_data", setTableHeaders);
 
   useRetrieveExisitingPrimaryKeyValues("HLA_temp", setTablePrimaryKeyValues); // Note: testing set, need revert later
   useRetrieveExisitingPrimaryKeyValues("RNA", setTablePrimaryKeyValues);
+  useRetrieveExisitingPrimaryKeyValues(
+    "slices_raw_data_temp",
+    setTablePrimaryKeyValues
+  );
 
+  // Check HLA importing format
   useCheckImportFileFormat(
     "HLA",
+    "case_id", // primary key name
     allRawFileData["HLA"],
     allTablePrimaryKeyValues["HLA_temp"], // Note: testing set, need revert later
     HLAHeadersMapping,
     setDataToSend
   );
 
+  // Check slices_raw_data importing format
+  useCheckImportFileFormat(
+    "slices_raw_data",
+    "id", // primary key name
+    allRawFileData["slices_raw_data"],
+    allTablePrimaryKeyValues["slices_raw_data_temp"], // Note: testing set, need revert later
+    slicesRawDataHeadersMapping,
+    setDataToSend
+  );
+
+  // HLA import Upload
   useDataUpload(
     allTableDataToSend["HLA"]["checkRes"],
     allUploadClicked["HLA"],
     allTableDataToSend["HLA"]["dataToCreate"],
     allTableDataToSend["HLA"]["dataToUpdate"],
     "HLA", // tableName
+    setUploadSuccess,
+    setUploadFail
+  );
+
+  // slices_raw_data Upload
+  useDataUpload(
+    allTableDataToSend["slices_raw_data"]["checkRes"],
+    allUploadClicked["slices_raw_data"],
+    allTableDataToSend["slices_raw_data"]["dataToCreate"],
+    allTableDataToSend["slices_raw_data"]["dataToUpdate"],
+    "slices_raw_data", // tableName
     setUploadSuccess,
     setUploadFail
   );
@@ -253,89 +300,178 @@ export default function ImportHLADataFile() {
   console.log("all table headers", allTableHeaders);
   console.log("All primary key values", allTablePrimaryKeyValues);
   console.log("All data to send", allTableDataToSend);
-  console.log("HLA headers mapping", HLAHeadersMapping);
+  // console.log("HLA headers mapping", HLAHeadersMapping);
+  console.log("slices_raw_data headers mapping", slicesRawDataHeadersMapping);
   console.log("All upload clicked", allUploadClicked);
 
   return (
     <div>
-      <Typography variant="h5">HLA Data Import</Typography>
-      <HeaderMappingTable
-        tableHeaders={allTableHeaders["HLA"]}
-        fileHeaders={allRawFileHeaders["HLA"]}
-        setMapping={setHLAHeadersMapping}
-      />
-      {allRawFileData.HLA.length === 0 ? (
-        <Typography variant="subtitle1">
-          Note: Only ".xlsx" file is supported
-        </Typography>
-      ) : (
-        <Typography variant="subtitle1">
-          File Name: <i>{allRawFileNames.HLA}</i>
-        </Typography>
-      )}
-
-      <Button variant="outlined" component="label" style={{ marginTop: 10 }}>
-        Choose File
-        <input
-          hidden
-          accept=".xlsx"
-          type="file"
-          onChange={(event) => handleFileDataImport(event, "HLA")}
+      {/* HLA table import */}
+      <Box>
+        <Typography variant="h5">HLA Data Import</Typography>
+        <HeaderMappingTable
+          tableHeaders={allTableHeaders["HLA"]}
+          fileHeaders={allRawFileHeaders["HLA"]}
+          setMapping={setHLAHeadersMapping}
         />
-      </Button>
+        {allRawFileData.HLA.length === 0 ? (
+          <Typography variant="subtitle1">
+            Note: Only ".xlsx" file is supported
+          </Typography>
+        ) : (
+          <Typography variant="subtitle1">
+            File Name: <i>{allRawFileNames.HLA}</i>
+          </Typography>
+        )}
 
-      <Fade in={uploadFail["HLA"] !== null}>
-        <Alert
-          variant="filled"
-          severity="error"
-          style={{ marginTop: "5px", marginBottom: "5px", width: "1000px" }}
+        <Button variant="outlined" component="label" style={{ marginTop: 10 }}>
+          Choose File
+          <input
+            hidden
+            accept=".xlsx"
+            type="file"
+            onChange={(event) => handleFileDataImport(event, "HLA")}
+          />
+        </Button>
+
+        <Fade in={uploadFail["HLA"] !== null}>
+          <Alert
+            variant="filled"
+            severity="error"
+            style={{ marginTop: "5px", marginBottom: "5px", width: "1000px" }}
+          >
+            {uploadFail["HLA"]}
+          </Alert>
+        </Fade>
+
+        <Fade in={uploadSuccess["HLA"] !== null}>
+          <Alert
+            variant="filled"
+            severity="success"
+            style={{ marginTop: "5px", marginBottom: "5px", width: "1000px" }}
+          >
+            {uploadSuccess["HLA"]}
+          </Alert>
+        </Fade>
+
+        {allRawFileData.HLA.length !== 0 && !allTableDataToSend.HLA.checkRes ? (
+          <Typography variant="subtitle1" style={{ color: "blue" }}>
+            Please set HLA table primary key "case_id" mapping.
+            <br></br>
+            And set at least one non-primary-key header mapping.
+          </Typography>
+        ) : null}
+
+        {needReset ? (
+          <Typography variant="subtitle1" style={{ color: "red" }}>
+            Please click reset button before next import.
+          </Typography>
+        ) : null}
+
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginTop: 10, width: "100px" }}
+          disabled={!allTableDataToSend["HLA"].checkRes || needReset}
+          onClick={(event) => handleUploadClick("HLA")}
         >
-          {uploadFail["HLA"]}
-        </Alert>
-      </Fade>
+          Upload
+        </Button>
 
-      <Fade in={uploadSuccess["HLA"] !== null}>
-        <Alert
-          variant="filled"
-          severity="success"
-          style={{ marginTop: "5px", marginBottom: "5px", width: "1000px" }}
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ marginTop: 10, marginLeft: 15, width: "100px" }}
+          onClick={handResetClick}
         >
-          {uploadSuccess["HLA"]}
-        </Alert>
-      </Fade>
+          Reset
+        </Button>
+      </Box>
 
-      {allRawFileData.HLA.length !== 0 && !allTableDataToSend.HLA.checkRes ? (
-        <Typography variant="subtitle1" style={{ color: "blue" }}>
-          Please set HLA table primary key "case_id" mapping.
-          <br></br>
-          And set at least one non-primary-key header mapping.
-        </Typography>
-      ) : null}
+      {/* slices_raw_data table import */}
+      <Box style={{ marginTop: 50, paddingBottom: 50 }}>
+        <Typography variant="h5">Slice Raw Data Import</Typography>
+        <HeaderMappingTable
+          tableHeaders={allTableHeaders["slices_raw_data"]}
+          fileHeaders={allRawFileHeaders["slices_raw_data"]}
+          setMapping={setSlicesRawDataHeadersMapping}
+        />
+        {allRawFileData.HLA.length === 0 ? (
+          <Typography variant="subtitle1">
+            Note: Only ".xlsx" file is supported
+          </Typography>
+        ) : (
+          <Typography variant="subtitle1">
+            File Name: <i>{allRawFileNames.HLA}</i>
+          </Typography>
+        )}
 
-      {needReset ? (
-        <Typography variant="subtitle1" style={{ color: "red" }}>
-          Please click reset button before next import.
-        </Typography>
-      ) : null}
+        <Button variant="outlined" component="label" style={{ marginTop: 10 }}>
+          Choose File
+          <input
+            hidden
+            accept=".xlsx"
+            type="file"
+            onChange={(event) => handleFileDataImport(event, "slices_raw_data")}
+          />
+        </Button>
 
-      <Button
-        variant="contained"
-        color="primary"
-        style={{ marginTop: 10, width: "100px" }}
-        disabled={!allTableDataToSend["HLA"].checkRes || needReset}
-        onClick={(event) => handleUploadClick("HLA")}
-      >
-        Upload
-      </Button>
+        <Fade in={uploadFail["slices_raw_data"] !== null}>
+          <Alert
+            variant="filled"
+            severity="error"
+            style={{ marginTop: "5px", marginBottom: "5px", width: "1000px" }}
+          >
+            {uploadFail["slices_raw_data"]}
+          </Alert>
+        </Fade>
 
-      <Button
-        variant="contained"
-        color="secondary"
-        style={{ marginTop: 10, marginLeft: 15, width: "100px" }}
-        onClick={handResetClick}
-      >
-        Reset
-      </Button>
+        <Fade in={uploadSuccess["slices_raw_data"] !== null}>
+          <Alert
+            variant="filled"
+            severity="success"
+            style={{ marginTop: "5px", marginBottom: "5px", width: "1000px" }}
+          >
+            {uploadSuccess["slices_raw_data"]}
+          </Alert>
+        </Fade>
+
+        {allRawFileData.slices_raw_data.length !== 0 &&
+        !allTableDataToSend.slices_raw_data.checkRes ? (
+          <Typography variant="subtitle1" style={{ color: "blue" }}>
+            Please set slices_raw_data table primary key "id" mapping.
+            <br></br>
+            And set at least one non-primary-key header mapping.
+          </Typography>
+        ) : null}
+
+        {needReset ? (
+          <Typography variant="subtitle1" style={{ color: "red" }}>
+            Please click reset button before next import.
+          </Typography>
+        ) : null}
+
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginTop: 10, width: "100px" }}
+          disabled={
+            !allTableDataToSend["slices_raw_data"].checkRes || needReset
+          }
+          onClick={(event) => handleUploadClick("slices_raw_data")}
+        >
+          Upload
+        </Button>
+
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ marginTop: 10, marginLeft: 15, width: "100px" }}
+          onClick={handResetClick}
+        >
+          Reset
+        </Button>
+      </Box>
     </div>
   );
 }

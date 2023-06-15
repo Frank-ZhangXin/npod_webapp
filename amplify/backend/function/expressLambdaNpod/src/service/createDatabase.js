@@ -762,8 +762,7 @@ async function create_dataset_example_data_file(datasetExampleDataFileObj) {
 async function create_new_rows_into_table(table_name, matrix) {
   let headers = Object.keys(matrix[0]);
 
-  let the_table_name = "HLA_temp"; // <=============== Temp table name, real one in the args
-  let sql1 = `INSERT INTO ${the_table_name}(`;
+  let sql1 = `INSERT INTO ${table_name}(`;
   let sql2 = "";
   headers.forEach((h) => {
     sql2 += h;
@@ -786,7 +785,8 @@ async function create_new_rows_into_table(table_name, matrix) {
   let sql = sql1 + sql2 + sql3;
 
   console.log("sql: " + sql);
-  let sql_test = `select * from ${table_name} where case_id="6567"`;
+  // let sql_test = `select * from ${table_name} where case_id="6567"`;
+  // console.log("test sql: " + sql_test);
 
   const asyncAction = async (newConnection) => {
     return await new Promise((resolve, reject) => {
