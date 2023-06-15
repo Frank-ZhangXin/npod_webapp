@@ -1,33 +1,71 @@
 {
+  "api": {
+    "AdminQueries": {
+      "authorizationType": "AMAZON_COGNITO_USER_POOLS",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "amplifynpod3b9354c9"
+        },
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "AdminQueries0759059b"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    },
+    "dbapi": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "expressLambdaNpod"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "amplifynpod3b9354c9": {
-      "service": "Cognito",
-      "providerPlugin": "awscloudformation",
+      "customAuth": false,
       "dependsOn": [],
-      "customAuth": false
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito"
     }
   },
   "function": {
-    "expressLambdaNpod": {
+    "AdminQueries0759059b": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "amplifynpod3b9354c9"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "emailFilterAuthTrigger": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "AdminQueries0759059b": {
-      "service": "Lambda",
-      "providerPlugin": "awscloudformation",
-      "build": true,
-      "dependsOn": [
-        {
-          "category": "auth",
-          "resourceName": "amplifynpod3b9354c9",
-          "attributes": [
-            "UserPoolId"
-          ]
-        }
-      ]
-    },
-    "emailFilterAuthTrigger": {
+    "expressLambdaNpod": {
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
@@ -38,49 +76,77 @@
       "service": "Lambda"
     }
   },
-  "api": {
-    "dbapi": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": [
+  "parameters": {
+    "AMPLIFY_function_AdminQueries0759059b_deploymentBucketName": {
+      "usedBy": [
         {
           "category": "function",
-          "resourceName": "expressLambdaNpod",
-          "attributes": [
-            "Name",
-            "Arn"
-          ]
+          "resourceName": "AdminQueries0759059b"
         }
       ]
     },
-    "AdminQueries": {
-      "service": "API Gateway",
-      "providerPlugin": "awscloudformation",
-      "authorizationType": "AMAZON_COGNITO_USER_POOLS",
-      "dependsOn": [
-        {
-          "category": "auth",
-          "resourceName": "amplifynpod3b9354c9",
-          "attributes": [
-            "UserPoolId"
-          ]
-        },
+    "AMPLIFY_function_AdminQueries0759059b_s3Key": {
+      "usedBy": [
         {
           "category": "function",
-          "resourceName": "AdminQueries0759059b",
-          "attributes": [
-            "Arn",
-            "Name"
-          ]
+          "resourceName": "AdminQueries0759059b"
+        }
+      ]
+    },
+    "AMPLIFY_function_emailFilterAuthTrigger_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "emailFilterAuthTrigger"
+        }
+      ]
+    },
+    "AMPLIFY_function_emailFilterAuthTrigger_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "emailFilterAuthTrigger"
+        }
+      ]
+    },
+    "AMPLIFY_function_expressLambdaNpod_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "expressLambdaNpod"
+        }
+      ]
+    },
+    "AMPLIFY_function_expressLambdaNpod_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "expressLambdaNpod"
+        }
+      ]
+    },
+    "AMPLIFY_function_postConfirmAuthTrigger_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "postConfirmAuthTrigger"
+        }
+      ]
+    },
+    "AMPLIFY_function_postConfirmAuthTrigger_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "postConfirmAuthTrigger"
         }
       ]
     }
   },
   "storage": {
     "npodstorage": {
-      "service": "S3",
+      "dependsOn": [],
       "providerPlugin": "awscloudformation",
-      "dependsOn": []
+      "service": "S3"
     }
   }
 }

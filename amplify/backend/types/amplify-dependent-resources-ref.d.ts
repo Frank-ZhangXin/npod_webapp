@@ -1,58 +1,62 @@
 export type AmplifyDependentResourcesAttributes = {
-    "auth": {
-        "amplifynpod3b9354c9": {
-            "IdentityPoolId": "string",
-            "IdentityPoolName": "string",
-            "UserPoolId": "string",
-            "UserPoolArn": "string",
-            "UserPoolName": "string",
-            "AppClientIDWeb": "string",
-            "AppClientID": "string",
-            "CreatedSNSRole": "string"
-        }
+  "api": {
+    "AdminQueries": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
     },
-    "function": {
-        "expressLambdaNpod": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "AdminQueries0759059b": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "emailFilterAuthTrigger": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        },
-        "postConfirmAuthTrigger": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string"
-        }
-    },
-    "api": {
-        "dbapi": {
-            "RootUrl": "string",
-            "ApiName": "string",
-            "ApiId": "string"
-        },
-        "AdminQueries": {
-            "RootUrl": "string",
-            "ApiName": "string",
-            "ApiId": "string"
-        }
-    },
-    "storage": {
-        "npodstorage": {
-            "BucketName": "string",
-            "Region": "string"
-        }
+    "dbapi": {
+      "ApiId": "string",
+      "ApiName": "string",
+      "RootUrl": "string"
     }
+  },
+  "auth": {
+    "amplifynpod3b9354c9": {
+      "AppClientID": "string",
+      "AppClientIDWeb": "string",
+      "CreatedSNSRole": "string",
+      "IdentityPoolId": "string",
+      "IdentityPoolName": "string",
+      "UserPoolArn": "string",
+      "UserPoolId": "string",
+      "UserPoolName": "string"
+    }
+  },
+  "function": {
+    "AdminQueries0759059b": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "emailFilterAuthTrigger": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "expressLambdaNpod": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    },
+    "postConfirmAuthTrigger": {
+      "Arn": "string",
+      "LambdaExecutionRole": "string",
+      "LambdaExecutionRoleArn": "string",
+      "Name": "string",
+      "Region": "string"
+    }
+  },
+  "storage": {
+    "npodstorage": {
+      "BucketName": "string",
+      "Region": "string"
+    }
+  }
 }
