@@ -297,11 +297,13 @@ async function batch_update_table(tableName, matrix) {
   const resList = [];
   let updateFunc;
   let targetTable = tableName;
-  switch (tableName.split("_temp")[0]) {
-    case "HLA":
-      updateFunc = update_HLA;
-    case "slices_raw_data":
-      updateFunc = update_slices_raw_data;
+
+  if (tableName.split("_temp")[0] === "HLA") {
+    updateFunc = update_HLA;
+  } else if (tableName.split("_temp")[0] === "slices_raw_data") {
+    updateFunc = update_slices_raw_data;
+  } else {
+    updateFunc = null;
   }
 
   for (const row of matrix) {
