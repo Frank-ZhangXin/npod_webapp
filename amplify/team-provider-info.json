@@ -16,7 +16,7 @@
       "function": {
         "expressLambdaNpod": {
           "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
-          "s3Key": "amplify-builds/expressLambdaNpod-376d3369564171383435-build.zip"
+          "s3Key": "amplify-builds/expressLambdaNpod-484b4e385456534a6832-build.zip"
         },
         "AdminQueries0759059b": {
           "deploymentBucketName": "amplify-amplifynpod-dev-163022-deployment",
