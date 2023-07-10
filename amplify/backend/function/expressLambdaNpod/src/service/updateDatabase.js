@@ -292,6 +292,48 @@ async function update_slices_raw_data(
   return await pooledConnection(asyncAction);
 }
 
+// update immunophenotyping
+async function update_immunophenotyping(
+  columns,
+  isBatch = false,
+  tempTableName = "immunophenotyping_temp"
+) {
+  let updateStr = "";
+  for (let [key, value] of Object.entries(columns)) {
+    if (key === "id") {
+      continue;
+    }
+    if (value !== null) {
+      columns[key] = "'" + value + "'";
+    }
+    if (updateStr === "") {
+      updateStr = key + "=" + columns[key];
+    } else {
+      updateStr += "," + key + "=" + columns[key];
+    }
+  }
+  const tableName = isBatch ? tempTableName : "immunophenotyping";
+  const sql = `UPDATE ${tableName} SET ${updateStr} WHERE id='${columns.id}'`;
+  console.log("sql: ", sql);
+  const test_sql = `SELECT * FROM ${tableName}`;
+  // console.log("test sql: ", test_sql);
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Update the immunophenotyping_temp] The case ${columns.id} was updated.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 // Batch update a table
 async function batch_update_table(tableName, matrix) {
   const resList = [];
@@ -302,6 +344,8 @@ async function batch_update_table(tableName, matrix) {
     updateFunc = update_HLA;
   } else if (tableName.split("_temp")[0] === "slices_raw_data") {
     updateFunc = update_slices_raw_data;
+  } else if (tableName.split("_temp")[0] === "immunophenotyping") {
+    updateFunc = update_immunophenotyping;
   } else {
     updateFunc = null;
   }
@@ -324,5 +368,6 @@ module.exports = {
   update_sample: update_sample,
   update_dataset: update_dataset,
   update_slices_raw_data: update_slices_raw_data,
+  update_immunophenotyping: update_immunophenotyping,
   batch_update_table: batch_update_table,
 };
