@@ -102,7 +102,7 @@ export default function useDataUpload(
     return theData.map((row) => {
       let newRow = {};
       for (const key in row) {
-        if (row[key]) {
+        if (row[key] !== undefined && row[key] !== null) {
           newRow[key] = row[key];
         }
       }

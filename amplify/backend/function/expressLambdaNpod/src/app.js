@@ -69,6 +69,7 @@ var {
   update_sample,
   update_dataset,
   update_slices_raw_data,
+  update_immunophenotyping,
   batch_update_table,
 } = require("./service/updateDatabase");
 

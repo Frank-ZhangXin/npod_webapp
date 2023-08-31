@@ -46,28 +46,34 @@ export default function ImportHLADataFile() {
       HLA: [],
       RNA: [],
       slices_raw_data: [],
+      immunophenotyping: [],
     },
     allRawFileNames: {
       HLA: null,
       RNA: null,
       slices_raw_data: null,
+      immunophenotyping: null,
     },
     allRawFileHeaders: {
       HLA: [],
       RNA: [],
       slices_raw_data: [],
+      immunophenotyping: [],
     },
     allTableHeaders: {
       HLA: [],
       RNA: [],
       slices_raw_data: [],
+      immunophenotyping: [],
     },
     HLAHeadersMapping: {},
     slicesRawDataHeadersMapping: {},
+    immunophenotypingHeadersMapping: {},
     allTablePrimaryKeyValues: {
       HLA: [],
       RNA: [],
       slices_raw_data: [],
+      immunophenotyping: [],
     },
     allTableDataToSend: {
       HLA: {
@@ -85,21 +91,29 @@ export default function ImportHLADataFile() {
         dataToUpdate: [],
         dataToCreate: [],
       },
+      immunophenotyping: {
+        checkRes: false,
+        dataToUpdate: [],
+        dataToCreate: [],
+      },
     },
     uploadFail: {
       HLA: null,
       RNA: null,
       slices_raw_data: null,
+      immunophenotyping: null,
     },
     uploadSuccess: {
       HLA: null,
       RNA: null,
       slices_raw_data: null,
+      immunophenotyping: null,
     },
     allUploadClicked: {
       HLA: 0,
       RNA: 0,
       slices_raw_data: 0,
+      immunophenotyping: 0,
     },
   };
 
@@ -128,6 +142,9 @@ export default function ImportHLADataFile() {
   const [slicesRawDataHeadersMapping, setSlicesRawDataHeadersMapping] =
     useState(initStates.slicesRawDataHeadersMapping);
 
+  const [immunophenotypingHeadersMapping, setImmunophenotypingHeadersMapping] =
+    useState(initStates.immunophenotypingHeadersMapping);
+
   const [allTablePrimaryKeyValues, setAllTablePrimaryKeyValues] = useState(
     initStates.allTablePrimaryKeyValues
   );
@@ -153,10 +170,26 @@ export default function ImportHLADataFile() {
 
     const reader = new FileReader();
     reader.onload = (readerEvent) => {
-      const workbook = XLSX.read(readerEvent.target.result, { type: "binary" });
+      const workbook = XLSX.read(readerEvent.target.result, {
+        type: "binary",
+        cellText: false,
+        cellDates: true,
+      });
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
+
       const parsedJson = XLSX.utils.sheet_to_json(worksheet);
+
+      // Because SheetJS(XLSX) covert spreadsheet time to an dateobject
+      // Here all date value needs re-format
+      parsedJson.forEach((row) => {
+        for (let [key, value] of Object.entries(row)) {
+          if (value instanceof Date) {
+            row[key] = value.toISOString().slice(0, 10);
+          }
+        }
+      });
+
       setAllRawFileData((prevValues) => {
         return { ...prevValues, [targetTable]: parsedJson };
       });
@@ -170,18 +203,6 @@ export default function ImportHLADataFile() {
       reader.abort();
     }, 3000);
     event.target.value = null;
-
-    // const workbook = XLSX.read(file, { type: "binary" });
-    // const sheetName = workbook.SheetNames[0];
-    // const worksheet = workbook.Sheets[sheetName];
-    // const parsedJson = XLSX.utils.sheet_to_json(worksheet);
-
-    // setAllRawFileData((prevValues) => {
-    //   return { ...prevValues, [targetTable]: parsedJson };
-    // });
-    // setAllRawFileHeaders((prevValues) => {
-    //   return { ...prevValues, [targetTable]: Object.keys(parsedJson[0]) };
-    // });
   };
 
   function setTableHeaders(tableName, data) {
@@ -229,11 +250,16 @@ export default function ImportHLADataFile() {
   useRetrieveTableHeaders("HLA", setTableHeaders);
   useRetrieveTableHeaders("RNA", setTableHeaders);
   useRetrieveTableHeaders("slices_raw_data", setTableHeaders);
+  useRetrieveTableHeaders("immunophenotyping", setTableHeaders);
 
   useRetrieveExisitingPrimaryKeyValues("HLA_temp", setTablePrimaryKeyValues); // Note: testing set, need revert later
   useRetrieveExisitingPrimaryKeyValues("RNA", setTablePrimaryKeyValues);
   useRetrieveExisitingPrimaryKeyValues(
     "slices_raw_data_temp",
+    setTablePrimaryKeyValues
+  );
+  useRetrieveExisitingPrimaryKeyValues(
+    "immunophenotyping_temp",
     setTablePrimaryKeyValues
   );
 
@@ -257,6 +283,16 @@ export default function ImportHLADataFile() {
     setDataToSend
   );
 
+  // Check immunophenotyping import format
+  useCheckImportFileFormat(
+    "immunophenotyping",
+    "id",
+    allRawFileData["immunophenotyping"],
+    allTablePrimaryKeyValues["immunophenotyping_temp"],
+    immunophenotypingHeadersMapping,
+    setDataToSend
+  );
+
   // HLA import Upload
   useDataUpload(
     allTableDataToSend["HLA"]["checkRes"],
@@ -275,6 +311,17 @@ export default function ImportHLADataFile() {
     allTableDataToSend["slices_raw_data"]["dataToCreate"],
     allTableDataToSend["slices_raw_data"]["dataToUpdate"],
     "slices_raw_data", // tableName
+    setUploadSuccess,
+    setUploadFail
+  );
+
+  // slices_raw_data Upload
+  useDataUpload(
+    allTableDataToSend["immunophenotyping"]["checkRes"],
+    allUploadClicked["immunophenotyping"],
+    allTableDataToSend["immunophenotyping"]["dataToCreate"],
+    allTableDataToSend["immunophenotyping"]["dataToUpdate"],
+    "immunophenotyping", // tableName
     setUploadSuccess,
     setUploadFail
   );
@@ -301,7 +348,11 @@ export default function ImportHLADataFile() {
   console.log("All primary key values", allTablePrimaryKeyValues);
   console.log("All data to send", allTableDataToSend);
   // console.log("HLA headers mapping", HLAHeadersMapping);
-  console.log("slices_raw_data headers mapping", slicesRawDataHeadersMapping);
+  // console.log("slices_raw_data headers mapping", slicesRawDataHeadersMapping);
+  console.log(
+    "immunophenotyping headers mapping",
+    immunophenotypingHeadersMapping
+  );
   console.log("All upload clicked", allUploadClicked);
 
   return (
@@ -396,13 +447,13 @@ export default function ImportHLADataFile() {
           fileHeaders={allRawFileHeaders["slices_raw_data"]}
           setMapping={setSlicesRawDataHeadersMapping}
         />
-        {allRawFileData.HLA.length === 0 ? (
+        {allRawFileData.slices_raw_data.length === 0 ? (
           <Typography variant="subtitle1">
             Note: Only ".xlsx" file is supported
           </Typography>
         ) : (
           <Typography variant="subtitle1">
-            File Name: <i>{allRawFileNames.HLA}</i>
+            File Name: <i>{allRawFileNames.slices_raw_data}</i>
           </Typography>
         )}
 
@@ -459,6 +510,93 @@ export default function ImportHLADataFile() {
             !allTableDataToSend["slices_raw_data"].checkRes || needReset
           }
           onClick={(event) => handleUploadClick("slices_raw_data")}
+        >
+          Upload
+        </Button>
+
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ marginTop: 10, marginLeft: 15, width: "100px" }}
+          onClick={handResetClick}
+        >
+          Reset
+        </Button>
+      </Box>
+
+      {/* immunophenotyping table import */}
+      <Box style={{ marginTop: 50, paddingBottom: 50 }}>
+        <Typography variant="h5">Immunophenotyping Import</Typography>
+        <HeaderMappingTable
+          tableHeaders={allTableHeaders["immunophenotyping"]}
+          fileHeaders={allRawFileHeaders["immunophenotyping"]}
+          setMapping={setImmunophenotypingHeadersMapping}
+        />
+        {allRawFileData.immunophenotyping.length === 0 ? (
+          <Typography variant="subtitle1">
+            Note: Only ".xlsx" file is supported
+          </Typography>
+        ) : (
+          <Typography variant="subtitle1">
+            File Name: <i>{allRawFileNames.immunophenotyping}</i>
+          </Typography>
+        )}
+
+        <Button variant="outlined" component="label" style={{ marginTop: 10 }}>
+          Choose File
+          <input
+            hidden
+            accept=".xlsx"
+            type="file"
+            onChange={(event) =>
+              handleFileDataImport(event, "immunophenotyping")
+            }
+          />
+        </Button>
+
+        <Fade in={uploadFail["immunophenotyping"] !== null}>
+          <Alert
+            variant="filled"
+            severity="error"
+            style={{ marginTop: "5px", marginBottom: "5px", width: "1000px" }}
+          >
+            {uploadFail["immunophenotyping"]}
+          </Alert>
+        </Fade>
+
+        <Fade in={uploadSuccess["immunophenotyping"] !== null}>
+          <Alert
+            variant="filled"
+            severity="success"
+            style={{ marginTop: "5px", marginBottom: "5px", width: "1000px" }}
+          >
+            {uploadSuccess["immunophenotyping"]}
+          </Alert>
+        </Fade>
+
+        {allRawFileData.immunophenotyping.length !== 0 &&
+        !allTableDataToSend.immunophenotyping.checkRes ? (
+          <Typography variant="subtitle1" style={{ color: "blue" }}>
+            Please set immunophenotyping table primary key "id" mapping.
+            <br></br>
+            And set at least one non-primary-key header mapping.
+          </Typography>
+        ) : null}
+
+        {needReset ? (
+          <Typography variant="subtitle1" style={{ color: "red" }}>
+            Please click reset button before next import.
+          </Typography>
+        ) : null}
+
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ marginTop: 10, width: "100px" }}
+          disabled={
+            !allTableDataToSend["immunophenotyping"].checkRes || needReset
+          }
+          onClick={(event) => handleUploadClick("immunophenotyping")}
         >
           Upload
         </Button>
