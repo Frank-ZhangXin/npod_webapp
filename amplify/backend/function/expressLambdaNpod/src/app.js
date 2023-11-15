@@ -71,6 +71,7 @@ var {
   update_slices_raw_data,
   update_immunophenotyping,
   batch_update_table,
+  get_data_by_conditions,
 } = require("./service/updateDatabase");
 
 var {
@@ -603,6 +604,16 @@ app.put("/db/batch_update_table", function (req, res) {
   console.log(req.body);
   batch_update_table(req.body["table_name"], req.body["matrix"]).then(
     (promiseRes) => res.send(promiseRes)
+  );
+});
+
+// get dataset by conditions
+app.put("/db/get_data_by_conditions", function (req, res) {
+  console.log("getting dataset by conditions...");
+  const table_name = req.body["table_name"];
+  const conditions = req.body["conditions"];
+  get_data_by_conditions(table_name, conditions).then((promoiseRes) =>
+    res.send(promoiseRes)
   );
 });
 
