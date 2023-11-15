@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
@@ -15,11 +15,36 @@ const PaperPanel = styled(Paper)(({ theme }) => ({
 
 export default function DatasetExplore() {
   const [filterSelected, setFilterSelected] = useState({
-    usageFilter: {},
-    datasetTypeFilter: {},
-    typeFilter: {},
-    caseIdFilter: {},
+    type: {},
+    category: {},
   });
+
+  const convertFilterToPathParams = (filtersCollection) => {
+    let pathParams = "?";
+    Object.keys(filtersCollection).forEach((filterName) => {
+      const currFilter = filtersCollection[filterName];
+      Object.keys(currFilter)
+        .filter((filterKey) => currFilter[filterKey] === true)
+        .forEach((selectedKey) => {
+          if (pathParams.length > 1) {
+            pathParams = pathParams + "&";
+          }
+          pathParams = pathParams + filterName + "=" + selectedKey;
+        });
+    });
+    console.log("path params", pathParams);
+    return pathParams;
+  };
+
+  // useEffect(() => {
+  //   setCurrPathParams(convertFilterToPathParams(filterSelected));
+
+  //   console.log("current path params", currPathParams);
+  // }, [filterSelected]);
+
+  // useEffect(() => {
+  //   window.history.pushState(null, "", `${currPathParams}`);
+  // }, [currPathParams]);
 
   const postObj = {
     name: "",
@@ -29,18 +54,23 @@ export default function DatasetExplore() {
     usage: "",
     dataType: "",
   };
-  console.log(filterSelected);
+  //console.log("filter selected", filterSelected);
 
   return (
     <Box
       sx={{
         //flexGrow: 1,
-        minHeight: "100vh",
+
         paddingBottom: 2,
         backgroundImage: `url(${
           process.env.PUBLIC_URL + "/assets/caseExplorePage.jpg"
         })`,
-        backgroundSize: "auto 100%",
+        // backgroundSize: "auto 100%",
+        backgroundSize: "cover",
+        width: "100%",
+        minHeight: "100vh",
+        backgroundAttachment: "fixed",
+        backgroundPosition: "center",
       }}
     >
       <Paper
@@ -57,10 +87,7 @@ export default function DatasetExplore() {
       <Grid container spacing={2} sx={{ padding: 5 }}>
         <Grid item xs={2} md={3}>
           <PaperPanel>
-            <Filter
-              filterSelected={filterSelected}
-              setFilterSelected={setFilterSelected}
-            />
+            <Filter />
           </PaperPanel>
         </Grid>
         <Grid item xs={6} md={8}>

@@ -13,53 +13,69 @@ import {
   Typography,
 } from "@mui/material";
 
-export default function Filter({ filterSelected, setFilterSelected }) {
-  // Usage filter setting
-  const [usage, setUsage] = useState({
-    RNASeq: true,
-    sequenceSpecificDNABinding: true,
-    transcriptomicData: true,
-  });
-  const { RNASeq, sequenceSpecificDNABinding, transcriptomicData } = usage;
+export default function Filter() {
+  const url = new URL(window.location.href);
+  const searchParameters = new URLSearchParams(url.search);
 
-  const handleUsageChange = (event) => {
-    setUsage(() => ({
-      ...usage,
-      [event.target.name]: event.target.checked,
-    }));
+  const baseUrl = url.origin + url.pathname;
+
+  const setFilterValue = (params, filterName) => {
+    for (const [name, value] of params.entries()) {
+      const optList = JSON.parse(value);
+      const selectedObj = optList.reduce((obj, item) => {
+        obj[item] = true;
+        return obj;
+      }, {});
+      if (name === filterName) {
+        return selectedObj;
+      }
+    }
+    return {};
   };
 
-  // Dataset Type filter setting
-  const [datasetType, setDatasetType] = useState({
-    transcriptomicDataSet: false,
-    genomicDataset: false,
-    epigennomicDataset: false,
-  });
-  const { transcriptomicDataSet, genomicDataset, epigennomicDataset } =
-    datasetType;
-  const hanldeDatasetTypeChange = (event) => {
-    setDatasetType(() => ({
-      ...datasetType,
-      [event.target.name]: event.target.checked,
-    }));
-  };
+  const type = setFilterValue(searchParameters, "type");
+  const category = setFilterValue(searchParameters, "category");
+  const published = setFilterValue(searchParameters, "published");
 
   // Type filter
-  const [type, setType] = useState({
-    genetics: false,
-    transcriptomics: false,
-    proteomics: false,
-    metabolomics: false,
-    imaging: false,
-  });
-
-  const { genetics, transcriptomics, proteomics, metabolomics, imaging } = type;
 
   const handleTypeChange = (event) => {
-    setType(() => ({
-      ...type,
-      [event.target.name]: event.target.checked,
-    }));
+    let newType = { ...type };
+    newType[event.target.name] = event.target.checked;
+    let newQueryParameters = generateQueryParameters(
+      newType,
+      category,
+      published
+    );
+    console.log("new query params", newQueryParameters);
+    window.location.href = url.pathname + "?" + newQueryParameters;
+  };
+
+  // Category filter
+
+  const handleCategoryChange = (event) => {
+    let newCategory = { ...category };
+    newCategory[event.target.name] = event.target.checked;
+    let newQueryParameters = generateQueryParameters(
+      type,
+      newCategory,
+      published
+    );
+    console.log("new query params", newQueryParameters);
+    window.location.href = url.pathname + "?" + newQueryParameters;
+  };
+
+  // Published filter
+  const handlePublishedChange = (event) => {
+    let newPublished = { ...published };
+    newPublished[event.target.name] = event.target.checked;
+    let newQueryParameters = generateQueryParameters(
+      type,
+      category,
+      newPublished
+    );
+    console.log("new query params", newQueryParameters);
+    window.location.href = url.pathname + "?" + newQueryParameters;
   };
 
   // Case ID filter
@@ -69,89 +85,48 @@ export default function Filter({ filterSelected, setFilterSelected }) {
     console.log("event target value", event.target.value);
   };
 
-  // Re-render after filters changed
-  useEffect(() => {
-    setFilterSelected({ usageFilter: usage, datasetTypeFilter: datasetType });
-  }, [usage, datasetType]);
+  const generateQueryParameters = (typeObj, categoryObj, publishedObj) => {
+    let qp = "";
+    let typeQuery = "[";
+    for (const [name, value] of Object.entries(typeObj)) {
+      if (value) {
+        if (typeQuery.length > 1) {
+          typeQuery = typeQuery + ",";
+        }
+        typeQuery = typeQuery + '"' + name + '"';
+      }
+    }
+    typeQuery = "type=" + typeQuery + "]";
+
+    let categoryQuery = "[";
+    for (const [name, value] of Object.entries(categoryObj)) {
+      if (value) {
+        if (categoryQuery.length > 1) {
+          categoryQuery = categoryQuery + ",";
+        }
+        categoryQuery = categoryQuery + '"' + name + '"';
+      }
+    }
+    categoryQuery = "category=" + categoryQuery + "]";
+
+    let publishedQuery = "[";
+    for (const [name, value] of Object.entries(publishedObj)) {
+      if (value) {
+        if (publishedQuery.length > 1) {
+          publishedQuery = publishedQuery + ",";
+        }
+        publishedQuery = publishedQuery + '"' + name + '"';
+      }
+    }
+    publishedQuery = "published=" + publishedQuery + "]";
+
+    qp = typeQuery + "&" + categoryQuery + "&" + publishedQuery;
+    return qp;
+  };
 
   const usageSubFilter = (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      {/* ------Usage filter------ */}
-      {/* <FormControl sx={{ m: 3 }}>
-        <FormLabel>Usage</FormLabel>
-        <FormGroup sx={{ ml: 2 }}>
-          <FormControlLabel
-            label="RNA-Seq"
-            control={
-              <Checkbox
-                checked={RNASeq}
-                onChange={handleUsageChange}
-                name="RNASeq"
-              />
-            }
-          />
-          <FormControlLabel
-            label="sequence-specific DNA binding"
-            control={
-              <Checkbox
-                checked={sequenceSpecificDNABinding}
-                onChange={handleUsageChange}
-                name="sequenceSpecificDNABinding"
-              />
-            }
-          />
-          <FormControlLabel
-            label="transcriptomic data"
-            control={
-              <Checkbox
-                checked={transcriptomicData}
-                onChange={handleUsageChange}
-                name="transcriptomicData"
-              />
-            }
-          />
-        </FormGroup>
-      </FormControl> */}
-      {/* ------Dataset Type filter------ */}
-      {/* <FormControl sx={{ m: 3 }}>
-        <FormLabel>Dataset Type</FormLabel>
-        <FormGroup sx={{ ml: 2 }}>
-          <FormControlLabel
-            label="Transcriptomics Dataset"
-            control={
-              <Checkbox
-                checked={transcriptomicDataSet}
-                onChange={hanldeDatasetTypeChange}
-                name="transcriptomicDataSet"
-              />
-            }
-          />
-          <FormControlLabel
-            label="Genomics Dataset "
-            control={
-              <Checkbox
-                checked={genomicDataset}
-                onChange={hanldeDatasetTypeChange}
-                name="genomicDataset"
-              />
-            }
-          />
-          <FormControlLabel
-            label=" Epigenomics Dataset"
-            control={
-              <Checkbox
-                checked={epigennomicDataset}
-                onChange={hanldeDatasetTypeChange}
-                name="epigennomicDataset"
-              />
-            }
-          />
-        </FormGroup>
-      </FormControl> */}
       {/* ------Type filter------ */}
-      <Typography variant="h5" sx={{ marginTop: 3, marginLeft: 2 }}>
-        FOR DEMO ONLY
-      </Typography>
       <FormControl sx={{ m: 3 }}>
         <FormLabel>Type</FormLabel>
         <FormGroup sx={{ ml: 2 }}>
@@ -159,7 +134,7 @@ export default function Filter({ filterSelected, setFilterSelected }) {
             label="Genetics"
             control={
               <Checkbox
-                checked={genetics}
+                checked={"genetics" in type ? type.genetics : false}
                 onChange={handleTypeChange}
                 name="genetics"
               />
@@ -169,7 +144,9 @@ export default function Filter({ filterSelected, setFilterSelected }) {
             label="Transcriptomics"
             control={
               <Checkbox
-                checked={transcriptomics}
+                checked={
+                  "transcriptomics" in type ? type.transcriptomics : false
+                }
                 onChange={handleTypeChange}
                 name="transcriptomics"
               />
@@ -179,7 +156,7 @@ export default function Filter({ filterSelected, setFilterSelected }) {
             label="Proteomics"
             control={
               <Checkbox
-                checked={proteomics}
+                checked={"proteomics" in type ? type.proteomics : false}
                 onChange={handleTypeChange}
                 name="proteomics"
               />
@@ -189,19 +166,73 @@ export default function Filter({ filterSelected, setFilterSelected }) {
             label="Metabolomics"
             control={
               <Checkbox
-                checked={metabolomics}
+                checked={"metabolomics" in type ? type.metabolomics : false}
                 onChange={handleTypeChange}
                 name="metabolomics"
               />
             }
           />
           <FormControlLabel
-            label="Imaging"
+            label="Other"
             control={
               <Checkbox
-                checked={imaging}
+                checked={"other" in type ? type.other : false}
                 onChange={handleTypeChange}
-                name="imaging"
+                name="other"
+              />
+            }
+          />
+        </FormGroup>
+      </FormControl>
+      {/* ------Category filter------ */}
+      <FormControl sx={{ m: 3 }}>
+        <FormLabel>Category</FormLabel>
+        <FormGroup sx={{ ml: 2 }}>
+          <FormControlLabel
+            label="Investigator"
+            control={
+              <Checkbox
+                checked={
+                  "investigator" in category ? category.investigator : false
+                }
+                onChange={handleCategoryChange}
+                name="investigator"
+              />
+            }
+          />
+          <FormControlLabel
+            label="nPOD"
+            control={
+              <Checkbox
+                checked={"npod" in category ? category.npod : false}
+                onChange={handleCategoryChange}
+                name="npod"
+              />
+            }
+          />
+        </FormGroup>
+      </FormControl>
+      {/* ------Published filter------ */}
+      <FormControl sx={{ m: 3 }}>
+        <FormLabel>Published</FormLabel>
+        <FormGroup sx={{ ml: 2 }}>
+          <FormControlLabel
+            label="Yes"
+            control={
+              <Checkbox
+                checked={"yes" in published ? published.yes : false}
+                onChange={handlePublishedChange}
+                name="yes"
+              />
+            }
+          />
+          <FormControlLabel
+            label="No"
+            control={
+              <Checkbox
+                checked={"no" in published ? published.no : false}
+                onChange={handlePublishedChange}
+                name="no"
               />
             }
           />

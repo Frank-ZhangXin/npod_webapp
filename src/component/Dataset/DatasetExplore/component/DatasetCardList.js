@@ -64,7 +64,7 @@ export default function DatasetCardList({ filterSelected }) {
     setDatasetRetrieveFail
   );
   console.log("all dataset", datasetObj);
-  console.log(filterSelected);
+
   return (
     <div style={{ paddingTop: "3vh" }}>
       {datasetObj !== null
@@ -72,6 +72,7 @@ export default function DatasetCardList({ filterSelected }) {
             // .filter((item) => filterSelected["usageFilter"][item.tag])
             .map((item, key) => (
               <div
+                key={key}
                 onClick={() => {
                   window.open(
                     `${window.location.origin}/dataset-display/${item.dataset_id}`

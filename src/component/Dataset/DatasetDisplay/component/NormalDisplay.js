@@ -343,19 +343,19 @@ export default function NormalDisplay({ datasetObj }) {
               type2="email"
             />
             <DataEntry
-              name="POC"
+              name="Point Of Contact"
               value={datasetObj.poc}
               value2={datasetObj.poc_email}
               type2="email"
             />
             <DataEntry
               name="Published"
-              value={datasetObj.published === 1 ? "True" : "False"}
+              value={datasetObj.published === 1 ? "Yes" : "No"}
             />
             <DataEntry
               name="PMID"
               value={
-                datasetObj.pmid != null ? datasetObj.pmid : "Not available"
+                datasetObj.pm_id === null ? "Not available" : datasetObj.pm_id
               }
             />
             <DataEntry

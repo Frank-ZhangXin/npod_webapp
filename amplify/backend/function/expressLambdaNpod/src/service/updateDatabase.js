@@ -359,6 +359,58 @@ async function batch_update_table(tableName, matrix) {
   return await Promise.all(resList);
 }
 
+async function get_data_by_conditions(table_name, conditions) {
+  function parseCond(theCond) {
+    let sql = "";
+    if (
+      typeof theCond !== "object" ||
+      !theCond.hasOwnProperty("name") ||
+      !theCond.hasOwnProperty("operator" || !theCond.hasOwnProperty("value"))
+    ) {
+      return sql;
+    }
+    if (theCond.name === "LOGIC_CONNECT") {
+      let subCondList = theCond.value;
+      let subCondRtList = [];
+      subCondList.forEach((subCond) => {
+        let subRt = parseCond(subCond);
+        subCondRtList.push(subRt);
+      });
+      console.log("sub cond list result", subCondRtList);
+      let logic_connector = " " + theCond.operator + " ";
+      sql = subCondRtList.join(logic_connector);
+      sql = "(" + sql + ")";
+    } else {
+      if (theCond.operator === "NOT IN") {
+        sql = theCond.name + " " + theCond.operator + " " + theCond.value;
+      } else {
+        sql = theCond.name + theCond.operator + "'" + theCond.value + "'";
+      }
+    }
+    return sql;
+  }
+  const sqlCond = parseCond(conditions);
+  let sql = `SELECT * FROM ${table_name}`;
+  if (sqlCond !== "") {
+    sql = sql + " WHERE " + sqlCond;
+  }
+  console.log("sql query:", sql);
+
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(`[Fetch datasets_by_condition] fetch successful.`);
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForUpdate: testPoolForUpdate,
   update_case: update_case,
@@ -370,4 +422,5 @@ module.exports = {
   update_slices_raw_data: update_slices_raw_data,
   update_immunophenotyping: update_immunophenotyping,
   batch_update_table: batch_update_table,
+  get_data_by_conditions: get_data_by_conditions,
 };

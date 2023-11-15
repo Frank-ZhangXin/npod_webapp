@@ -366,7 +366,7 @@ async function get_table_column_headers_by_table_name(table_name) {
           reject(error);
         } else {
           console.log(
-            `[Fetch dataset] Totally ${result.length} column headers were fetched.`
+            `[Fetch table_column_headers_by_table_name] Totally ${result.length} column headers were fetched.`
           );
           let rt = result.map((item) => item.COLUMN_NAME);
           resolve(rt);
@@ -395,7 +395,7 @@ async function get_primary_key_values_by_table_name(table_name) {
           reject(error);
         } else {
           console.log(
-            `[Fetch dataset] Totally ${result[3].length} primary keys were fetched.`
+            `[Fetch primary_key_values_by_table_name] Totally ${result[3].length} primary keys were fetched.`
           );
           resolve(result[3]);
         }

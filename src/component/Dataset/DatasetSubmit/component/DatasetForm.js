@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Autocomplete,
   TextField,
   Radio,
   RadioGroup,
@@ -21,6 +22,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Auth } from "aws-amplify";
 import useCreateDataset from "./component/useCreateDataset";
+import useDownloadFile from "./component/useDownloadFile";
 import XLSX from "xlsx";
 
 export default function DatasetForm({ setDatasetInfo }) {
@@ -35,7 +37,7 @@ export default function DatasetForm({ setDatasetInfo }) {
     numberOfAnalyses: "",
     published: false,
     pmId: "",
-    datasetType: [],
+    datasetType: "",
     rawDataFileLink: "",
     publicationLink: "",
     datasetNameAvailableLength: 200,
@@ -47,6 +49,8 @@ export default function DatasetForm({ setDatasetInfo }) {
     caseIdentifierFileName: null,
     exampleDataFile: null,
     exampleDataFileName: null,
+    downloadSuccess: null,
+    downloadError: null,
   };
   const [values, setValues] = useState({
     datasetName: initStates.datasetName,
@@ -92,6 +96,19 @@ export default function DatasetForm({ setDatasetInfo }) {
   const [exampleDataFileName, setExampleDataFileName] = useState(
     initStates.exampleDataFileName
   );
+  const [caseIdentifierExampleUrl, setCaseIdentifierExampleUrl] = useState("");
+  const [downloadButtonClicked, setDownloadButtonClicked] = useState(false);
+  const [downloadSuccess, setDownloadSuccess] = useState(
+    initStates.downloadSuccess
+  );
+  const [downloadError, setDownloadError] = useState(initStates.downloadError);
+
+  const datasetTypeOps = [
+    { typeName: "Genetics", label: "Genetics" },
+    { typeName: "Transcriptomics", label: "Transcriptomics" },
+    { typeName: "Proteomics", label: "Proteomics" },
+    { typeName: "Metabolomics", label: "Metablomics" },
+  ];
 
   useEffect(() => {
     setCurrentUserAsAuthor();
@@ -108,6 +125,13 @@ export default function DatasetForm({ setDatasetInfo }) {
       }, 3000);
     }
   }, [datasetCreateSuccess, datasetCreateFail]);
+
+  // Download the case identifier example file when button clicked and file path available
+  useEffect(() => {
+    if (downloadButtonClicked === true && caseIdentifierExampleUrl !== null) {
+      window.open(caseIdentifierExampleUrl);
+    }
+  }, [downloadButtonClicked, caseIdentifierExampleUrl]);
 
   async function setCurrentUserAsAuthor() {
     try {
@@ -147,6 +171,15 @@ export default function DatasetForm({ setDatasetInfo }) {
 
   const handleReset = () => {
     resetAllStates();
+    handleButtonReset();
+  };
+
+  const handleButtonReset = () => {
+    setDownloadButtonClicked(false);
+  };
+
+  const handleDownloadClicked = () => {
+    setDownloadButtonClicked(true);
   };
 
   const handleChange = (prop) => (event) => {
@@ -199,7 +232,17 @@ export default function DatasetForm({ setDatasetInfo }) {
     exampleDataFile
   );
 
-  console.log(values);
+  useDownloadFile(
+    setCaseIdentifierExampleUrl,
+    setDownloadSuccess,
+    setDownloadError,
+    downloadButtonClicked,
+    handleButtonReset
+  );
+
+  console.log("dataset submit form values", values);
+  console.log("download file url", caseIdentifierExampleUrl);
+  console.log("download button clicked", downloadButtonClicked);
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -233,7 +276,7 @@ export default function DatasetForm({ setDatasetInfo }) {
           sx={{ width: 500 }}
           value={values.poc}
           id="poc"
-          label="POC"
+          label="Point Of Contact"
           onChange={handleChange("poc")}
         />
       </Box>
@@ -242,7 +285,7 @@ export default function DatasetForm({ setDatasetInfo }) {
           sx={{ width: 500 }}
           value={values.pocEmail}
           id="pocEmail"
-          label="POC Email"
+          label="Point Of Contact Email"
           onChange={handleChange("pocEmail")}
         />
       </Box>
@@ -313,12 +356,25 @@ export default function DatasetForm({ setDatasetInfo }) {
       ) : null}
 
       <Box sx={{ paddingTop: 2 }}>
-        <TextField
+        {/* <TextField
           sx={{ width: 500 }}
           value={values.datasetType}
           id="datasetType"
           label="Dataset Type"
           onChange={handleChange("datasetType")}
+        /> */}
+        <Autocomplete
+          options={datasetTypeOps}
+          renderInput={(params) => (
+            <TextField {...params} label="Dataset Type" variant="outlined" />
+          )}
+          onChange={(event, value) => {
+            if (value !== null) {
+              setValues({ ...values, datasetType: value.typeName });
+            } else {
+              setValues({ ...values, datasetType: "" });
+            }
+          }}
         />
       </Box>
       <Box sx={{ paddingTop: 2 }}>
@@ -349,6 +405,14 @@ export default function DatasetForm({ setDatasetInfo }) {
             onChange={handleUploadCaseIdentifier}
           />
         </Button>
+        <a
+          style={{ textDecoration: "underline", cursor: "pointer" }}
+          onClick={handleDownloadClicked}
+        >
+          <Typography variant="subtitle1">
+            Download Case Identifier Example
+          </Typography>
+        </a>
         <Typography variant="subtitle1">(File type: *.csv)</Typography>
       </Box>
 
