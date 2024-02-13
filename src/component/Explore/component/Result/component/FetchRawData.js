@@ -14,6 +14,7 @@ function FetchRawData(props) {
     fetchSampleType();
     fetchElectronMicroscopyImages();
     fetchImmunophenotyping();
+    fetchGenetic();
 
     //console.log("fetch data was called.");
   }, []);
@@ -158,6 +159,28 @@ function FetchRawData(props) {
       .catch((error) => console.log("Amplify API call error", error));
   }
 
+  // fetch genetic and save as map
+  async function fetchGenetic() {
+    return await API.get("dbapi", "/db/genetic")
+      .then((res) => {
+        // geneticMap is dictionary, key is case_id, value is dictionary of all genetic value pairs.
+        const geneticMap = {};
+        for (var i = 0, tempData, tempKey, tempMap = {}; i < res.length; i++) {
+          tempData = res[i];
+          Object.keys(tempData).map((key) => {
+            if (key === "case_id") {
+              tempKey = tempData[key];
+            } else {
+              tempMap[key] = tempData[key];
+            }
+          });
+          geneticMap[tempKey] = JSON.parse(JSON.stringify(tempMap)); // Deep copy
+        }
+        props.setGeneticMap(geneticMap);
+      })
+      .catch((error) => console.log("Amplify API call error", error));
+  }
+
   return <div></div>;
 }
 
@@ -192,6 +215,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: "SET_EMI_MAP", value: newEmiMap }),
     setImmunMap: (newImmunMap) =>
       dispatch({ type: "SET_IMMUN_MAP", value: newImmunMap }),
+    setGeneticMap: (newGeneticMap) =>
+      dispatch({ type: "SET_GENETIC_MAP", value: newGeneticMap }),
   };
 };
 
