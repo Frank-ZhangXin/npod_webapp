@@ -37,6 +37,45 @@ export default function Filter() {
   const category = setFilterValue(searchParameters, "category");
   const published = setFilterValue(searchParameters, "published");
 
+  const generateQueryParameters = (typeObj, categoryObj, publishedObj) => {
+    let qp = "";
+    let typeQuery = "[";
+    for (const [name, value] of Object.entries(typeObj)) {
+      if (value) {
+        if (typeQuery.length > 1) {
+          typeQuery = typeQuery + ",";
+        }
+        typeQuery = typeQuery + '"' + name + '"';
+      }
+    }
+    typeQuery = "type=" + typeQuery + "]";
+
+    let categoryQuery = "[";
+    for (const [name, value] of Object.entries(categoryObj)) {
+      if (value) {
+        if (categoryQuery.length > 1) {
+          categoryQuery = categoryQuery + ",";
+        }
+        categoryQuery = categoryQuery + '"' + name + '"';
+      }
+    }
+    categoryQuery = "category=" + categoryQuery + "]";
+
+    let publishedQuery = "[";
+    for (const [name, value] of Object.entries(publishedObj)) {
+      if (value) {
+        if (publishedQuery.length > 1) {
+          publishedQuery = publishedQuery + ",";
+        }
+        publishedQuery = publishedQuery + '"' + name + '"';
+      }
+    }
+    publishedQuery = "published=" + publishedQuery + "]";
+
+    qp = typeQuery + "&" + categoryQuery + "&" + publishedQuery;
+    return qp;
+  };
+
   // Type filter
 
   const handleTypeChange = (event) => {
@@ -85,44 +124,35 @@ export default function Filter() {
     console.log("event target value", event.target.value);
   };
 
-  const generateQueryParameters = (typeObj, categoryObj, publishedObj) => {
-    let qp = "";
-    let typeQuery = "[";
-    for (const [name, value] of Object.entries(typeObj)) {
-      if (value) {
-        if (typeQuery.length > 1) {
-          typeQuery = typeQuery + ",";
-        }
-        typeQuery = typeQuery + '"' + name + '"';
-      }
-    }
-    typeQuery = "type=" + typeQuery + "]";
+  useEffect(() => {
+    if (searchParameters.toString() === "") {
+      const initType = {
+        genetics: true,
+        transcriptomics: true,
+        proteomics: true,
+        metabolomics: true,
+        other: true,
+      };
 
-    let categoryQuery = "[";
-    for (const [name, value] of Object.entries(categoryObj)) {
-      if (value) {
-        if (categoryQuery.length > 1) {
-          categoryQuery = categoryQuery + ",";
-        }
-        categoryQuery = categoryQuery + '"' + name + '"';
-      }
-    }
-    categoryQuery = "category=" + categoryQuery + "]";
+      const initCategory = {
+        investigator: true,
+        npod: true,
+      };
 
-    let publishedQuery = "[";
-    for (const [name, value] of Object.entries(publishedObj)) {
-      if (value) {
-        if (publishedQuery.length > 1) {
-          publishedQuery = publishedQuery + ",";
-        }
-        publishedQuery = publishedQuery + '"' + name + '"';
-      }
-    }
-    publishedQuery = "published=" + publishedQuery + "]";
+      const initPublished = {
+        yes: true,
+        no: true,
+      };
 
-    qp = typeQuery + "&" + categoryQuery + "&" + publishedQuery;
-    return qp;
-  };
+      const initQueryParameters = generateQueryParameters(
+        initType,
+        initCategory,
+        initPublished
+      );
+      console.log("init parameters", initQueryParameters);
+      window.location.href = url.pathname + "?" + initQueryParameters;
+    }
+  }, []);
 
   const usageSubFilter = (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -239,7 +269,7 @@ export default function Filter() {
         </FormGroup>
       </FormControl>
       {/* ------Case ID filter------ */}
-      <FormControl sx={{ m: 3 }}>
+      {/* <FormControl sx={{ m: 3 }}>
         <FormLabel>Case ID</FormLabel>
         <Autocomplete
           sx={{ paddingLeft: 2 }}
@@ -262,7 +292,7 @@ export default function Filter() {
             />
           )}
         />
-      </FormControl>
+      </FormControl> */}
     </Box>
   );
 

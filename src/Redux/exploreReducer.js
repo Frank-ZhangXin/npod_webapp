@@ -71,6 +71,18 @@ const initialState = {
   cPeptidePositive: true,
   cPeptideNegative: true,
 
+  // Genetic
+  geneticEnable: false,
+  grs1ScoreMin: 0,
+  grs1ScoreMax: 0.5,
+  grs1ScoreRange: [0, 0.5],
+  grs2ScoreMin: 0,
+  grs2ScoreMax: 20,
+  grs2ScoreRange: [0, 20],
+  aagrsScoreMin: 0,
+  aagrsScoreMax: 15,
+  aagrsScoreRange: [0, 15],
+
   // Raw Data
   rawData: [],
 
@@ -106,12 +118,22 @@ const initialState = {
   electronMicroscopyChecked: false,
   highResHLAChecked: false,
   immunophenotypingChecked: false,
+  wholeExomeSequencingAvailable: false,
+  wholeExomeSequencingUnavailable: false,
+  snpsAvailable: false,
+  snpsUnavailable: false,
 
   // electron microscopy images map
   emiMap: null,
 
   // immunophenotyping map
   immunMap: null,
+
+  // genetic map
+  geneticMap: null,
+
+  // SNP
+  SNP: null,
 };
 
 const exploreReducer = (state = initialState, action) => {
@@ -126,6 +148,10 @@ const exploreReducer = (state = initialState, action) => {
         donorTypesMap: state.donorTypesMap,
         causeOfDeathMap: state.causeOfDeathMap,
         hlaMap: state.hlaMap,
+        emiMap: state.emiMap,
+        immunMap: state.immunMap,
+        geneticMap: state.geneticMap,
+        SNP: state.SNP,
       };
 
     // Age
@@ -414,6 +440,64 @@ const exploreReducer = (state = initialState, action) => {
         cPeptideNegative: action.value,
       };
 
+    // Genetic
+    case "SET_GENETIC_ENABLE":
+      return {
+        ...state,
+        geneticEnable: action.value,
+      };
+    case "SET_GRS1_SCORE_MIN":
+      return {
+        ...state,
+        grs1ScoreMin: action.value,
+      };
+    case "SET_GRS1_SCORE_MAX":
+      return {
+        ...state,
+        grs1ScoreMax: action.value,
+      };
+    case "SET_GRS1_SCORE_RANGE":
+      return {
+        ...state,
+        grs1ScoreRange: action.value,
+        grs1ScoreMin: action.value[0],
+        grs1ScoreMax: action.value[1],
+      };
+    case "SET_GRS2_SCORE_MIN":
+      return {
+        ...state,
+        grs2ScoreMin: action.value,
+      };
+    case "SET_GRS2_SCORE_MAX":
+      return {
+        ...state,
+        grs2ScoreMax: action.value,
+      };
+    case "SET_GRS2_SCORE_RANGE":
+      return {
+        ...state,
+        grs2ScoreRange: action.value,
+        grs2ScoreMin: action.value[0],
+        grs2ScoreMax: action.value[1],
+      };
+    case "SET_AAGRS_SCORE_MIN":
+      return {
+        ...state,
+        aagrsScoreMin: action.value,
+      };
+    case "SET_AAGRS_SCORE_MAX":
+      return {
+        ...state,
+        aagrsScoreMax: action.value,
+      };
+    case "SET_AAGRS_SCORE_RANGE":
+      return {
+        ...state,
+        aagrsScoreRange: action.value,
+        aagrsScoreMin: action.value[0],
+        aagrsScoreMax: action.value[1],
+      };
+
     // Raw Data
     case "SET_RAW_DATA":
       return {
@@ -512,6 +596,26 @@ const exploreReducer = (state = initialState, action) => {
         ...state,
         immunophenotypingChecked: action.value,
       };
+    case "SET_WHOLE_EXOME_SEQUENCING_AVAILABLE":
+      return {
+        ...state,
+        wholeExomeSequencingAvailable: action.value,
+      };
+    case "SET_WHOLE_EXOME_SEQUENCING_UNAVAILABLE":
+      return {
+        ...state,
+        wholeExomeSequencingUnavailable: action.value,
+      };
+    case "SET_SNPS_AVAILABLE":
+      return {
+        ...state,
+        snpsAvailable: action.value,
+      };
+    case "SET_SNPS_UNAVAILABLE":
+      return {
+        ...state,
+        snpsUnavailable: action.value,
+      };
 
     // electron microscopy images map
     case "SET_EMI_MAP":
@@ -525,6 +629,20 @@ const exploreReducer = (state = initialState, action) => {
       return {
         ...state,
         immunMap: action.value,
+      };
+
+    // genetic map
+    case "SET_GENETIC_MAP":
+      return {
+        ...state,
+        geneticMap: action.value,
+      };
+
+    // SNP table
+    case "SET_SNP":
+      return {
+        ...state,
+        SNP: action.value,
       };
 
     default:

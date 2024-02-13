@@ -123,6 +123,22 @@ export default function DatasetCardList() {
             </div>
           ))
         : null}
+      {datasetObj?.length === 0 ? (
+        <Typography variant="h6" sx={{ padding: 3 }}>
+          Looks like you don't have any dataset in nPOD portal.
+          <br></br>
+          You can create a new one{" "}
+          <a href="/dataset-submit" target="_blank">
+            here
+          </a>
+          .<br></br>
+          Or browse existing datasets{" "}
+          <a href="/dataset-explore" target="_blank">
+            here
+          </a>
+          .
+        </Typography>
+      ) : null}
     </div>
   );
 }

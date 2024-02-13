@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
 import Select from "react-select";
 import Box from "@material-ui/core/Box";
+import Tooltip from "@material-ui/core/Tooltip";
+import HelpOutlineIcon from "@material-ui/icons/HelpOutline";
 import FileSaver from "file-saver";
 import XLSX from "xlsx";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,23 +20,68 @@ const useStyles = makeStyles((theme) => ({
   multiSelect: {
     minWidth: "10vw",
   },
+  helpIcon: {
+    fontSize: 18,
+    marginTop: "10px",
+    marginRight: "10px",
+    color: "#0292FF",
+  },
+  helpText: {
+    padding: "10px",
+    textShadow: "0 0 20px white",
+  },
 }));
 
+const DownloadTooltip = withStyles((theme) => ({
+  tooltip: {
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    color: "#000000",
+    border: "1px solid #dadde9",
+    maxWidth: "420px",
+    fontSize: 15,
+  },
+}))(Tooltip);
+
 const options = [
-  { value: "All Case Info", label: "All" },
+  { value: "All", label: "All" },
   { value: "Functional Assay", label: "Functional Assay" },
   { value: "High Res HLA", label: "High Res HLA" },
   { value: "Immunophenotyping", label: "Immunophenotyping" },
+  { value: "Genetic", label: "Genetics" },
+  { value: "SNPs-genes", label: "SNPs-genes" },
 ];
 
 function ExportSpreadsheet(props) {
   const classes = useStyles();
+
+  const helpText = (
+    <React.Fragment>
+      <div className={classes.helpText}>
+        Hint:
+        <br />
+        Download all cases data from search result into one .xlsx spreadsheet
+        file.
+        <br />
+        Selecting "All" category from the dropbox gives the most summarized case
+        data. You can download the specific category full data by selecting
+        others.
+      </div>
+    </React.Fragment>
+  );
+
   const [selectedDownloadType, setSelectedDownloadType] = useState({
-    value: "All Case Info",
+    value: "All",
     label: "All",
   });
 
-  function filterJSON(raw, donorTypesMap, causeOfDeathMap, immunMap) {
+  function filterJSON(
+    raw,
+    donorTypesMap,
+    causeOfDeathMap,
+    emiMap,
+    immunMap,
+    geneticMap
+  ) {
     const allowedColumns = [
       "case_id",
       "RR_id",
@@ -81,6 +128,8 @@ function ExportSpreadsheet(props) {
       "HLA_high_resolution",
       "histopathology",
       "RIN",
+      "electron_microscopy",
+      "immunophenotyping",
     ];
     const allowedColumns2 = [
       "case_id",
@@ -119,6 +168,8 @@ function ExportSpreadsheet(props) {
       "KCL_insulin",
     ];
     const allowedColumns4 = ["case_id"];
+    const allowedColumns5 = ["case_id"];
+    const allowedColumns6 = [];
     var newData = [];
     raw.forEach((donor) => {
       const filteredDonor = Object.keys(donor)
@@ -129,6 +180,10 @@ function ExportSpreadsheet(props) {
             return allowedColumns3.includes(key);
           } else if (selectedDownloadType.value === "Immunophenotyping") {
             return allowedColumns4.includes(key);
+          } else if (selectedDownloadType.value === "Genetic") {
+            return allowedColumns5.includes(key);
+          } else if (selectedDownloadType.value === "SNPs-genes") {
+            return allowedColumns6.includes(key);
           } else {
             return allowedColumns.includes(key);
           }
@@ -148,8 +203,17 @@ function ExportSpreadsheet(props) {
           return obj;
         }, {});
 
+      if (selectedDownloadType.value === "All") {
+        filteredDonor["electron_microscopy"] = emiMap[donor["case_id"]]
+          ? "Yes"
+          : "No";
+        filteredDonor["immunophenotyping"] = immunMap[donor["case_id"]]
+          ? "Yes"
+          : "No";
+      }
       newData.push(filteredDonor);
     });
+
     if (selectedDownloadType.value === "Immunophenotyping") {
       var immunData = [];
       newData.forEach((nData) => {
@@ -172,14 +236,70 @@ function ExportSpreadsheet(props) {
       });
       newData = immunData;
     }
+
+    if (selectedDownloadType.value === "Genetic") {
+      let geneticData = [];
+      newData.forEach((nData) => {
+        let theCaseId = nData.case_id;
+        if (theCaseId in props.geneticMap) {
+          let geneticObj = {};
+          geneticObj["case_id"] = theCaseId;
+          Object.keys(props.geneticMap[theCaseId]).forEach(
+            (geneticAttrName) => {
+              if (
+                geneticAttrName !== "GRS1_SNPs" &&
+                geneticAttrName !== "GRS2_SNPs" &&
+                geneticAttrName !== "AA_GRS_SNPs"
+              ) {
+                let geneticAttrValue =
+                  props.geneticMap[theCaseId][geneticAttrName];
+                geneticObj[geneticAttrName] = geneticAttrValue;
+              } else if (
+                geneticAttrName === "GRS1_SNPs" ||
+                geneticAttrName === "GRS2_SNPs" ||
+                geneticAttrName === "AA_GRS_SNPs"
+              ) {
+                const snpsArr =
+                  props.geneticMap[theCaseId][geneticAttrName].split(";");
+                snpsArr.forEach((snpStr) => {
+                  const snpKey = snpStr.split(":")[0] ?? "Not Available";
+                  const snpValue = snpStr.split(":")[1] ?? "Not Available";
+                  geneticObj[snpKey] = snpValue;
+                });
+              }
+            }
+          );
+          geneticData.push(geneticObj);
+        }
+      });
+      newData = geneticData;
+    }
+
+    if (selectedDownloadType.value === "SNPs-genes") {
+      let SNPData = [];
+      if (props.SNP) {
+        Object.keys(props.SNP).forEach((snp_id) => {
+          let SNPObj = props.SNP[snp_id];
+          let tempObj = { SNP_id: snp_id };
+          for (let key in SNPObj) {
+            tempObj[key] = SNPObj[key];
+          }
+          console.log("SNP obj", tempObj);
+          SNPData.push(tempObj);
+        });
+        newData = SNPData;
+      }
+    }
+
     return newData;
   }
 
   const fileType =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
   const fileExtension = ".xlsx";
-  const csvData = props.csvData;
+
   const fileName = selectedDownloadType.value + "-" + props.fileName;
+
   const exportToCSV = (csvData, fileName) => {
     // workbook sheet
     const ws = XLSX.utils.json_to_sheet(
@@ -187,7 +307,9 @@ function ExportSpreadsheet(props) {
         csvData,
         props.donorTypesMap,
         props.causeOfDeathMap,
-        props.immunMap
+        props.emiMap,
+        props.immunMap,
+        props.geneticMap
       )
     );
     // workbook
@@ -200,6 +322,11 @@ function ExportSpreadsheet(props) {
   return (
     <div className={classes.root}>
       <Box display="flex" justifyContent="space-between">
+        <Box>
+          <DownloadTooltip title={helpText} placement="left-start">
+            <HelpOutlineIcon className={classes.helpIcon} />
+          </DownloadTooltip>
+        </Box>
         <Box>
           <Select
             className={classes.multiSelect}
@@ -232,8 +359,11 @@ const mapStateToProps = (state, ownProps) => {
   return {
     donorTypesMap: state.explore.donorTypesMap,
     causeOfDeathMap: state.explore.causeOfDeathMap,
+    emiMap: state.explore.emiMap,
     hlaMap: state.explore.hlaMap,
     immunMap: state.explore.immunMap,
+    geneticMap: state.explore.geneticMap,
+    SNP: state.explore.SNP,
   };
 };
 

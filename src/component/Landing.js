@@ -269,7 +269,7 @@ function Landing(props) {
           <Grid item>
             <Typography variant={title4} className={classes.centerTitle4}>
               <a href="/support" target="_blank" className={classes.linkText}>
-                SUPPORT
+                TUTORIAL
               </a>
 
               <a href="contact" target="_blank" className={classes.linkText}>
