@@ -112,6 +112,9 @@ const initialState = {
 
   // immunophenotyping map
   immunMap: null,
+
+  // genetic map
+  geneticMap: null,
 };
 
 const exploreReducer = (state = initialState, action) => {
@@ -525,6 +528,13 @@ const exploreReducer = (state = initialState, action) => {
       return {
         ...state,
         immunMap: action.value,
+      };
+
+    // genetic map
+    case "SET_GENETIC_MAP":
+      return {
+        ...state,
+        geneticMap: action.value,
       };
 
     default:

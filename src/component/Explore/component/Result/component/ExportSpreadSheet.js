@@ -25,6 +25,7 @@ const options = [
   { value: "Functional Assay", label: "Functional Assay" },
   { value: "High Res HLA", label: "High Res HLA" },
   { value: "Immunophenotyping", label: "Immunophenotyping" },
+  { value: "Genetic", label: "Genetic" },
 ];
 
 function ExportSpreadsheet(props) {
@@ -34,7 +35,13 @@ function ExportSpreadsheet(props) {
     label: "All",
   });
 
-  function filterJSON(raw, donorTypesMap, causeOfDeathMap, immunMap) {
+  function filterJSON(
+    raw,
+    donorTypesMap,
+    causeOfDeathMap,
+    immunMap,
+    geneticMap
+  ) {
     const allowedColumns = [
       "case_id",
       "RR_id",
@@ -119,6 +126,7 @@ function ExportSpreadsheet(props) {
       "KCL_insulin",
     ];
     const allowedColumns4 = ["case_id"];
+    const allowedColumns5 = ["case_id"];
     var newData = [];
     raw.forEach((donor) => {
       const filteredDonor = Object.keys(donor)
@@ -129,6 +137,8 @@ function ExportSpreadsheet(props) {
             return allowedColumns3.includes(key);
           } else if (selectedDownloadType.value === "Immunophenotyping") {
             return allowedColumns4.includes(key);
+          } else if (selectedDownloadType.value === "Genetic") {
+            return allowedColumns5.includes(key);
           } else {
             return allowedColumns.includes(key);
           }
@@ -150,6 +160,7 @@ function ExportSpreadsheet(props) {
 
       newData.push(filteredDonor);
     });
+
     if (selectedDownloadType.value === "Immunophenotyping") {
       var immunData = [];
       newData.forEach((nData) => {
@@ -172,14 +183,54 @@ function ExportSpreadsheet(props) {
       });
       newData = immunData;
     }
+
+    if (selectedDownloadType.value === "Genetic") {
+      let geneticData = [];
+      newData.forEach((nData) => {
+        let theCaseId = nData.case_id;
+        if (theCaseId in props.geneticMap) {
+          let geneticObj = {};
+          geneticObj["case_id"] = theCaseId;
+          Object.keys(props.geneticMap[theCaseId]).forEach(
+            (geneticAttrName) => {
+              if (
+                geneticAttrName !== "GRS1_SNPs" &&
+                geneticAttrName !== "GRS2_SNPs" &&
+                geneticAttrName !== "AA_GRS_SNPs"
+              ) {
+                let geneticAttrValue =
+                  props.geneticMap[theCaseId][geneticAttrName];
+                geneticObj[geneticAttrName] = geneticAttrValue;
+              } else if (
+                geneticAttrName === "GRS1_SNPs" ||
+                geneticAttrName === "GRS2_SNPs" ||
+                geneticAttrName === "AA_GRS_SNPs"
+              ) {
+                const snpsArr =
+                  props.geneticMap[theCaseId][geneticAttrName].split(";");
+                snpsArr.forEach((snpStr) => {
+                  const snpKey = snpStr.split(":")[0] ?? "Not Available";
+                  const snpValue = snpStr.split(":")[1] ?? "Not Available";
+                  geneticObj[snpKey] = snpValue;
+                });
+              }
+            }
+          );
+          geneticData.push(geneticObj);
+        }
+      });
+      newData = geneticData;
+    }
+
     return newData;
   }
 
   const fileType =
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
   const fileExtension = ".xlsx";
-  const csvData = props.csvData;
+
   const fileName = selectedDownloadType.value + "-" + props.fileName;
+
   const exportToCSV = (csvData, fileName) => {
     // workbook sheet
     const ws = XLSX.utils.json_to_sheet(
@@ -187,7 +238,8 @@ function ExportSpreadsheet(props) {
         csvData,
         props.donorTypesMap,
         props.causeOfDeathMap,
-        props.immunMap
+        props.immunMap,
+        props.geneticMap
       )
     );
     // workbook
@@ -234,6 +286,7 @@ const mapStateToProps = (state, ownProps) => {
     causeOfDeathMap: state.explore.causeOfDeathMap,
     hlaMap: state.explore.hlaMap,
     immunMap: state.explore.immunMap,
+    geneticMap: state.explore.geneticMap,
   };
 };
 
