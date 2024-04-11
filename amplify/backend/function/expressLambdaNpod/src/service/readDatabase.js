@@ -405,6 +405,46 @@ async function get_primary_key_values_by_table_name(table_name) {
   return await pooledConnection(asyncAction);
 }
 
+// get ALL from genetic table
+async function get_genetic() {
+  const sql = "SELECT * FROM `genetic`";
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch genetic] Totally ${result.length} genetic records were fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
+// get ALL from SNP table
+async function get_SNP() {
+  const sql = "SELECT * FROM `SNP`";
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(
+            `[Fetch SNP] Totally ${result.length} SNP records were fetched.`
+          );
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForRead: testPoolForRead,
   get_cases: get_cases,
@@ -424,4 +464,6 @@ module.exports = {
   get_table_column_headers_by_table_name:
     get_table_column_headers_by_table_name,
   get_primary_key_values_by_table_name: get_primary_key_values_by_table_name,
+  get_genetic: get_genetic,
+  get_SNP: get_SNP,
 };

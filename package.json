@@ -11,6 +11,7 @@
     "@material-ui/data-grid": "^4.0.0-alpha.31",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
+    "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.10.8",
     "@mui/styles": "^5.10.8",
     "@mui/x-data-grid": "^6.0.1",
@@ -54,7 +55,7 @@
     "xlsx": "^0.17.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

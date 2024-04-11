@@ -11,6 +11,7 @@ import CaseProcessingAndTissueQuality from "./component/CaseProcessingAndTissueQ
 import FunctionalAssay from "./component/FunctionalAssay/FunctionalAssay";
 import Histopathology from "./component/Histopathology/Histopathology";
 import Immunophenotyping from "./component/Immunophenotyping/Immunophenotyping";
+import Genetic from "./component/Genetic/Genetic";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -122,6 +123,7 @@ export default function TabView() {
             {...a11yProps(5)}
             className={classes.tab}
           />
+          <Tab label="GENETICS" {...a11yProps(6)} className={classes.tab} />
         </Tabs>
         <div className={classes.tabPanel}>
           <TabPanel value={value} index={0}>
@@ -141,6 +143,9 @@ export default function TabView() {
           </TabPanel>
           <TabPanel value={value} index={5}>
             <Immunophenotyping />
+          </TabPanel>
+          <TabPanel value={value} index={6}>
+            <Genetic />
           </TabPanel>
         </div>
       </Paper>

@@ -27,6 +27,8 @@ var {
   get_caseId_by_datasetId,
   get_table_column_headers_by_table_name,
   get_primary_key_values_by_table_name,
+  get_genetic,
+  get_SNP,
 } = require("./service/readDatabase");
 
 var {
@@ -238,6 +240,18 @@ app.get("/db/primary_key_values_by_table_name", function (req, res) {
   get_primary_key_values_by_table_name(req.query.table_name).then(
     (promisedRes) => res.send(promisedRes)
   );
+});
+
+// get genetic
+app.get("/db/genetic", function (req, res) {
+  console.log("fetching genetic.");
+  get_genetic().then((promisedRes) => res.send(promisedRes));
+});
+
+// get genetic
+app.get("/db/SNP", function (req, res) {
+  console.log("fetching SNP.");
+  get_SNP().then((promisedRes) => res.send(promisedRes));
 });
 
 /****************************
@@ -511,8 +525,6 @@ app.post("/db/create_dataset_example_data_file", function (req, res) {
 });
 
 // create_new_rows_into_table
-
-// create dataset_example_data_file
 app.post("/db/create_new_rows_into_table", function (req, res) {
   console.log(`creating new rows into the table ${req.body.table_name}`);
   console.log(req.body);

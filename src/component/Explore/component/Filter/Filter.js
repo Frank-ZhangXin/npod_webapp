@@ -16,11 +16,12 @@ import FilterInsulitis from "./component/FilterInsulitis";
 import FilterCPeptide from "./component/FilterCPeptide";
 import FilterTitle from "./component/FilterTitle";
 import FilterDataset from "./component/FilterDataset";
+import FilterGenetic from "./component/FilterGenetic";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
   filter: {
-    maxHeight: "65vh",
+    maxHeight: "80vh",
     // overflow: "auto",
     overflowX: "hidden",
     scrollbarGutter: "stable",
@@ -48,6 +49,7 @@ export default function Filter() {
         <FilterAutoAntibody />
         <FilterAutoAntibodyPositiveNumber />
         <FilterInsulitis />
+        <FilterGenetic />
       </div>
     </div>
   );

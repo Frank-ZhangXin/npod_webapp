@@ -308,14 +308,47 @@ function Search(props) {
           props.highResHLAChecked === false ||
           props.datasetEnable === false
       )
+      // Dataset: immunophenotyping
       .filter(
         (donor) =>
           (props.immunophenotypingChecked === true &&
             donor.case_id in props.immunMap) ||
           props.immunophenotypingChecked === false ||
           props.datasetEnable === false
+      )
+      // Dataset: Whole Exome Sequencing
+      .filter(
+        (donor) =>
+          (props.wholeExomeSequencingAvailable === true &&
+            props.geneticMap[donor.case_id]
+              ?.whole_exome_sequencing_available === 1) ||
+          props.wholeExomeSequencingAvailable === false ||
+          props.datasetEnable === false
+      )
+      // Dataset: SNPs
+      .filter(
+        (donor) =>
+          (props.snpsAvailable === true &&
+            props.geneticMap[donor.case_id]?.GRS1_score) ||
+          props.snpsAvailable === false ||
+          props.datasetEnable === false
+      )
+      // Genetic
+      .filter(
+        (donor) =>
+          (props?.geneticMap[donor.case_id]?.GRS1_score &&
+            props.geneticMap[donor.case_id]?.GRS1_score >= props.grs1ScoreMin &&
+            props.geneticMap[donor.case_id]?.GRS1_score <= props.grs1ScoreMax &&
+            props?.geneticMap[donor.case_id]?.GRS2_score &&
+            props.geneticMap[donor.case_id]?.GRS2_score >= props.grs2ScoreMin &&
+            props.geneticMap[donor.case_id]?.GRS2_score <= props.grs2ScoreMax &&
+            props?.geneticMap[donor.case_id]?.AA_GRS_score &&
+            props.geneticMap[donor.case_id]?.AA_GRS_score >=
+              props.aagrsScoreMin &&
+            props.geneticMap[donor.case_id]?.AA_GRS_score <=
+              props.aagrsScoreMax) ||
+          props.geneticEnable === false
       );
-
   console.log("filtered case data", filteredData);
   console.log("requested case", requestedCase);
   const currTime = new Date();
@@ -333,6 +366,7 @@ function Search(props) {
               <Typography variant="h4">SEARCH RESULT</Typography>
             </Box>
             <Box>
+              {/* Download button */}
               <ExportSpreadsheet
                 csvData={filteredData}
                 fileName={"Download_From_nPOD_" + timeStamp}
@@ -481,12 +515,32 @@ const mapStateToProps = (state) => {
     electronMicroscopyChecked: state.explore.electronMicroscopyChecked,
     highResHLAChecked: state.explore.highResHLAChecked,
     immunophenotypingChecked: state.explore.immunophenotypingChecked,
+    wholeExomeSequencingAvailable: state.explore.wholeExomeSequencingAvailable,
+    wholeExomeSequencingUnavailable:
+      state.explore.wholeExomeSequencingUnavailable,
+    snpsAvailable: state.explore.snpsAvailable,
+    snpsUnavailable: state.explore.snpsUnavailable,
 
     // Electron Microscopy Images
     emiMap: state.explore.emiMap,
 
     // Immunophenotyping
     immunMap: state.explore.immunMap,
+
+    // Genetic
+    geneticEnable: state.explore.geneticEnable,
+    grs1ScoreMin: state.explore.grs1ScoreMin,
+    grs1ScoreMax: state.explore.grs1ScoreMax,
+    grs1ScoreRange: state.explore.grs1ScoreRange,
+    grs2ScoreMin: state.explore.grs2ScoreMin,
+    grs2ScoreMax: state.explore.grs2ScoreMax,
+    grs2ScoreRange: state.explore.grs2ScoreRange,
+    aagrsScoreMin: state.explore.aagrsScoreMin,
+    aagrsScoreMax: state.explore.aagrsScoreMax,
+    aagrsScoreRange: state.explore.aagrsScoreRange,
+
+    // Genetic Map
+    geneticMap: state.explore.geneticMap,
   };
 };
 

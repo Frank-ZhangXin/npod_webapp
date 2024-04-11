@@ -204,6 +204,40 @@ function FilterDataset(props) {
                     label="Immunophenotyping"
                   />
                 </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.wholeExomeSequencingAvailable}
+                        onChange={(event) =>
+                          props.setWholeExomeSequencingAvailable(
+                            event.target.checked
+                          )
+                        }
+                        name="wholeExomeSequencingAvailable"
+                        color="primary"
+                        disabled={!props.datasetEnable}
+                      />
+                    }
+                    label="Whole Exome Sequencing"
+                  />
+                </Box>
+                <Box>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={props.snpsAvailable}
+                        onChange={(event) =>
+                          props.setSnpsAvailable(event.target.checked)
+                        }
+                        name="snpsAvailable"
+                        color="primary"
+                        disabled={!props.datasetEnable}
+                      />
+                    }
+                    label="SNPs"
+                  />
+                </Box>
               </Box>
             </FormGroup>
           </Grid>
@@ -221,6 +255,8 @@ const mapStateToProps = (state) => {
     electronMicroscopyChecked: state.explore.electronMicroscopyChecked,
     highResHLAChecked: state.explore.highResHLAChecked,
     immunophenotypingChecked: state.explore.immunophenotypingChecked,
+    wholeExomeSequencingAvailable: state.explore.wholeExomeSequencingAvailable,
+    snpsAvailable: state.explore.snpsAvailable,
   };
 };
 
@@ -246,6 +282,13 @@ const mapDispatchToProps = (dispatch) => {
         type: "SET_IMMUNOPHENOTYPING_CHECKED_ENABLE",
         value: checked,
       }),
+    setWholeExomeSequencingAvailable: (newWholeExomeSequencingAvailable) =>
+      dispatch({
+        type: "SET_WHOLE_EXOME_SEQUENCING_AVAILABLE",
+        value: newWholeExomeSequencingAvailable,
+      }),
+    setSnpsAvailable: (newSnpsAvailable) =>
+      dispatch({ type: "SET_SNPS_AVAILABLE", value: newSnpsAvailable }),
   };
 };
 
