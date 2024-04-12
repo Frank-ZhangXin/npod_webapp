@@ -85,7 +85,9 @@ function DonorInformation(props) {
       "BMI Percentile",
       props.currentCase.BMI_percentile === null
         ? "Unavailable"
-        : props.currentCase.BMI_percentile
+        : props.currentCase.BMI_percentile >= 1
+        ? props.currentCase.BMI_percentile
+        : "<1"
     ),
     createData(
       "Cause of Death",

@@ -143,7 +143,7 @@ export default function HospitalLabs_step5({
     {
       colum: "admission_amylase",
       input: "integerBox",
-      restrict: { type: "int", range: [0, 2500] },
+      restrict: { type: "int", range: [0, 4000] },
       valid: useState(true),
       ops: [],
     },
@@ -164,7 +164,7 @@ export default function HospitalLabs_step5({
     {
       colum: "peak_amylase",
       input: "integerBox",
-      restrict: { type: "int", range: [0, 2500] },
+      restrict: { type: "int", range: [0, 4000] },
       valid: useState(true),
       ops: [],
     },
