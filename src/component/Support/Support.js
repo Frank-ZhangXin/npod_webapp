@@ -127,7 +127,20 @@ function Support(props) {
     "sign-in",
     "explore-cases",
     "sample-inventory",
-    "explore-datasets-and-submit-datasets",
+    "datasets",
+    "explore-datasets",
+    "submit-datasets",
+  ];
+
+  const topicsName = [
+    "Introduction",
+    "Sign Up",
+    "Sign In",
+    "Explore Cases",
+    "Sample Inventory",
+    "Datasets",
+    "➤ Explore Datasets",
+    "➤ Submit Datasets",
   ];
 
   return (
@@ -143,7 +156,7 @@ function Support(props) {
           <Paper className={classes.contentList}>
             <h2>Contents</h2>
             <ul className={classes.ul}>
-              {topics.map((topic) => {
+              {topics.map((topic, index) => {
                 const linkTo = "/support#" + topic;
                 const linkElement = topic;
                 return (
@@ -159,10 +172,11 @@ function Support(props) {
                           });
                       }}
                     >
-                      {topic
+                      {/* {topic
                         .split("-")
                         .map((word) => word[0].toUpperCase() + word.slice(1))
-                        .join(" ")}
+                        .join(" ")} */}
+                      {topicsName[index]}
                     </Link>
                   </li>
                 );

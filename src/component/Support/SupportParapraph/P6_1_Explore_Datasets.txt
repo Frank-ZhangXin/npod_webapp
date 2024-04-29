@@ -1,0 +1,25 @@
+## Explore Datasets
+
+For approved members that wish to explore datasets, click “Explore Datasets” on the main page.
+
+![](/assets/suppportPage/p1/support_p61_1.png)
+
+A new window titled “Explore Omics Datasets” will open. Within this page, you can utilize the search filters located on the left side to refine the list of datasets based on your desired criteria. These filters allow you to search by data type, upload author, or whether the data has been published
+
+![](/assets/suppportPage/p1/support_p61_2.png)
+
+In the center panel, you will find a list of all proteomics datasets available for your search selection. Simply click on your desired dataset, such as 'Pancreatic Tissue Proteomics Unveils Key Proteins, Pathways, and Networks Associated with Type 1 Diabetes’. 
+
+![](/assets/suppportPage/p1/support_p61_3.png)
+
+After clicking on the dataset, a new window titled 'Dataset' will open, presenting an overview and detailed information about this specific dataset. Here, you'll find details such as the Principal Investigator (PI), unique nPOD cases from which the dataset was obtained, a data summary, a link to the raw data file, and, if available, a link to the publication associated with the dataset.
+
+![](/assets/suppportPage/p1/support_p61_4.png)
+
+Additionally, on the Explore Omics Datasets page, you can access datasets you've uploaded to the portal. To do so, simply click on the upper link labeled 'View Your Datasets
+
+![](/assets/suppportPage/p1/support_p61_5.png)
+
+When you open the 'Dataset Manage' window, you'll see a list of all the datasets you've uploaded. You can also use this page to upload new datasets to the portal by clicking the link that says “you can create a new one here”.
+
+![](/assets/suppportPage/p1/support_p61_6.png)

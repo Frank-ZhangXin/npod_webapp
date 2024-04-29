@@ -1,0 +1,11 @@
+## Submit Datasets
+
+Only approved nPOD investigators, collaborators, and their lab members are permitted to submit datasets to the portal. To submit a dataset, simply click on 'Submit Datasets' on the main page. 
+
+![](/assets/suppportPage/p1/support_p62_1.png)
+
+After clicking 'Submit Datasets' on the main page, a new window titled 'Data Submit' will appear. Here, you can create a new dataset by filling out the provided form. 
+
+![](/assets/suppportPage/p1/support_p62_2.png)
+
+On this page, you have the option to upload your data file in *.csv format. You can also choose a Case Identifier in the same *.csv format. Once you have selected the desired dataset, simply click the submit button.
