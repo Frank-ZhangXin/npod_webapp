@@ -53,9 +53,9 @@ export default function SupportContent() {
   const p3 = useMdImport(`./SupportParapraph/P3_SignIn.txt`);
   const p4 = useMdImport(`./SupportParapraph/P4_ExploreCases.txt`);
   const p5 = useMdImport(`./SupportParapraph/P5_SampleInventory.txt`);
-  const p6 = useMdImport(
-    `./SupportParapraph/P6_ExploreDatasetsAndSubmitDatasets.txt`
-  );
+  const p6 = useMdImport(`./SupportParapraph/P6_Datasets.txt`);
+  const p6_1 = useMdImport(`./SupportParapraph/P6_1_Explore_Datasets.txt`);
+  const p6_2 = useMdImport(`./SupportParapraph/P6_2_Submit_Datasets.txt`);
 
   return (
     <div>
@@ -74,11 +74,14 @@ export default function SupportContent() {
       <section id="sample-inventory" className={classes.section}>
         {p5}
       </section>
-      <section
-        id="explore-datasets-and-submit-datasets"
-        className={classes.section}
-      >
+      <section id="datasets" className={classes.section}>
         {p6}
+      </section>
+      <section id="explore-datasets" className={classes.section}>
+        {p6_1}
+      </section>
+      <section id="submit-datasets" className={classes.section}>
+        {p6_2}
       </section>
       <section
         className={classes.section}
@@ -89,8 +92,8 @@ export default function SupportContent() {
       >
         <p style={{ fontStyle: "italic" }}>
           Prepared by University of Florida, nPOD{" "}
-          <span style={{ fontStyle: "normal" }}>|</span> Version 1{" "}
-          <span style={{ fontStyle: "normal" }}>|</span> July 2022
+          <span style={{ fontStyle: "normal" }}>|</span> Version 2{" "}
+          <span style={{ fontStyle: "normal" }}>|</span> April 2024
         </p>
       </section>
     </div>
