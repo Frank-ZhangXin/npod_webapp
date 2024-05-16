@@ -803,6 +803,31 @@ async function create_new_rows_into_table(table_name, matrix) {
   return await pooledConnection(asyncAction);
 }
 
+// Generate temperal cloned table of a production one
+async function create_temp_clone_table(table_name) {
+  const temp_table_name = table_name + "_temp";
+  const sql1 = `DROP TABLE IF EXISTS ${temp_table_name};`;
+  const sql2 = `CREATE TABLE ${temp_table_name} LIKE ${table_name};`;
+  const sql3 = `INSERT INTO ${temp_table_name} SELECT * FROM ${table_name}`;
+  const sql = sql1 + sql2 + sql3;
+
+  console.log("sql: " + sql);
+
+  const asyncAction = async (newConnection) => {
+    return await new Promise((resolve, reject) => {
+      newConnection.query(sql, (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          console.log(`Creating a temp clone of ${table_name} is successful!`);
+          resolve(result);
+        }
+      });
+    });
+  };
+  return await pooledConnection(asyncAction);
+}
+
 module.exports = {
   testPoolForCreate: testPoolForCreate,
   create_case: create_case,
@@ -835,4 +860,5 @@ module.exports = {
   create_dataset_case_identifier: create_dataset_case_identifier,
   create_dataset_example_data_file: create_dataset_example_data_file,
   create_new_rows_into_table: create_new_rows_into_table,
+  create_temp_clone_table: create_temp_clone_table,
 };

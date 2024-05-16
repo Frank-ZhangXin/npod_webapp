@@ -60,6 +60,7 @@ var {
   create_dataset_case_identifier,
   create_dataset_example_data_file,
   create_new_rows_into_table,
+  create_temp_clone_table,
 } = require("./service/createDatabase");
 
 var {
@@ -530,6 +531,15 @@ app.post("/db/create_new_rows_into_table", function (req, res) {
   console.log(req.body);
   create_new_rows_into_table(req.body.table_name, req.body.matrix).then(
     (promiseRes) => res.send(promiseRes)
+  );
+});
+
+// create a temp cloned table
+app.post("/db/create_temp_clone_table", function (req, res) {
+  console.log(`creating a temp clone of the table ${req.body.table_name}`);
+  console.log(req.body);
+  create_temp_clone_table(req.body.table_name).then((promiseRes) =>
+    res.send(promiseRes)
   );
 });
 

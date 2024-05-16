@@ -48,14 +48,20 @@ export default function useCheckImportFileFormat(
     existingPrimaryKeyvValuesArr
   ) {
     const existSet = new Set(existingPrimaryKeyvValuesArr);
+
+    // generate a list of raw file primary key values
     const filePrimaryKeyValuesArr = fileData.reduce((tempArr, current) => {
       tempArr.push(current[filePrimaryKey]);
       return tempArr;
     }, []);
+
     const oldDataToUpdate = [];
     const newDataToCreate = [];
+
+    // compare online existing primary key values with file primary key values
+    // then sort out which row is new and which row is existing already
     for (let i = 0; i < filePrimaryKeyValuesArr.length; i++) {
-      let currentFilePrimaryKeyValue = filePrimaryKeyValuesArr[i];
+      let currentFilePrimaryKeyValue = filePrimaryKeyValuesArr[i].toString();
       if (existSet.has(currentFilePrimaryKeyValue)) {
         oldDataToUpdate.push(fileData[i]);
       } else {
