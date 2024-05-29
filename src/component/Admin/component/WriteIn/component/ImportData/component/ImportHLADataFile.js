@@ -4,6 +4,7 @@ import { Autocomplete, Alert } from "@material-ui/lab";
 import useRetrieveTableHeaders from "./component/useRetrieveTableHeaders";
 import useRetrieveExisitingPrimaryKeyValues from "./component/useRetrieveExistingPrimaryKeyValues";
 import useDataUpload from "./component/useDataUpload";
+import useCreateTempCloneTable from "./component/useCreateTempCloneTable";
 import Papa from "papaparse";
 import useCheckImportFileFormat from "./component/useCheckImportFileFormat";
 import HeaderMappingTable from "./component/HeaderMappingTable";
@@ -115,6 +116,12 @@ export default function ImportHLADataFile() {
       slices_raw_data: 0,
       immunophenotyping: 0,
     },
+    allCreateClicked: {
+      HLA: 0,
+      RNA: 0,
+      slices_raw_data: 0,
+      immunophenotyping: 0,
+    },
   };
 
   const [needReset, setNeedReset] = useState(initStates.needReset);
@@ -159,6 +166,10 @@ export default function ImportHLADataFile() {
 
   const [allUploadClicked, setAllUploadClicked] = useState(
     initStates.allUploadClicked
+  );
+
+  const [allCreateClicked, setAllCreateClicked] = useState(
+    initStates.allCreateClicked
   );
 
   const handleFileDataImport = (event, targetTable) => {
@@ -233,10 +244,18 @@ export default function ImportHLADataFile() {
     setUploadSuccess(initStates.uploadSuccess);
     setUploadFail(initStates.uploadFail);
     setAllUploadClicked(initStates.allUploadClicked);
+    setAllCreateClicked(initStates.allCreateClicked);
   }
 
   const handleUploadClick = (tableName) => {
     setAllUploadClicked((prevValues) => {
+      return { ...prevValues, [tableName]: prevValues[tableName] + 1 };
+    });
+    setNeedReset(true);
+  };
+
+  const handleCreateClick = (tableName) => {
+    setAllCreateClicked((prevValues) => {
       return { ...prevValues, [tableName]: prevValues[tableName] + 1 };
     });
     setNeedReset(true);
@@ -315,13 +334,37 @@ export default function ImportHLADataFile() {
     setUploadFail
   );
 
-  // slices_raw_data Upload
+  // immunophenotyping Upload
   useDataUpload(
     allTableDataToSend["immunophenotyping"]["checkRes"],
     allUploadClicked["immunophenotyping"],
     allTableDataToSend["immunophenotyping"]["dataToCreate"],
     allTableDataToSend["immunophenotyping"]["dataToUpdate"],
     "immunophenotyping", // tableName
+    setUploadSuccess,
+    setUploadFail
+  );
+
+  // create temp table of HLA
+  useCreateTempCloneTable(
+    allCreateClicked["HLA"],
+    "HLA",
+    setUploadSuccess,
+    setUploadFail
+  );
+
+  // create temp table of slices_raw_data
+  useCreateTempCloneTable(
+    allCreateClicked["slices_raw_data"],
+    "slices_raw_data",
+    setUploadSuccess,
+    setUploadFail
+  );
+
+  // create temp table of immunophenotyping
+  useCreateTempCloneTable(
+    allCreateClicked["immunophenotyping"],
+    "immunophenotyping",
     setUploadSuccess,
     setUploadFail
   );
@@ -437,6 +480,20 @@ export default function ImportHLADataFile() {
         >
           Reset
         </Button>
+
+        <Button
+          variant="contained"
+          component="label"
+          style={{
+            marginTop: 10,
+            marginLeft: 15,
+            color: "white",
+            backgroundColor: "#f99500",
+          }}
+          onClick={(event) => handleCreateClick("HLA")}
+        >
+          Generate Temp Table
+        </Button>
       </Box>
 
       {/* slices_raw_data table import */}
@@ -521,6 +578,20 @@ export default function ImportHLADataFile() {
           onClick={handResetClick}
         >
           Reset
+        </Button>
+
+        <Button
+          variant="contained"
+          component="label"
+          style={{
+            marginTop: 10,
+            marginLeft: 15,
+            color: "white",
+            backgroundColor: "#f99500",
+          }}
+          onClick={(event) => handleCreateClick("slices_raw_data")}
+        >
+          Generate Temp Table
         </Button>
       </Box>
 
@@ -608,6 +679,20 @@ export default function ImportHLADataFile() {
           onClick={handResetClick}
         >
           Reset
+        </Button>
+
+        <Button
+          variant="contained"
+          component="label"
+          style={{
+            marginTop: 10,
+            marginLeft: 15,
+            color: "white",
+            backgroundColor: "#f99500",
+          }}
+          onClick={(event) => handleCreateClick("immunophenotyping")}
+        >
+          Generate Temp Table
         </Button>
       </Box>
     </div>
