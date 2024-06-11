@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(1),
     padding: theme.spacing(2),
     paddingRight: theme.spacing(3),
-    minWidth: "380px",
+    minWidth: "450px",
     minHeight: "70px",
     backgroundColor: "#404852",
     color: "white",
@@ -117,30 +117,40 @@ function Contact(props) {
             </Typography>
             <div className={classes.cardList}>
               <a
-                href="mailto:mdyang@ufl.edu"
+                href="mailto:inkusmartseva@ufl.edu"
                 style={{ textDecoration: "none" }}
               >
                 <div className={classes.card}>
                   <img
-                    src="https://www.jdrfnpod.org/wordpress/wp-content/uploads/2013/07/Mingder-2015-119x150.jpg"
+                    src={`${process.env.PUBLIC_URL}/assets/contactPage/Irina-Kusmartseva.jpg`}
                     style={{ objectPosition: "0 0" }}
                   />
                   <div className={classes.cardText}>
-                    <Typography variant="h6">Mingder Yang, Ph.D</Typography>
+                    <Typography variant="h6">
+                      Irina Kusmartseva, Ph.D
+                    </Typography>
                     <Typography variant="subtitle1">nPOD Director</Typography>
+                    <Typography variant="subtitle1">
+                      inkusmartseva@ufl.edu
+                    </Typography>
                   </div>
                 </div>
               </a>
               <a
-                href="mailto:rvieira@ufl.edu"
+                href="mailto:brittany.pratts@ufl.edu"
                 style={{ textDecoration: "none" }}
               >
                 <div className={classes.card}>
-                  <img src="https://www.jdrfnpod.org/wordpress/wp-content/uploads/2021/08/Rafaela-e1627924998154.jpg" />
+                  <img
+                    src={`${process.env.PUBLIC_URL}/assets/contactPage/Brittany-Pratt.jpg`}
+                  />
                   <div className={classes.cardText}>
-                    <Typography variant="h6">Rafaela Vieira, BS</Typography>
+                    <Typography variant="h6">Brittany Pratt, BA</Typography>
                     <Typography variant="subtitle1">
                       nPOD Investigator Coordinator
+                    </Typography>
+                    <Typography variant="subtitle1">
+                      brittany.pratts@ufl.edu
                     </Typography>
                   </div>
                 </div>
@@ -152,32 +162,19 @@ function Contact(props) {
             </Typography>
             <div className={classes.cardList}>
               <a
-                href="mailto:inkusmartseva@ufl.edu"
+                href="mailto:hhiller@ufl.edu"
                 style={{ textDecoration: "none" }}
               >
                 <div className={classes.card}>
-                  <img src="https://www.jdrfnpod.org/wordpress/wp-content/uploads/2013/07/irina-web-pic.jpg" />
+                  <img
+                    src={`${process.env.PUBLIC_URL}/assets/contactPage/Helmut-Hiller.jpg`}
+                  />
                   <div className={classes.cardText}>
-                    <Typography variant="h6">
-                      Irina Kusmartseva, Ph.D
-                    </Typography>
+                    <Typography variant="h6">Helmut Hiller, MS</Typography>
                     <Typography variant="subtitle1">
-                      nPOD OPPC Director
+                      nPOD OPPC Core Research Manager
                     </Typography>
-                  </div>
-                </div>
-              </a>
-              <a
-                href="mailto:marialpeterson@pathology.ufl.edu"
-                style={{ textDecoration: "none" }}
-              >
-                <div className={classes.card}>
-                  <img src="https://www.jdrfnpod.org/wordpress/wp-content/uploads/2017/06/Maria-Beery.jpg" />
-                  <div className={classes.cardText}>
-                    <Typography variant="h6">Maria Beery, MS</Typography>
-                    <Typography variant="subtitle1">
-                      nPOD Core Research Specialist
-                    </Typography>
+                    <Typography variant="subtitle1">hhiller@ufl.edu</Typography>
                   </div>
                 </div>
               </a>
@@ -193,14 +190,17 @@ function Contact(props) {
               >
                 <div className={classes.card}>
                   <img
-                    src="https://www.pnnl.gov/science/staff_photos/staff_7050.jpg"
+                    src={`${process.env.PUBLIC_URL}/assets/contactPage/Webb-Robertson.png`}
                     style={{ objectPosition: "0 10%" }}
                   />
                   <div className={classes.cardText}>
-                    <Typography variant="body1">
+                    <Typography variant="h6">
                       Bobbie-Jo Webb-Robertson
                     </Typography>
                     <Typography variant="body1">Ph.D</Typography>
+                    <Typography variant="body1">
+                      Bobbie-Jo.Webb-Robertson@pnnl.gov
+                    </Typography>
                   </div>
                 </div>
               </a>
