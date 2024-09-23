@@ -199,7 +199,7 @@ export default function HospitalLabs_step5({
     {
       colum: "admission_ABG_pH",
       input: "floatBox",
-      restrict: { type: "float", range: [6.7, 7.7] },
+      restrict: { type: "float", range: [6.0, 7.7] },
       valid: useState(true),
       ops: [],
     },
