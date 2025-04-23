@@ -246,26 +246,22 @@ function ExportSpreadsheet(props) {
           geneticObj["case_id"] = theCaseId;
           Object.keys(props.geneticMap[theCaseId]).forEach(
             (geneticAttrName) => {
+              let geneticAttrValue =
+                props.geneticMap[theCaseId][geneticAttrName];
+              geneticObj[geneticAttrName] = geneticAttrValue;
               if (
-                geneticAttrName !== "GRS1_SNPs" &&
-                geneticAttrName !== "GRS2_SNPs" &&
-                geneticAttrName !== "AA_GRS_SNPs"
-              ) {
-                let geneticAttrValue =
-                  props.geneticMap[theCaseId][geneticAttrName];
-                geneticObj[geneticAttrName] = geneticAttrValue;
-              } else if (
                 geneticAttrName === "GRS1_SNPs" ||
                 geneticAttrName === "GRS2_SNPs" ||
                 geneticAttrName === "AA_GRS_SNPs"
               ) {
-                const snpsArr =
-                  props.geneticMap[theCaseId][geneticAttrName].split(";");
-                snpsArr.forEach((snpStr) => {
-                  const snpKey = snpStr.split(":")[0] ?? "Not Available";
-                  const snpValue = snpStr.split(":")[1] ?? "Not Available";
-                  geneticObj[snpKey] = snpValue;
-                });
+                if (geneticAttrValue) {
+                  const snpsArr = geneticAttrValue.split(";");
+                  snpsArr.forEach((snpStr) => {
+                    const snpKey = snpStr.split(":")[0] ?? "Not Available";
+                    const snpValue = snpStr.split(":")[1] ?? "Not Available";
+                    geneticObj[snpKey] = snpValue;
+                  });
+                }
               }
             }
           );
