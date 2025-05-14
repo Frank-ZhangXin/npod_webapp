@@ -15,6 +15,7 @@ import GRS1Snps from "./component/GRS1Snps";
 import GRS2Snps from "./component/GRS2Snps";
 import AAGRSSnps from "./component/AAGRSSnps";
 import Reference from "./component/Reference";
+import Annoucement from "./component/Announcement";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -40,9 +41,8 @@ function Genetic(props) {
       <Grid container spacing={2} justify={"center"} alignItems={"stretch"}>
         <Grid item xs={12} md={6} lg={4} xl={3}>
           <Paper elevation={3} className={classes.paper}>
+            <Annoucement />
             <ScoreAndPercentile />
-            {/* <Score />
-            <Percentile /> */}
             <Availability />
             <Admixture />
             <Reference />

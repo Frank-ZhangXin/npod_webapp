@@ -87,6 +87,15 @@ export default function Reference() {
                   Type 1 Diabetes Genetic Consortium (T1DGC)
                 </a>
               </h4>
+              <h4>
+                <a
+                  href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11312647/"
+                  target="_blank"
+                >
+                  Genetic association and machine learning improves discovery
+                  and prediction of type 1 diabetes
+                </a>
+              </h4>
             </Typography>
           </Card>
         </div>
