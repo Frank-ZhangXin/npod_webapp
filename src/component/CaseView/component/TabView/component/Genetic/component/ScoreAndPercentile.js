@@ -155,7 +155,7 @@ function ScoreAndPercentile(props) {
   return (
     <div>
       <div>
-        <Typography variant="h5" className={classes.title}>
+        <Typography variant="h5" className={classes.title2}>
           Score & Percentile
         </Typography>
       </div>
