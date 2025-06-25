@@ -37,8 +37,7 @@
       "Properties": {
         "VpcConfig": {
           "SubnetIds": [
-            "subnet-0b0cbb509b1c11e3c",
-            "subnet-062e529135e3b635f"
+            "subnet-0b0cbb509b1c11e3c"
           ],
           "SecurityGroupIds": [
             "sg-0702ae10b1e390917"
@@ -87,7 +86,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs18.x",
         "Layers": [],
         "Timeout": "25"
       }
