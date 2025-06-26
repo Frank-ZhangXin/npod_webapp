@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "auto",
   },
   noteText: {
-    padding: "10px",
+    padding: "15px",
   },
 }));
 
