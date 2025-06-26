@@ -42,7 +42,7 @@ export default function Annoucement() {
       <div>
         <div>
           <Typography variant="h5" className={classes.title}>
-            Annoucement
+            Announcement
           </Typography>
         </div>
         <div>
@@ -67,7 +67,9 @@ export default function Annoucement() {
                 longer part of the workflow, and gMFI values for HLA-DR are now
                 provided across all identified populations. If you have any
                 questions about this update, please contact&nbsp;
-                <a href="npod@pathology.ufl.edu">npod@pathology.ufl.edu</a>
+                <a href="mailto:npod@pathology.ufl.edu">
+                  npod@pathology.ufl.edu
+                </a>
               </h4>
             </Typography>
           </Card>

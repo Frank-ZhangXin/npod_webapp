@@ -42,7 +42,7 @@ export default function Annoucement() {
       <div>
         <div>
           <Typography variant="h5" className={classes.title}>
-            Annoucement
+            Announcement
           </Typography>
         </div>
         <div>
