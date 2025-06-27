@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
 import ImmunophenotypingImageViewer from "./component/ImmunophenotypingImageViewer";
+import Annoucement from "./component/Announcement";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -36,7 +37,9 @@ function Immunophenotyping(props) {
           </Paper>
         </Grid>
         <Grid item xs={12} sm={4}>
-          <Paper elevation={3} className={classes.paper}></Paper>
+          <Paper elevation={3} className={classes.paper}>
+            <Annoucement />
+          </Paper>
         </Grid>
       </Grid>
     </div>

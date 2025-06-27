@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
   },
   note: {
-    maxHeight: "25vh",
+    maxHeight: "45vh",
     overflow: "auto",
   },
   noteText: {
@@ -53,14 +53,20 @@ export default function Annoucement() {
               className={classes.noteText}
             >
               <h4>
-                As of April 2025, nPOD now uses the improved TOPMed-r3
-                imputation panel for calculating Type 1 Diabetes Genetic Risk
-                Scores (GRS1 and GRS2). To ensure compatibility with established
-                scoring algorithms, a small number of proxy SNPs were added to
-                support accurate and consistent risk estimation. For more
-                background, refer to the publication below by Kyle J. Gaulton et
-                al. If you have any questions about this update, please
-                contact&nbsp;
+                As of November 2024, nPOD has implemented an updated
+                Immunophenotyping panel for donor sample analysis. While it
+                retains many core markers from the previous HIP2_Lineage panel,
+                the new CBC panel features key improvements in fluorochromes,
+                gating strategy, and the range of analyzed cell populations.
+                CD33 has been removed, and new markers such as CD5, CD4, and CD8
+                have been added. Neutrophils and eosinophils are now
+                differentiated using CD66b instead of CD16. The panel now
+                enumerates ILCs, pDCs, CD5+ B cells, various T cell subsets
+                (including CD4+, CD8+, and CD4+CD8+), NKT cells, and NK cell
+                subsets based on CD56 and CD16 expression. Boolean gating is no
+                longer part of the workflow, and gMFI values for HLA-DR are now
+                provided across all identified populations. If you have any
+                questions about this update, please contact&nbsp;
                 <a href="mailto:npod@pathology.ufl.edu">
                   npod@pathology.ufl.edu
                 </a>

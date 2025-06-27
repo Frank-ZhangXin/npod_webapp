@@ -26,11 +26,11 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(2),
   },
   note: {
-    maxHeight: "25vh",
+    minHeight: "35vh",
     overflow: "auto",
   },
   noteText: {
-    padding: "10px",
+    padding: "15px",
   },
 }));
 
