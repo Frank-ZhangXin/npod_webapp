@@ -190,6 +190,7 @@ export default function ImportHLADataFile() {
       const worksheet = workbook.Sheets[sheetName];
 
       const parsedJson = XLSX.utils.sheet_to_json(worksheet);
+      console.log("Parsed json data", parsedJson);
 
       // Because SheetJS(XLSX) covert spreadsheet time to an dateobject
       // Here all date value needs re-format
@@ -204,8 +205,11 @@ export default function ImportHLADataFile() {
       setAllRawFileData((prevValues) => {
         return { ...prevValues, [targetTable]: parsedJson };
       });
+
+      // all unique headers
+      const rawFileHeaders = [...new Set(parsedJson.flatMap(Object.keys))];
       setAllRawFileHeaders((prevValues) => {
-        return { ...prevValues, [targetTable]: Object.keys(parsedJson[0]) };
+        return { ...prevValues, [targetTable]: rawFileHeaders };
       });
     };
     reader.readAsBinaryString(file);
@@ -403,11 +407,13 @@ export default function ImportHLADataFile() {
       {/* HLA table import */}
       <Box>
         <Typography variant="h5">HLA Data Import</Typography>
+
         <HeaderMappingTable
           tableHeaders={allTableHeaders["HLA"]}
           fileHeaders={allRawFileHeaders["HLA"]}
           setMapping={setHLAHeadersMapping}
         />
+
         {allRawFileData.HLA.length === 0 ? (
           <Typography variant="subtitle1">
             Note: Only ".xlsx" file is supported

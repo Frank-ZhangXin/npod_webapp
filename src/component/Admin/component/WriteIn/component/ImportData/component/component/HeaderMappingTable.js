@@ -12,6 +12,7 @@ import {
   TableRow,
   TableSortLabel,
   Autocomplete,
+  Box,
 } from "@mui/material";
 
 // import { Autocomplete } from "@material-ui/lab";
@@ -21,7 +22,7 @@ function StyledPaper(props) {
     <Paper
       variant="outlined"
       sx={{
-        width: "60%",
+        width: "80%",
         maxHeight: 400,
         overflow: "auto",
         marginTop: 1,
@@ -63,7 +64,7 @@ export default function HeaderMappingTable({
             <TableRow
               sx={{ "& th": { fontWeight: 600, backgroundColor: "#e6e6e6" } }}
             >
-              <TableCell>TABLE HEADER</TableCell>
+              <TableCell sx={{ width: "50%" }}>TABLE HEADER</TableCell>
               <TableCell>FILE HEADER</TableCell>
             </TableRow>
           </TableHead>
