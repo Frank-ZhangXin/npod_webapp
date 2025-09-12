@@ -9,10 +9,15 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
 
 const useStyles = makeStyles((theme) => ({
   title: {
     paddingBottom: theme.spacing(2),
+  },
+  title2: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
   },
   container: {
     maxHeight: "55vh",
@@ -20,6 +25,13 @@ const useStyles = makeStyles((theme) => ({
   table: {
     paddingBottom: theme.spacing(2),
     //minWidth: 650,
+  },
+  note: {
+    maxHeight: "25vh",
+    overflow: "auto",
+  },
+  noteText: {
+    padding: "10px",
   },
 }));
 
@@ -71,6 +83,27 @@ function HighResolutionHLA(props) {
             </TableBody>
           </Table>
         </TableContainer>
+      </div>
+      <div>
+        <Typography variant="h5" className={classes.title2}>
+          HLA Alleles Note
+        </Typography>
+        <Card variant="outlined" className={classes.note}>
+          <Typography
+            variant="body2"
+            component="p"
+            className={classes.noteText}
+          >
+            Starting in September 2025, HLA ambiguous results from sequencing
+            will be reported using P-groups. The “P” group includes HLA alleles
+            that encode identical protein sequences for the peptide-binding
+            domains. Reporting results in this way highlights functional
+            equivalence rather than minor genetic variations. These results will
+            be displayed with a “P” following the HLA result. For more
+            information, please visit the HLA nomenclature resource or contact
+            us.
+          </Typography>
+        </Card>
       </div>
     </div>
   );
