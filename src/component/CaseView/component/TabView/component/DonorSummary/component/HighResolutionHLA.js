@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     //minWidth: 650,
   },
   note: {
+    marginTop: theme.spacing(2),
     maxHeight: "25vh",
     overflow: "auto",
   },
@@ -85,9 +86,6 @@ function HighResolutionHLA(props) {
         </TableContainer>
       </div>
       <div>
-        <Typography variant="h5" className={classes.title2}>
-          HLA Alleles Note
-        </Typography>
         <Card variant="outlined" className={classes.note}>
           <Typography
             variant="body2"
