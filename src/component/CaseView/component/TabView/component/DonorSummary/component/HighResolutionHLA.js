@@ -100,8 +100,18 @@ function HighResolutionHLA(props) {
             domains. Reporting results in this way highlights functional
             equivalence rather than minor genetic variations. These results will
             be displayed with a “P” following the HLA result. For more
-            information, please visit the HLA nomenclature resource or contact
-            us.
+            information, please visit the{" "}
+            <a
+              target="_blank"
+              href="https://hla.alleles.org/pages/wmda/p_groups/"
+            >
+              HLA nomenclature
+            </a>{" "}
+            resource or{" "}
+            <a target="_blank" href="https://portal.jdrfnpod.org/contact">
+              contact us
+            </a>
+            .
           </Typography>
         </Card>
       </div>
