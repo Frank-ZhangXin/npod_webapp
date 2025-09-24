@@ -1,4 +1,7 @@
-var aws = require("aws-sdk");
+/* Amplify Params - DO NOT EDIT
+	ENV
+	REGION
+Amplify Params - DO NOT EDIT */ var aws = require("aws-sdk");
 
 var ses = new aws.SES();
 
@@ -105,7 +108,7 @@ exports.handler = (event, context, callback) => {
         var error = new Error("Pending for approval");
         // Return to Amazon Cognito
         //context.done(error, event);
-        callback(error, event);
+        callback(null, event);
       });
     } else {
       // Nothing to do, the user's email ID is unknown
