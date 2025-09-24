@@ -160,6 +160,18 @@
                   }
                 ]
               }
+            },
+            {
+              "Sid": "AllowSESSendFromNPOD",
+              "Effect": "Allow",
+              "Action": [
+                "ses:SendEmail",
+                "ses:SendRawEmail"
+              ],
+              "Resource": [
+                "arn:aws:ses:us-east-1:762002863320:identity/service@jdrfnpod.org",
+                "arn:aws:ses:us-east-1:762002863320:identity/jdrfnpod.org"
+              ]
             }
           ]
         }
