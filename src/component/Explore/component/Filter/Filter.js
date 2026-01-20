@@ -5,6 +5,7 @@ import FilterCaseId from "./component/FilterCaseId";
 import FilterAge from "./component/FilterAge";
 import FilterAgeOnset from "./component/FilterAgeOnset";
 import FilterGender from "./component/FilterGender";
+import FilterCohort from "./component/FilterCohort";
 import FilterRace from "./component/FilterRace";
 import FilterBMI from "./component/FilterBMI";
 import FilterDonorType from "./component/FilterDonorType";
@@ -35,6 +36,7 @@ export default function Filter() {
     <div className={classes.root}>
       <FilterTitle />
       <div className={classes.filter}>
+        <FilterCohort />
         <FilterCaseId />
         <FilterDataset />
         <FilterDonorType />
