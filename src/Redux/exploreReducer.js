@@ -71,6 +71,11 @@ const initialState = {
   cPeptidePositive: true,
   cPeptideNegative: true,
 
+  // Cohort
+  cohortEnable: false,
+  npodCohortChecked: true,
+  handelpCohortChecked: true,
+
   // Genetic
   geneticEnable: false,
   grs1ScoreMin: 0,
@@ -438,6 +443,24 @@ const exploreReducer = (state = initialState, action) => {
       return {
         ...state,
         cPeptideNegative: action.value,
+      };
+
+    // Cohort
+    case "SET_COHORT_ENABLE":
+      return {
+        ...state,
+        cohortEnable: action.value,
+      };
+    case "SET_NPOD_COHORT_CHECKED":
+      return {
+        ...state,
+        npodCohortChecked: action.value,
+      };
+
+    case "SET_HANDELP_COHORT_CHECKED":
+      return {
+        ...state,
+        handelpCohortChecked: action.value,
       };
 
     // Genetic

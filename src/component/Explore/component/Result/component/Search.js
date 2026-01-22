@@ -67,8 +67,8 @@ function Search(props) {
     if (typeof props.requestedCaseId !== "undefined") {
       setRequestedCase(
         filteredData.filter(
-          (donor) => donor.case_id === props.requestedCaseId
-        )[0]
+          (donor) => donor.case_id === props.requestedCaseId,
+        )[0],
       );
     }
   }, [props.requestedCaseId, filteredData]);
@@ -84,6 +84,14 @@ function Search(props) {
     props.rawData
       // public case only
       .filter((donor) => donor.is_public === 1)
+      // Cohort
+      .filter(
+        (donor) =>
+          (donor.case_id !== null &&
+            ((donor.case_id.startsWith("HDL") && props.handelpCohortChecked) ||
+              (!donor.case_id.startsWith("HDL") && props.npodCohortChecked))) ||
+          props.cohortEnable === false,
+      )
       // Case ID
       .filter((donor) => {
         if (props.selectedCaseId.length > 0 && props.caseIDEnable) {
@@ -125,7 +133,7 @@ function Search(props) {
           (donor.age_years !== null &&
             donor.age_years >= props.ageMin &&
             donor.age_years <= props.ageMax) ||
-          props.ageEnable === false
+          props.ageEnable === false,
       )
       // Age Onset
       .filter(
@@ -133,7 +141,7 @@ function Search(props) {
           (donor.age_onset_years !== null &&
             donor.age_onset_years >= props.ageOnsetMin &&
             donor.age_onset_years <= props.ageOnsetMax) ||
-          props.ageOnsetEnable === false
+          props.ageOnsetEnable === false,
       )
       // Gender
       .filter(
@@ -143,7 +151,7 @@ function Search(props) {
               (donor.sex != null &&
                 donor.sex === "Male" &&
                 props.maleChecked))) ||
-          props.genderEnable === false
+          props.genderEnable === false,
       )
       // Race
       .filter((donor) => {
@@ -170,7 +178,7 @@ function Search(props) {
           (donor.BMI !== null &&
             donor.BMI >= props.bmiMin &&
             donor.BMI <= props.bmiMax) ||
-          props.bmiEnable === false
+          props.bmiEnable === false,
       )
       // C-Peptide
       .filter((donor) => {
@@ -232,7 +240,7 @@ function Search(props) {
           (donor.HbA1c_percent !== null &&
             donor.HbA1c_percent >= props.hMin &&
             donor.HbA1c_percent <= props.hMax) ||
-          props.hEnable === false
+          props.hEnable === false,
       )
       // AutoAntibody
       .filter(
@@ -245,7 +253,7 @@ function Search(props) {
               props.miaaP === false) &&
             ((props.znt8aP === true && donor.ZnT8A_Result === "Positive") ||
               props.znt8aP === false)) ||
-          props.aaEnable === false
+          props.aaEnable === false,
       )
       // AutoAntibody number
       .filter(
@@ -255,7 +263,7 @@ function Search(props) {
           (props.twoChecked === true && donor.AAbtally === 2) ||
           (props.threeChecked === true && donor.AAbtally === 3) ||
           (props.fourChecked === true && donor.AAbtally === 4) ||
-          props.aaPositiveEnable === false
+          props.aaPositiveEnable === false,
       )
       // Insulitis
       .filter(
@@ -267,7 +275,7 @@ function Search(props) {
             (donor.histopathology === null ||
               donor.histopathology.toLowerCase().indexOf("insulitis") ===
                 -1)) ||
-          props.insulitisEnable === false
+          props.insulitisEnable === false,
       )
       // Dataset: electron microscopy images
       .filter(
@@ -275,7 +283,7 @@ function Search(props) {
           (props.electronMicroscopyChecked === true &&
             props.emiMap[donor.case_id]) ||
           props.electronMicroscopyChecked === false ||
-          props.datasetEnable === false
+          props.datasetEnable === false,
       )
       // Dataset: functional assay
       .filter(
@@ -283,7 +291,7 @@ function Search(props) {
           (props.functionalAssayChecked === true &&
             (donor.glucose_insulin || donor.KCL_insulin)) ||
           props.functionalAssayChecked === false ||
-          props.datasetEnable === false
+          props.datasetEnable === false,
       )
       // Dataset: high res HLA
       .filter(
@@ -306,7 +314,7 @@ function Search(props) {
               donor.DPB1_1 ||
               donor.DPB1_2)) ||
           props.highResHLAChecked === false ||
-          props.datasetEnable === false
+          props.datasetEnable === false,
       )
       // Dataset: immunophenotyping
       .filter(
@@ -314,7 +322,7 @@ function Search(props) {
           (props.immunophenotypingChecked === true &&
             donor.case_id in props.immunMap) ||
           props.immunophenotypingChecked === false ||
-          props.datasetEnable === false
+          props.datasetEnable === false,
       )
       // Dataset: Whole Exome Sequencing
       .filter(
@@ -323,7 +331,7 @@ function Search(props) {
             props.geneticMap[donor.case_id]
               ?.whole_exome_sequencing_available === 1) ||
           props.wholeExomeSequencingAvailable === false ||
-          props.datasetEnable === false
+          props.datasetEnable === false,
       )
       // Dataset: SNPs
       .filter(
@@ -331,7 +339,7 @@ function Search(props) {
           (props.snpsAvailable === true &&
             props.geneticMap[donor.case_id]?.GRS1_score) ||
           props.snpsAvailable === false ||
-          props.datasetEnable === false
+          props.datasetEnable === false,
       )
       // Genetic
       .filter(
@@ -347,7 +355,7 @@ function Search(props) {
               props.aagrsScoreMin &&
             props.geneticMap[donor.case_id]?.AA_GRS_score <=
               props.aagrsScoreMax) ||
-          props.geneticEnable === false
+          props.geneticEnable === false,
       );
   console.log("filtered case data", filteredData);
   console.log("requested case", requestedCase);
@@ -475,6 +483,11 @@ const mapStateToProps = (state) => {
     genderEnable: state.explore.genderEnable,
     maleChecked: state.explore.maleChecked,
     femaleChecked: state.explore.femaleChecked,
+
+    // Cohort
+    cohortEnable: state.explore.cohortEnable,
+    npodCohortChecked: state.explore.npodCohortChecked,
+    handelpCohortChecked: state.explore.handelpCohortChecked,
 
     // Hb1A1c
     hEnable: state.explore.hEnable,
