@@ -302,7 +302,11 @@ export default function SignUp() {
         },
       });
       console.log("Signup response: ", response);
-      //history.push("/signupconfirm", { user: username });
+      setAlertTitle("Sign-up Notification");
+      setAlertCotent(
+        "Your signup request has been submitted. An administrator will verify your identity and review your request. You will receive an email notification once the review is complete.",
+      );
+      setOpenAlert(true);
     } catch (error) {
       console.log("Signup error: ", error);
       setErrorMsg(error.message);
@@ -312,7 +316,7 @@ export default function SignUp() {
       ) {
         setAlertTitle("Sign-up Notification");
         setAlertCotent(
-          "Your sign up request has been submitted. The approval notice will be sent to your email after admin confirm your identity."
+          "Your signup request has been submitted. An administrator will verify your identity and review your request. You will receive an email notification once the review is complete.",
         );
         setOpenAlert(true);
       } else {
@@ -426,9 +430,12 @@ export default function SignUp() {
         contentText={alertContent}
         open={openAlert}
         setOpen={setOpenAlert}
-        btn1Name="Back"
-        btn2Name="Home"
+        btn1Name={alertTitle === "Sign-up Notification" ? "OK" : "Back"}
+        btn2Name={alertTitle === "Sign-up Notification" ? null : "Home"}
         callBack={handleGoHome}
+        onCloseCallback={
+          alertTitle === "Sign-up Notification" ? handleGoHome : null
+        }
       />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
