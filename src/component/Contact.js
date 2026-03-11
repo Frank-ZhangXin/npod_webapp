@@ -122,17 +122,14 @@ function Contact(props) {
               >
                 <div className={classes.card}>
                   <img
-                    src={`${process.env.PUBLIC_URL}/assets/contactPage/Irina-Kusmartseva.jpg`}
-                    style={{ objectPosition: "0 0" }}
+                    src={`${process.env.PUBLIC_URL}/assets/contactPage/Helmut-Hiller.jpg`}
                   />
                   <div className={classes.cardText}>
-                    <Typography variant="h6">
-                      Irina Kusmartseva, Ph.D
-                    </Typography>
-                    <Typography variant="subtitle1">nPOD Director</Typography>
+                    <Typography variant="h6">Helmut Hiller, MS</Typography>
                     <Typography variant="subtitle1">
-                      inkusmartseva@ufl.edu
+                      nPOD OPPC Core Research Manager
                     </Typography>
+                    <Typography variant="subtitle1">hhiller@ufl.edu</Typography>
                   </div>
                 </div>
               </a>
@@ -151,55 +148,6 @@ function Contact(props) {
                     </Typography>
                     <Typography variant="subtitle1">
                       brittany.pratts@ufl.edu
-                    </Typography>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <Typography variant="h6" className={classes.title2}>
-              For case information, pathology and sample inventory
-            </Typography>
-            <div className={classes.cardList}>
-              <a
-                href="mailto:hhiller@ufl.edu"
-                style={{ textDecoration: "none" }}
-              >
-                <div className={classes.card}>
-                  <img
-                    src={`${process.env.PUBLIC_URL}/assets/contactPage/Helmut-Hiller.jpg`}
-                  />
-                  <div className={classes.cardText}>
-                    <Typography variant="h6">Helmut Hiller, MS</Typography>
-                    <Typography variant="subtitle1">
-                      nPOD OPPC Core Research Manager
-                    </Typography>
-                    <Typography variant="subtitle1">hhiller@ufl.edu</Typography>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <Typography variant="h6" className={classes.title2}>
-              For data submission
-            </Typography>
-            <div className={classes.cardList}>
-              <a
-                href="mailto:Bobbie-Jo.Webb-Robertson@pnnl.gov"
-                style={{ textDecoration: "none" }}
-              >
-                <div className={classes.card}>
-                  <img
-                    src={`${process.env.PUBLIC_URL}/assets/contactPage/Webb-Robertson.png`}
-                    style={{ objectPosition: "0 10%" }}
-                  />
-                  <div className={classes.cardText}>
-                    <Typography variant="h6">
-                      Bobbie-Jo Webb-Robertson
-                    </Typography>
-                    <Typography variant="body1">Ph.D</Typography>
-                    <Typography variant="body1">
-                      Bobbie-Jo.Webb-Robertson@pnnl.gov
                     </Typography>
                   </div>
                 </div>
