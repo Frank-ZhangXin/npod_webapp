@@ -14,6 +14,7 @@ export default function AlertDialog({
   btn1Name,
   btn2Name,
   callBack,
+  onCloseCallback,
 }) {
   const handleClickOpen = () => {
     setOpen(true);
@@ -21,6 +22,9 @@ export default function AlertDialog({
 
   const handleClose = () => {
     setOpen(false);
+    if (onCloseCallback) {
+      onCloseCallback();
+    }
   };
 
   return (
@@ -31,12 +35,25 @@ export default function AlertDialog({
           <DialogContentText>{contentText}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            {btn1Name}
-          </Button>
-          <Button onClick={callBack} color="primary" autoFocus>
-            {btn2Name}
-          </Button>
+          {btn1Name && !btn2Name ? (
+            <Button
+              onClick={handleClose}
+              color="primary"
+              variant="contained"
+              autoFocus
+            >
+              {btn1Name}
+            </Button>
+          ) : (
+            <>
+              <Button onClick={handleClose} color="primary">
+                {btn1Name}
+              </Button>
+              <Button onClick={callBack} color="primary" autoFocus>
+                {btn2Name}
+              </Button>
+            </>
+          )}
         </DialogActions>
       </Dialog>
     </div>
