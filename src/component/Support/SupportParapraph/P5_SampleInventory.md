@@ -6,7 +6,7 @@ Access to the complete sample inventory is reserved for approved nPOD investigat
 
 The sample inventory button will redirect you to the [nPOD DataShare site](https://npoddatashare.coh.org/labkey/login/home/login.view).
 
-This legacy site will be available for sample request placement and limited data access. The most up-to-date data will be accessible through the Explore Cases page. For any questions regarding order placement, please contact Dr. Irina Kusmartseva at <npod@pathology.ufl.edu>.
+This legacy site will be available for sample request placement and limited data access. The most up-to-date data will be accessible through the Explore Cases page. For any questions regarding order placement, please contact Helmut Hiller at <npod@pathology.ufl.edu>.
 
 ![](/assets/suppportPage/p1/support_p5_2.png)
 
