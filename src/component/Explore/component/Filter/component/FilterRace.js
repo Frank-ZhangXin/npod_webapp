@@ -69,20 +69,20 @@ const FilterTooltip = withStyles((theme) => ({
 }))(Tooltip);
 
 const options = [
-  { value: "African American", label: "African American" },
   {
     value: "American Indian/Alaska Native",
     label: "American Indian/Alaska Native",
   },
   { value: "Arab/Middle Eastern", label: "Arab/Middle Eastern" },
   { value: "Asian", label: "Asian" },
-  { value: "Caucasian", label: "Caucasian" },
+  { value: "Black", label: "Black" },
   {
     value: "Hawaiian/Other Pacific Islander",
     label: "Hawaiian/Other Pacific Islander",
   },
   { value: "Hispanic/Latino", label: "Hispanic/Latino" },
   { value: "Multiracial", label: "Multiracial" },
+  { value: "White", label: "White" },
 ];
 
 function FilterRace(props) {
